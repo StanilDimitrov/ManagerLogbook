@@ -7,11 +7,7 @@ namespace ManagerLogbook.Data.Models
     public class Logbook
     {
         public int Id { get; set; }
-
-        public int UserId { get; set; }
-
-        public User User { get; set; }
-
+               
         public int SubBusinessUnitId { get; set; }
 
         public SubBusinessUnit SubBusinessUnit { get; set; }

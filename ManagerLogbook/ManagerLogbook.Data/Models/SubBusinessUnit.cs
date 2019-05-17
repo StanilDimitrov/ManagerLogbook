@@ -10,7 +10,7 @@ namespace ManagerLogbook.Data.Models
 
         public string CategoryName { get; set; }
 
-        public ICollection<Logbook> Logbooks { get; set; }
-
+        public int LogbookId { get; set; }
+        public Logbook Logbook { get; set; }
     }
 }

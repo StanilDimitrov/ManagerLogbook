@@ -18,8 +18,6 @@ namespace ManagerLogbook.Data.Models
 
         public string Picture { get; set; }
 
-        public int MyProperty { get; set; }
-
-        public ICollection<User> Users { get; set; }
+        public ICollection<SubBusinessUnit> subBusinessUnit { get; set; }        
     }
 }
