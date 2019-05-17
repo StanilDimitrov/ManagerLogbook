@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ManagerLogbook.Data.Models
 {
-    public class Task
+    public class ManagerTask
     {
         public int Id { get; set; }
 

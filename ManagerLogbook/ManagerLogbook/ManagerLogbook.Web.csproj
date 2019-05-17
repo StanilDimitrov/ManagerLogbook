@@ -19,8 +19,12 @@
   <ItemGroup>
     <Folder Include="Areas\Administrator\" />
     <Folder Include="Areas\Manager\" />
-    <Folder Include="Mappers\" />
     <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ManagerLogbook.Data\ManagerLogbook.Data.csproj" />
+    <ProjectReference Include="..\ManagerLogbook.Services\ManagerLogbook.Services.csproj" />
   </ItemGroup>
 
 </Project>

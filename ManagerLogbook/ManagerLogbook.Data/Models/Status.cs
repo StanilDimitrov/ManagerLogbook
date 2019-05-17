@@ -11,6 +11,6 @@ namespace ManagerLogbook.Data.Models
 
         public string Type { get; set; }
 
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<ManagerTask> Tasks { get; set; }
     }
 }

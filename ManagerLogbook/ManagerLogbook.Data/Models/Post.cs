@@ -4,13 +4,13 @@ using System.Text;
 
 namespace ManagerLogbook.Data.Models
 {
-    public class Comment
+    public class Post
     {
         public int Id { get; set; }
 
-        public string OriginalDescription { get; set; }
+        public string OriginalComment { get; set; }
 
-        public string EditedDesctiption { get; set; }
+        public string EditedComment { get; set; }
 
         public double Rating { get; set; }
 

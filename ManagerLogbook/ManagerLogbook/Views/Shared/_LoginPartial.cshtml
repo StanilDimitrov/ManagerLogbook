@@ -1,8 +1,8 @@
 @using Microsoft.AspNetCore.Identity
 @using ManagerLogbook.Models
 
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ManagerLogbook.Data.Models.User> SignInManager
+@inject UserManager<ManagerLogbook.Data.Models.User> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
