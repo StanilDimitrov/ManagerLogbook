@@ -1,0 +1,19 @@
+﻿@model string
+
+@if (!string.IsNullOrEmpty(Model))
+{
+    var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
+    <div class="alert alert-@statusMessageClass alert-dismissible" role="alert">
+        <button type="button" class="close" style="color:white" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        @Model
+    </div>
+}
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/js/jquery/dist/jquery.min.js"></script>
+}

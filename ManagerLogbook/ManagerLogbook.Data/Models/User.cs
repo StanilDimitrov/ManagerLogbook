@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Data.Models
 {
@@ -19,5 +21,6 @@ namespace ManagerLogbook.Data.Models
         public string Picture { get; set; }
 
         public ICollection<UsersLogbooks> UsersLogBooks { get; set; }
+
     }
 }

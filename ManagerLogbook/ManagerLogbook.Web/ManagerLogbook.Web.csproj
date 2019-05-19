@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <LangVersion>latest</LangVersion>
+    <UserSecretsId>aspnet-ManagerLogbook-871B3473-FCC2-4D90-B71F-3532F3D0AE36</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.12.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+    <PackageReference Include="System.Drawing.Common" Version="4.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Administrator\" />
+    <Folder Include="Areas\Manager\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ManagerLogbook.Data\ManagerLogbook.Data.csproj" />
+    <ProjectReference Include="..\ManagerLogbook.Services\ManagerLogbook.Services.csproj" />
+  </ItemGroup>
+
+</Project>

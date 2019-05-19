@@ -1,0 +1,49 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http.Authentication
+@model LoginViewModel
+@inject SignInManager<User> SignInManager
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<!-- LOGIN  MODAL -->
+<div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <a asp-controller="Home" asp-action="Index" class="close" data-dismiss="modal">x</a>
+            @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+            <h4 class="modal-title">Log In to your Account</h4>
+        </div>
+        <div class="modal-body">
+            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="loginForm">
+                @await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])
+                <div class="form-group">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger-custom"></span>
+                </div>
+                <div class="form-group">
+                    <i class="fa fa-lock" aria-hidden="true"></i>
+                    <input asp-for="Password" type="password" class="form-control" id="pwd" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger-custom"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Log In</button>
+                </div>
+                <div class="checkbox">
+                    <label><input asp-for="RememberMe" type="checkbox"> Remember me</label>
+                    @Html.DisplayNameFor(m => m.RememberMe)
+                    <a asp-action="ForgotPassword" class="pull-right link">Fogot Password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
