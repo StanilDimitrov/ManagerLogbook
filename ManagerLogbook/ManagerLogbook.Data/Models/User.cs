@@ -11,16 +11,17 @@ namespace ManagerLogbook.Data.Models
     public class User : IdentityUser
     {
         [Required]
-        [MaxLength(20)]
+        [MaxLength(50)]
         public string FirstName { get; set; }
 
         [Required]
-        [MaxLength(20)]
+        [MaxLength(50)]
         public string LastName { get; set; }
 
         public string Picture { get; set; }
 
-        public ICollection<UsersLogbooks> UsersLogBooks { get; set; }
+        public ICollection<UsersLogbooks> UsersLogbooks { get; set; }
 
+        public ICollection<ManagerTask> ManagerTasks { get; set; }
     }
 }

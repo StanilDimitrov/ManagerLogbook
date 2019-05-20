@@ -12,17 +12,19 @@ namespace ManagerLogbook.Data
 
         }
 
-        public DbSet<BusinessUnit> BusinessUnits { get; set; }
-
-        public DbSet<SubBusinessUnit> SubBusinessUnits { get; set; }
+        public DbSet<BusinessUnit> BusinessUnits { get; set; }        
 
         public DbSet<Logbook> Logbooks { get; set; }
 
-        public DbSet<Status> Statuses { get; set; }
+        public DbSet<LogbookCategory> LogbookCategories { get; set; }
 
         public DbSet<ManagerTask> ManagerTasks { get; set; }
 
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+
+        public DbSet<Status> Statuses { get; set; }
+
+        public DbSet<TaskCategory> TaskCategories { get; set; }
 
         public DbSet<UsersLogbooks> UsersLogbooks { get; set; }
 

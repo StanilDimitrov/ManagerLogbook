@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ManagerLogbook.Data.Models
 {
-    public class SubBusinessUnit
+    public class LogbookCategory
     {
         public int Id { get; set; }
 
@@ -13,7 +13,6 @@ namespace ManagerLogbook.Data.Models
         [MaxLength(50)]
         public string CategoryName { get; set; }
 
-        public int LogbookId { get; set; }
-        public Logbook Logbook { get; set; }
+        public ICollection<Logbook> Logbook { get; set; }
     }
 }
