@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,6 +21,10 @@ namespace ManagerLogbook.Web.Models.AccountViewModels
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        public IFormFile UserImage { get; set; }
+
+        public string Image { get; set; }
 
         [Required]
         [DataType(DataType.Text)]

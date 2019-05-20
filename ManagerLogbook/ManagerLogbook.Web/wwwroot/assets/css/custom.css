@@ -5,5 +5,23 @@
 .btn-primary-custom {
     background-color: #2196f3;
     transition: all 0.3s ease-in-out;
-    width:100%;
+    width: 100%;
+}
+
+.no-padding {
+    padding: 0px;
+}
+
+.logout-btn {
+    padding: 0px;
+    height: 97px;
+    color: black !important;
+    letter-spacing: 0px;
+    padding: /*40px*/ 20px 37px /*20px*/;
+    /*font-size: 14px;*/
+}
+
+button.logout-btn:hover {
+    color: #2196f3 !important;
+    text-decoration:none;
 }
