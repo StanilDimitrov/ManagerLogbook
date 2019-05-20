@@ -17,8 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Administrator\" />
+    <Folder Include="Areas\Admin\" />
     <Folder Include="Areas\Manager\" />
+    <Folder Include="Areas\Moderator\" />
     <Folder Include="Utils\" />
   </ItemGroup>
 

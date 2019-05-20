@@ -1,212 +1,130 @@
-﻿@{
+﻿@model ManagerTaskViewModel
+
+@{
     ViewData["Title"] = "About";
 
 }
 
+<!-- Dashboard header -->
+<section class="navbar-dashboard-area">
+    <nav class="navbar navbar-default lightHeader navbar-dashboard" role="navigation">
+        <div class="container">
 
-<!-- LISTINGS DETAILS TITLE SECTION -->
-<section class="clearfix paddingAdjustBottom">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="listingTitleArea">
-                    <h2>Glory Hole Doughnuts</h2>
-                    <p>1150 Queen Street West Toronto <br>Ontario M6J 1J3, Canada</p>
-                    <div class="listingReview">
-                        <ul class="list-inline rating">
-                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                            <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                            <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                        </ul>
-                        <span>( 5 Reviews )</span>
-                        <ul class="list-inline captionItem">
-                            <li><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</li>
-                        </ul>
-                        <a href="dashboard-reviews.html" class="btn btn-primary">Write a review</a>
-                    </div>
-                </div>
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-dash">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-        </div>
-    </div>
-</section>
-<!-- LISTINGS DETAILS IMAGE SECTION -->
-<section class="clearfix paddingAdjustTopBottom">
-    <ul class="list-inline listingImage">
-        <li><img src="/assets/img/listing/listing-details-1.jpg" alt="Image Listing" class="img-responsive"></li>
-        <li><img src="/assets/img/listing/listing-details-2.jpg" alt="Image Listing" class="img-responsive"></li>
-        <li><img src="/assets/img/listing/listing-details-3.jpg" alt="Image Listing" class="img-responsive"></li>
-        <li><img src="/assets/img/listing/listing-details-4.jpg" alt="Image Listing" class="img-responsive"></li>
-    </ul>
-</section>
-<!-- LISTINGS DETAILS INFO SECTION -->
-<section class="clearfix paddingAdjustTop">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-xs-12">
-                <div class="listDetailsInfo">
-                    <div class="detailsInfoBox">
-                        <h3>About This Hotel</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt  labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam. </p>
-                        <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est. </p>
-                        <p>Qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui </p>
-                    </div>
-                    <div class="detailsInfoBox">
-                        <h3>Features</h3>
-                        <ul class="list-inline featuresItems">
-                            <li><i class="fa fa-check-circle-o" aria-hidden="true"></i>  Wi-Fi</li>
-                            <li><i class="fa fa-check-circle-o" aria-hidden="true"></i>  Street Parking</li>
-                            <li><i class="fa fa-check-circle-o" aria-hidden="true"></i>  Alcohol</li>
-                            <li><i class="fa fa-check-circle-o" aria-hidden="true"></i>  Vegetarian</li>
-                            <li><i class="fa fa-check-circle-o" aria-hidden="true"></i>  Reservations</li>
-                            <li><i class="fa fa-check-circle-o" aria-hidden="true"></i>  Pets Friendly</li>
-                            <li><i class="fa fa-check-circle-o" aria-hidden="true"></i>  Accept Credit Card</li>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-dash">
+                <ul class="nav navbar-nav mr0">
+                    <li class="">
+                        <a href="dashboard.html"><i class="fa fa-tachometer icon-dash" aria-hidden="true"></i> Dashboard</a>
+                    </li>
+                    <li class="dropdown singleDro active">
+                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i> Tasks <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="listings.html">My Tasks</a></li>
+                            <li><a href="add-listings.html">All Tasks</a></li>
                         </ul>
-                    </div>
-                    <div class="detailsInfoBox">
-                        <h3>Reviews (3)</h3>
-                        <div class="media media-comment">
-                            <div class="media-left">
-                                <img src="/assets/img/listing/list-user-1.jpg" class="media-object img-circle" alt="Image User">
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Jessica Brown</h4>
-                                <ul class="list-inline rating">
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                </ul>
-                                <p>
-                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan
-                                    totam rem ape riam,
-                                </p>
-                            </div>
-                        </div>
-                        <div class="media media-comment">
-                            <div class="media-left">
-                                <img src="/assets/img/listing/list-user-2.jpg" class="media-object img-circle" alt="Image User">
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Jessica Brown</h4>
-                                <ul class="list-inline rating">
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                </ul>
-                                <p>
-                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan
-                                    totam rem ape riam,
-                                </p>
-                            </div>
-                        </div>
-                        <div class="media media-comment">
-                            <div class="media-left">
-                                <img src="/assets/img/listing/list-user-3.jpg" class="media-object img-circle" alt="Image User">
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Jessica Brown</h4>
-                                <ul class="list-inline rating">
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                </ul>
-                                <p>
-                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan
-                                    totam rem ape riam,
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="detailsInfoBox">
-                        <h3>Write A Review </h3>
-                        <div class="listingReview">
-                            <span>( 5 Reviews )</span>
-                            <ul class="list-inline rating rating-review">
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                            </ul>
-                        </div>
-                        <form action="#">
-                            <div class="formSection formSpace">
-                                <div class="form-group">
-                                    <textarea class="form-control" rows="3" placeholder="Comment"></textarea>
-                                </div>
-                                <div class="form-group mb0">
-                                    <button type="submit" class="btn btn-primary">Send Review</button>
-                                </div>
+                    </li>
+                    <li class="">
+                        <a href="dashboard-reviews.html" class="scrolling"><i class="fa fa-star-o icon-dash" aria-hidden="true"></i> Reviews</a>
+                    </li>
+                    <li class="">
+                        <a href="oders.html"><i class="fa fa-cogs icon-dash" aria-hidden="true"></i> Orders</a>
+                    </li>
+                    <li>
+                        <a href="dashboard.html#message" class="scrolling">
+                            <i class="fa fa-envelope icon-dash" aria-hidden="true"> </i>
+                            Messages
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="profile.html"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Personal Details</a>
+                    </li>
+                </ul>
+                <div class="row adjustRow">
+                    <div class="pull-right col-xs-12 col-sm-2">
+                        <form class="navbar-form" role="search">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search" name="q">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"><i class="icon-listy icon-search-2"></i></button>
+                                </span>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-4 col-xs-12">
-                <div class="clearfix map-sidebar map-right">
-                    <div id="map" style="position:relative; margin: 0;padding: 0;height: 538px; max-width: none;"></div>
-                </div>
-                <div class="listSidebar">
-                    <h3>Location</h3>
-                    <div class="contactInfo">
-                        <ul class="list-unstyled list-address">
-                            <li>
-                                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                16/14 Babor Road, Mohammad pur <br> Dhaka, Bangladesh
-                            </li>
-                            <li>
-                                <i class="fa fa-phone" aria-hidden="true"></i>
-                                +55 654 545 122 <br> +55 654 545 123
-                            </li>
-                            <li>
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
-                                <a href="#">example.com</a> <a href="#">info@startravelbangladesh.com</a>
-                            </li>
-                        </ul>
+        </div>
+    </nav>
+</section>
+
+
+<!-- Dashboard breadcrumb section -->
+<div class="section dashboard-breadcrumb-section bg-dark">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                @*<h2>Add Task</h2>*@
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li class="active">Add Task</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DASHBOARD ORDERS SECTION -->
+<section class="clearfix bg-dark listingSection" id="listing-add-edit">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form action="" enctype="multipart/form-data" method="post" class="listing__form">
+                    <div class="dashboardBoxBg mb30">
+                        <div class="profileIntro paraMargin">
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    @*<label for="discribeTheListing"></label>*@
+                                    <textarea class="form-control" rows="3" placeholder="Description"></textarea>
+                                </div>
+                                <div class="form-group col-sm-6 col-xs-12">
+                                    @*<label for="listingTitle">Add Title</label>*@
+                                    <input type="text" class="form-control" id="listingTitle" placeholder="Title">
+                                </div>
+                                <div class="form-group col-sm-6 col-xs-12">
+                                    @*<label for="listingCategory">Category</label>*@
+                                    <div class="contactSelect">
+                                        <select name="guiest_id9" id="guiest_id9" class="select-drop">
+                                            <option value="0">All Category</option>
+                                            <option value="1">Restaurant</option>
+                                            <option value="2">Bar</option>
+                                            <option value="3">Cafe</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @*<input type="hidden" asp-for="Image" value="@Model.Image" class="form-control" />*@
+                                <div class="form-group col-xs-12">
+                                    <label asp-for="TaskImage" class="btn btn-primary-custom">Upload Image</label>
+                                    <input style="display: none" asp-for="TaskImage" accept="image/*" />
+                                    @*<input type="text" class="form-control" id="addTags" placeholder="Upload Image">*@
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="listSidebar">
-                    <h3>Opening Hours</h3>
-                    <ul class="list-unstyled sidebarList">
-                        <li>
-                            <span class="pull-left">Monday</span>
-                            <span class="pull-right">08.00am - 05.00pm</span>
-                        </li>
-                        <li>
-                            <span class="pull-left">Tuesday</span>
-                            <span class="pull-right">08.00am - 05.00pm</span>
-                        </li>
-                        <li>
-                            <span class="pull-left">Wednesday</span>
-                            <span class="pull-right">08.00am - 05.00pm</span>
-                        </li>
-                        <li>
-                            <span class="pull-left">Thrusday</span>
-                            <span class="pull-right">08.00am - 05.00pm</span>
-                        </li>
-                        <li>
-                            <span class="pull-left">Friday</span>
-                            <span class="pull-right">08.00am - 05.00pm</span>
-                        </li>
-                        <li>
-                            <span class="pull-left">Saturday</span>
-                            <span class="pull-right"><a href="#">Closed</a></span>
-                        </li>
-                        <li>
-                            <span class="pull-left">Sunday</span>
-                            <span class="pull-right"><a href="#">Closed</a></span>
-                        </li>
-                    </ul>
-                </div>
+                    <div class="form-footer text-center">
+                        <button type="submit" class="btn-submit">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </section>
-

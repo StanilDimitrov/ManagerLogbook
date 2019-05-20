@@ -1,3 +1,9 @@
 .text-danger-custom {
     color: #2196f3
 }
+
+.btn-primary-custom {
+    background-color: #2196f3;
+    transition: all 0.3s ease-in-out;
+    width:100%;
+}

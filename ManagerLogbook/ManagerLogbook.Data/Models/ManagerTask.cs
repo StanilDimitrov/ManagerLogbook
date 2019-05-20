@@ -15,11 +15,13 @@ namespace ManagerLogbook.Data.Models
 
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
+        public string Image { get; set; }
+
         public int StatusId { get; set; }
 
         public Status Status { get; set; }
 
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         public User User { get; set; }
 
