@@ -10,10 +10,11 @@ namespace ManagerLogbook.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [MinLength(5)]
+        [MaxLength(50)]
         public string BrandName { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string Address { get; set; }
 
         [Required]
@@ -26,6 +27,6 @@ namespace ManagerLogbook.Data.Models
 
         public string Picture { get; set; }
 
-        public ICollection<SubBusinessUnit> subBusinessUnit { get; set; }
+        public ICollection<Logbook> Logbook { get; set; }
     }
 }
