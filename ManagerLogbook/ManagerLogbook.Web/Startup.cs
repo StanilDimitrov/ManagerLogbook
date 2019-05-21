@@ -42,7 +42,6 @@ namespace ManagerLogbook.Web
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<ICommentService, CommentService>();
-            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IManagerTaskService, ManagerTaskService>();
             services.AddScoped<IBusinessUnitService, BusinessUnitService>();
             services.AddScoped<ILogbookService, LogbookService>();

@@ -35,7 +35,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         }
 
         [TempData]
-        public string ErrorMessage { get; set; }
+        public string StatusMessage { get; set; }
 
 
         [HttpGet]
@@ -79,8 +79,8 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-
-                    return RedirectToLocal(returnUrl);
+                    StatusMessage = $"Successfully created user \"{model.FirstName} {model.LastName}\" with role \"{model.UserRole}\"";
+                    return RedirectToAction("Register");
                 }
                 AddErrors(result);
             }

@@ -13,6 +13,7 @@ using ManagerLogbook.Data.Models;
 using System.Threading.Tasks;
 using ManagerLogbook.Web.Services;
 using ManagerLogbook.Web.Models.ManageViewModels;
+using ManagerLogbook.Data;
 
 namespace ManagerLogbook.Web.Controllers
 {
@@ -25,7 +26,7 @@ namespace ManagerLogbook.Web.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
-
+        private readonly ManagerLogbookContext _context;
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
         private const string RecoveryCodesKey = nameof(RecoveryCodesKey);
 
@@ -34,13 +35,15 @@ namespace ManagerLogbook.Web.Controllers
           SignInManager<User> signInManager,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          ManagerLogbookContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _context = context;
         }
 
         [TempData]
@@ -85,6 +88,11 @@ namespace ManagerLogbook.Web.Controllers
             }
 
             var email = user.Email;
+            if (this._context.Users.Any(x => x.Email == email))
+            {
+                StatusMessage = $"Email  \"{email}\"  is already taken.";
+                return RedirectToAction(nameof(Index));
+            }
             if (model.Email != email)
             {
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);

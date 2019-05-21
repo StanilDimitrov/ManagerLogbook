@@ -10,23 +10,56 @@
     width: 100%;
 }
 
+.btn-primary-custom-1 {
+    background-color: #2196f3;
+    transition: all 0.3s ease-in-out;
+    width: 567px;
+    
+}
+
 .no-padding {
     padding: 0px;
 }
 
 .logout-btn {
     padding: 0px;
-    height: 97px;
-    color: black !important;
+    height: 30px !important;
+    color: #848484 !important;
     letter-spacing: 0px;
-    padding: /*40px*/ 20px 37px /*20px*/;
+    padding: 10px 20px 20px /*20px*/;
     /*font-size: 14px;*/
+    font-family: 'Muli', sans-serif;
+    float: none;
+    text-transform: none;
+    text-decoration: none !important;
 }
+
 
 button.logout-btn:hover {
     color: #2196f3 !important;
     text-decoration:none;
 }
+
+.margin-custom-5 {
+    margin-top: 6%;
+    width: 100%;
+}
+
+.display-none{
+    display:none !important;
+}
+
+.alert-success-custom {
+    color: white;
+    background-color: black;
+    /*background-color: #ff9800;*/
+    border-color: #d6e9c6;
+}
+
+.color-white{
+    color:white;
+}
+
 
 
 

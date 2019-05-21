@@ -6185,9 +6185,13 @@ a.thumbnail.active {
     }
 
 .alert-success {
-    color: #3c763d;
+    /*color: #3c763d;
     background-color: #dff0d8;
-    border-color: #d6e9c6;
+    border-color: #d6e9c6;*/
+    color: #2196f3 !important;
+    background-color: white !important;
+    width: 50% !important;
+    /*border-color: #d6e9c6;*/
 }
 
     .alert-success hr {
