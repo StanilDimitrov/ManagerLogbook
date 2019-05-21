@@ -8,27 +8,36 @@
     <!-- Modal content-->
     <div class="modal-content">
         <div class="modal-header">
-            <a asp-controller="Home" asp-action="Index" class="close" data-dismiss="modal">x</a>
+            <a asp-controller="Manage" asp-action="Index" class="close" data-dismiss="modal">x</a>
             @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
             <h4 class="modal-title">Manage your account</h4>
         </div>
         <div class="modal-body">
             <div asp-validation-summary="All" class="text-danger-custom"></div>
-            <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="loginForm">
+            <form  enctype="multipart/form-data" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="loginForm">
                 <div class="form-group">
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    <input asp-for="FirstName" class="form-control" placeholder="FirstName">
+                    <input readonly asp-for="FirstName" class="form-control" placeholder="FirstName">
                     <span asp-validation-for="FirstName" class="text-danger-custom"></span>
                 </div>
                 <div class="form-group">
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    <input asp-for="LastName" class="form-control" placeholder="LastName">
+                    <input readonly asp-for="LastName" class="form-control" placeholder="LastName">
                     <span asp-validation-for="LastName" class="text-danger-custom"></span>
                 </div>
                 <div class="form-group">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
                     <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Email">
                     <span asp-validation-for="Email" class="text-danger-custom"></span>
+                </div>
+                <div class="form-group">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Phone number">
+                    <span asp-validation-for="PhoneNumber" class="text-danger-custom"></span>
+                </div>
+                <div class="form-group col-xs-12">
+                    <label asp-for="UserImage" class="btn btn-primary-custom">Upload Image</label>
+                    <input style="display: none" asp-for="UserImage" accept="image/*" />
                 </div>
                 <div class="margin-8">
                     <button type="submit" class="btn btn-primary btn-block">Save</button>

@@ -200,56 +200,56 @@ namespace ManagerLogbook.Web.Controllers
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
-        }
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public IActionResult Register(string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    return View();
+        //}
 
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
-        {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new User {FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnUrl;
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = new User {FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.Email };
+        //        var result = await _userManager.CreateAsync(user, model.Password);
+        //        if (result.Succeeded)
+        //        {
+        //            _logger.LogInformation("User created a new account with password.");
 
-                    // Add a user to the default role, or any role you prefer here
-                    if (model.UserRole == "Manager")
-                    {
-                        await _userManager.AddToRoleAsync(user, "Manager");
-                    }
-                    else if(model.UserRole == "Moderator")
-                    {
-                        await _userManager.AddToRoleAsync(user, "Moderator");
-                    }
-                    else if (model.UserRole == "Admin")
-                    {
-                        await _userManager.AddToRoleAsync(user, "Admin");
-                    }
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+        //            // Add a user to the default role, or any role you prefer here
+        //            if (model.UserRole == "Manager")
+        //            {
+        //                await _userManager.AddToRoleAsync(user, "Manager");
+        //            }
+        //            else if(model.UserRole == "Moderator")
+        //            {
+        //                await _userManager.AddToRoleAsync(user, "Moderator");
+        //            }
+        //            else if (model.UserRole == "Admin")
+        //            {
+        //                await _userManager.AddToRoleAsync(user, "Admin");
+        //            }
+        //            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //            var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+        //            await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
+        //            await _signInManager.SignInAsync(user, isPersistent: false);
+        //            _logger.LogInformation("User created a new account with password.");
 
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
-            }
+        //            return RedirectToLocal(returnUrl);
+        //        }
+        //        AddErrors(result);
+        //    }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
-        }
+        //    // If we got this far, something failed, redisplay form
+        //    return View(model);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

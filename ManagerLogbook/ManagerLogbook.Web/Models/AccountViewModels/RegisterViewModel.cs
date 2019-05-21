@@ -22,6 +22,10 @@ namespace ManagerLogbook.Web.Models.AccountViewModels
         [Display(Name = "Email")]
         public string Email { get; set; }
 
+        [Phone]
+        [Display(Name = "Phone number")]
+        public string PhoneNumber { get; set; }
+
         public IFormFile UserImage { get; set; }
 
         public string Image { get; set; }

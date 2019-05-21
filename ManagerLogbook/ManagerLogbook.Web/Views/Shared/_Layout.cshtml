@@ -93,13 +93,20 @@
                         <div class="collapse navbar-collapse navbar-ex1-collapse">
                             <ul class="nav navbar-nav navbar-right">
                                 <li class=""><a asp-controller="Home" asp-action="Index">Home</a></li>
-                                <li class=""><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
-                                <li class=" dropdown singleDrop">
-                                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a asp-controller="Account" asp-action="Register">Create Account</a></li>
-                                    </ul>
-                                </li>
+                                @if (User.IsInRole("Manager"))
+                                {
+                                    <li class=""><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                                }
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li class=" dropdown singleDrop">
+                                        <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Admin<i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a asp-controller="Account" asp-action="Register">Create Account</a></li>
+                                        </ul>
+                                    </li>
+                                }
                                 <li class="">@await Html.PartialAsync("_LoginPartial")</li>
                             </ul>
                         </div>
