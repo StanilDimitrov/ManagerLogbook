@@ -1,1 +1,1 @@
-# Manager's Logbook
+# Manager Logbook
