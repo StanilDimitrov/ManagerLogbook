@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +10,14 @@ namespace ManagerLogbook.Web.Models.ManageViewModels
     public class IndexViewModel
     {
         public string Username { get; set; }
+
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+        public IFormFile UserImage { get; set; }
+
+        public string Image { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
 

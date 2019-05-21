@@ -1,5 +1,7 @@
 .text-danger-custom {
-    color: #2196f3
+    /*color: #2196f3*/
+    /*color: rgba(187,22,84,0.8);*/
+    color:red;
 }
 
 .btn-primary-custom {
@@ -25,3 +27,6 @@ button.logout-btn:hover {
     color: #2196f3 !important;
     text-decoration:none;
 }
+
+
+
