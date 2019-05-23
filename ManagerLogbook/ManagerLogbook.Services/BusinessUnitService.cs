@@ -3,8 +3,10 @@ using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
 using System;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace ManagerLogbook.Services
 {
@@ -41,7 +43,7 @@ namespace ManagerLogbook.Services
 
         }
 
-        public async Task<BusinessUnit> UpdateBusinessUnitAsync(BusinessUnit businessUnit, string brandName, string address, string phoneNumber, string email ,string picture)
+        public async Task<BusinessUnit> UpdateBusinessUnitAsync(BusinessUnit businessUnit, string brandName, string address, string phoneNumber, string email, string picture)
         {
             if (brandName != null)
             {
@@ -69,7 +71,7 @@ namespace ManagerLogbook.Services
                 businessValidator.IsEmailValid(email);
             }
 
-            businessUnit.PhoneNumber = phoneNumber;
+            businessUnit.Email = email;
 
             if (picture != null)
             {
@@ -85,12 +87,21 @@ namespace ManagerLogbook.Services
         {
             var logbook = await this.context.Logbooks.FindAsync(logbookId);
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
-            
+
             logbook.BusinessUnitId = businessUnitId;
 
             await this.context.SaveChangesAsync();
 
             return businessUnit;
+        }
+
+        public async Task<IReadOnlyCollection<Logbook>> FindAllLogbooksForBusinessUnitAsync(int businessUnitId)
+        {
+            var logbooks = await this.context.Logbooks
+                         .Where(bu => bu.BusinessUnitId == businessUnitId)
+                         .ToListAsync();
+
+            return logbooks;
         }
     }
 }
