@@ -14,8 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="HelpersMethods\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\ManagerLogbook.Data\ManagerLogbook.Data.csproj" />
+    <ProjectReference Include="..\ManagerLogbook.Services\ManagerLogbook.Services.csproj" />
   </ItemGroup>
 
 </Project>

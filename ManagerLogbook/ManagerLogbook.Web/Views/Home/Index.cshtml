@@ -3,35 +3,80 @@
 }
 
 
-<section class="clearfix homeBanner" style="background-image: url(/assets/img/banner/banner1.jpg);">
+@*<section class="clearfix homeBanner" style="background-image: url(/assets/img/banner/banner1.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="banerInfo">
+                        <h1>Explore. Discover. Share</h1>
+                        <p>Listty helps to find out great things arround you</p>
+                        <form class="form-inline" action="listings-half-screen-map-list.html">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Find</div>
+                                    <input type="text" class="form-control" id="findItem" placeholder="What are you looking for?">
+                                    <div class="input-group-addon addon-right"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon">Near</div>
+                                    <input type="text" class="form-control" id="nearLocation" placeholder="Location">
+                                    <div class="input-group-addon addon-right"><i class="icon-listy icon-target" aria-hidden="true"></i></div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>*@
+
+<!-- MAP SECTION -->
+<section class="clearfix p0">
+    <div id="map-canvas"></div>
+</section>
+
+<section class="clearfix bg-light">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                <div class="banerInfo">
-                    <h1>Explore. Discover. Share</h1>
-                    <p>Listty helps to find out great things arround you</p>
+            <div class="col-xs-12 ">
+                <div class="bg-search-white">
                     <form class="form-inline" action="listings-half-screen-map-list.html">
                         <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">Find</div>
-                                <input type="text" class="form-control" id="findItem" placeholder="What are you looking for?">
-                                <div class="input-group-addon addon-right"></div>
+                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter your keywords">
+                        </div>
+                        <div class="form-group">
+                            <div class="searchSelectbox">
+                                <select name="guiest_id3" id="guiest_id3" class="select-drop">
+                                    <option value="0">All Location</option>
+                                    <option value="1">U.S.A</option>
+                                    <option value="2">U.K</option>
+                                    <option value="3">ASIA</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="input-group">
-                                <div class="input-group-addon">Near</div>
-                                <input type="text" class="form-control" id="nearLocation" placeholder="Location">
-                                <div class="input-group-addon addon-right"><i class="icon-listy icon-target" aria-hidden="true"></i></div>
+                            <div class="searchSelectbox">
+                                <select name="guiest_id4" id="guiest_id4" class="select-drop">
+                                    <option value="0">All Categories</option>
+                                    <option value="1">All Categories 1</option>
+                                    <option value="2">All Categories 2</option>
+                                    <option value="3">All Categories 3</option>
+                                </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Search </button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- THINGS SECTION -->
 <section class="clearfix thingsArea">
@@ -259,4 +304,3 @@
 </section>
 
 
-    

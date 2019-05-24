@@ -23,7 +23,7 @@ namespace ManagerLogbook.Data.Models
         public int StatusId { get; set; }
         public Status Status { get; set; }
 
-        public int TaskCategoryId { get; set; }
+        public int? TaskCategoryId { get; set; }
         public TaskCategory TaskCategory { get; set; }        
 
         public int LogbookId { get; set; }

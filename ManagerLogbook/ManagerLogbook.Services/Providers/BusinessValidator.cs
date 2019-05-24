@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.Contracts.Providers;
+﻿using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,12 @@ namespace ManagerLogbook.Services.Providers
 {
     public class BusinessValidator: IBusinessValidator
     {
-        public void IsNull (string input)
+
+        public void DoesUserExists(User user)
         {
-            if (string.IsNullOrEmpty(input))
+            if (user == null)
             {
-                throw new ArgumentException(ServicesConstants.InputCanNotBeNullOrEmpty);
+                throw new ArgumentException(ServicesConstants.UserDoesNotExist);
             }
         }
 
