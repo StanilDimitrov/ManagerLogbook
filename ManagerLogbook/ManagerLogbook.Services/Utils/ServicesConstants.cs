@@ -14,5 +14,7 @@ namespace ManagerLogbook.Services.Utils
         public const string UserNotManagerOfLogbook = "User \"{0} {1}\" is not manager of logbook \"{2}\".";
         public const string UserIsNotAuthorizedToEditTask = "User is not authorized to edit this task!";
         public const string DescriptionCanNotBeNull = "Description can not be null or empty string!";
+        public const string EmailIsNotValid = "Email {0} is not valid!";
+        public const string PhoneNumberIsNotValid = "PhoneNumber {0} is not valid!";        
     }
 }
