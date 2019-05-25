@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManagerLogbook.Data.Migrations
 {
     [DbContext(typeof(ManagerLogbookContext))]
-    [Migration("20190517143622_Initial")]
+    [Migration("20190525154151_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,40 +27,48 @@ namespace ManagerLogbook.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address");
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200);
 
-                    b.Property<string>("BrandName");
+                    b.Property<string>("BrandName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
-                    b.Property<string>("Email");
+                    b.Property<int>("BusinessUnitCategoryId");
 
-                    b.Property<int>("MyProperty");
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<double>("Latitude");
+
+                    b.Property<double>("Longitude");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
 
                     b.Property<string>("Picture");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BusinessUnitCategoryId");
+
                     b.ToTable("BusinessUnits");
                 });
 
-            modelBuilder.Entity("ManagerLogbook.Data.Models.Comment", b =>
+            modelBuilder.Entity("ManagerLogbook.Data.Models.BusinessUnitCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<string>("EditedDesctiption");
-
-                    b.Property<string>("OriginalDescription");
-
-                    b.Property<double>("Rating");
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Comments");
+                    b.ToTable("BusinessUnitCategories");
                 });
 
             modelBuilder.Entity("ManagerLogbook.Data.Models.Logbook", b =>
@@ -69,22 +77,22 @@ namespace ManagerLogbook.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("SubBusinessUnitId");
+                    b.Property<int>("BusinessUnitId");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
-                    b.Property<string>("UserId1");
+                    b.Property<string>("Picture");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubBusinessUnitId");
-
-                    b.HasIndex("UserId1");
+                    b.HasIndex("BusinessUnitId");
 
                     b.ToTable("Logbooks");
                 });
 
-            modelBuilder.Entity("ManagerLogbook.Data.Models.ManagerTask", b =>
+            modelBuilder.Entity("ManagerLogbook.Data.Models.Note", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -92,24 +100,32 @@ namespace ManagerLogbook.Data.Migrations
 
                     b.Property<DateTime>("CreatedOn");
 
-                    b.Property<string>("Note");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500);
 
-                    b.Property<int>("StatusId");
+                    b.Property<string>("Image");
 
-                    b.Property<int>("UserId");
+                    b.Property<bool>("IsActiveTask");
 
-                    b.Property<string>("UserId1");
+                    b.Property<int>("LogbookId");
+
+                    b.Property<int?>("NoteCategoryId");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StatusId");
+                    b.HasIndex("LogbookId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("NoteCategoryId");
 
-                    b.ToTable("Problems");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("ManagerLogbook.Data.Models.Status", b =>
+            modelBuilder.Entity("ManagerLogbook.Data.Models.NoteCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -119,20 +135,36 @@ namespace ManagerLogbook.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Statuses");
+                    b.ToTable("NoteCategories");
                 });
 
-            modelBuilder.Entity("ManagerLogbook.Data.Models.SubBusinessUnit", b =>
+            modelBuilder.Entity("ManagerLogbook.Data.Models.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CategoryName");
+                    b.Property<int>("BusinessUnitId");
+
+                    b.Property<DateTime>("CreatedOn");
+
+                    b.Property<string>("EditedDescription")
+                        .IsRequired()
+                        .HasMaxLength(500);
+
+                    b.Property<string>("OriginalDescription")
+                        .IsRequired()
+                        .HasMaxLength(500);
+
+                    b.Property<int>("Rating");
+
+                    b.Property<bool>("isVisible");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubBusinessUnits");
+                    b.HasIndex("BusinessUnitId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("ManagerLogbook.Data.Models.User", b =>
@@ -151,10 +183,6 @@ namespace ManagerLogbook.Data.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -319,33 +347,49 @@ namespace ManagerLogbook.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ManagerLogbook.Data.Models.Logbook", b =>
+            modelBuilder.Entity("ManagerLogbook.Data.Models.BusinessUnit", b =>
                 {
-                    b.HasOne("ManagerLogbook.Data.Models.SubBusinessUnit", "SubBusinessUnit")
-                        .WithMany("Logbooks")
-                        .HasForeignKey("SubBusinessUnitId")
+                    b.HasOne("ManagerLogbook.Data.Models.BusinessUnitCategory", "BusinessUnitCategory")
+                        .WithMany("BusinessUnits")
+                        .HasForeignKey("BusinessUnitCategoryId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ManagerLogbook.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
                 });
 
-            modelBuilder.Entity("ManagerLogbook.Data.Models.ManagerTask", b =>
+            modelBuilder.Entity("ManagerLogbook.Data.Models.Logbook", b =>
                 {
-                    b.HasOne("ManagerLogbook.Data.Models.Status", "Status")
-                        .WithMany("Tasks")
-                        .HasForeignKey("StatusId")
+                    b.HasOne("ManagerLogbook.Data.Models.BusinessUnit", "BusinessUnit")
+                        .WithMany("Logbooks")
+                        .HasForeignKey("BusinessUnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ManagerLogbook.Data.Models.Note", b =>
+                {
+                    b.HasOne("ManagerLogbook.Data.Models.Logbook", "Logbook")
+                        .WithMany("Notes")
+                        .HasForeignKey("LogbookId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("ManagerLogbook.Data.Models.NoteCategory", "NoteCategory")
+                        .WithMany("Notes")
+                        .HasForeignKey("NoteCategoryId");
+
                     b.HasOne("ManagerLogbook.Data.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
+                        .WithMany("Notes")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("ManagerLogbook.Data.Models.Review", b =>
+                {
+                    b.HasOne("ManagerLogbook.Data.Models.BusinessUnit", "BusinessUnit")
+                        .WithMany("Reviews")
+                        .HasForeignKey("BusinessUnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ManagerLogbook.Data.Models.User", b =>
                 {
-                    b.HasOne("ManagerLogbook.Data.Models.BusinessUnit")
+                    b.HasOne("ManagerLogbook.Data.Models.BusinessUnit", "BusinessUnit")
                         .WithMany("Users")
                         .HasForeignKey("BusinessUnitId");
                 });
@@ -353,12 +397,12 @@ namespace ManagerLogbook.Data.Migrations
             modelBuilder.Entity("ManagerLogbook.Data.Models.UsersLogbooks", b =>
                 {
                     b.HasOne("ManagerLogbook.Data.Models.Logbook", "Logbook")
-                        .WithMany("UsersLogBooks")
+                        .WithMany("UserLogbooks")
                         .HasForeignKey("LogbookId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ManagerLogbook.Data.Models.User", "User")
-                        .WithMany("UsersLogBooks")
+                        .WithMany("UserLogbooks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

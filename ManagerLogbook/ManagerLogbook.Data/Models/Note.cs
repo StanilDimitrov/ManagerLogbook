@@ -22,9 +22,6 @@ namespace ManagerLogbook.Data.Models
         public int? NoteCategoryId { get; set; }
         public NoteCategory NoteCategory { get; set; }
 
-        public int StatusId { get; set; }
-        public Status Status { get; set; }
-
         public int LogbookId { get; set; }
         public Logbook Logbook { get; set; }
 

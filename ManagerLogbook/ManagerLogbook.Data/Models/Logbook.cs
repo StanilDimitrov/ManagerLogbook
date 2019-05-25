@@ -19,6 +19,8 @@ namespace ManagerLogbook.Data.Models
         public BusinessUnit BusinessUnit { get; set; }         
 
         public ICollection<Note> Notes { get; set; }
+
+        public ICollection<UsersLogbooks> UserLogbooks { get; set; }
     }
 
 }

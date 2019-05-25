@@ -23,41 +23,20 @@ namespace ManagerLogbook.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BusinessUnits",
+                name: "BusinessUnitCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    BrandName = table.Column<string>(nullable: true),
-                    Address = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Picture = table.Column<string>(nullable: true),
-                    MyProperty = table.Column<int>(nullable: false)
+                    CategoryName = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BusinessUnits", x => x.Id);
+                    table.PrimaryKey("PK_BusinessUnitCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Comments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OriginalDescription = table.Column<string>(nullable: true),
-                    EditedDesctiption = table.Column<string>(nullable: true),
-                    Rating = table.Column<double>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Comments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Statuses",
+                name: "NoteCategories",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -66,20 +45,7 @@ namespace ManagerLogbook.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Statuses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SubBusinessUnits",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CategoryName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SubBusinessUnits", x => x.Id);
+                    table.PrimaryKey("PK_NoteCategories", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,6 +70,32 @@ namespace ManagerLogbook.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BusinessUnits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    BrandName = table.Column<string>(maxLength: 50, nullable: false),
+                    Address = table.Column<string>(maxLength: 200, nullable: false),
+                    PhoneNumber = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: false),
+                    Latitude = table.Column<double>(nullable: false),
+                    Longitude = table.Column<double>(nullable: false),
+                    Picture = table.Column<string>(nullable: true),
+                    BusinessUnitCategoryId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BusinessUnits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BusinessUnits_BusinessUnitCategories_BusinessUnitCategoryId",
+                        column: x => x.BusinessUnitCategoryId,
+                        principalTable: "BusinessUnitCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetUsers",
                 columns: table => new
                 {
@@ -122,8 +114,6 @@ namespace ManagerLogbook.Data.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
                     Picture = table.Column<string>(nullable: true),
                     BusinessUnitId = table.Column<int>(nullable: true)
                 },
@@ -136,6 +126,51 @@ namespace ManagerLogbook.Data.Migrations
                         principalTable: "BusinessUnits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Logbooks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    Picture = table.Column<string>(nullable: true),
+                    BusinessUnitId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logbooks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Logbooks_BusinessUnits_BusinessUnitId",
+                        column: x => x.BusinessUnitId,
+                        principalTable: "BusinessUnits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    OriginalDescription = table.Column<string>(maxLength: 500, nullable: false),
+                    EditedDescription = table.Column<string>(maxLength: 500, nullable: false),
+                    Rating = table.Column<int>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    isVisible = table.Column<bool>(nullable: false),
+                    BusinessUnitId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_BusinessUnits_BusinessUnitId",
+                        column: x => x.BusinessUnitId,
+                        principalTable: "BusinessUnits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,56 +259,37 @@ namespace ManagerLogbook.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Logbooks",
+                name: "Notes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<int>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true),
-                    SubBusinessUnitId = table.Column<int>(nullable: false)
+                    Description = table.Column<string>(maxLength: 500, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    Image = table.Column<string>(nullable: true),
+                    IsActiveTask = table.Column<bool>(nullable: false),
+                    NoteCategoryId = table.Column<int>(nullable: true),
+                    LogbookId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logbooks", x => x.Id);
+                    table.PrimaryKey("PK_Notes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Logbooks_SubBusinessUnits_SubBusinessUnitId",
-                        column: x => x.SubBusinessUnitId,
-                        principalTable: "SubBusinessUnits",
+                        name: "FK_Notes_Logbooks_LogbookId",
+                        column: x => x.LogbookId,
+                        principalTable: "Logbooks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Logbooks_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Notes_NoteCategories_NoteCategoryId",
+                        column: x => x.NoteCategoryId,
+                        principalTable: "NoteCategories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Problems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Note = table.Column<string>(nullable: true),
-                    CreatedOn = table.Column<DateTime>(nullable: false),
-                    StatusId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    UserId1 = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Problems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Problems_Statuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "Statuses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Problems_AspNetUsers_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Notes_AspNetUsers_UserId",
+                        column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -348,24 +364,34 @@ namespace ManagerLogbook.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Logbooks_SubBusinessUnitId",
+                name: "IX_BusinessUnits_BusinessUnitCategoryId",
+                table: "BusinessUnits",
+                column: "BusinessUnitCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Logbooks_BusinessUnitId",
                 table: "Logbooks",
-                column: "SubBusinessUnitId");
+                column: "BusinessUnitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Logbooks_UserId1",
-                table: "Logbooks",
-                column: "UserId1");
+                name: "IX_Notes_LogbookId",
+                table: "Notes",
+                column: "LogbookId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Problems_StatusId",
-                table: "Problems",
-                column: "StatusId");
+                name: "IX_Notes_NoteCategoryId",
+                table: "Notes",
+                column: "NoteCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Problems_UserId1",
-                table: "Problems",
-                column: "UserId1");
+                name: "IX_Notes_UserId",
+                table: "Notes",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_BusinessUnitId",
+                table: "Reviews",
+                column: "BusinessUnitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsersLogbooks_LogbookId",
@@ -391,10 +417,10 @@ namespace ManagerLogbook.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "Notes");
 
             migrationBuilder.DropTable(
-                name: "Problems");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "UsersLogbooks");
@@ -403,19 +429,19 @@ namespace ManagerLogbook.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
+                name: "NoteCategories");
 
             migrationBuilder.DropTable(
                 name: "Logbooks");
-
-            migrationBuilder.DropTable(
-                name: "SubBusinessUnits");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "BusinessUnits");
+
+            migrationBuilder.DropTable(
+                name: "BusinessUnitCategories");
         }
     }
 }

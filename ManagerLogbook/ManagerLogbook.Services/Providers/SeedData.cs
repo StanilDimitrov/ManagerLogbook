@@ -31,7 +31,7 @@ namespace ManagerLogbook.Services.Providers
                 await roleManager.CreateAsync(new IdentityRole { Name = "Manager" });
                 await roleManager.CreateAsync(new IdentityRole { Name = "Moderator" });
 
-                var adminUser = new User { UserName = "admin@admin.bg", FirstName = "Admin", LastName = "Admin", Email = "admin@admin.bg" };
+                var adminUser = new User { UserName = "Admin", Email = "admin@admin.bg" };
                 await userManager.CreateAsync(adminUser, "123456");
 
                 await userManager.AddToRoleAsync(adminUser, "Admin");
