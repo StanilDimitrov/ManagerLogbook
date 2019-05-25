@@ -18,10 +18,11 @@ namespace ManagerLogbook.Data.Models
         [MaxLength(50)]
         public string LastName { get; set; }
 
-        public string Picture { get; set; }
+        public string Picture { get; set; }        
 
-        public ICollection<UsersLogbooks> UsersLogbooks { get; set; }
+        public ICollection<Note> Notes { get; set; }
 
-        public ICollection<ManagerTask> ManagerTasks { get; set; }
+        public int BusinessUnitId { get; set; }
+        public BusinessUnit BusinessUnit { get; set; }
     }
 }
