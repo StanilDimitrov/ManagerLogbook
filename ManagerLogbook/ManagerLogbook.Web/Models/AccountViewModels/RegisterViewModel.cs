@@ -11,20 +11,12 @@ namespace ManagerLogbook.Web.Models.AccountViewModels
     {
         [Required]
         [MaxLength(50)]
-        public string FirstName { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string LastName { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
-
-        [Phone]
-        [Display(Name = "Phone number")]
-        public string PhoneNumber { get; set; }
 
         public IFormFile UserImage { get; set; }
 

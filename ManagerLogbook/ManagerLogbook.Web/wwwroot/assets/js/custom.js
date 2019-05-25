@@ -1,19 +1,42 @@
-/**********************
 
-Custom.js
-=============
 
-Author:  Gino Aliaj
-Template: Movify - Movies, Series & Cinema HTML Template
-Version: 1.0
+$(function () {
+    const $submitForm = $('#submit-form');
 
-Author URI: gnodesign.com
-***************************/
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
 
-function openForm() {
-    document.getElementById("myForm").style.display = "block";
-}
+        const dataToSend = $submitForm.serialize();
+        var url = "/Admin/Create/Register";
 
-function closeForm() {
-    document.getElementById("myForm").style.display = "none";
-}
+        $.post(url, dataToSend, function (response) {
+            console.log(response.firstName);
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+
+            toastr.success(response);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+    });
+
+});

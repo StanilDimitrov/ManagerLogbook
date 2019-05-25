@@ -9,8 +9,8 @@ namespace ManagerLogbook.Web.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [MaxLength(50)]
+        public string UseName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

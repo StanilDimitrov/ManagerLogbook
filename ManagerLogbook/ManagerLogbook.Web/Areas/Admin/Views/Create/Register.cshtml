@@ -5,7 +5,7 @@
 
 <!-- LOGIN  MODAL -->
 <div class="modal-dialog">
-    @await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])
+    @*@await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])*@
     <!-- Modal content-->
     <div class="modal-content">
         <div class="modal-header">
@@ -15,27 +15,16 @@
         </div>
         <div class="modal-body">
             <div asp-validation-summary="All" class="text-danger-custom"></div>
-            <form asp-area="Admin" asp-controller="Create" asp-action="Register" enctype="multipart/form-data" method="post" class="loginForm">
-
+            <form @*id="submit-form"*@ asp-area="Admin" asp-controller="Create" asp-action="Register" enctype="multipart/form-data" method="post" class="loginForm">
                 <div class="form-group">
                     <i class="fa fa-user" aria-hidden="true"></i>
-                    <input asp-for="FirstName" class="form-control" placeholder="FirstName">
-                    <span asp-validation-for="FirstName" class="text-danger-custom"></span>
-                </div>
-                <div class="form-group">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <input asp-for="LastName" class="form-control" placeholder="LastName">
-                    <span asp-validation-for="LastName" class="text-danger-custom"></span>
+                    <input asp-for="UserName"  class="form-control" id="email" placeholder="Username">
+                    <span asp-validation-for="UserName" class="text-danger-custom"></span>
                 </div>
                 <div class="form-group">
                     <i class="fa fa-envelope" aria-hidden="true"></i>
                     <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Email">
                     <span asp-validation-for="Email" class="text-danger-custom"></span>
-                </div>
-                <div class="form-group">
-                    <i class="fa fa-phone" aria-hidden="true"></i>
-                    <input asp-for="PhoneNumber" class="form-control" placeholder="Phone number">
-                    <span asp-validation-for="PhoneNumber" class="text-danger-custom"></span>
                 </div>
                 <div class="form-group">
                     <i class="fa fa-lock" aria-hidden="true"></i>
@@ -75,5 +64,7 @@
 </div>
 
 @section Scripts {
+    <script src="~/assets/js/custom.js"></script>
     @await Html.PartialAsync("_ValidationScriptsPartial")
+
 }

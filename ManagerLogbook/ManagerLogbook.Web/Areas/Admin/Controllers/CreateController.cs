@@ -39,7 +39,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
@@ -47,14 +46,14 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+
             if (ModelState.IsValid)
             {
-                var user = new User { FirstName = model.FirstName, LastName = model.LastName, Email = model.Email, UserName = model.Email, Picture = model.Image};
+                var user = new User {  Email = model.Email, UserName = model.UserName, Picture = model.Image};
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -79,14 +78,16 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    StatusMessage = $"Successfully created user \"{model.FirstName} {model.LastName}\" with role \"{model.UserRole}\"";
-                    return RedirectToAction("Register");
+                    return Ok($"User with Username: \"{user.UserName}\" addedd succesfully!");
+                    //StatusMessage = $"Successfully created user \"{model.FirstName} {model.LastName}\" with role \"{model.UserRole}\"";
+                    //return RedirectToAction("Register");
                 }
-                AddErrors(result);
+                return BadRequest($"User with {model.Email} is already registered.");
+                //AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return Json(model);
         }
 
            #region Helpers
