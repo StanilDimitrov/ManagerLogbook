@@ -149,6 +149,19 @@ namespace ManagerLogbook.Services
             return notes;
         }
 
+        public async Task<IReadOnlyCollection<Note>> ShowLogbookNotesWithActiveStatusAsync(string userId, int logbookId)
+                                                                                        
+        {
+            var notes = await this.context.Notes
+               .Include(mt => mt.Logbook)
+                   .ThenInclude(lb => lb.UsersLogbooks)
+               .Where(mt => mt.LogbookId == logbookId && mt.IsActiveTask)
+               .OrderByDescending(x => x.CreatedOn)
+               .ToListAsync();
+
+            return notes;
+        }
+
         public async Task<IReadOnlyCollection<Note>> SearchNotesContainsStringAsync(string userId, int logbookId, string criteria)
 
         {
