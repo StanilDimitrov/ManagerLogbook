@@ -116,7 +116,7 @@ namespace ManagerLogbook.Tests.Services
 
                     var businessUnit = await sut.AddLogbookToBusinessUnitAsync(TestHelperBusinessUnit.TestBusinessUnit01().Id, TestHelperBusinessUnit.TestLogbook01().Id);
 
-                    Assert.AreEqual(businessUnit.Logbook.Count, 1);
+                    Assert.AreEqual(businessUnit.Logbooks.Count, 1);
                 }
             }
 

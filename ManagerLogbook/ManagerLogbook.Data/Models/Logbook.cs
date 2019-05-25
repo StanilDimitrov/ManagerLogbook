@@ -16,16 +16,9 @@ namespace ManagerLogbook.Data.Models
         public string Picture { get; set; }
 
         public int BusinessUnitId { get; set; }
-        public BusinessUnit BusinessUnit { get; set; }
+        public BusinessUnit BusinessUnit { get; set; }         
 
-        public int LogbookCategoryId { get; set; }
-        public LogbookCategory LogbookCategory { get; set; }
-
-        public ICollection<UsersLogbooks> UsersLogbooks { get; set; }
-
-        public ICollection<Review> Reviews { get; set; }
-
-        public ICollection<ManagerTask> ManagerTasks { get; set; }
+        public ICollection<Note> Notes { get; set; }
     }
 
 }

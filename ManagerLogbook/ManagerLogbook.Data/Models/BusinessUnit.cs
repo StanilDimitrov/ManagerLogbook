@@ -25,8 +25,19 @@ namespace ManagerLogbook.Data.Models
         [EmailAddress]
         public string Email { get; set; }
 
+        public double Latitude { get; set; }
+
+        public double Longitude { get; set; }
+
         public string Picture { get; set; }
 
-        public ICollection<Logbook> Logbook { get; set; }
+        public int BusinessUnitCategoryId { get; set; }
+        public BusinessUnitCategory BusinessUnitCategory { get; set; }
+
+        public ICollection<Logbook> Logbooks { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
+
+        public ICollection<User> Users { get; set; }
     }
 }

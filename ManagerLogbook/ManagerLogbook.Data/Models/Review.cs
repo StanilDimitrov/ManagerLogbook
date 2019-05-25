@@ -24,7 +24,9 @@ namespace ManagerLogbook.Data.Models
 
         public DateTime CreatedOn { get; set; }
 
-        public int LogbookId { get; set; }
-        public Logbook Logbook { get; set; }
+        public bool isVisible { get; set; }
+
+        public int BusinessUnitId { get; set; }
+        public BusinessUnit BusinessUnit { get; set; }
     }
 }
