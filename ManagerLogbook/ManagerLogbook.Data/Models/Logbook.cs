@@ -20,7 +20,7 @@ namespace ManagerLogbook.Data.Models
 
         public ICollection<Note> Notes { get; set; }
 
-        public ICollection<UsersLogbooks> UserLogbooks { get; set; }
+        public ICollection<UsersLogbooks> UsersLogbooks { get; set; }
     }
 
 }
