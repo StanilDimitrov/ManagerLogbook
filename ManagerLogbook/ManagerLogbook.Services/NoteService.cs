@@ -64,14 +64,15 @@ namespace ManagerLogbook.Services
             return note;
         }
 
-        public async Task<Note> ChangeNoteStatusAsync(Note note, string userId)
+        public async Task<Note> DisableNoteActiveStatus(Note note, string userId)
 
         {
-            if (note.UserId != userId)
-            {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToEditTask);
-            }
+            var logbookId = note.LogbookId;
 
+            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
+            {
+                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToEditNote);
+            }
             note.IsActiveTask = false;
             await this.context.SaveChangesAsync();
             return note;
@@ -83,7 +84,7 @@ namespace ManagerLogbook.Services
 
             if (note.UserId != userId)
             {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToEditTask);
+                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToEditNote);
             }
 
             if (description != null)
@@ -113,52 +114,52 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<Note>> ShowLogbookNotesPerDayAsync(string userId, int logbookId)
         {
-            var tasks = await this.context.Notes
+            var notes = await this.context.Notes
                 .Include(mt => mt.Logbook)
                     .ThenInclude(lb => lb.UsersLogbooks)
                 .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn.Day == DateTime.Now.Day)
                 .OrderByDescending(x => x.CreatedOn)
                 .ToListAsync();
 
-            return tasks;
+            return notes;
         }
 
         public async Task<IReadOnlyCollection<Note>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days)
 
         {
-            var tasks = await this.context.Notes
+            var notes = await this.context.Notes
                            .Include(mt => mt.Logbook)
                                .ThenInclude(lb => lb.UsersLogbooks)
                            .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= DateTime.Now.AddDays(-days))
                            .OrderByDescending(x => x.CreatedOn)
                            .ToListAsync();
-            return tasks;
+            return notes;
         }
 
         public async Task<IReadOnlyCollection<Note>> ShowLogbookNotesForDateRangeAsync(string userId, int logbookId,
                                                                                          DateTime startDate, DateTime endDate)
         {
-            var tasks = await this.context.Notes
+            var notes = await this.context.Notes
                .Include(mt => mt.Logbook)
                    .ThenInclude(lb => lb.UsersLogbooks)
                .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
                .OrderByDescending(x => x.CreatedOn)
                .ToListAsync();
 
-            return tasks;
+            return notes;
         }
 
         public async Task<IReadOnlyCollection<Note>> SearchNotesContainsStringAsync(string userId, int logbookId, string criteria)
 
         {
-            var tasks = await this.context.Notes
+            var notes = await this.context.Notes
                .Include(mt => mt.Logbook)
                    .ThenInclude(lb => lb.UsersLogbooks)
                .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(criteria.ToLower().Replace(" ", string.Empty)))
                .OrderByDescending(x => x.CreatedOn)
                .ToListAsync();
 
-            return tasks;
+            return notes;
         }
     }
 }

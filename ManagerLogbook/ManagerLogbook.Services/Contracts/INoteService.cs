@@ -12,7 +12,7 @@ namespace ManagerLogbook.Services.Contracts
      
         Task<Note> CreateNoteAsync(string description, string image, int? categoryId);
 
-        Task<Note> ChangeNoteStatusAsync(Note note, string userId);
+        Task<Note> DisableNoteActiveStatus(Note note, string userId);
 
         Task<Note> EditNoteAsync(Note note, string userId,
                                  string description, string image, int? categoryId);
