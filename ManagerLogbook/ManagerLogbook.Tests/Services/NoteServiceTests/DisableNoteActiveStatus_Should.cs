@@ -7,8 +7,6 @@ using ManagerLogbook.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Services.NoteServiceTests
@@ -17,22 +15,42 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
     public class DisableNoteActiveStatus_Should
     {
         [TestMethod]
-        public async Task ThrowsExeption()
+        public async Task ThrowsExeption_WhenNoteNotExists()
         {
-            var options = TestUtils.GetOptions(nameof(ThrowsExeption));
+            var options = TestUtils.GetOptions(nameof(ThrowsExeption_WhenNoteNotExists));
 
             using (var assertContext = new ManagerLogbookContext(options))
             {
-
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.DisableNoteActiveStatus(TestHelpersNote.TestNote1(),
+                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.DisableNoteActiveStatus(TestHelpersNote.TestNote1().Id,
+                                                                     TestHelpersNote.TestUser1().Id));
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.NoteDoesNotExists));
+            }
+        }
+
+        [TestMethod]
+        public async Task ThrowsExeption_WhenUserIsNotFromLogbook()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsExeption_WhenUserIsNotFromLogbook));
+
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Notes.AddAsync(TestHelpersNote.TestNote4());
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedValidator = new Mock<IBusinessValidator>();
+                var sut = new NoteService(assertContext, mockedValidator.Object);
+
+                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.DisableNoteActiveStatus(TestHelpersNote.TestNote1().Id,
                                                                      TestHelpersNote.TestUser1().Id));
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserIsNotAuthorizedToEditNote));
             }
         }
-
 
         [TestMethod]
         public async Task Succeed()
@@ -50,11 +68,12 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
 
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
+                                         
 
-                var note = await sut.DisableNoteActiveStatus(TestHelpersNote.TestNote1(),
+                var noteDTO = await sut.DisableNoteActiveStatus(TestHelpersNote.TestNote4().Id,
                                                                      TestHelpersNote.TestUser1().Id);
 
-                Assert.IsFalse(note.IsActiveTask);
+                Assert.IsFalse(noteDTO.IsActiveTask);
             }
         }
     }

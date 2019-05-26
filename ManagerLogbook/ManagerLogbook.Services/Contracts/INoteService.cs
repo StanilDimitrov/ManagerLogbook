@@ -1,31 +1,29 @@
 ﻿using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.DTOs;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Services.Contracts
 {
     public interface INoteService
     {
-        Task<Note> GetNoteByIdAsync(int id);
-     
-        Task<Note> CreateNoteAsync(string description, string image, int? categoryId);
+        
+        Task<NoteDTO> CreateNoteAsync(string userId, int logbookId, string description, string image, int? categoryId);
 
-        Task<Note> DisableNoteActiveStatus(Note note, string userId);
+        Task<NoteDTO> DisableNoteActiveStatus(int noteId, string userId);
 
-        Task<Note> EditNoteAsync(Note note, string userId,
+        Task<NoteDTO> EditNoteAsync(int noteId, string userId,
                                  string description, string image, int? categoryId);
-    
-        Task<IReadOnlyCollection<Note>> ShowLogbookNotesPerDayAsync(string userId, int logbookId);
-     
-        Task<IReadOnlyCollection<Note>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days);
 
-        Task<IReadOnlyCollection<Note>> ShowLogbookNotesForDateRangeAsync(string userId, int logbookId,
+        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesPerDayAsync(string userId, int logbookId);
+     
+        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days);
+
+        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDateRangeAsync(string userId, int logbookId,
                                                                           DateTime startDate, DateTime endDate);
 
-        Task<IReadOnlyCollection<Note>> SearchNotesContainsStringAsync(string userId, int logbookId, string criteria);
+        Task<IReadOnlyCollection<NoteDTO>> SearchNotesContainsStringAsync(string userId, int logbookId, string criteria);
 
-      
     }
 }

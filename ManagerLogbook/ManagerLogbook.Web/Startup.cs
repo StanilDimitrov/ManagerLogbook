@@ -2,6 +2,7 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.Mappers;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Services;
 using Microsoft.AspNetCore.Builder;

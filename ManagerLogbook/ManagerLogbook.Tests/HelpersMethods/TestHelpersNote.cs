@@ -1,4 +1,5 @@
 ﻿using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Id = 1,
                 Description = "Room 37 is dirty",
                 User = TestUser1(),
+                NoteCategory = TestNoteCategory2(),
                 LogbookId = TestLogbook1().Id,
                 UserId = TestUser1().Id,
                 Image = "abd22cec-9df6-43ea-b5aa-991689af55d1",
@@ -29,8 +31,11 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Id = 2,
                 Description = "Room 37 is dirty and need to be clean",
                 User = TestUser1(),
+                UserId = TestUser1().Id,
                 Logbook = TestLogbook1(),
-                CreatedOn = DateTime.Now.AddDays(-2)
+                CreatedOn = DateTime.Now.AddDays(-2),
+                NoteCategory = TestNoteCategory1(),
+                NoteCategoryId = TestNoteCategory1().Id
             };
         }
 
@@ -41,8 +46,11 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Id = 3,
                 Description = "Room 27 is dirty and need to be clean",
                 User = TestUser1(),
+                UserId = TestUser1().Id,
                 Logbook = TestLogbook1(),
-                CreatedOn = DateTime.Now.AddDays(-5)
+                CreatedOn = DateTime.Now.AddDays(-5),
+                NoteCategory = TestNoteCategory3(),
+                NoteCategoryId = TestNoteCategory3().Id
             };
         }
 
@@ -53,9 +61,9 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Id = 1,
                 Description = "Room 37 is dirty",
                 User = TestUser1(),
-                LogbookId = TestLogbook1().Id,
                 UserId = TestUser1().Id,
-                NoteCategory = TestNoteCategory2(),
+                LogbookId = TestLogbook1().Id,
+                NoteCategoryId = TestNoteCategory2().Id,
                 IsActiveTask = true
             };
         }
@@ -87,6 +95,16 @@ namespace ManagerLogbook.Tests.HelpersMethods
             };
         }
 
+        public static NoteCategory TestNoteCategory3()
+        {
+            return new NoteCategory
+            {
+                Id = 3,
+                Type = "Task"
+            };
+        }
+
+
         public static User TestUser1()
         {
             return new User
@@ -94,7 +112,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Id = "c2fb4e2d-c6f6-43f2-ac26-b06ef1113981",
                 UserName = "ivan",
                 Email = "dir@bg",
-                PasswordHash = "123456"
+                PasswordHash = "123456",
             };
         }
 
@@ -109,11 +127,38 @@ namespace ManagerLogbook.Tests.HelpersMethods
             };
         }
 
+        public static User TestUser3()
+        {
+            return new User
+            {
+                Id = "6422552b-c251-491c-bcff-b2216430b6e4",
+                UserName = "georgi",
+                Email = "gol@bg",
+                PasswordHash = "123456"
+            };
+        }
+
         public static Logbook TestLogbook1()
         {
             return new Logbook
             {
                 Id = 1,
+                Name = "Restaurant Logbook"
+            };
+        }
+
+        public static NoteDTO TestNoteDTO1()
+        {
+            return new NoteDTO()
+            {
+                Id = 1,
+                Description = "Room 37 is dirty",
+                UserName = "ivan",
+                LogbookName = "Restaurant Logbook",
+                IsActiveTask = true,
+                Image = "abd22cec-9df6-43ea-b5aa-991689af55d1",
+                CreatedOn = DateTime.Now,
+                NoteCategoryType = "Task"
             };
         }
     }
