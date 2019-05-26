@@ -1,5 +1,4 @@
-﻿@model ManagerTaskViewModel
-
+﻿
 @{
     ViewData["Title"] = "About";
 
@@ -113,8 +112,8 @@
                                 </div>
                                 @*<input type="hidden" asp-for="Image" value="@Model.Image" class="form-control" />*@
                                 <div class="form-group col-xs-12">
-                                    <label asp-for="TaskImage" class="btn btn-primary-custom">Upload Image</label>
-                                    <input style="display: none" asp-for="TaskImage" accept="image/*" />
+                                    <label @*asp-for="TaskImage"*@ class="btn btn-primary-custom">Upload Image</label>
+                                    <input style="display: none" @*asp-for="TaskImage"*@ accept="image/*" />
                                     @*<input type="text" class="form-control" id="addTags" placeholder="Upload Image">*@
                                 </div>
                             </div>

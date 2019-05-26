@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ManagerLogbook.Services.DTOs
 {
@@ -13,5 +11,7 @@ namespace ManagerLogbook.Services.DTOs
         public string Picture { get; set; }
 
         public string BusinessUnitName { get; set; }
+
+        public IReadOnlyCollection<NoteDTO> Notes { get; set; }
     }
 }

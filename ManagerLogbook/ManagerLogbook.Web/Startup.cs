@@ -46,8 +46,6 @@ namespace ManagerLogbook.Web
             services.AddScoped<NoteService, NoteService>();
             services.AddScoped<IBusinessUnitService, BusinessUnitService>();
             services.AddScoped<ILogbookService, LogbookService>();
-            services.AddCustomMappers();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
