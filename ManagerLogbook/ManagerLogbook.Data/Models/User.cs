@@ -17,6 +17,6 @@ namespace ManagerLogbook.Data.Models
         public int? BusinessUnitId { get; set; }
         public BusinessUnit BusinessUnit { get; set; }
 
-        public ICollection<UsersLogbooks> UserLogbooks { get; set; }
+        public ICollection<UsersLogbooks> UsersLogbooks { get; set; }
     }
 }
