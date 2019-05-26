@@ -2,9 +2,8 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.Mappers;
-using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Services;
+using ManagerLogbook.Web.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -46,6 +45,7 @@ namespace ManagerLogbook.Web
             services.AddScoped<NoteService, NoteService>();
             services.AddScoped<IBusinessUnitService, BusinessUnitService>();
             services.AddScoped<ILogbookService, LogbookService>();
+            services.AddScoped<IImageOptimizer, ImageOptimizer>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
