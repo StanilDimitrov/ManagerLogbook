@@ -8,7 +8,8 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface INoteService
     {
-        
+        Task<NoteDTO> GetNoteByIdAsync(int id);
+            
         Task<NoteDTO> CreateNoteAsync(string userId, int logbookId, string description, string image, int? categoryId);
 
         Task<NoteDTO> DisableNoteActiveStatus(int noteId, string userId);

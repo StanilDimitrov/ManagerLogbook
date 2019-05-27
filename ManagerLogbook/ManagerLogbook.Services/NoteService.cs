@@ -26,6 +26,13 @@ namespace ManagerLogbook.Services
             this.validator = validator ?? throw new ArgumentNullException(nameof(validator));
         }
 
+        public async Task<NoteDTO> GetNoteByIdAsync(int id)
+        {
+            var note = await this.context.Notes.FindAsync(id);
+
+            return note.ToDTO();
+        }
+
         public async Task<NoteDTO> CreateNoteAsync(string userId, int logbookId, string description, 
                                              string image, int? categoryId)
         {
@@ -44,7 +51,7 @@ namespace ManagerLogbook.Services
                 CreatedOn = DateTime.Now,
                 NoteCategoryId = categoryId,
                 UserId = userId,
-                LogbookId = logbookId
+                LogbookId = (int)logbookId
             };
 
             if (categoryId != null)
@@ -96,7 +103,6 @@ namespace ManagerLogbook.Services
         public async Task<NoteDTO> EditNoteAsync(int noteId, string userId, string description,
                                               string image, int? categoryId)
         {
-
              var note = await this.context.Notes
                                            .Include(x => x.User)
                                            .Include(x => x.NoteCategory)
@@ -158,6 +164,9 @@ namespace ManagerLogbook.Services
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days)
 
         {
+            
+
+
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
                 throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
@@ -177,6 +186,7 @@ namespace ManagerLogbook.Services
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDateRangeAsync(string userId, int logbookId,
                                                                                          DateTime startDate, DateTime endDate)
         {
+           
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
                 throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
@@ -197,6 +207,7 @@ namespace ManagerLogbook.Services
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesWithActiveStatusAsync(string userId, int logbookId)
                                                                                         
         {
+
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
                 throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
