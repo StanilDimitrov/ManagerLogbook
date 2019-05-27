@@ -80,7 +80,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 mockedValidator.Verify(x => x.IsDescriptionInRange(description), Times.Exactly(1));
                 Assert.AreEqual(noteDTO.Id, 1);
                 Assert.AreEqual(noteDTO.Description, description);
-                Assert.AreEqual(noteDTO.NoteCategoryType, TestHelpersNote.TestNoteCategory2().Type);
+                Assert.AreEqual(noteDTO.NoteCategoryType, TestHelpersNote.TestNoteCategory2().Name);
                 Assert.IsTrue(noteDTO.IsActiveTask);
             }
         }

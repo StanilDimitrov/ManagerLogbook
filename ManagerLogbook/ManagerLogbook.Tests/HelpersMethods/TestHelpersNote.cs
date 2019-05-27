@@ -82,7 +82,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
             return new NoteCategory
             {
                 Id = 1,
-                Type = "Restorant stuff"
+                Name = "Restorant stuff"
             };
         }
 
@@ -91,7 +91,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
             return new NoteCategory
             {
                 Id = 2,
-                Type = "Task"
+                Name = "Task"
             };
         }
 
@@ -100,7 +100,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
             return new NoteCategory
             {
                 Id = 3,
-                Type = "Task"
+                Name = "Task"
             };
         }
 
