@@ -2,7 +2,7 @@
 <html>
 <head>
     <!-- Template color -->
-    <link rel="stylesheet" href="css/default.css" id="option_color">
+    <link rel="stylesheet" href="~/assets/css/default.css" id="option_color">
 
     <!-- SITE TITTLE -->
     <meta charset="utf-8">
@@ -85,7 +85,7 @@
                     <div class="container">
 
                         @*<nav id="menuBar" class="navbar navbar-default lightHeader animated " role="navigation">
-                            <div class="container">*@
+        <div class="container">*@
 
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header">
@@ -118,7 +118,11 @@
                                 @*<li class="">@await Html.PartialAsync("_LoginPartial")</li>*@
                             </ul>
                         </div>
-                        <a class="btn btn-default navbar-btn" href="add-listings.html"> + <span>Add Task</span></a>
+                        @if (User.IsInRole("Manager"))
+                        {
+                            <a asp-area="Manager" asp-controller="Note" asp-action="Create" class="btn btn-default navbar-btn"> + <span>Add Note</span></a>
+                        }
+
                     </div>
                 </nav>
             </div>
@@ -128,8 +132,8 @@
         <hr />
         <footer>
             <!-- FOOTER INFO -->
-            <div style="background-image: url(/assets/img/background/bg-footer.jpg);">
-                <div class="clearfix footerInfo" style="background-image: url(assets/img/background/bg-footer.jpg);">
+            <div class="footer-bg-image">
+                <div class="clearfix footerInfo">
                     <div class="container">
                         <div class="row">
                             <div class="col-sm-7 col-xs-12">
@@ -208,6 +212,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU79W1lu5f6PIiuMqNfT1C6M0e_lq1ECY"></script>
     <script src="/assets/plugins/map/js/rich-marker.js"></script>
     <script src="/assets/plugins/map/js/infobox_packed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="/assets/js/map.js"></script>
     <script src="/assets/js/app.js"></script>
     @*<script src="~/assets/js/custom.js"></script>*@

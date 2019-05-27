@@ -12,7 +12,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
             return new BusinessUnit
             {
                 Id = 1,
-                BrandName="Hilton",
+                Name="Hilton",
                 Address="Cherni Vryh 15",
                 PhoneNumber="0123456789",
                 Email="info@hilton.com"

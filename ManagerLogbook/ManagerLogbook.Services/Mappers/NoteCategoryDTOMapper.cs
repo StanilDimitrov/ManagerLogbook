@@ -5,7 +5,7 @@ namespace ManagerLogbook.Services.Mappers
 {
     public static class NoteCategoryDTOMapper
     {
-        public static NoteGategoryDTO ToDTO(NoteCategory entity)
+        public static NoteGategoryDTO ToDTO(this NoteCategory entity)
         {
             if (entity is null)
             {
@@ -15,7 +15,7 @@ namespace ManagerLogbook.Services.Mappers
             return new NoteGategoryDTO()
             {
                 Id = entity.Id,
-                Type = entity.Type
+                Type = entity.Name
             };
         }
     }

@@ -51,7 +51,7 @@ namespace ManagerLogbook.Services
             {
                 var noteCategory = await this.context.NoteCategories.FindAsync(categoryId);
 
-                if (noteCategory.Type == "Task")
+                if (noteCategory.Name == "Task")
                 {
                     note.IsActiveTask = true;
                 }
@@ -127,7 +127,7 @@ namespace ManagerLogbook.Services
                 note.NoteCategoryId = categoryId;
                 var noteCategory = await this.context.NoteCategories.FindAsync(categoryId);
 
-                if (noteCategory.Type == "Task")
+                if (noteCategory.Name == "Task")
                 {
                     note.IsActiveTask = true;
                 }

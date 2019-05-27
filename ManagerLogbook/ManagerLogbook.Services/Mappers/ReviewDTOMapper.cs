@@ -5,7 +5,7 @@ namespace ManagerLogbook.Services.Mappers
 {
     public static class ReviewDTOMapper
     {
-        public static ReviewDTO ToDTO(Review entity)
+        public static ReviewDTO ToDTO(this Review entity)
         {
             if (entity is null)
             {
@@ -15,7 +15,7 @@ namespace ManagerLogbook.Services.Mappers
             return new ReviewDTO()
             {
                Id = entity.Id,
-               BusinessUnitName = entity.BusinessUnit.BrandName,
+               BusinessUnitName = entity.BusinessUnit.Name,
                OriginalDescription = entity.OriginalDescription,
                EditedDescription = entity.EditedDescription,
                CreatedOn = entity.CreatedOn,

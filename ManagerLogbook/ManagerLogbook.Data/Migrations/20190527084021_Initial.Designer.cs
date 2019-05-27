@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ManagerLogbook.Data.Migrations
 {
     [DbContext(typeof(ManagerLogbookContext))]
-    [Migration("20190525154151_Initial")]
+    [Migration("20190527084021_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,10 +31,6 @@ namespace ManagerLogbook.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(200);
 
-                    b.Property<string>("BrandName")
-                        .IsRequired()
-                        .HasMaxLength(50);
-
                     b.Property<int>("BusinessUnitCategoryId");
 
                     b.Property<string>("Email")
@@ -43,6 +39,10 @@ namespace ManagerLogbook.Data.Migrations
                     b.Property<double>("Latitude");
 
                     b.Property<double>("Longitude");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired();
@@ -62,7 +62,7 @@ namespace ManagerLogbook.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
 
@@ -131,7 +131,7 @@ namespace ManagerLogbook.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Type");
+                    b.Property<string>("Name");
 
                     b.HasKey("Id");
 
@@ -178,6 +178,8 @@ namespace ManagerLogbook.Data.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
+
+                    b.Property<int?>("CurrentLogbookId");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);
@@ -397,12 +399,12 @@ namespace ManagerLogbook.Data.Migrations
             modelBuilder.Entity("ManagerLogbook.Data.Models.UsersLogbooks", b =>
                 {
                     b.HasOne("ManagerLogbook.Data.Models.Logbook", "Logbook")
-                        .WithMany("UserLogbooks")
+                        .WithMany("UsersLogbooks")
                         .HasForeignKey("LogbookId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ManagerLogbook.Data.Models.User", "User")
-                        .WithMany("UserLogbooks")
+                        .WithMany("UsersLogbooks")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -11,6 +11,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
         [MaxLength(50)]
         public string Name { get; set; }
 
+        public int? CurrentLogbookId { get; set; }
+
         public string Picture { get; set; }
 
         public string BusinessUnitName { get; set; }

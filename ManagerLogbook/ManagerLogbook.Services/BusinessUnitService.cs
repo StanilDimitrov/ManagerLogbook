@@ -29,7 +29,7 @@ namespace ManagerLogbook.Services
             businessValidator.IsEmailValid(email);
             businessValidator.IsPhoneNumberValid(phoneNumber);
 
-            var businessUnit = new BusinessUnit() { BrandName = brandName, Address = address, PhoneNumber = phoneNumber, Email = email };
+            var businessUnit = new BusinessUnit() { Name = brandName, Address = address, PhoneNumber = phoneNumber, Email = email };
 
             this.context.BusinessUnits.Add(businessUnit);
             await this.context.SaveChangesAsync();
@@ -39,7 +39,7 @@ namespace ManagerLogbook.Services
 
         public async Task<BusinessUnit> IsBusinessUnitExists(string brandName)
         {
-            return await this.context.BusinessUnits.SingleOrDefaultAsync(bn => bn.BrandName == brandName);
+            return await this.context.BusinessUnits.SingleOrDefaultAsync(bn => bn.Name == brandName);
 
         }
 
@@ -50,7 +50,7 @@ namespace ManagerLogbook.Services
                 businessValidator.IsNameInRange(brandName);
             }
 
-            businessUnit.BrandName = brandName;
+            businessUnit.Name = brandName;
 
             if (address != null)
             {

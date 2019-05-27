@@ -5,7 +5,7 @@ namespace ManagerLogbook.Services.Mappers
 {
     public static class LogbookDTOMapper
     {
-        public static LogbookDTO ToDTO(Logbook entity)
+        public static LogbookDTO ToDTO(this Logbook entity)
         {
             if (entity is null)
             {
@@ -16,7 +16,7 @@ namespace ManagerLogbook.Services.Mappers
             {
                 Id = entity.Id,
                 Picture = entity.Picture,
-                BusinessUnitName = entity.BusinessUnit.BrandName,
+                BusinessUnitName = entity.BusinessUnit.Name,
                 Name = entity.Name
             };
         }

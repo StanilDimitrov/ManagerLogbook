@@ -5,7 +5,7 @@ namespace ManagerLogbook.Services.Mappers
 {
     public static class BusinessUnitDTOMapper 
     {
-        public  static BusinessUnitDTO ToDTO(BusinessUnit entity)
+        public  static BusinessUnitDTO ToDTO(this BusinessUnit entity)
         {
             if (entity is null)
             {
@@ -19,10 +19,10 @@ namespace ManagerLogbook.Services.Mappers
                 Latitude = entity.Latitude,
                 Longitude = entity.Longitude,
                 PhoneNumber = entity.PhoneNumber,
-                BrandName = entity.BrandName,
+                BrandName = entity.Name,
                 Email = entity.Email,
                 Picture = entity.Picture,
-                BusinessUnitCategoryName = entity.BusinessUnitCategory.CategoryName
+                BusinessUnitCategoryName = entity.BusinessUnitCategory.Name
             };
         }
     }

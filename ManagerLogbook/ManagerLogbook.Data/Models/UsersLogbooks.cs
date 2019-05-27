@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ManagerLogbook.Data.Models
+﻿namespace ManagerLogbook.Data.Models
 {
     public class UsersLogbooks
     {

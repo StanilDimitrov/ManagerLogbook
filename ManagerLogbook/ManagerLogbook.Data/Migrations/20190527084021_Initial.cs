@@ -28,7 +28,7 @@ namespace ManagerLogbook.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CategoryName = table.Column<string>(maxLength: 50, nullable: false)
+                    Name = table.Column<string>(maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,7 +41,7 @@ namespace ManagerLogbook.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Type = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -75,7 +75,7 @@ namespace ManagerLogbook.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    BrandName = table.Column<string>(maxLength: 50, nullable: false),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
                     Address = table.Column<string>(maxLength: 200, nullable: false),
                     PhoneNumber = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
@@ -115,6 +115,7 @@ namespace ManagerLogbook.Data.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Picture = table.Column<string>(nullable: true),
+                    CurrentLogbookId = table.Column<int>(nullable: true),
                     BusinessUnitId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

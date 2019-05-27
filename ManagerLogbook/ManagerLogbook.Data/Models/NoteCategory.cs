@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace ManagerLogbook.Data.Models
 {
@@ -9,7 +6,7 @@ namespace ManagerLogbook.Data.Models
     {
         public int Id { get; set; }
 
-        public string Type { get; set; }
+        public string Name { get; set; }
 
         public ICollection<Note> Notes { get; set; }
     }

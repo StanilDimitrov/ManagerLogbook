@@ -32,7 +32,7 @@ namespace ManagerLogbook.Tests.Services
                     mockBusinessValidator.Verify(x => x.IsPhoneNumberValid("0123456789"), Times.Exactly(1));
                     mockBusinessValidator.Verify(x => x.IsEmailValid("info@hilton.com"), Times.Exactly(1));
 
-                    Assert.AreEqual(businessUnit.BrandName, "Hilton");
+                    Assert.AreEqual(businessUnit.Name, "Hilton");
                     Assert.AreEqual(businessUnit.Address, "Cerni Vryh 15");
                     Assert.AreEqual(businessUnit.PhoneNumber, "0123456789");
                     Assert.AreEqual(businessUnit.Email, "info@hilton.com");
@@ -59,7 +59,7 @@ namespace ManagerLogbook.Tests.Services
 
                     var isBusinessUnitExists = await sut.IsBusinessUnitExists("Hilton");
 
-                    Assert.AreEqual(isBusinessUnitExists.BrandName, "Hilton");
+                    Assert.AreEqual(isBusinessUnitExists.Name, "Hilton");
                 }
             }
 
@@ -87,7 +87,7 @@ namespace ManagerLogbook.Tests.Services
                     mockBusinessValidator.Verify(x => x.IsPhoneNumberValid("9876543210"), Times.Exactly(1));
                     mockBusinessValidator.Verify(x => x.IsEmailValid("info@kempinski.com"), Times.Exactly(1));
 
-                    Assert.AreEqual(businessUnit.BrandName, "Kempinski");
+                    Assert.AreEqual(businessUnit.Name, "Kempinski");
                     Assert.AreEqual(businessUnit.Address, "Cerni Vryh 25");
                     Assert.AreEqual(businessUnit.PhoneNumber, "9876543210");
                     Assert.AreEqual(businessUnit.Email, "info@kempinski.com");

@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace ManagerLogbook.Data.Models
 {
@@ -11,7 +9,7 @@ namespace ManagerLogbook.Data.Models
 
         [Required]
         [MaxLength(50)]
-        public string CategoryName { get; set; }
+        public string Name { get; set; }
 
         public ICollection<BusinessUnit> BusinessUnits { get; set; }
     }

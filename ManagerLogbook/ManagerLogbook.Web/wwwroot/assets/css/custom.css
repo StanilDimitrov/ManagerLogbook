@@ -60,4 +60,6 @@ button.logout-btn:hover {
     color:white;
 }
 
-
+.footer-bg-image {
+    background-image: url(../img/background/bg-footer.jpg);
+}

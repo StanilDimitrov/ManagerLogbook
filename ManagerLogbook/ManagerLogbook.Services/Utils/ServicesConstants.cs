@@ -14,6 +14,7 @@
         public const string EmailIsNotValid = "Email {0} is not valid!";
         public const string NoSuchUserExists = "No such user exists!";
         public const string NoteDoesNotExists = "Note does not exists!";
-        public const string PhoneNumberIsNotValid = "PhoneNumber {0} is not valid!";        
+        public const string PhoneNumberIsNotValid = "PhoneNumber {0} is not valid!";
+        public const string NoLogboogChoosen = "You must choose a logbook to do operations in it.";
     }
 }

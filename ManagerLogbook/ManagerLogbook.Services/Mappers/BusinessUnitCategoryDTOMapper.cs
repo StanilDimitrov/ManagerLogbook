@@ -5,7 +5,7 @@ namespace ManagerLogbook.Services.Mappers
 {
     public static class BusinessUnitCategoryDTOMapper
     {
-        public static BusinessUnitCategoryDTO ToDTO(BusinessUnitCategory entity)
+        public static BusinessUnitCategoryDTO ToDTO(this BusinessUnitCategory entity)
         {
             if (entity is null)
             {
@@ -15,7 +15,7 @@ namespace ManagerLogbook.Services.Mappers
             return new BusinessUnitCategoryDTO()
             {
                 Id = entity.Id,
-                CategoryName = entity.CategoryName
+                CategoryName = entity.Name
             };
         }
     }
