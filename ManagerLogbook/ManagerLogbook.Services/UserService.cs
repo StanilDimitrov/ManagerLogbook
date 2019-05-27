@@ -3,6 +3,7 @@ using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
 using System.Threading.Tasks;
+using System;
 
 namespace ManagerLogbook.Services
 {
@@ -12,7 +13,7 @@ namespace ManagerLogbook.Services
 
         public UserService(ManagerLogbookContext context)
         {
-            this.context = context ?? throw new System.ArgumentNullException(nameof(context));
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<UserDTO> GetUserById(string userId)
