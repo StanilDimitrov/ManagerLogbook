@@ -9,5 +9,7 @@ namespace ManagerLogbook.Web.Utils
     {
         public const string SuccessfullyAddNote = "Note created successfully.";
         public const string SuccessfullyUpdateNote = "Note was updated successfully.";
+        public const string NoLogbookChoosen = "Please choose a logbook.";
+        public const string NoteCreated = "Note was successfully created.";
     }
 }

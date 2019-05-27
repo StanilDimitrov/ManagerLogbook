@@ -2,6 +2,8 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.Providers;
 using ManagerLogbook.Web.Services;
 using ManagerLogbook.Web.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -42,8 +44,10 @@ namespace ManagerLogbook.Web
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<ICommentService, CommentService>();
-            services.AddScoped<NoteService, NoteService>();
+            services.AddScoped<INoteService, NoteService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBusinessUnitService, BusinessUnitService>();
+            services.AddScoped<IBusinessValidator, BusinessValidator>();
             services.AddScoped<ILogbookService, LogbookService>();
             services.AddScoped<IImageOptimizer, ImageOptimizer>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

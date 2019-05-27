@@ -1,0 +1,51 @@
+﻿@*@{
+        ViewData["Title"] = "About";
+    }*@
+
+
+
+<!-- DASHBOARD ORDERS SECTION -->
+<section class="clearfix bg-dark listingSection" id="listing-add-edit">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form enctype="multipart/form-data" method="post" class="listing__form">
+                    <div class="dashboardBoxBg mb30">
+                        <div class="profileIntro paraMargin">
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    @*<label for="discribeTheListing"></label>*@
+                                    <textarea class="form-control" rows="3" placeholder="Description"></textarea>
+                                </div>
+                                <div class="form-group col-sm-6 col-xs-12">
+                                    @*<label for="listingTitle">Add Title</label>*@
+                                    <input type="text" class="form-control" id="listingTitle" placeholder="Title">
+                                </div>
+                                <div class="form-group col-sm-6 col-xs-12">
+                                    @*<label for="listingCategory">Category</label>*@
+                                    <div class="contactSelect">
+                                        <select name="guiest_id9" id="guiest_id9" class="select-drop">
+                                            <option value="0">All Category</option>
+                                            <option value="1">Restaurant</option>
+                                            <option value="2">Bar</option>
+                                            <option value="3">Cafe</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @*<input type="hidden" asp-for="Image" value="@Model.Image" class="form-control" />*@
+                                <div class="form-group col-xs-12">
+                                    <label @*asp-for="TaskImage" *@ class="btn btn-primary-custom">Upload Image</label>
+                                    <input style="display: none" @*asp-for="TaskImage" *@ accept="image/*" />
+                                    @*<input type="text" class="form-control" id="addTags" placeholder="Upload Image">*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-footer text-center">
+                        <button type="submit" class="btn-submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
