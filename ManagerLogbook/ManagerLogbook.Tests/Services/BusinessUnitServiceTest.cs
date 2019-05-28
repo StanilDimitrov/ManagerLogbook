@@ -36,7 +36,6 @@ namespace ManagerLogbook.Tests.Services
                     Assert.AreEqual(businessUnit.Address, "Cerni Vryh 15");
                     Assert.AreEqual(businessUnit.PhoneNumber, "0123456789");
                     Assert.AreEqual(businessUnit.Email, "info@hilton.com");
-                    ;
                 }
             }
 

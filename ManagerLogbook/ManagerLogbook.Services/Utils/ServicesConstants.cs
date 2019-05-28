@@ -16,5 +16,9 @@
         public const string NoteDoesNotExists = "Note does not exists!";
         public const string PhoneNumberIsNotValid = "PhoneNumber {0} is not valid!";
         public const string NoLogboogChoosen = "You must choose a logbook to do operations in it.";
+        public const string ManagerIsAlreadyInLogbook = "Manager {0} is already exists in logbook {1}!";
+        public const string ModeratorIsAlreadyInBusinessUnit = "Moderator {0} is already exists in businessUnit {1}!";
+        public const string CategoryIsAlreadyInBusinessUnit = "Category {0} is already exists!";
+        public const string NameCanNotBeNullOrEmpty = "Name can not be null or empty string!";
     }
 }
