@@ -48,9 +48,9 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<Logbook> IsLogbookExists(int id)
+        public async Task<Logbook> GetLogbookById(int logbookId)
         {
-            return await this.context.Logbooks.SingleOrDefaultAsync(l => l.Id == id);
+            return await this.context.Logbooks.FindAsync(logbookId);
 
         }
 

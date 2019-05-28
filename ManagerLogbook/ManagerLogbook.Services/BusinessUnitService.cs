@@ -37,9 +37,9 @@ namespace ManagerLogbook.Services
             return businessUnit;
         }
 
-        public async Task<BusinessUnit> IsBusinessUnitExists(string brandName)
+        public async Task<BusinessUnit> GetBusinessUnitById(int businessUnitId)
         {
-            return await this.context.BusinessUnits.SingleOrDefaultAsync(bn => bn.Name == brandName);
+            return await this.context.BusinessUnits.FindAsync(businessUnitId);
 
         }
 
@@ -95,13 +95,66 @@ namespace ManagerLogbook.Services
             return businessUnit;
         }
 
-        public async Task<IReadOnlyCollection<Logbook>> FindAllLogbooksForBusinessUnitAsync(int businessUnitId)
+        public async Task<IReadOnlyCollection<Logbook>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId)
         {
             var logbooks = await this.context.Logbooks
                          .Where(bu => bu.BusinessUnitId == businessUnitId)
                          .ToListAsync();
 
             return logbooks;
+        }
+
+        public async Task<BusinessUnitCategory> CreateBusinessUnitCategoryAsync(string businessUnitCategoryName)
+        {
+            businessValidator.IsNameInRange(businessUnitCategoryName);
+
+            var businessUnitCategory = new BusinessUnitCategory() { Name = businessUnitCategoryName };
+
+            await this.context.SaveChangesAsync();
+
+            return businessUnitCategory;
+        }
+
+        public async Task<BusinessUnitCategory> UpdateBusinessUnitCategoryAsync(int businessUnitCategoryId, string newBusinessUnitCategoryName)
+        {
+            businessValidator.IsNameInRange(newBusinessUnitCategoryName);
+
+            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
+
+            businessUnitCategory.Name = newBusinessUnitCategoryName;
+
+            await this.context.SaveChangesAsync();
+
+            return businessUnitCategory;
+        }
+
+        public async Task<BusinessUnit> AddBusinessUnitCategoryToBusinessUnitAsync(int businessUnitCategoryId, int businessUnitId)
+        {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            businessUnit.BusinessUnitCategoryId = businessUnitCategoryId;
+
+            await this.context.SaveChangesAsync();
+
+            return businessUnit;
+        }
+
+        public async Task<BusinessUnitCategory> GetBusinessUnitCategoryByIdAsync(int businessUnitCategoryId)
+        {
+            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);                      
+
+            await this.context.SaveChangesAsync();
+
+            return businessUnitCategory;
+        }
+
+        public async Task<IReadOnlyCollection<BusinessUnit>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
+        {
+            var businessUnits = await this.context.BusinessUnits
+                         .Where(bc => bc.BusinessUnitCategoryId == businessUnitCategoryId)
+                         .ToListAsync();
+
+            return businessUnits;
         }
     }
 }

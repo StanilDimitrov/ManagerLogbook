@@ -11,7 +11,7 @@ namespace ManagerLogbook.Services.Contracts
     {
         Task<LogbookDTO> CreateLogbookAsync(string name, int businessUnitId, string picture);
 
-        Task<Logbook> IsLogbookExists(int id);
+        Task<Logbook> GetLogbookById(int logbookId);
 
         Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, string picture);
 

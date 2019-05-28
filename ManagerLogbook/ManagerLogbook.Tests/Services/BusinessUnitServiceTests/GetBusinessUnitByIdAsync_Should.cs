@@ -1,25 +1,27 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Threading.Tasks;
 
-namespace ManagerLogbook.Tests.Services.LogbookServiceTests
+namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 {
     [TestClass]
-    public class IsLogbookExists
+    public class GetBusinessUnitByIdAsync_Should
     {
         [TestMethod]
-        public async Task Succeed_ReturnIsLogbookExists()
+        public async Task Succeed_ReturnGetBusinessUnitById()
         {
-            var options = TestUtils.GetOptions(nameof(Succeed_ReturnIsLogbookExists));
+            var options = TestUtils.GetOptions(nameof(Succeed_ReturnGetBusinessUnitById));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
-                await arrangeContext.Logbooks.AddAsync(TestHelpersLogbook.TestLogbook01());
+                await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit01());
                 await arrangeContext.SaveChangesAsync();
             }
 
@@ -27,11 +29,11 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
             {
                 var mockBusinessValidator = new Mock<IBusinessValidator>();
 
-                var sut = new LogbookService(assertContext, mockBusinessValidator.Object);
+                var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var isLogbookExists = await sut.IsLogbookExists(1);
+                var getBusinessUnitById = await sut.GetBusinessUnitById(1);
 
-                Assert.AreEqual(isLogbookExists.Id, 1);
+                Assert.AreEqual(getBusinessUnitById.Id, 1);
             }
         }
     }
