@@ -42,7 +42,7 @@ namespace ManagerLogbook.Web
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddScoped<ICommentService, CommentService>();
-            services.AddScoped<NoteService, NoteService>();
+            services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IBusinessUnitService, BusinessUnitService>();
             services.AddScoped<ILogbookService, LogbookService>();
             services.AddScoped<IImageOptimizer, ImageOptimizer>();

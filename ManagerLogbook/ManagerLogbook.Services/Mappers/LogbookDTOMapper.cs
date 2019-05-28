@@ -1,5 +1,6 @@
 ﻿using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.DTOs;
+using System.Linq;
 
 namespace ManagerLogbook.Services.Mappers
 {
@@ -17,7 +18,8 @@ namespace ManagerLogbook.Services.Mappers
                 Id = entity.Id,
                 Picture = entity.Picture,
                 BusinessUnitName = entity.BusinessUnit.Name,
-                Name = entity.Name
+                Name = entity.Name,
+                Notes = entity.Notes.Select(x => x.ToDTO()).ToList()
             };
         }
     }
