@@ -11,6 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- PLUGINS CSS STYLE -->
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="/assets/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -25,6 +26,13 @@
     <link href="/assets/plugins/rateyo/jquery.rateyo.min.css" rel="stylesheet">
     <link href="/assets/plugins/animate/animate.css" rel="stylesheet">
     <link href="" rel="stylesheet" id="bootstrap-rtl">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
 
     <!-- GOOGLE FONT -->
     <link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700,800,900" rel="stylesheet">
@@ -86,7 +94,7 @@
                     <div class="container">
 
                         @*<nav id="menuBar" class="navbar navbar-default lightHeader animated " role="navigation">
-                        <div class="container">*@
+                            <div class="container">*@
 
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header">
@@ -107,11 +115,11 @@
                                     <ul class="dropdown-menu">
                                         @if (User.IsInRole("Manager"))
                                         {
-                                        <li class=""><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
+                                            <li class=""><a asp-controller="Home" asp-action="Index">Dashboard</a></li>
                                         }
                                         @if (User.IsInRole("Admin"))
                                         {
-                                        <li><a asp-area="Admin" asp-controller="Create" asp-action="Register" data-toggle="modal" data-target="#loginModal">Create Account</a></li>
+                                            <li><a asp-area="Admin" asp-controller="Create" asp-action="Register" data-toggle="modal" data-target="#loginModal">Create Account</a></li>
                                         }
                                         <li class="">@await Html.PartialAsync("_LoginPartial")</li>
                                     </ul>
@@ -121,7 +129,8 @@
                         </div>
                         @if (User.IsInRole("Manager"))
                         {
-                        <a asp-area="Manager" asp-controller="Notes" asp-action="Create" class="btn btn-default navbar-btn"> + <span>Add Note</span></a>
+                            <a data-toggle="modal" data-target="#myModalNote" class="btn btn-default navbar-btn"> + <span>Add Note</span></a>
+
                         }
 
                     </div>
@@ -168,23 +177,11 @@
                                 <a href="profile.html"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Personal Details</a>
                             </li>
                         </ul>
-                        <div class="row adjustRow">
-                            <div class="pull-right col-xs-12 col-sm-2">
-                                <form class="navbar-form" role="search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search" name="q">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button"><i class="icon-listy icon-search-2"></i></button>
-                                        </span>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </nav>
         </section>
-
+        @*<button type="button" data-toggle="modal" data-target="#myModal">Add note</button>*@
         @RenderBody()
         <hr />
         <footer>
@@ -253,6 +250,11 @@
         </footer>
     </div>
 
+    <!-- Note Modal -->
+    @await Html.PartialAsync("_CreateNoteModalPartial")
+    <!-- End Note Modal -->
+
+
     <script src="/assets/plugins/jquery/jquery.min.js"></script>
     <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
     <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -272,7 +274,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="/assets/js/map.js"></script>
     <script src="/assets/js/app.js"></script>
-    @*<script src="~/assets/js/custom.js"></script>*@
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+
+    <script src="/assets/js/custom.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

@@ -11,5 +11,8 @@ namespace ManagerLogbook.Web.Utils
         public const string SuccessfullyUpdateNote = "Note was updated successfully.";
         public const string NoLogbookChoosen = "Please choose a logbook.";
         public const string NoteCreated = "Note was successfully created.";
+        public const string NoteEdited = "Note was successfully edited.";
+        public const string UnableToEditNote = "Unable to edit note.";
     }
 }
+

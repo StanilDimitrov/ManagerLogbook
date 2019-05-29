@@ -24,6 +24,7 @@
     <link href="/assets/plugins/rateyo/jquery.rateyo.min.css" rel="stylesheet">
     <link href="/assets/plugins/animate/animate.css" rel="stylesheet">
     <link href="" rel="stylesheet" id="bootstrap-rtl">
+    <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
     <!-- GOOGLE FONT -->
     <link href="https://fonts.googleapis.com/css?family=Muli:200,300,400,600,700,800,900" rel="stylesheet">
@@ -85,7 +86,7 @@
                     <div class="container">
 
                         @*<nav id="menuBar" class="navbar navbar-default lightHeader animated " role="navigation">
-        <div class="container">*@
+                            <div class="container">*@
 
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header">
@@ -110,9 +111,9 @@
                                         }
                                         @if (User.IsInRole("Admin"))
                                         {
-                                            <li><a asp-area="Admin" asp-controller="Create" asp-action="Register"  data-toggle="modal" data-target="#loginModal">Create Account</a></li>
+                                            <li><a data-toggle="modal" data-target="#myModalRegister">Create Account</a></li>
                                         }
-                                        <li class="">@await Html.PartialAsync("_LoginPartial")</li>
+                                        <li class=""> @await Html.PartialAsync("_LoginPartial")</li>
                                     </ul>
                                 </li>
                                 @*<li class="">@await Html.PartialAsync("_LoginPartial")</li>*@
@@ -120,9 +121,8 @@
                         </div>
                         @if (User.IsInRole("Manager"))
                         {
-                            <a asp-area="Manager" asp-controller="Notes" asp-action="Create" class="btn btn-default navbar-btn"> + <span>Add Note</span></a>
+                            <a data-toggle="modal" data-target="#myModalNote" class="btn btn-default navbar-btn"> + <span>Add Note</span></a>
                         }
-
                     </div>
                 </nav>
             </div>
@@ -196,6 +196,19 @@
         </footer>
     </div>
 
+    <!-- Start Account Modal -->
+    @await Html.PartialAsync("_CreateAccountModalPartial")
+    <!-- End Account Modal -->
+
+    <!-- Start Note Modal -->
+    @await Html.PartialAsync("_CreateNoteModalPartial")
+    <!-- End Note Modal -->
+    <!-- Start Login Modal -->
+    @await Html.PartialAsync("_LoginModalPartial")
+    <!-- End Login Modal -->
+
+
+
     <script src="/assets/plugins/jquery/jquery.min.js"></script>
     <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
     <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -215,7 +228,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="/assets/js/map.js"></script>
     <script src="/assets/js/app.js"></script>
-    @*<script src="~/assets/js/custom.js"></script>*@
+    <script src="/assets/js/custom.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

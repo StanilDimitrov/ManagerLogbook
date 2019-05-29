@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Create\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Moderator\" />
   </ItemGroup>

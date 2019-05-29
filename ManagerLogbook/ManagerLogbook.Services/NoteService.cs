@@ -150,23 +150,21 @@ namespace ManagerLogbook.Services
                 throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
             }
 
-           return await this.context.Notes
-                .Include(mt => mt.User)
-                .Include(mt => mt.NoteCategory)
-                .Include(mt => mt.Logbook)
+            var result = await this.context.Notes
+                 .Include(mt => mt.NoteCategory)
+                 .Include(mt => mt.User)
+                 .Include(mt => mt.Logbook)
                     .ThenInclude(lb => lb.UsersLogbooks)
-                .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn.Day == DateTime.Now.Day)
-                .OrderByDescending(x => x.CreatedOn)
-                .Select(x => x.ToDTO())
-                .ToListAsync();
+                 .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn.Day == DateTime.Now.Day)
+                 .OrderByDescending(x => x.CreatedOn)
+                 .ToListAsync();
+
+              return result.Select(x => x.ToDTO()).ToList();
         }
 
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days)
 
         {
-            
-
-
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
                 throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);

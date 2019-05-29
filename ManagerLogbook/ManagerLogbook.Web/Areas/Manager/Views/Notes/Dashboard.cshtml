@@ -1,51 +1,120 @@
-﻿@*@{
-        ViewData["Title"] = "About";
-    }*@
+﻿
+@model IEnumerable<NoteViewModel>
 
-
-
-<!-- DASHBOARD ORDERS SECTION -->
-<section class="clearfix bg-dark listingSection" id="listing-add-edit">
+<section class="clearfix bg-dark listyPage">
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <form enctype="multipart/form-data" method="post" class="listing__form">
-                    <div class="dashboardBoxBg mb30">
-                        <div class="profileIntro paraMargin">
+                <div class="dashboardBoxBg mb30">
+                    <div class="profileIntro">
+                        <div class="row font-custom">
                             <div class="row">
-                                <div class="form-group col-xs-12">
-                                    @*<label for="discribeTheListing"></label>*@
-                                    <textarea class="form-control" rows="3" placeholder="Description"></textarea>
-                                </div>
-                                <div class="form-group col-sm-6 col-xs-12">
-                                    @*<label for="listingTitle">Add Title</label>*@
-                                    <input type="text" class="form-control" id="listingTitle" placeholder="Title">
-                                </div>
-                                <div class="form-group col-sm-6 col-xs-12">
-                                    @*<label for="listingCategory">Category</label>*@
-                                    <div class="contactSelect">
-                                        <select name="guiest_id9" id="guiest_id9" class="select-drop">
-                                            <option value="0">All Category</option>
-                                            <option value="1">Restaurant</option>
-                                            <option value="2">Bar</option>
-                                            <option value="3">Cafe</option>
-                                        </select>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label for="dateAdded">Start Date</label>
+                                    <div class="dateSelect">
+                                        <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
+                                            <input name="StartDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                                            <div class="input-group-addon">
+                                                <i class="icon-listy icon-calendar"></i>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                @*<input type="hidden" asp-for="Image" value="@Model.Image" class="form-control" />*@
-                                <div class="form-group col-xs-12">
-                                    <label @*asp-for="TaskImage" *@ class="btn btn-primary-custom">Upload Image</label>
-                                    <input style="display: none" @*asp-for="TaskImage" *@ accept="image/*" />
-                                    @*<input type="text" class="form-control" id="addTags" placeholder="Upload Image">*@
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label for="dateModified">End Date</label>
+                                    <div class="dateSelect">
+                                        <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
+                                            <input name="EndDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                                            <div class="input-group-addon">
+                                                <i class="icon-listy icon-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label for="amount">Search</label>
+                                    <input type="text" class="form-control" id="search" placeholder="Search">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="form-footer text-center">
-                        <button type="submit" class="btn-submit">Submit</button>
-                    </div>
-                </form>
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="table-responsive-md font-custom">
+                    @await Html.PartialAsync("_NoteListPartial", Model)
+                </div>
+
+
+                <div class="paginationCommon blogPagination text-center">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
+                                </a>
+                            </li>
+                            <li class="active"><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
+
+@*<form id="form1">
+      <b>First Name:</b> <input type="text" name="firstName">
+      <b>Last Name: </b><input type="text" name="lastName">
+       <button type="button" id="submit">Submit</button>
+    </form>*@
+
+
+
+@section Scripts{
+    <script type="text/javascript"
+            src="https://viralpatel.net/blogs/demo/jquery/jquery.shorten.1.0.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".comment").shorten({
+                "showChars": 100,
+                "moreText": "More",
+                "lessText": "Less",
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.image-link').magnificPopup({ type: 'image' });
+        });
+    </script>
+}
+
+@*@section Scripts
+        {
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#table').DataTable({
+                    responsive: true,
+                    stateSave: true
+                });
+            });
+        </script>
+    }*@
+
+

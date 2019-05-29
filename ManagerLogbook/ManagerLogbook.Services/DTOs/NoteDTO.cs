@@ -15,7 +15,7 @@ namespace ManagerLogbook.Services.DTOs
 
         public bool IsActiveTask { get; set; }
 
-        public string NoteCategoryType { get; set; }
+        public string NoteCategoryName { get; set; }
 
         public string LogbookName { get; set; }
 

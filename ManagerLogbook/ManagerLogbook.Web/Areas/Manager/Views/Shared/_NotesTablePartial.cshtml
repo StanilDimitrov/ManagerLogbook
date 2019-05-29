@@ -1,0 +1,44 @@
+﻿@model IEnumerable<NoteViewModel>
+
+<table id="table">
+    <thead>
+        <tr>
+            <th scope="col" width="5%">№</th>
+            <th scope="col" width="30%">Description</th>
+             <th scope="col">Created On</th>
+            <th scope="col">Created On</th>
+            <th scope="col">User</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int counter = 1;
+        }
+        @foreach (var note in Model)
+        {
+        <tr>
+            <td>@counter</td>
+            @{
+                counter++;
+            }
+            <td>@counter</td>
+            <td>@($"{note.Description:f1}")</td>
+            <td>@note.CreatedOn.ToString("MMMM dd, yyyy")</td>
+            <td>@note.UserName</td>
+            @*<td class="w3-list-img"><a asp-controller="Movies" asp-action="Details" asp-route-id="@movie.Id"><img src="~/images/@(movie.Poster ?? "noimage.jpg")" /><span></span></a></td>*@
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+

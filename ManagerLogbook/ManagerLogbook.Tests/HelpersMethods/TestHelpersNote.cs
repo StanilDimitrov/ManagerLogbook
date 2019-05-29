@@ -158,7 +158,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 IsActiveTask = true,
                 Image = "abd22cec-9df6-43ea-b5aa-991689af55d1",
                 CreatedOn = DateTime.Now,
-                NoteCategoryType = "Task"
+                NoteCategoryName = "Task"
             };
         }
     }

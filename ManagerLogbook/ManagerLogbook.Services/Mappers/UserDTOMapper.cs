@@ -12,14 +12,16 @@ namespace ManagerLogbook.Services.Mappers
                 return null;
             }
 
-            return new UserDTO()
+            var user =  new UserDTO()
             {
                 Picture = entity.Picture,
                 BusinessUnitName = entity.BusinessUnit.Name,
                 UserName = entity.UserName,
                 Email = entity.Email,
-                //CurrentLogbookId = entity.CurrentLogbookId
+                CurrentLogbookId = entity.CurrentLogbookId
             };
+
+            return user;
         }
     }
 }

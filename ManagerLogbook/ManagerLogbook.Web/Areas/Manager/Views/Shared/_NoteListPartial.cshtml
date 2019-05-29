@@ -1,7 +1,67 @@
-﻿
+﻿@model IEnumerable<NoteViewModel>
+
 @{
     ViewData["Title"] = "_NoteListPartial";
 }
 
-<h2>_NoteListPartial</h2>
+<table id="ordersTable" class="table table-small-font table-bordered table-striped" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th width="40%">Description </th>
+            <th>Created</th>
+            <th>User</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>Actions</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Model)
+        {
+            <tr>
+                <td>@note.Id</td>
+                <td class="comment">@note.Description</td>
+                <td> @note.CreatedOn.ToString("MMMM dd, yyyy")</td>
+                <td>@note.UserName</td>
+                <td>@note.CategoryName</td>
+                <td>
+                    @if (note.CategoryName == "Task")
+                    {
+                        <div class="btn-group">
+                            <span class="label label-warning margin-top-15">Active</span><br />
+                            <a class="btn btn-primary margin-20" style="width:100%">Deactivate</a><br />
+                        </div>
+                    }
+                    else
+                    {
+                        @note.CategoryName
+                    }
+                </td>
+                <td>
+                    <div class="btn-group" style="width:100%">
+                        <a class="btn btn-primary margin-10">Edit</a><br />
+                        @if (note.Image == null)
+                        {
+                            <a class="link btn btn-primary btn-new margin-10" style="width:100%">Upload Image</a>
+                        }
+                        else
+                        {
+                            <a class="image-link btn btn-primary btn-new margin-10" style="width:100%" href="/images/@note.Image">Show Image</a>
+                        }
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        }
 
+    </tbody>
+</table>
+
+
+@*<form id="form1">
+        <b>First Name:</b> <input type="text" name="firstName">
+        <b>Last Name: </b><input type="text" name="lastName">
+        <button type="button" id="submit">Submit</button>
+    </form>*@
