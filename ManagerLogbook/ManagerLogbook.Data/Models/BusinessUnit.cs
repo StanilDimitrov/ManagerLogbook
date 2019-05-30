@@ -37,5 +37,7 @@ namespace ManagerLogbook.Data.Models
         public ICollection<Review> Reviews { get; set; }
 
         public ICollection<User> Users { get; set; }
+
+        public ICollection<CensoredWord> CensoredWords { get; set; }
     }
 }

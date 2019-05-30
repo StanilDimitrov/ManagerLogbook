@@ -12,11 +12,13 @@ namespace ManagerLogbook.Data
 
         }
 
-        public DbSet<BusinessUnit> BusinessUnits { get; set; }        
-
-        public DbSet<Logbook> Logbooks { get; set; }
+        public DbSet<BusinessUnit> BusinessUnits { get; set; }
 
         public DbSet<BusinessUnitCategory> BusinessUnitCategories { get; set; }
+
+        public DbSet<CensoredWord> CensoredWords { get; set; }
+
+        public DbSet<Logbook> Logbooks { get; set; }
 
         public DbSet<Note> Notes { get; set; }
 
@@ -24,8 +26,8 @@ namespace ManagerLogbook.Data
 
         public DbSet<UsersLogbooks> UsersLogbooks { get; set; }
 
-        public DbSet<NoteCategory> NoteCategories { get; set; }        
-               
+        public DbSet<NoteCategory> NoteCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UsersLogbooksConfig());
