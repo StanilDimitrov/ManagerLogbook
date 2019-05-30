@@ -43,11 +43,12 @@ namespace ManagerLogbook.Web
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<INoteService, NoteService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBusinessUnitService, BusinessUnitService>();
             services.AddScoped<IBusinessValidator, BusinessValidator>();
+            services.AddScoped<IReviewEditor, ReviewEditor>();
             services.AddScoped<ILogbookService, LogbookService>();
             services.AddScoped<IImageOptimizer, ImageOptimizer>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

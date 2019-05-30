@@ -20,5 +20,6 @@
         public const string ModeratorIsAlreadyInBusinessUnit = "Moderator {0} is already exists in businessUnit {1}!";
         public const string CategoryIsAlreadyInBusinessUnit = "Category {0} is already exists!";
         public const string NameCanNotBeNullOrEmpty = "Name can not be null or empty string!";
+        public const string RatingNotInRange = "Value for raiting must be between 0 and 5.";
     }
 }

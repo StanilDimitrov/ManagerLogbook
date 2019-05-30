@@ -62,5 +62,13 @@ namespace ManagerLogbook.Services.Providers
                 throw new ArgumentException(ServicesConstants.PhoneNumberIsNotValid, phoneNumber);
             }
         }
+
+        public void IsRatingInRange(int raiting)
+        {
+            if (raiting>=0 && raiting<=5)
+            {
+                throw new ArgumentException(ServicesConstants.RatingNotInRange);
+            }
+        }       
     }
 }
