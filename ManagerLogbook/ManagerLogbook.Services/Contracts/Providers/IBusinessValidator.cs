@@ -17,5 +17,7 @@ namespace ManagerLogbook.Services.Contracts.Providers
         void IsEmailValid(string email);
 
         void IsPhoneNumberValid(string phoneNumber);
+
+        void IsRatingInRange(int rating);
     }
 }
