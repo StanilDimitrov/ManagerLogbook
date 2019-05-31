@@ -247,11 +247,11 @@ if(mapId){
         });
 
         //Marker Cluster
-        var markerCluster = new MarkerClusterer(map, markers, {
-          imagePath:
-            "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
-          gridSize: 60, maxZoom: 16,
-        });
+        //var markerCluster = new MarkerClusterer(map, markers, {
+        //  imagePath:
+        //    "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
+        //  gridSize: 60, maxZoom: 16,
+        //});
 
         //When mouseenter into list item
         $(".listContent, .thingsBox").on("mouseenter", function() {

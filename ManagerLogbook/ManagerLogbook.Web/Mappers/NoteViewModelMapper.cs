@@ -14,11 +14,13 @@ namespace ManagerLogbook.Web.Mappers
 
             return new NoteViewModel()
             {
+                Id= dto.Id,
                 Description = dto.Description,
                 Image = dto.Image,
                 UserName = dto.UserName,
+                UserId = dto.UserId,
                 IsActiveTask = dto.IsActiveTask,
-                NoteCategoryName = dto.NoteCategoryType,
+                CategoryName = dto.NoteCategoryName,
                 CreatedOn = dto.CreatedOn
             };
         }

@@ -76,7 +76,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
 
                 Assert.AreEqual(noteDTO.Description, "The room is clean");
                 Assert.AreEqual(noteDTO.Image, "710f8fd0-c90f-4d6a-b421-3aef173d9cf4");
-                Assert.AreEqual(noteDTO.NoteCategoryType, TestHelpersNote.TestNoteCategory1().Name);
+                Assert.AreEqual(noteDTO.NoteCategoryName, TestHelpersNote.TestNoteCategory1().Name);
             }
         }
 
@@ -101,7 +101,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
 
                 Assert.AreEqual(noteDTO.Description, "The room is clean");
                 Assert.AreEqual(noteDTO.Image, "710f8fd0-c90f-4d6a-b421-3aef173d9cf4");
-                Assert.AreEqual(noteDTO.NoteCategoryType, TestHelpersNote.TestNoteCategory2().Name);
+                Assert.AreEqual(noteDTO.NoteCategoryName, TestHelpersNote.TestNoteCategory2().Name);
                 Assert.IsTrue(noteDTO.IsActiveTask);
             }
         }
@@ -127,7 +127,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
 
                 Assert.AreEqual(noteDTO.Description, TestHelpersNote.TestNote1().Description);
                 Assert.AreEqual(noteDTO.Image, TestHelpersNote.TestNote1().Image);
-                Assert.AreEqual(noteDTO.NoteCategoryType, TestHelpersNote.TestNoteCategory2().Name);
+                Assert.AreEqual(noteDTO.NoteCategoryName, TestHelpersNote.TestNoteCategory2().Name);
             }
         }
     }

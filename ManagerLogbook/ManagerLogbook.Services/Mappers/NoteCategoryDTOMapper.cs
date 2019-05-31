@@ -15,7 +15,7 @@ namespace ManagerLogbook.Services.Mappers
             return new NoteGategoryDTO()
             {
                 Id = entity.Id,
-                Type = entity.Name
+                Name = entity.Name
             };
         }
     }

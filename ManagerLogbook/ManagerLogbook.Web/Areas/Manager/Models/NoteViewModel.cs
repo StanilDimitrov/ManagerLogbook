@@ -14,8 +14,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
         [MaxLength(500)]
         public string Description { get; set; }
 
-        
-
         public DateTime CreatedOn { get; set; }
 
         public string Image { get; set; }
@@ -24,10 +22,19 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
 
         public bool IsActiveTask { get; set; }
 
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
-        public string NoteCategoryName { get; set; }
-
+        public string CategoryName { get; set; }
+      
         public string UserName { get; set; }
+
+        public bool CanUserEdit { get; set; }
+
+        public string UserId { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+
     }
 }

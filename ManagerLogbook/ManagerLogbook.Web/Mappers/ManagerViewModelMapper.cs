@@ -20,7 +20,7 @@ namespace ManagerLogbook.Web.Mappers
             {
                 CurrentLogbookId = dto.CurrentLogbookId,
                 Email = dto.Email,
-                Picture = dto.Picture,
+                Avatar = dto.Picture,
                 UserName = dto.UserName
             };
         }

@@ -28,7 +28,10 @@ namespace ManagerLogbook.Services
 
         public async Task<NoteDTO> GetNoteByIdAsync(int id)
         {
-            var note = await this.context.Notes.FindAsync(id);
+            var note = await this.context.Notes
+                                         .Include(x => x.User)
+                                         .Include(x => x.NoteCategory)
+                                         .FirstOrDefaultAsync(x => x.Id == id);
 
             return note.ToDTO();
         }
@@ -143,71 +146,30 @@ namespace ManagerLogbook.Services
             return note.ToDTO();
         }
 
-        public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesPerDayAsync(string userId, int logbookId)
-        {
-            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
-            {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
-            }
-
-           return await this.context.Notes
-                .Include(mt => mt.User)
-                .Include(mt => mt.NoteCategory)
-                .Include(mt => mt.Logbook)
-                    .ThenInclude(lb => lb.UsersLogbooks)
-                .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn.Day == DateTime.Now.Day)
-                .OrderByDescending(x => x.CreatedOn)
-                .Select(x => x.ToDTO())
-                .ToListAsync();
-        }
-
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days)
 
         {
-            
-
-
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
                 throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
             }
 
-            return await this.context.Notes
+            var result = await this.context.Notes
                            .Include(mt => mt.Logbook)
                            .Include(mt => mt.NoteCategory)
                            .Include(mt => mt.User)
                                .ThenInclude(lb => lb.UsersLogbooks)
-                           .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= DateTime.Now.AddDays(-days))
+                           .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn.Day >= (DateTime.Now.Day - days))
                            .OrderByDescending(x => x.CreatedOn)
                            .Select(x => x.ToDTO())
                            .ToListAsync();
-        }
 
-        public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDateRangeAsync(string userId, int logbookId,
-                                                                                         DateTime startDate, DateTime endDate)
-        {
-           
-            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
-            {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
-            }
-
-
-            return await this.context.Notes
-               .Include(mt => mt.Logbook)
-               .Include(mt => mt.NoteCategory)
-               .Include(mt => mt.User)
-                   .ThenInclude(lb => lb.UsersLogbooks)
-               .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-               .OrderByDescending(x => x.CreatedOn)
-               .Select(x => x.ToDTO())
-               .ToListAsync();
+            return result;
         }
 
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesWithActiveStatusAsync(string userId, int logbookId)
                                                                                         
         {
-
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
                 throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
@@ -225,7 +187,7 @@ namespace ManagerLogbook.Services
 
         }
 
-        public async Task<IReadOnlyCollection<NoteDTO>> SearchNotesContainsStringAsync(string userId, int logbookId, string criteria)
+        public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesAsync(string userId, int logbookId)
 
         {
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
@@ -238,10 +200,38 @@ namespace ManagerLogbook.Services
                .Include(mt => mt.NoteCategory)
                .Include(mt => mt.User)
                    .ThenInclude(lb => lb.UsersLogbooks)
-               .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(criteria.ToLower().Replace(" ", string.Empty)))
+               .Where(mt => mt.LogbookId == logbookId)
                .OrderByDescending(x => x.CreatedOn)
                .Select(x => x.ToDTO())
                .ToListAsync();
+
+        }
+
+        public async Task<IReadOnlyCollection<NoteDTO>> SearchNotesByDateAndStringStringAsync(string userId, int logbookId, 
+                                                                                             DateTime startDate, DateTime endDate, string criteria)
+
+        {
+            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
+            {
+                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
+            }
+
+            if (endDate == DateTime.MinValue)
+            {
+                endDate = DateTime.Now;
+            }
+
+            var result =  await this.context.Notes
+               .Include(mt => mt.Logbook)
+               .Include(mt => mt.NoteCategory)
+               .Include(mt => mt.User)
+                   .ThenInclude(lb => lb.UsersLogbooks)
+               .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(criteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+               .OrderByDescending(x => x.CreatedOn)
+               .Select(x => x.ToDTO())
+               .ToListAsync();
+
+            return result;
         }
     }
 }

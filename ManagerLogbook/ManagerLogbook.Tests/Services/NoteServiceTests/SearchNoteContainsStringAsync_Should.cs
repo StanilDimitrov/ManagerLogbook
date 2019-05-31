@@ -28,18 +28,17 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
             {
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
-                                          
-                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.SearchNotesContainsStringAsync(TestHelpersNote.TestUser2().Id,
-                            
-                    TestHelpersNote.TestLogbook1().Id, "room37"));
+
+                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.SearchNotesByDateAndStringStringAsync(TestHelpersNote.TestUser2().Id,
+                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null));
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes));
             }
         }
 
         [TestMethod]
-        public async Task Return_RightCollection()
+        public async Task Return_RightCollectionWhenNoDatesSelected()
         {
-            var options = TestUtils.GetOptions(nameof(Return_RightCollection));
+            var options = TestUtils.GetOptions(nameof(Return_RightCollectionWhenNoDatesSelected));
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
                 await arrangeContext.Notes.AddAsync(TestHelpersNote.TestNote1());
@@ -53,11 +52,12 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
             {
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
-                                          
-                var notesDTO = await sut.SearchNotesContainsStringAsync(TestHelpersNote.TestUser1().Id,
-                                                                     TestHelpersNote.TestLogbook1().Id, "room37");
+
+                var notesDTO = await sut.SearchNotesByDateAndStringStringAsync(TestHelpersNote.TestUser1().Id,
+                                                                     TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, "room37");
                 Assert.AreEqual(notesDTO.Count, 2);
             }
         }
     }
 }
+
