@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ManagerLogbook.Web.Areas.Manager.Models
@@ -14,6 +15,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
         public int? CurrentLogbookId { get; set; }
 
         public string Picture { get; set; }
+
+        public IFormFile LogbookPictuture { get; set; }
 
         public string BusinessUnitName { get; set; }
 

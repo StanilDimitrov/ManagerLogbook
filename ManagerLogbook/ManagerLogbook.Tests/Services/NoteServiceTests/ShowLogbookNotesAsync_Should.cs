@@ -7,12 +7,14 @@ using ManagerLogbook.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Services.NoteServiceTests
 {
     [TestClass]
-    public class ShowLogbookNotesPerDayAsync_Should
+    public class ShowLogbookNotesAsync_Should
     {
         [TestMethod]
         public async Task ThrowsExeption_WhenUserIsNotFromLogbook()
@@ -28,11 +30,9 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
             {
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
-                                          
-                var startDate = DateTime.Now.AddDays(-6);
-                var endDate = DateTime.Now.AddDays(-1);
-                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.ShowLogbookNotesPerDayAsync(TestHelpersNote.TestUser3().Id,
-                                                                                                                   TestHelpersNote.TestLogbook1().Id));
+
+                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.ShowLogbookNotesAsync(TestHelpersNote.TestUser3().Id,
+                                                                                                                       TestHelpersNote.TestLogbook1().Id));
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes));
             }
         }
@@ -45,6 +45,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
             {
                 await arrangeContext.Notes.AddAsync(TestHelpersNote.TestNote1());
                 await arrangeContext.Notes.AddAsync(TestHelpersNote.TestNote2());
+                await arrangeContext.Notes.AddAsync(TestHelpersNote.TestNote3());
                 await arrangeContext.UsersLogbooks.AddAsync(TestHelpersNote.TestUsersLogbooks1());
                 await arrangeContext.SaveChangesAsync();
             }
@@ -53,11 +54,11 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
             {
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
-                                           
-                var notesDTO = await sut.ShowLogbookNotesPerDayAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id);
-                Assert.AreEqual(notesDTO.Count, 1);
+
+                var notesDTO = await sut.ShowLogbookNotesAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id);
+
+                Assert.AreEqual(notesDTO.Count, 3);
             }
         }
-
     }
 }

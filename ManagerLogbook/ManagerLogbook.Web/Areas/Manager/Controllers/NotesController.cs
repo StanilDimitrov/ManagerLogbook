@@ -32,8 +32,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         [TempData] public string StatusMessage { get; set; }
 
 
-
-        public async Task<IActionResult> Dashboard()
+         public async Task<IActionResult> NotesForDaysBefore(int id)
         {
             try
             {
@@ -50,8 +49,77 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 {
                     return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
                 }
-                var notesDTO = await this.noteService.ShowLogbookNotesPerDayAsync(userId, user.CurrentLogbookId.Value);
+                var notesDTO = await this.noteService.ShowLogbookNotesForDaysBeforeAsync(userId, user.CurrentLogbookId.Value,id);
                 var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
+                foreach(var note in noteViewModel)
+                {
+                    note.CanUserEdit = note.UserId == userId;
+                }
+                return View(noteViewModel);
+            }
+            catch (ArgumentException ex)
+            {
+                StatusMessage = ex.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var userId = this.User.GetId();
+                var user = await this.userService.GetUserById(userId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var logbookId = user.CurrentLogbookId;
+                if (!user.CurrentLogbookId.HasValue)
+                {
+                    return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
+                }
+                var notesDTO = await this.noteService.ShowLogbookNotesAsync(userId, user.CurrentLogbookId.Value);
+                var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
+                foreach(var note in noteViewModel)
+                {
+                    note.CanUserEdit = note.UserId == userId;
+                }
+                return View(noteViewModel);
+            }
+            catch (ArgumentException ex)
+            {
+                StatusMessage = ex.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        public async Task<IActionResult> ActiveNotes()
+        {
+            try
+            {
+                var userId = this.User.GetId();
+                var user = await this.userService.GetUserById(userId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                var logbookId = user.CurrentLogbookId;
+                if (!user.CurrentLogbookId.HasValue)
+                {
+                    return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
+                }
+                var notesDTO = await this.noteService.ShowLogbookNotesWithActiveStatusAsync(userId, user.CurrentLogbookId.Value);
+                var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
+                foreach (var note in noteViewModel)
+                {
+                    note.CanUserEdit = note.UserId == userId;
+                }
                 return View(noteViewModel);
             }
             catch (ArgumentException ex)
@@ -100,7 +168,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 }
 
                 var note = await this.noteService.CreateNoteAsync(userId, user.CurrentLogbookId.Value,
-                                                                  model.Description, model.Image, model.CategoryId);
+                                                                  model.Description, imageName, model.CategoryId);
                 if (note.Description == model.Description)
                 {
                     return Ok(string.Format(WebConstants.NoteCreated));
@@ -173,10 +241,77 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadImage(int id)
+        {
+            try
+            {
+                var noteDTO = await this.noteService.GetNoteByIdAsync(id);
+                if (noteDTO == null)
+                {
+                    return NotFound();
+                }
 
+                string imageName = null;
 
+                if (noteDTO.NoteImage != null)
+                {
+                    imageName = optimizer.OptimizeImage(noteDTO.NoteImage, 268, 182);
+                }
 
-        public async Task<IActionResult> NotesPerDay()
+                if (noteDTO.Image != null)
+                {
+                    optimizer.DeleteOldImage(noteDTO.Image);
+                }
+
+                var userId = this.User.GetId();
+                noteDTO = await this.noteService
+                                    .EditNoteAsync(noteDTO.Id, userId, noteDTO.Description,
+                                                 noteDTO.Image, noteDTO.CategoryId);
+
+                return Ok(string.Format(WebConstants.NoteEdited));
+            }
+
+            catch (ArgumentException ex)
+            {
+                StatusMessage = ex.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+                var noteDTO = await this.noteService.GetNoteByIdAsync(id);
+                if (noteDTO == null)
+                {
+                    return NotFound();
+                }
+
+                var userId = this.User.GetId();
+                noteDTO = await this.noteService
+                                  .DisableNoteActiveStatus(noteDTO.Id, userId);
+
+                if (noteDTO.IsActiveTask)
+                {
+                    return RedirectToAction("Dashboard");
+                    //return BadRequest(string.Format(WebConstants.UnableToDisableStatusNote));
+                }
+
+                //return Ok(string.Format(WebConstants.SuccessfullyDeactivateActiveStatus));
+                return RedirectToAction("Dashboard");
+            }
+
+            catch (ArgumentException ex)
+            {
+                StatusMessage = ex.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
+        
+        public async Task<IActionResult> Search(NoteViewModel model, string searchCriteria)
         {
             var userId = this.User.GetId();
             var user = await this.userService.GetUserById(userId);
@@ -191,55 +326,12 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
             }
-
-            var notesDTO = await this.noteService.ShowLogbookNotesPerDayAsync(userId, user.CurrentLogbookId.Value);
+            var notesDTO = await this.noteService
+                                   .SearchNotesByDateAndStringStringAsync(userId, user.CurrentLogbookId.Value,
+                                                                          model.StartDate, model.EndDate, searchCriteria);
             var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
             return View(noteViewModel);
         }
-
-        public async Task<IActionResult> NotesForDaysBefore(NoteViewModel model)
-        {
-            var userId = this.User.GetId();
-            var user = await this.userService.GetUserById(userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var logbookId = user.CurrentLogbookId;
-            if (!user.CurrentLogbookId.HasValue)
-            {
-                return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
-            }
-
-            var notesDTO = await this.noteService.ShowLogbookNotesForDaysBeforeAsync(userId, user.CurrentLogbookId.Value, model.SearchPeriod);
-            var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
-            return View(noteViewModel);
-        }
-
-        public async Task<IActionResult> NotesForRangePeriod(NoteViewModel model)
-        {
-            var userId = this.User.GetId();
-            var user = await this.userService.GetUserById(userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var logbookId = user.CurrentLogbookId;
-            if (!user.CurrentLogbookId.HasValue)
-            {
-                return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
-            }
-
-            var notesDTO = await this.noteService.ShowLogbookNotesForDateRangeAsync(userId, user.CurrentLogbookId.Value,
-                                                                                    model.StartDate, model.EndDate);
-            var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
-            return View(noteViewModel);
-        }
-
 
     }
 }

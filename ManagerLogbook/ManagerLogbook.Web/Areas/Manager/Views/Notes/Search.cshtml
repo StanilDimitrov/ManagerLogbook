@@ -1,0 +1,116 @@
+﻿
+@model IEnumerable<NoteViewModel>
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<head>
+    <!-- Bootstrap -->
+    <link href='bootstrap/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+</head>
+
+<section class="clearfix bg-dark listyPage">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="dashboardBoxBg mb30">
+                    <div class="profileIntro">
+                        <div class="row font-custom">
+                            <div class="row">
+                                <form class="example" asp-area="Manager" asp-controller="Notes" asp-action="Search" method="get">
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label for="amount">Search</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control width-100" placeholder="Search" name="searchCriteria">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default width-100" type="submit"><i class="icon-listy icon-search-2"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label for="dateAdded">Start Date</label>
+                                        <div class="dateSelect">
+                                            <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
+                                                <input name="StartDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                                                <div class="input-group-addon">
+                                                    <i class="icon-listy icon-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label for="dateModified">End Date</label>
+                                        <div class="dateSelect">
+                                            <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
+                                                <input name="EndDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                                                <div class="input-group-addon">
+                                                    <i class="icon-listy icon-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <span class="btn-group btn-panel">
+                            <a asp-area="Manager" asp-controller="Notes" asp-action="Dashboard" class="btn btn-primary active">Daily</a>
+                            <a asp-area="Manager" asp-controller="Notes" asp-action="Dashboard" asp-route-id="7" class="btn btn-primary">7 Days</a>
+                            <a asp-area="Manager" asp-controller="Notes" asp-action="Dashboard" asp-route-id="30" class="btn btn-primary">30 Days</a>
+                            <a asp-area="Manager" asp-controller="Notes" asp-action="Dashboard" class="btn btn-primary" asp-route-id="3650">All</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="table-responsive-md font-custom">
+                    @await Html.PartialAsync("_NoteListPartial", Model)
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+<!-- Start Note Modal -->
+@await Html.PartialAsync("_EditModalPartial")
+    )
+<!-- End Note Modal -->
+
+@section Scripts{
+
+    <!-- jQuery -->
+    <script src="jquery-3.1.1.min.js" type='text/javascript'></script>
+
+    <!-- Infinity Scrolling -->
+    <script src="jquery-ias.min" type='text/javascript'></script>
+
+    <script src='bootstrap/js/bootstrap.min.js' type='text/javascript'></script>
+
+    <script type="text/javascript"
+            src="https://viralpatel.net/blogs/demo/jquery/jquery.shorten.1.0.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".comment").shorten({
+                "showChars": 100,
+                "moreText": "More",
+                "lessText": "Less",
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('.image-link').magnificPopup({ type: 'image' });
+        });
+    </script>
+    }
+
+
+
+

@@ -20,6 +20,7 @@ namespace ManagerLogbook.Services.Mappers
                 Image = entity.Image,
                 CreatedOn = entity.CreatedOn,
                 UserName = entity.User.UserName,
+                UserId = entity.UserId,
                 NoteCategoryName = entity.NoteCategory?.Name
             };
 

@@ -11,29 +11,25 @@
             </div>
             <div class="modal-body">
                 <div class="text-danger-custom"></div>
-                <form id="submit-form" enctype="multipart/form-data" method="post" class="loginForm">
+                <form id="create-note" enctype="multipart/form-data" asp-area="Manager" asp-controller="Notes" asp-action="Create" method="post" class="loginForm">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
-                        <textarea name="Description" class="form-control" placeholder="Please enter a description"></textarea>
+                        <textarea data-val-required="true" name="Description" class="form-control" placeholder="Please enter a description"></textarea>
                         <span class="text-danger-custom"></span>
                     </div>
                     <div style="padding-bottom:9%">
                         <div class="contactSelect">
                             <select name="CategoryName" class="select-drop">
-                                <option value="0">All Category</option>
+                                <option value="0">Select Category</option>
                                 <option value="1">Restaurant</option>
                                 <option value="2">Bar</option>
                                 <option value="3">Cafe</option>
                             </select>
                         </div>
                     </div>
-                    <div class=margin-custom-5>
-                        <div class="form-group">
-                            <i class="fa fa-picture-o color-white" aria-hidden="true"></i>
-                            <label class="btn btn-primary-custom">Upload Image</label>
-                            <input name="NoteImage" class="display-none" accept="image/*" />
-                        </div>
-                    </div>
+                    <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input type="file" name="NoteImage" class="btn btn-primary file" accept="image/*">
+
                     <div class="margin-5">
                         <button type="submit" asp-area="Manager" asp-controller="Notes" asp-action="Create" class="btn btn-primary btn-block">Submit</button>
                         <div class="margin-5">

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 
 namespace ManagerLogbook.Services.DTOs
@@ -13,6 +14,10 @@ namespace ManagerLogbook.Services.DTOs
 
         public string Image { get; set; }
 
+        public IFormFile NoteImage { get; set; }
+
+        public int? CategoryId { get; set; }
+
         public bool IsActiveTask { get; set; }
 
         public string NoteCategoryName { get; set; }
@@ -20,5 +25,7 @@ namespace ManagerLogbook.Services.DTOs
         public string LogbookName { get; set; }
 
         public string UserName { get; set; }
+
+        public string UserId{ get; set; }
     }
 }

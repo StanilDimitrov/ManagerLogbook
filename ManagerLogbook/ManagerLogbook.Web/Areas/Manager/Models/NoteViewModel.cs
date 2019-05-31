@@ -28,12 +28,13 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
       
         public string UserName { get; set; }
 
+        public bool CanUserEdit { get; set; }
+
         public string UserId { get; set; }
 
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
 
-        public int SearchPeriod { get; set; }
     }
 }

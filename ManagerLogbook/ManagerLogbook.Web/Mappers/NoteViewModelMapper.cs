@@ -18,6 +18,7 @@ namespace ManagerLogbook.Web.Mappers
                 Description = dto.Description,
                 Image = dto.Image,
                 UserName = dto.UserName,
+                UserId = dto.UserId,
                 IsActiveTask = dto.IsActiveTask,
                 CategoryName = dto.NoteCategoryName,
                 CreatedOn = dto.CreatedOn

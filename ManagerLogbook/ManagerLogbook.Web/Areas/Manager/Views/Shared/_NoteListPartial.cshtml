@@ -9,7 +9,7 @@
         <tr>
             <th>№</th>
             <th width="40%">Description </th>
-            <th>Created</th>
+            <th width="20%">Created</th>
             <th>User</th>
             <th>Category</th>
             <th>Status</th>
@@ -18,50 +18,57 @@
         </tr>
     </thead>
     <tbody>
+        @{
+            int counter = 1;
+        }
         @foreach (var note in Model)
         {
-            <tr>
-                <td>@note.Id</td>
-                <td class="comment">@note.Description</td>
-                <td> @note.CreatedOn.ToString("MMMM dd, yyyy")</td>
-                <td>@note.UserName</td>
-                <td>@note.CategoryName</td>
-                <td>
-                    @if (note.CategoryName == "Task")
+        <tr>
+            <td>@counter</td>
+            @{
+                counter++;
+            }
+            <td class="comment">@note.Description</td>
+            <td> @note.CreatedOn.ToString("MMMM dd, yyyy")</td>
+            <td>@note.UserName</td>
+            <td>@note.CategoryName</td>
+            <td>
+                @if (note.CategoryName == "Task" && note.IsActiveTask)
+                {
+                    <div class="profileUserInfo-1 width-100">
+                        <span class="label label-success margin-top-20 margin-20">Active</span><br />
+                        <a @*id="deactivate-status" *@  asp-action="Deactivate" asp-route-id="@note.Id" class="btn btn-primary btn-new width-100 margin-20">Deactivate</a><br />
+                    </div>
+                }
+                else if (note.CategoryName == "Task" && !note.IsActiveTask)
+                {
+                    <div class="btn-group">
+                        <span class="label label-danger margin-top-15">Done</span><br />
+                    </div>
+                }
+
+            </td>
+            <td>
+                <div class="profileUserInfo-1 width-100">
+                    @if(note.CanUserEdit)
                     {
-                        <div class="btn-group">
-                            <span class="label label-warning margin-top-15">Active</span><br />
-                            <a class="btn btn-primary margin-20" style="width:100%">Deactivate</a><br />
-                        </div>
+                        <a class="btn btn-primary margin-10" data-toggle="modal" data-noteid="@note.Id" data-target="#editModalNote">Edit</a><br />
+                    }
+                    @if (note.Image == null)
+                    {
+                        <a class="btn btn-primary btn-new width-100 margin-10" data-toggle="modal" data-target="#uploadModal">Upload Image</a>
                     }
                     else
                     {
-                        @note.CategoryName
+                        <a class="image-link btn btn-primary btn-new width-100 margin-10" href="/images/@note.Image">Show Image</a>
                     }
-                </td>
-                <td>
-                    <div class="btn-group" style="width:100%">
-                        <a class="btn btn-primary margin-10">Edit</a><br />
-                        @if (note.Image == null)
-                        {
-                            <a class="link btn btn-primary btn-new margin-10" style="width:100%">Upload Image</a>
-                        }
-                        else
-                        {
-                            <a class="image-link btn btn-primary btn-new margin-10" style="width:100%" href="/images/@note.Image">Show Image</a>
-                        }
-                    </div>
-                </td>
-                <td></td>
-            </tr>
+                </div>
+            </td>
+            <td></td>
+        </tr>
         }
 
     </tbody>
 </table>
 
 
-@*<form id="form1">
-        <b>First Name:</b> <input type="text" name="firstName">
-        <b>Last Name: </b><input type="text" name="lastName">
-        <button type="button" id="submit">Submit</button>
-    </form>*@
