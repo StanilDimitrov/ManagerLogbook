@@ -19,7 +19,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 LogbookId = TestLogbook1().Id,
                 UserId = TestUser1().Id,
                 Image = "abd22cec-9df6-43ea-b5aa-991689af55d1",
-                CreatedOn = DateTime.Now,
+                CreatedOn = DateTime.Now.AddDays(-2),
                 NoteCategoryId = TestNoteCategory2().Id
             };
         }
@@ -48,7 +48,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 User = TestUser1(),
                 UserId = TestUser1().Id,
                 Logbook = TestLogbook1(),
-                CreatedOn = DateTime.Now.AddDays(-5),
+                CreatedOn = DateTime.Now.AddDays(-10),
                 NoteCategory = TestNoteCategory3(),
                 NoteCategoryId = TestNoteCategory3().Id
             };
@@ -146,6 +146,8 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Name = "Restaurant Logbook"
             };
         }
+
+        
 
         public static NoteDTO TestNoteDTO1()
         {

@@ -21,5 +21,6 @@
         public const string CategoryIsAlreadyInBusinessUnit = "Category {0} is already exists!";
         public const string NameCanNotBeNullOrEmpty = "Name can not be null or empty string!";
         public const string RatingNotInRange = "Value for raiting must be between 0 and 5.";
+        public const string UserNotFromLogbook = "User is not manager of logbook.";
     }
 }

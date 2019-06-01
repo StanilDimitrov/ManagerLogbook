@@ -18,6 +18,8 @@ namespace ManagerLogbook.Data
 
         public DbSet<CensoredWord> CensoredWords { get; set; }
 
+        public DbSet<Town> Towns { get; set; }
+
         public DbSet<Logbook> Logbooks { get; set; }
 
         public DbSet<Note> Notes { get; set; }

@@ -34,10 +34,6 @@ namespace ManagerLogbook.Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<double>("Latitude");
-
-                    b.Property<double>("Longitude");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50);
@@ -47,9 +43,13 @@ namespace ManagerLogbook.Data.Migrations
 
                     b.Property<string>("Picture");
 
+                    b.Property<int>("TownId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BusinessUnitCategoryId");
+
+                    b.HasIndex("TownId");
 
                     b.ToTable("BusinessUnits");
                 });
@@ -67,6 +67,23 @@ namespace ManagerLogbook.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BusinessUnitCategories");
+                });
+
+            modelBuilder.Entity("ManagerLogbook.Data.Models.CensoredWord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BusinessUnitId");
+
+                    b.Property<string>("Word");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BusinessUnitId");
+
+                    b.ToTable("CensoredWords");
                 });
 
             modelBuilder.Entity("ManagerLogbook.Data.Models.Logbook", b =>
@@ -163,6 +180,19 @@ namespace ManagerLogbook.Data.Migrations
                     b.HasIndex("BusinessUnitId");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("ManagerLogbook.Data.Models.Town", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Towns");
                 });
 
             modelBuilder.Entity("ManagerLogbook.Data.Models.User", b =>
@@ -352,6 +382,19 @@ namespace ManagerLogbook.Data.Migrations
                     b.HasOne("ManagerLogbook.Data.Models.BusinessUnitCategory", "BusinessUnitCategory")
                         .WithMany("BusinessUnits")
                         .HasForeignKey("BusinessUnitCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ManagerLogbook.Data.Models.Town", "Town")
+                        .WithMany("BusinessUnits")
+                        .HasForeignKey("TownId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ManagerLogbook.Data.Models.CensoredWord", b =>
+                {
+                    b.HasOne("ManagerLogbook.Data.Models.BusinessUnit", "BusinessUnit")
+                        .WithMany("CensoredWords")
+                        .HasForeignKey("BusinessUnitId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

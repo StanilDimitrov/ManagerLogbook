@@ -37,7 +37,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.User.GetId();
-                var user = await this.userService.GetUserById(userId);
+                var user = await this.userService.GetUserByIdAsync(userId);
 
                 if (user == null)
                 {
@@ -70,7 +70,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.User.GetId();
-                var user = await this.userService.GetUserById(userId);
+                var user = await this.userService.GetUserByIdAsync(userId);
 
                 if (user == null)
                 {
@@ -102,7 +102,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.User.GetId();
-                var user = await this.userService.GetUserById(userId);
+                var user = await this.userService.GetUserByIdAsync(userId);
 
                 if (user == null)
                 {
@@ -155,7 +155,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 }
 
                 var userId = this.User.GetId();
-                var user = await this.userService.GetUserById(userId);
+                var user = await this.userService.GetUserByIdAsync(userId);
 
                 if (user == null)
                 {
@@ -314,7 +314,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         public async Task<IActionResult> Search(NoteViewModel model, string searchCriteria)
         {
             var userId = this.User.GetId();
-            var user = await this.userService.GetUserById(userId);
+            var user = await this.userService.GetUserByIdAsync(userId);
 
             if (user == null)
             {

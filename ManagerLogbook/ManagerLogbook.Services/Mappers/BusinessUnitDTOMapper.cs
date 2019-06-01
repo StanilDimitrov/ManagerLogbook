@@ -16,8 +16,6 @@ namespace ManagerLogbook.Services.Mappers
             {
                 Id = entity.Id,
                 Address = entity.Address,
-                Latitude = entity.Latitude,
-                Longitude = entity.Longitude,
                 PhoneNumber = entity.PhoneNumber,
                 BrandName = entity.Name,
                 Email = entity.Email,

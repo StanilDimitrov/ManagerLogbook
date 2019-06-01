@@ -14,8 +14,9 @@ namespace ManagerLogbook.Services.Mappers
 
             var user =  new UserDTO()
             {
+                Id = entity.Id,
                 Picture = entity.Picture,
-                BusinessUnitName = entity.BusinessUnit.Name,
+                BusinessUnitName = entity.BusinessUnit?.Name,
                 UserName = entity.UserName,
                 Email = entity.Email,
                 CurrentLogbookId = entity.CurrentLogbookId

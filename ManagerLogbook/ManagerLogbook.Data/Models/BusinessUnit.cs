@@ -23,11 +23,10 @@ namespace ManagerLogbook.Data.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        public double Latitude { get; set; }
-
-        public double Longitude { get; set; }
-
         public string Picture { get; set; }
+
+        public int TownId { get; set; }
+        public Town Town { get; set; }
 
         public int BusinessUnitCategoryId { get; set; }
         public BusinessUnitCategory BusinessUnitCategory { get; set; }

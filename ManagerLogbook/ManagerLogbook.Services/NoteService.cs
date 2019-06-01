@@ -159,7 +159,7 @@ namespace ManagerLogbook.Services
                            .Include(mt => mt.NoteCategory)
                            .Include(mt => mt.User)
                                .ThenInclude(lb => lb.UsersLogbooks)
-                           .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn.Day >= (DateTime.Now.Day - days))
+                           .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn.Date >= DateTime.Now.Date.AddDays(-days))
                            .OrderByDescending(x => x.CreatedOn)
                            .Select(x => x.ToDTO())
                            .ToListAsync();
@@ -233,6 +233,17 @@ namespace ManagerLogbook.Services
 
             return result;
         }
+
+        public async Task<IReadOnlyCollection<NoteGategoryDTO>> ShowAllNoteCategoriesAsync()
+
+        {
+
+           var result = await this.context.NoteCategories
+                                          .Select(x => x.ToDTO())
+                                          .ToListAsync();
+           return result;
+        }
+
     }
 }
 

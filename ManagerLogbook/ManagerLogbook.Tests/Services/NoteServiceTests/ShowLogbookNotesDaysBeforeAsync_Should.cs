@@ -55,7 +55,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
                                         
-                var notesDTO = await sut.ShowLogbookNotesForDaysBeforeAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id,4);
+                var notesDTO = await sut.ShowLogbookNotesForDaysBeforeAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id,3);
 
                 Assert.AreEqual(notesDTO.Count, 2);
             }

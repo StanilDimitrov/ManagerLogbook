@@ -49,6 +49,19 @@ namespace ManagerLogbook.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Towns",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Towns", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -79,9 +92,8 @@ namespace ManagerLogbook.Data.Migrations
                     Address = table.Column<string>(maxLength: 200, nullable: false),
                     PhoneNumber = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    Latitude = table.Column<double>(nullable: false),
-                    Longitude = table.Column<double>(nullable: false),
                     Picture = table.Column<string>(nullable: true),
+                    TownId = table.Column<int>(nullable: false),
                     BusinessUnitCategoryId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -91,6 +103,12 @@ namespace ManagerLogbook.Data.Migrations
                         name: "FK_BusinessUnits_BusinessUnitCategories_BusinessUnitCategoryId",
                         column: x => x.BusinessUnitCategoryId,
                         principalTable: "BusinessUnitCategories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BusinessUnits_Towns_TownId",
+                        column: x => x.TownId,
+                        principalTable: "Towns",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -127,6 +145,26 @@ namespace ManagerLogbook.Data.Migrations
                         principalTable: "BusinessUnits",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CensoredWords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Word = table.Column<string>(nullable: true),
+                    BusinessUnitId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CensoredWords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CensoredWords_BusinessUnits_BusinessUnitId",
+                        column: x => x.BusinessUnitId,
+                        principalTable: "BusinessUnits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -370,6 +408,16 @@ namespace ManagerLogbook.Data.Migrations
                 column: "BusinessUnitCategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BusinessUnits_TownId",
+                table: "BusinessUnits",
+                column: "TownId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CensoredWords_BusinessUnitId",
+                table: "CensoredWords",
+                column: "BusinessUnitId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Logbooks_BusinessUnitId",
                 table: "Logbooks",
                 column: "BusinessUnitId");
@@ -418,6 +466,9 @@ namespace ManagerLogbook.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CensoredWords");
+
+            migrationBuilder.DropTable(
                 name: "Notes");
 
             migrationBuilder.DropTable(
@@ -443,6 +494,9 @@ namespace ManagerLogbook.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "BusinessUnitCategories");
+
+            migrationBuilder.DropTable(
+                name: "Towns");
         }
     }
 }
