@@ -51,6 +51,7 @@ namespace ManagerLogbook.Web
             services.AddScoped<IReviewEditor, ReviewEditor>();
             services.AddScoped<ILogbookService, LogbookService>();
             services.AddScoped<IImageOptimizer, ImageOptimizer>();
+            services.AddMemoryCache();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -70,6 +71,7 @@ namespace ManagerLogbook.Web
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+          
 
             app.UseMvc(routes =>
             {

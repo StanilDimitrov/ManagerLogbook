@@ -234,7 +234,7 @@ namespace ManagerLogbook.Services
             return result;
         }
 
-        public async Task<IReadOnlyCollection<NoteGategoryDTO>> ShowAllNoteCategoriesAsync()
+        public async Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync()
 
         {
 

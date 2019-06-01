@@ -12,13 +12,13 @@
 
         public string Email { get; set; }
 
-        public double Latitude { get; set; }
-
-        public double Longitude { get; set; }
+        public string Information { get; set; }
 
         public string Picture { get; set; }
 
         public string BusinessUnitCategoryName { get; set; }
+
+        public string BusinessUnitTownName { get; set; }
 
     }
 }

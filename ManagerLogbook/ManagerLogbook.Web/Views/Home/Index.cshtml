@@ -1,44 +1,23 @@
-﻿@{
+﻿@model HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-
-@*<section class="clearfix homeBanner" style="background-image: url(/assets/img/banner/banner1.jpg);">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="banerInfo">
-                        <h1>Explore. Discover. Share</h1>
-                        <p>Listty helps to find out great things arround you</p>
-                        <form class="form-inline" action="listings-half-screen-map-list.html">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon">Find</div>
-                                    <input type="text" class="form-control" id="findItem" placeholder="What are you looking for?">
-                                    <div class="input-group-addon addon-right"></div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-addon">Near</div>
-                                    <input type="text" class="form-control" id="nearLocation" placeholder="Location">
-                                    <div class="input-group-addon addon-right"><i class="icon-listy icon-target" aria-hidden="true"></i></div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Search <i class="fa fa-search" aria-hidden="true"></i></button>
-                        </form>
-                    </div>
+<!-- BANNER SECTION -->
+<section class="clearfix homeBanner" style="background-image: url(assets/img/banner/banner1.jpg); margin-bottom:0% ">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="banerInfo">
+                    <h1>Explore. Discover. Share</h1>
+                    <p>We help you to find out great things arround you</p>
                 </div>
             </div>
         </div>
-    </section>*@
-
-<!-- MAP SECTION -->
-<section class="clearfix p0">
-    <div id="map-canvas"></div>
+    </div>
 </section>
-
-<section class="clearfix bg-light">
+<section style="">
     <div class="container">
         <div class="row">
             <div class="col-xs-12 ">
@@ -50,7 +29,7 @@
                         <div class="form-group">
                             <div class="searchSelectbox">
                                 <select name="guiest_id3" id="guiest_id3" class="select-drop">
-                                    <option value="0">All Location</option>
+                                    <option value="0">City</option>
                                     <option value="1">U.S.A</option>
                                     <option value="2">U.K</option>
                                     <option value="3">ASIA</option>
@@ -60,7 +39,7 @@
                         <div class="form-group">
                             <div class="searchSelectbox">
                                 <select name="guiest_id4" id="guiest_id4" class="select-drop">
-                                    <option value="0">All Categories</option>
+                                    <option value="0">Category</option>
                                     <option value="1">All Categories 1</option>
                                     <option value="2">All Categories 2</option>
                                     <option value="3">All Categories 3</option>
@@ -75,232 +54,38 @@
             </div>
         </div>
     </div>
+    @*</section>**@
+
+    @await Html.PartialAsync("_BusinessUnitsPartial", Model)
 </section>
 
-
-<!-- THINGS SECTION -->
-<section class="clearfix thingsArea">
-    <div class="container">
-        <div class="page-header text-center">
-            <h2>Our services</h2>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div id="thubmnailSlider" class="carousel slide thumbnailCarousel">
-
-                    <ol class="carousel-indicators">
-                        <li data-target="#thubmnailSlider" data-slide-to="0" class="active"></li>
-                        <li data-target="#thubmnailSlider" data-slide-to="1"></li>
-                        <li data-target="#thubmnailSlider" data-slide-to="2"></li>
-                        <li data-target="#thubmnailSlider" data-slide-to="3"></li>
-                        <li data-target="#thubmnailSlider" data-slide-to="4"></li>
-                        <li data-target="#thubmnailSlider" data-slide-to="5"></li>
-                        <li data-target="#thubmnailSlider" data-slide-to="6"></li>
-                        <li data-target="#thubmnailSlider" data-slide-to="7"></li>
-                    </ol>
-
-                    <!-- Carousel items -->
-                    <div class="carousel-inner">
-                        <div class="item row active">
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="thingsBox">
-                                    <div class="thingsImage">
-                                        <img src="assets/img/listing/listing-4.jpg" alt="Image things">
-                                        <div class="thingsMask">
-                                            <ul class="list-inline rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            </ul>
-                                            <a href="listing-details-right.html"><h2>Think Coffee <i class="fa fa-check-circle" aria-hidden="true"></i></h2></a>
-                                            <p>215 Terry Lane, New York</p>
-                                        </div>
-                                    </div>
-                                    <div class="thingsCaption ">
-                                        <ul class="list-inline captionItem">
-                                            <li><i class="fa fa-heart-o" aria-hidden="true"></i> 8 k</li>
-                                            <li><a href="listings-half-screen-map-list.html">Eat & Drink</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="item row">
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="thingsBox">
-                                    <div class="thingsImage">
-                                        <img src="assets/img/listing/listing-5.jpg" alt="Image things">
-                                        <div class="thingsMask">
-                                            <ul class="list-inline rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star-o" aria-hidden="true"></i></li>
-                                            </ul>
-                                            <a href="listing-details-right.html"><h2>Burger House</h2></a>
-                                            <p>2726 Shinn Street, New York</p>
-                                        </div>
-                                    </div>
-                                    <div class="thingsCaption ">
-                                        <ul class="list-inline captionItem">
-                                            <li><i class="fa fa-heart-o" aria-hidden="true"></i> 9.2 k</li>
-                                            <li><a href="listings-half-screen-map-list.html">Eat & Drink</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="item row">
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="thingsBox">
-                                    <div class="thingsImage">
-                                        <img src="assets/img/listing/listing-8.jpg" alt="Image things">
-                                        <div class="thingsMask">
-                                            <ul class="list-inline rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            </ul>
-                                            <a href="listing-details-right.html"><h2>Hotel Govendor <i class="fa fa-check-circle" aria-hidden="true"></i></h2></a>
-                                            <p>778 Country Street, New York</p>
-                                        </div>
-                                    </div>
-                                    <div class="thingsCaption ">
-                                        <ul class="list-inline captionItem">
-                                            <li><i class="fa fa-heart-o" aria-hidden="true"></i> 5k</li>
-                                            <li><a href="listings-half-screen-map-list.html">Hotels</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="item row">
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="thingsBox">
-                                    <div class="thingsImage">
-                                        <img src="assets/img/listing/listing-10.jpg" alt="Image things">
-                                        <div class="thingsMask">
-                                            <ul class="list-inline rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            </ul>
-                                            <a href="listing-details-right.html"><h2>Water Grill</h2></a>
-                                            <p>31 Union Square, New York</p>
-                                        </div>
-                                    </div>
-                                    <div class="thingsCaption ">
-                                        <ul class="list-inline captionItem">
-                                            <li><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</li>
-                                            <li><a href="listings-half-screen-map-list.html"> Eat & Drink</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item row">
-                            <div class="col-md-4 col-sm-6 col-xs-12">
-                                <div class="thingsBox ">
-                                    <div class="thingsImage">
-                                        <img src="assets/img/listing/listing-11.jpg" alt="Image things">
-                                        <div class="thingsMask">
-                                            <ul class="list-inline rating">
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                                <li><i class="fa fa-star" aria-hidden="true"></i></li>
-                                            </ul>
-                                            <a href="listing-details-right.html"><h2>John F. Kennedy Airport <i class="fa fa-check-circle" aria-hidden="true"></i></h2></a>
-                                            <p>Queens, NY 11430, new York</p>
-                                        </div>
-                                    </div>
-                                    <div class="thingsCaption ">
-                                        <ul class="list-inline captionItem">
-                                            <li><i class="fa fa-heart-o" aria-hidden="true"></i> 15 k</li>
-                                            <li><a href="listings-half-screen-map-list.html">Others</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <a class="left carousel-control" href="#thubmnailSlider" data-slide="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
-                    <a class="right carousel-control" href="#thubmnailSlider" data-slide="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- COUNT UP SECTION -->
 <section class="clearfix countUpSection">
-    <div class="container">
-        <div class="page-header text-center">
-            <h2>Why Listty?</h2>
-        </div>
+    <div class="container text-block-center">
         <div class="row">
             <div class="col-sm-3 col-xs-12">
                 <div class="text-center countItem">
-                    <div class="counter">140</div>
+                    <div class="counter">@*@Model.CitiesCount*@</div>
                     <div class="counterInfo bg-color-1">Cities</div>
                 </div>
             </div>
             <div class="col-sm-3 col-xs-12">
                 <div class="text-center countItem">
-                    <div class="counter">120</div>
-                    <div class="counterInfo bg-color-2">Restaurants</div>
-                </div>
-            </div>
-            <div class="col-sm-3 col-xs-12">
-                <div class="text-center countItem">
-                    <div class="counter">180</div>
+                    <div class="counter">@*@Model.HotelsCount*@</div>
                     <div class="counterInfo bg-color-3">Hotels</div>
                 </div>
             </div>
             <div class="col-sm-3 col-xs-12">
                 <div class="text-center countItem">
-                    <div class="counter">220</div>
-                    <div class="counterInfo bg-color-4">Retail Services</div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="btnArea text-center">
-                    <a href="#" class="btn btn-primary">Get it now</a>
+                    <div class="counter">@*@Model.RestaurantsCount*@</div>
+                    <div class="counterInfo bg-color-2">Restaurants</div>
                 </div>
             </div>
         </div>
     </div>
+    
 </section>
 
-<!-- CALL TO ACTION SECTION -->
-<section class="clearfix callAction">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-sm-9 col-xs-12">
-                <div class="callInfo">
-                    <h4><span>Listty</span> is the <span>best way</span> <br>to find great local business</h4>
-                </div>
-            </div>
-            <div class="col-md-2 col-sm-3 col-xs-12">
-                <div class="btnArea">
-                    <a href="sign-up.html" class="btn btn-primary btn-block">Get Started</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
+
 
 

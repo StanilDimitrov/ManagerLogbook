@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Web.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IBusinessUnitService businessUnitService;
+
+        public HomeController(IBusinessUnitService businessUnitService)
         {
-            return View();
+            this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
+            var businessUnitsDTO = await this.businessUnitService.GetAllBusinessUnitsByCategoryIdAsync(1);
+            //var businessUnitViewModel = businessUnitsDTO.Select(x => x.MapFrom()).ToList();
 
             return View();
         }

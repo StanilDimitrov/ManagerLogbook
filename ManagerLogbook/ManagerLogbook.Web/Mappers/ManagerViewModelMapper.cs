@@ -11,11 +11,7 @@ namespace ManagerLogbook.Web.Mappers
     {
         public static ManagerViewModel MapFrom(this UserDTO dto)
         {
-            if (dto is null)
-            {
-                return null;
-            }
-
+         
             return new ManagerViewModel()
             {
                 CurrentLogbookId = dto.CurrentLogbookId,

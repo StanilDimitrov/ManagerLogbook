@@ -7,11 +7,6 @@ namespace ManagerLogbook.Web.Mappers
     {
         public static ReviewViewModel ToDTO(this ReviewDTO dto)
         {
-            if (dto is null)
-            {
-                return null;
-            }
-
             return new ReviewViewModel()
             {
                 OriginalDescription = dto.OriginalDescription,

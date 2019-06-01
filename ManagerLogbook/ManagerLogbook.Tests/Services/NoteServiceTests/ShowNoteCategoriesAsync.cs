@@ -31,7 +31,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
-                var noteCategoriesDTO = await sut.ShowAllNoteCategoriesAsync();
+                var noteCategoriesDTO = await sut.GetNoteCategoriesAsync();
                 Assert.AreEqual(noteCategoriesDTO.Count, 2);
             }
         }

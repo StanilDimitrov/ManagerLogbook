@@ -31,7 +31,7 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesAsync(string userId, int logbookId);
 
-        Task<IReadOnlyCollection<NoteGategoryDTO>> ShowAllNoteCategoriesAsync();
+        Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync();
 
     }
 }

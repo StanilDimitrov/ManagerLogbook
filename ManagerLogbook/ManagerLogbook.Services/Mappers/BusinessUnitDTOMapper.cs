@@ -20,7 +20,9 @@ namespace ManagerLogbook.Services.Mappers
                 BrandName = entity.Name,
                 Email = entity.Email,
                 Picture = entity.Picture,
-                BusinessUnitCategoryName = entity.BusinessUnitCategory.Name
+                Information = entity.Information,
+                BusinessUnitCategoryName = entity.BusinessUnitCategory.Name,
+                BusinessUnitTownName = entity.Town.Name
             };
         }
     }

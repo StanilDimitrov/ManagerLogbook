@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Areas.Manager.Models;
 using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Mappers;
@@ -10,6 +11,8 @@ using ManagerLogbook.Web.Services.Contracts;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace ManagerLogbook.Web.Areas.Manager.Controllers
 {
@@ -20,13 +23,15 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly IImageOptimizer optimizer;
         private readonly INoteService noteService;
         private readonly IUserService userService;
+        private readonly IMemoryCache cache;
 
         public NotesController(IImageOptimizer optimizer, INoteService noteService,
-                              IUserService userService)
+                              IUserService userService, IMemoryCache cache)
         {
             this.optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
             this.noteService = noteService ?? throw new ArgumentNullException(nameof(noteService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
         [TempData] public string StatusMessage { get; set; }
@@ -296,12 +301,12 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
                 if (noteDTO.IsActiveTask)
                 {
-                    return RedirectToAction("Dashboard");
+                    return RedirectToAction("Index");
                     //return BadRequest(string.Format(WebConstants.UnableToDisableStatusNote));
                 }
 
                 //return Ok(string.Format(WebConstants.SuccessfullyDeactivateActiveStatus));
-                return RedirectToAction("Dashboard");
+                return RedirectToAction("Index");
             }
 
             catch (ArgumentException ex)
@@ -333,5 +338,50 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             return View(noteViewModel);
         }
 
+        private async Task<NoteViewModel> CreateDropdown(NoteViewModel model)
+        {
+            var cashedCategories = await CacheCategories();
+           
+            model.Categories = cashedCategories.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+           
+            return model;
+        }
+
+        private async Task<NoteViewModel> EditDropdown(NoteViewModel model)
+        {
+
+            var cashedCategories = await CacheCategories();
+            
+            List<SelectListItem> selectCategories = new List<SelectListItem>();
+
+            foreach (var category in cashedCategories)
+            {
+                if (category.Name == model.CategoryName)
+                {
+                    selectCategories.Add(new SelectListItem(category.Name, category.Id.ToString(), true));
+                }
+                else
+                {
+                    selectCategories.Add(new SelectListItem(category.Name, category.Id.ToString()));
+                }
+            }
+
+            model.Categories = selectCategories;
+            
+            return model;
+        }
+
+        private async Task<IReadOnlyCollection<NoteGategoryDTO>> CacheCategories()
+        {
+            var cashedCategories = await cache.GetOrCreateAsync<IReadOnlyCollection<NoteGategoryDTO>>("Categories", async (cacheEntry) =>
+            {
+                cacheEntry.SlidingExpiration = TimeSpan.FromDays(1);
+                return await this.noteService.GetNoteCategoriesAsync();
+            });
+
+            return cashedCategories;
+        }
+
+        
     }
 }

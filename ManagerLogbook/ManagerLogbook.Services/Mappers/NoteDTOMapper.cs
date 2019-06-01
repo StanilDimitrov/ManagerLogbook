@@ -21,6 +21,7 @@ namespace ManagerLogbook.Services.Mappers
                 CreatedOn = entity.CreatedOn,
                 UserName = entity.User.UserName,
                 UserId = entity.UserId,
+                CategoryId = entity.NoteCategoryId,
                 NoteCategoryName = entity.NoteCategory?.Name
             };
 

@@ -7,11 +7,6 @@ namespace ManagerLogbook.Web.Mappers
     {
         public static LogbookViewModel MapFrom(this LogbookDTO dto)
         {
-            if (dto is null)
-            {
-                return null;
-            }
-
             return new LogbookViewModel()
             {
                 Id = dto.Id,

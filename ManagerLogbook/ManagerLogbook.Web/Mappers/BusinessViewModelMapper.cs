@@ -7,22 +7,19 @@ namespace ManagerLogbook.Web.Mappers
     {
         public static BusinessUnitViewModel MapFrom(this BusinessUnitDTO dto)
         {
-            if (dto is null)
-            {
-                return null;
-            }
-
             return new BusinessUnitViewModel()
             {
                 Id = dto.Id,
-                BrandName = dto.BrandName,
+                Name = dto.BrandName,
                 Address = dto.Address,
                 PhoneNumber = dto.PhoneNumber,
                 Email = dto.Email,
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                BusinessUnitCategoryName = dto.BusinessUnitCategoryName
+                Information = dto.Information,
+                BusinessUnitCategoryName = dto.BusinessUnitCategoryName,
+                BusinessUnitTownName = dto.BusinessUnitTownName
             };
         }
+
+        
     }
 }

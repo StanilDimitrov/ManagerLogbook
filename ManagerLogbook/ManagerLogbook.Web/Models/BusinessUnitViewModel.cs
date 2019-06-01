@@ -8,7 +8,10 @@ namespace ManagerLogbook.Web.Models
 
         [Required]
         [MaxLength(50)]
-        public string BrandName { get; set; }
+        public string Name { get; set; }
+
+        [MaxLength(500)]
+        public string Information { get; set; }
 
         [Required]
         [MaxLength(200)]
@@ -22,12 +25,10 @@ namespace ManagerLogbook.Web.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        public double Latitude { get; set; }
-
-        public double Longitude { get; set; }
-
         public string Picture { get; set; }
 
         public string BusinessUnitCategoryName { get; set; }
+
+        public string BusinessUnitTownName { get; set; }
     }
 }
