@@ -23,6 +23,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
             {
                 await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit01());
                 await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
+                await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
 
                 await arrangeContext.SaveChangesAsync();
             }
@@ -33,9 +34,9 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnit = await sut.AddBusinessUnitCategoryToBusinessUnitAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
+                var businessUnitDTO = await sut.AddBusinessUnitCategoryToBusinessUnitAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
 
-                Assert.AreEqual(businessUnit.BusinessUnitCategoryId, 1);
+                Assert.AreEqual(businessUnitDTO.Id, 1);
             }
         }
     }

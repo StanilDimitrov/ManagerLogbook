@@ -19,23 +19,31 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
         {
             var options = TestUtils.GetOptions(nameof(Succeed_ReturnCreateBusinessUnit));
 
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
+                await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
+
+                await arrangeContext.SaveChangesAsync();
+            }
+
             using (var assertContext = new ManagerLogbookContext(options))
             {
                 var mockBusinessValidator = new Mock<IBusinessValidator>();
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnit = await sut.CreateBusinnesUnitAsync("Hilton", "Cerni Vryh 15", "0123456789", "info@hilton.com");
-
+                var businessUnitDTO = await sut.CreateBusinnesUnitAsync("Hilton", "Cerni Vryh 15", "0123456789", "info@hilton.com","Information for BU",1,1);
+                                
                 mockBusinessValidator.Verify(x => x.IsNameInRange("Hilton"), Times.Exactly(1));
                 mockBusinessValidator.Verify(x => x.IsAddressInRange("Cerni Vryh 15"), Times.Exactly(1));
                 mockBusinessValidator.Verify(x => x.IsPhoneNumberValid("0123456789"), Times.Exactly(1));
                 mockBusinessValidator.Verify(x => x.IsEmailValid("info@hilton.com"), Times.Exactly(1));
 
-                Assert.AreEqual(businessUnit.Name, "Hilton");
-                Assert.AreEqual(businessUnit.Address, "Cerni Vryh 15");
-                Assert.AreEqual(businessUnit.PhoneNumber, "0123456789");
-                Assert.AreEqual(businessUnit.Email, "info@hilton.com");
+                Assert.AreEqual(businessUnitDTO.BrandName, "Hilton");
+                Assert.AreEqual(businessUnitDTO.Address, "Cerni Vryh 15");
+                Assert.AreEqual(businessUnitDTO.PhoneNumber, "0123456789");
+                Assert.AreEqual(businessUnitDTO.Email, "info@hilton.com");
             }
         }
     }
