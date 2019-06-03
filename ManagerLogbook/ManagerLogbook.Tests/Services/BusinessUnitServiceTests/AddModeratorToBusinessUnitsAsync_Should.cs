@@ -12,19 +12,19 @@ using System.Threading.Tasks;
 namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 {
     [TestClass]
-    public class GetAllBusinessUnitsByCategoryIdAsync_Should
+    public class AddModeratorToBusinessUnitsAsync_Should
     {
         [TestMethod]
-        public async Task Should_GetAllBusinessUnitsByBusinessUnitCategoryAsync()
+        public async Task Should_AddModeratorToBusinessUnitsAsync()
         {
-            var options = TestUtils.GetOptions(nameof(Should_GetAllBusinessUnitsByBusinessUnitCategoryAsync));
+            var options = TestUtils.GetOptions(nameof(Should_AddModeratorToBusinessUnitsAsync));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
                 await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit01());
-                await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit02());
                 await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
                 await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
+                await arrangeContext.Users.AddAsync(TestHelperBusinessUnit.TestUser01());
 
                 await arrangeContext.SaveChangesAsync();
             }
@@ -35,9 +35,11 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnits = await sut.GetAllBusinessUnitsByCategoryIdAsync(1);
+                var businessUnitDTO = await sut.AddModeratorToBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id ,TestHelperBusinessUnit.TestBusinessUnit01().Id);
 
-                Assert.AreEqual(businessUnits.Count, 2);
+                var moderatorUser = await assertContext.Users.FindAsync(TestHelperBusinessUnit.TestUser01().Id);
+
+                Assert.AreEqual(moderatorUser.BusinessUnitId, TestHelperBusinessUnit.TestBusinessUnit01().Id);
             }
         }
     }

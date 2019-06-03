@@ -34,8 +34,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
                 var businessUnit = await sut.AddLogbookToBusinessUnitAsync(TestHelperBusinessUnit.TestBusinessUnit01().Id, TestHelperBusinessUnit.TestLogbook01().Id);
-
-
+                
                 Assert.AreEqual(businessUnit.Logbooks.Count, 1);
             }
         }

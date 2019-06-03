@@ -1,11 +1,12 @@
 ﻿using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.DTOs;
+using System.Linq;
 
 namespace ManagerLogbook.Services.Mappers
 {
-    public static class BusinessUnitDTOMapper 
+    public static class BusinessUnitDTOMapper
     {
-        public  static BusinessUnitDTO ToDTO(this BusinessUnit entity)
+        public static BusinessUnitDTO ToDTO(this BusinessUnit entity)
         {
             if (entity is null)
             {
@@ -22,7 +23,7 @@ namespace ManagerLogbook.Services.Mappers
                 Picture = entity.Picture,
                 Information = entity.Information,
                 BusinessUnitCategoryName = entity.BusinessUnitCategory.Name,
-                BusinessUnitTownName = entity.Town.Name
+                BusinessUnitTownName = entity.Town.Name                
             };
         }
     }

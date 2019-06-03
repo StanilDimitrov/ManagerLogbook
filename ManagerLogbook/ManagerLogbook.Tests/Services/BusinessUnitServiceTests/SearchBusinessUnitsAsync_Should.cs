@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 {
     [TestClass]
-    public class GetAllBusinessUnitsByCategoryIdAsync_Should
+    public class SearchBusinessUnitsAsync_Should
     {
         [TestMethod]
-        public async Task Should_GetAllBusinessUnitsByBusinessUnitCategoryAsync()
+        public async Task Should_SearchBusinessUnitsAsync()
         {
-            var options = TestUtils.GetOptions(nameof(Should_GetAllBusinessUnitsByBusinessUnitCategoryAsync));
+            var options = TestUtils.GetOptions(nameof(Should_SearchBusinessUnitsAsync));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
@@ -25,6 +25,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
                 await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit02());
                 await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
                 await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
+
 
                 await arrangeContext.SaveChangesAsync();
             }
@@ -35,9 +36,9 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnits = await sut.GetAllBusinessUnitsByCategoryIdAsync(1);
+                var businessUnits = await sut.SearchBusinessUnitsAsync("Kempinski",1,1);
 
-                Assert.AreEqual(businessUnits.Count, 2);
+                Assert.AreEqual(businessUnits.Count, 1);
             }
         }
     }

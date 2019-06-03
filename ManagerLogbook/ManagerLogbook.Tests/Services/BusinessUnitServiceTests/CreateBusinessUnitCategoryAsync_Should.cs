@@ -24,11 +24,11 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnitCategory = await sut.CreateBusinessUnitCategoryAsync("Restaurant");
+                var businessUnitCategoryDTO = await sut.CreateBusinessUnitCategoryAsync("Restaurant");
 
                 mockBusinessValidator.Verify(x => x.IsNameInRange("Restaurant"), Times.Exactly(1));
                 
-                Assert.AreEqual(businessUnitCategory.Name, "Restaurant");                
+                Assert.AreEqual(businessUnitCategoryDTO.CategoryName, "Restaurant");                
             }
         }
     }

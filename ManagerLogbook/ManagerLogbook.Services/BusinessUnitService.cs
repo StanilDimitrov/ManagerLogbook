@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using ManagerLogbook.Services.DTOs;
+using ManagerLogbook.Services.Mappers;
 
 namespace ManagerLogbook.Services
 {
@@ -22,29 +24,42 @@ namespace ManagerLogbook.Services
             this.businessValidator = businessValidator ?? throw new ArgumentNullException(nameof(businessValidator));
         }
 
-        public async Task<BusinessUnit> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email)
+        public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string information, int businessUnitCategoryId, int townId)
         {
             businessValidator.IsNameInRange(brandName);
             businessValidator.IsAddressInRange(address);
             businessValidator.IsEmailValid(email);
             businessValidator.IsPhoneNumberValid(phoneNumber);
+            businessValidator.IsDescriptionInRange(information);
 
-            var businessUnit = new BusinessUnit() { Name = brandName, Address = address, PhoneNumber = phoneNumber, Email = email };
+            var businessUnit = new BusinessUnit() { Name = brandName, Address = address, PhoneNumber = phoneNumber, Email = email, Information = information, BusinessUnitCategoryId = businessUnitCategoryId, TownId = townId };
 
             this.context.BusinessUnits.Add(businessUnit);
             await this.context.SaveChangesAsync();
 
-            return businessUnit;
+            var result = await this.context.BusinessUnits
+                                           .Include(buc => buc.BusinessUnitCategory)
+                                           .Include(t => t.Town)
+                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
+
+            return result.ToDTO();
         }
 
-        public async Task<BusinessUnit> GetBusinessUnitById(int businessUnitId)
+        public async Task<BusinessUnitDTO> GetBusinessUnitById(int businessUnitId)
         {
-            return await this.context.BusinessUnits.FindAsync(businessUnitId);
+            var result = await this.context.BusinessUnits
+                                           .Include(buc => buc.BusinessUnitCategory)
+                                           .Include(t => t.Town)
+                                           .FirstOrDefaultAsync(x => x.Id == businessUnitId);
+
+            return result.ToDTO();
 
         }
 
-        public async Task<BusinessUnit> UpdateBusinessUnitAsync(BusinessUnit businessUnit, string brandName, string address, string phoneNumber, string email, string picture)
+        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, string picture)
         {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
             if (brandName != null)
             {
                 businessValidator.IsNameInRange(brandName);
@@ -73,6 +88,13 @@ namespace ManagerLogbook.Services
 
             businessUnit.Email = email;
 
+            if (information != null)
+            {
+                businessValidator.IsDescriptionInRange(information);
+            }
+
+            businessUnit.Information = information;
+
             if (picture != null)
             {
                 businessUnit.Picture = picture;
@@ -80,7 +102,12 @@ namespace ManagerLogbook.Services
 
             await this.context.SaveChangesAsync();
 
-            return businessUnit;
+            var result = await this.context.BusinessUnits
+                                           .Include(buc => buc.BusinessUnitCategory)
+                                           .Include(t => t.Town)
+                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
+
+            return result.ToDTO();
         }
 
         public async Task<BusinessUnit> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId)
@@ -95,16 +122,20 @@ namespace ManagerLogbook.Services
             return businessUnit;
         }
 
-        public async Task<IReadOnlyCollection<Logbook>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId)
+        public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId)
         {
-            var logbooks = await this.context.Logbooks
+            var logbooksDTO = await this.context.Logbooks
+                         .Include(n => n.Notes)
+                         .Include(bu => bu.BusinessUnit)
+                         .ThenInclude(t => t.Town)
                          .Where(bu => bu.BusinessUnitId == businessUnitId)
+                         .Select(x => x.ToDTO())
                          .ToListAsync();
 
-            return logbooks;
+            return logbooksDTO;
         }
 
-        public async Task<BusinessUnitCategory> CreateBusinessUnitCategoryAsync(string businessUnitCategoryName)
+        public async Task<BusinessUnitCategoryDTO> CreateBusinessUnitCategoryAsync(string businessUnitCategoryName)
         {
             businessValidator.IsNameInRange(businessUnitCategoryName);
 
@@ -112,10 +143,10 @@ namespace ManagerLogbook.Services
 
             await this.context.SaveChangesAsync();
 
-            return businessUnitCategory;
+            return businessUnitCategory.ToDTO();
         }
 
-        public async Task<BusinessUnitCategory> UpdateBusinessUnitCategoryAsync(int businessUnitCategoryId, string newBusinessUnitCategoryName)
+        public async Task<BusinessUnitCategoryDTO> UpdateBusinessUnitCategoryAsync(int businessUnitCategoryId, string newBusinessUnitCategoryName)
         {
             businessValidator.IsNameInRange(newBusinessUnitCategoryName);
 
@@ -125,10 +156,10 @@ namespace ManagerLogbook.Services
 
             await this.context.SaveChangesAsync();
 
-            return businessUnitCategory;
+            return businessUnitCategory.ToDTO();
         }
 
-        public async Task<BusinessUnit> AddBusinessUnitCategoryToBusinessUnitAsync(int businessUnitCategoryId, int businessUnitId)
+        public async Task<BusinessUnitDTO> AddBusinessUnitCategoryToBusinessUnitAsync(int businessUnitCategoryId, int businessUnitId)
         {
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
 
@@ -136,25 +167,87 @@ namespace ManagerLogbook.Services
 
             await this.context.SaveChangesAsync();
 
-            return businessUnit;
+            var result = await this.context.BusinessUnits
+                                           .Include(buc => buc.BusinessUnitCategory)
+                                           .Include(t => t.Town)
+                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
+
+            return result.ToDTO();
         }
 
-        public async Task<BusinessUnitCategory> GetBusinessUnitCategoryByIdAsync(int businessUnitCategoryId)
+        public async Task<BusinessUnitCategoryDTO> GetBusinessUnitCategoryByIdAsync(int businessUnitCategoryId)
         {
-            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);                      
+            var businessUnitCategoryDTO = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
 
             await this.context.SaveChangesAsync();
 
-            return businessUnitCategory;
+            return businessUnitCategoryDTO.ToDTO();
         }
 
-        public async Task<IReadOnlyCollection<BusinessUnit>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
+        public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
         {
-            var businessUnits = await this.context.BusinessUnits
+            var businessUnitsDTO = await this.context.BusinessUnits
+                         .Include(buc => buc.BusinessUnitCategory)
+                         .Include(t => t.Town)
                          .Where(bc => bc.BusinessUnitCategoryId == businessUnitCategoryId)
+                         .Select(bu => bu.ToDTO())
                          .ToListAsync();
 
-            return businessUnits;
+            return businessUnitsDTO;
         }
+
+        public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsAsync()
+        {
+            var businessUnitsDTO = await this.context.BusinessUnits
+                         .Include(buc => buc.BusinessUnitCategory)
+                         .Include(t => t.Town)
+                         .OrderByDescending(id => id.Id)
+                         .Select(x => x.ToDTO())
+                         .ToListAsync();
+
+            return businessUnitsDTO;
+        }
+
+        public async Task<IReadOnlyCollection<Town>> GetAllTownsAsync()
+        {
+            var towns = await this.context.Towns
+                                          .OrderByDescending(n => n.Name)
+                                          .ToListAsync();
+
+            return towns;
+        }
+
+        public async Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        {
+            var moderatorUser = await this.context.Users.FindAsync(moderatorId);
+
+            moderatorUser.BusinessUnitId = businessUnitId;
+
+            var businessUnit = await this.context.BusinessUnits
+                         .Include(bc => bc.BusinessUnitCategory)
+                         .Include(t => t.Town)
+                         .FirstOrDefaultAsync(x => x.Id == businessUnitId);
+
+            return businessUnit.ToDTO();
+        }
+
+        public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int businessUnitCategoryId, int townId)
+        {
+            IQueryable<BusinessUnit> searchCollection = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
+
+            IQueryable<BusinessUnit> searchCategoryCollection = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId);
+
+            IQueryable<BusinessUnit> searchTownCollection = this.context.BusinessUnits.Where(t => t.TownId == townId);
+
+            var search = searchTownCollection.Intersect(searchCollection.Intersect(searchCategoryCollection));
+
+            var businessUnitsDTO = await search.Include(t => t.Town)
+                              .Include(buc => buc.BusinessUnitCategory)
+                              .Select(x => x.ToDTO())
+                              .ToListAsync();
+
+            return businessUnitsDTO;
+        }
+
     }
 }

@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 {
     [TestClass]
-    public class GetAllBusinessUnitsByCategoryIdAsync_Should
+    public class GetAllBusinessUnitsAsync_Should
     {
         [TestMethod]
-        public async Task Should_GetAllBusinessUnitsByBusinessUnitCategoryAsync()
+        public async Task Should_GetAllBusinessUnitsAsync()
         {
-            var options = TestUtils.GetOptions(nameof(Should_GetAllBusinessUnitsByBusinessUnitCategoryAsync));
+            var options = TestUtils.GetOptions(nameof(Should_GetAllBusinessUnitsAsync));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
@@ -35,7 +35,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnits = await sut.GetAllBusinessUnitsByCategoryIdAsync(1);
+                var businessUnits = await sut.GetAllBusinessUnitsAsync();
 
                 Assert.AreEqual(businessUnits.Count, 2);
             }
