@@ -1,15 +1,12 @@
 ﻿using ManagerLogbook.Data;
-using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts.Providers;
-using ManagerLogbook.Services.DTOs;
+using ManagerLogbook.Services.CustomExeptions;
+using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Services.NoteServiceTests
@@ -39,21 +36,20 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
             }
         }
 
-        //[TestMethod]
-        //public async Task ReturnNotFound()
-        //{
-        //    var options = TestUtils.GetOptions(nameof(ReturnNotFound));
+        [TestMethod]
+        public async Task ThrowsException_NoteNotFound()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsException_NoteNotFound));
 
-        //    using (var assertContext = new ManagerLogbookContext(options))
-        //    {
-        //        var mockedValidator = new Mock<IBusinessValidator>();
-        //        var sut = new NoteService(assertContext, mockedValidator.Object);
-                                           
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedValidator = new Mock<IBusinessValidator>();
+                var sut = new NoteService(assertContext, mockedValidator.Object);
 
-        //        var noteDTO = await sut.GetNoteByIdAsync(TestHelpersNote.TestNote1().Id);
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.GetNoteByIdAsync(TestHelpersNote.TestNote1().Id));
 
-        //        Assert.IsNull(noteDTO);
-        //    }
-        //}
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.NotNotFound));
+            }
+        }
     }
 }

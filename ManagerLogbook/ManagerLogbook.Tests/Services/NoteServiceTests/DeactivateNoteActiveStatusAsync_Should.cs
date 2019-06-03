@@ -27,7 +27,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
 
                 var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.DeactivateNoteActiveStatus(TestHelpersNote.TestNote1().Id,
                                                                      TestHelpersNote.TestUser1().Id));
-                Assert.AreEqual(ex.Message,ServicesConstants.NoteDoesNotExists);
+                Assert.AreEqual(ex.Message,ServicesConstants.NotNotFound);
             }
         }
 

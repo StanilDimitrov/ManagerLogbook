@@ -71,7 +71,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.EditNoteAsync(TestHelpersNote.TestNote1().Id,
                                                      TestHelpersNote.TestUser2().Id, null, null, null));
 
-                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.NoteDoesNotExists));
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.NotNotFound));
             }
         }
 

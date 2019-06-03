@@ -1,6 +1,8 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
+using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,9 +40,9 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
         }
 
         [TestMethod]
-        public async Task ReturnNull()
+        public async Task ThrowsExeptionWhenUserNotFound()
         {
-            var options = TestUtils.GetOptions(nameof(ReturnNull));
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenUserNotFound));
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
                 await arrangeContext.SaveChangesAsync();
@@ -52,9 +54,9 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
 
                 var sut = new UserService(assertContext);
 
-                var userDTO = await sut.GetUserByIdAsync(TestHelpersNote.TestUser1().Id);
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.GetUserByIdAsync(TestHelpersNote.TestUser1().Id));
 
-                Assert.IsNull(userDTO);
+                Assert.AreEqual(ex.Message, ServicesConstants.UserNotFound);
             }
         }
 

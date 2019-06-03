@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using ManagerLogbook.Services.Utils;
+using ManagerLogbook.Services.CustomExeptions;
 
 namespace ManagerLogbook.Services
 {
@@ -25,12 +26,10 @@ namespace ManagerLogbook.Services
             var user = await this.context.Users.Include(x => x.BusinessUnit)
                                                .FirstOrDefaultAsync(x => x.Id == userId);
 
-            //if (user == null)
-            //{
-
-            //    //CUSTOM EXCEPTION
-            //    throw new Exception();
-            //}
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
 
             return user.ToDTO();
         }
@@ -40,9 +39,20 @@ namespace ManagerLogbook.Services
             var user = await this.context.Users.Include(x => x.BusinessUnit)
                                              .FirstOrDefaultAsync(x => x.Id == userId);
 
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
+            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+            if (logbook == null)
+            {
+                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
+
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
-                throw new ArgumentException(ServicesConstants.UserNotFromLogbook);
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserNotManagerOfLogbook, user.UserName, logbook.Name));
             }
 
             user.CurrentLogbookId = logbookId;
@@ -52,6 +62,6 @@ namespace ManagerLogbook.Services
             return user.ToDTO();
 
         }
-   
+
     }
 }

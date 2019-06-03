@@ -7,13 +7,13 @@
         public const string DescriptionNotInRange = "Description can not be more than 500 symbols long!";
         public const string AddressNotInRange = "Address can not be more than 200 symbols long!";
         public const string UserNotFound = "User does not exist!";
-        public const string UserNotManagerOfLogbook = "User \"{0} {1}\" is not manager of logbook \"{2}\".";
-        public const string UserIsNotAuthorizedToEditNote = "\"{0}\" is not authorized to edit this note!";
-        public const string UserIsNotAuthorizedToViewNotes = "\"{0}\" is not authorized to view notes from this logbook!";
+        public const string UserNotManagerOfLogbook = "User \"{0}\" is not manager of logbook \"{1}\".";
+        public const string UserIsNotAuthorizedToEditNote = "User \"{0}\" is not authorized to edit this note!";
+        public const string UserIsNotAuthorizedToViewNotes = "User \"{0}\" is not authorized to view notes from this logbook!";
         public const string DescriptionCanNotBeNull = "Description can not be null or empty string!";
         public const string EmailIsNotValid = "Email {0} is not valid!";
         public const string NoSuchUserExists = "No such user exists!";
-        public const string NoteDoesNotExists = "Note does not exists!";
+        public const string NotNotFound = "Note does not exists!";
         public const string PhoneNumberIsNotValid = "PhoneNumber {0} is not valid!";
         public const string NoLogboogChoosen = "You must choose a logbook to do operations in it.";
         public const string ManagerIsAlreadyInLogbook = "Manager {0} is already exists in logbook {1}!";
@@ -23,6 +23,7 @@
         public const string RatingNotInRange = "Value for raiting must be between 0 and 5.";
         public const string UserNotFromLogbook = "User is not manager of logbook.";
         public const string NoteCategoryDoesNotExists = "Note category does not exists.";
+        public const string LogbookNotFound = "Logbook does not exists.";
 
     }
 }

@@ -7,6 +7,7 @@ namespace ManagerLogbook.Services.Contracts.Providers
 {
     public interface IBusinessValidator
     {
+        void IsDescriptionIsNullOrEmpty(string description);
 
         void IsNameInRange(string name);
 

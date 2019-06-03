@@ -37,26 +37,21 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         [TempData] public string StatusMessage { get; set; }
 
 
-         public async Task<IActionResult> NotesForDaysBefore(int id)
+        public async Task<IActionResult> NotesForDaysBefore(int id)
         {
             try
             {
                 var userId = this.User.GetId();
                 var user = await this.userService.GetUserByIdAsync(userId);
 
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
                 var logbookId = user.CurrentLogbookId;
                 if (!user.CurrentLogbookId.HasValue)
                 {
                     return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
                 }
-                var notesDTO = await this.noteService.ShowLogbookNotesForDaysBeforeAsync(userId, user.CurrentLogbookId.Value,id);
+                var notesDTO = await this.noteService.ShowLogbookNotesForDaysBeforeAsync(userId, user.CurrentLogbookId.Value, id);
                 var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
-                foreach(var note in noteViewModel)
+                foreach (var note in noteViewModel)
                 {
                     note.CanUserEdit = note.UserId == userId;
                 }
@@ -77,11 +72,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 var userId = this.User.GetId();
                 var user = await this.userService.GetUserByIdAsync(userId);
 
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
                 var logbookId = user.CurrentLogbookId;
                 if (!user.CurrentLogbookId.HasValue)
                 {
@@ -89,7 +79,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 }
                 var notesDTO = await this.noteService.ShowLogbookNotesAsync(userId, user.CurrentLogbookId.Value);
                 var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
-                foreach(var note in noteViewModel)
+                foreach (var note in noteViewModel)
                 {
                     note.CanUserEdit = note.UserId == userId;
                 }
@@ -108,11 +98,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 var userId = this.User.GetId();
                 var user = await this.userService.GetUserByIdAsync(userId);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
 
                 var logbookId = user.CurrentLogbookId;
                 if (!user.CurrentLogbookId.HasValue)
@@ -189,7 +174,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
         }
 
-       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(NoteViewModel model)
@@ -203,10 +187,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var noteDTO = await this.noteService.GetNoteByIdAsync(model.Id);
-                if (noteDTO == null)
-                {
-                    return NotFound();
-                }
 
                 string imageName = null;
 
@@ -232,7 +212,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
                 return Ok(string.Format(WebConstants.NoteEdited));
                 //return RedirectToAction("Index");
-
             }
 
             catch (ArgumentException ex)
@@ -244,54 +223,14 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UploadImage(int id)
-        {
-            try
-            {
-                var noteDTO = await this.noteService.GetNoteByIdAsync(id);
-                if (noteDTO == null)
-                {
-                    return NotFound();
-                }
-
-                string imageName = null;
-
-                if (noteDTO.NoteImage != null)
-                {
-                    imageName = optimizer.OptimizeImage(noteDTO.NoteImage, 268, 182);
-                }
-
-                if (noteDTO.Image != null)
-                {
-                    optimizer.DeleteOldImage(noteDTO.Image);
-                }
-
-                var userId = this.User.GetId();
-                noteDTO = await this.noteService
-                                    .EditNoteAsync(noteDTO.Id, userId, noteDTO.Description,
-                                                 noteDTO.Image, noteDTO.CategoryId);
-
-                return Ok(string.Format(WebConstants.NoteEdited));
-            }
-
-            catch (ArgumentException ex)
-            {
-                StatusMessage = ex.Message;
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
         public async Task<IActionResult> Deactivate(int id)
         {
             try
             {
                 var noteDTO = await this.noteService.GetNoteByIdAsync(id);
-                if (noteDTO == null)
-                {
-                    return NotFound();
-                }
 
                 var userId = this.User.GetId();
+
                 noteDTO = await this.noteService
                                   .DeactivateNoteActiveStatus(noteDTO.Id, userId);
 
@@ -311,16 +250,11 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
-        
+
         public async Task<IActionResult> Search(NoteViewModel model, string searchCriteria)
         {
             var userId = this.User.GetId();
             var user = await this.userService.GetUserByIdAsync(userId);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
 
             var logbookId = user.CurrentLogbookId;
             if (!user.CurrentLogbookId.HasValue)
@@ -337,9 +271,9 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private async Task<NoteViewModel> CreateDropdown(NoteViewModel model)
         {
             var cashedCategories = await CacheCategories();
-           
+
             model.Categories = cashedCategories.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
-           
+
             return model;
         }
 
@@ -347,7 +281,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         {
 
             var cashedCategories = await CacheCategories();
-            
+
             List<SelectListItem> selectCategories = new List<SelectListItem>();
 
             foreach (var category in cashedCategories)
@@ -363,7 +297,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
 
             model.Categories = selectCategories;
-            
+
             return model;
         }
 
@@ -377,7 +311,5 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
             return cashedCategories;
         }
-
-        
     }
 }

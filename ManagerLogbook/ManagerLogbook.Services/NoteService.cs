@@ -36,7 +36,7 @@ namespace ManagerLogbook.Services
 
             if (note == null)
             {
-                throw new NotFoundException(ServicesConstants.NoteDoesNotExists);
+                throw new NotFoundException(ServicesConstants.NotNotFound);
             }
 
             return note.ToDTO();
@@ -45,13 +45,26 @@ namespace ManagerLogbook.Services
         public async Task<NoteDTO> CreateNoteAsync(string userId, int logbookId, string description, 
                                              string image, int? categoryId)
         {
+            validator.IsDescriptionIsNullOrEmpty(description);
+            validator.IsDescriptionInRange(description);
 
-            if (string.IsNullOrEmpty(description))
+            var user = await this.context.Users.FindAsync(userId);
+
+            if (user == null)
             {
-                throw new ArgumentException(ServicesConstants.DescriptionCanNotBeNull);
+                throw new NotFoundException(ServicesConstants.UserNotFound);
             }
 
-            validator.IsDescriptionInRange(description);
+            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+            if (logbook == null)
+            {
+                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
+
+            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
+            {
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserNotManagerOfLogbook, user.UserName, logbook.Name));
+            }
 
             var note = new Note()
             {
@@ -97,7 +110,7 @@ namespace ManagerLogbook.Services
                                          .FirstOrDefaultAsync(x => x.Id == noteId);
             if (note == null)
             {
-                throw new NotFoundException(ServicesConstants.NoteDoesNotExists);
+                throw new NotFoundException(ServicesConstants.NotNotFound);
             }
             var user = await this.context.Users.FindAsync(userId);
             if (user == null)
@@ -121,13 +134,16 @@ namespace ManagerLogbook.Services
         public async Task<NoteDTO> EditNoteAsync(int noteId, string userId, string description,
                                               string image, int? categoryId)
         {
-             var note = await this.context.Notes
+            validator.IsDescriptionIsNullOrEmpty(description);
+            validator.IsDescriptionInRange(description);
+
+            var note = await this.context.Notes
                                            .Include(x => x.User)
                                            .Include(x => x.NoteCategory)
                                            .FirstOrDefaultAsync(x => x.Id == noteId);
             if (note == null)
             {
-                throw new NotFoundException(ServicesConstants.NoteDoesNotExists);
+                throw new NotFoundException(ServicesConstants.NotNotFound);
             }
 
             var user = await this.context.Users.FindAsync(userId);
@@ -143,6 +159,7 @@ namespace ManagerLogbook.Services
 
             if (description != null)
             {
+                validator.IsDescriptionInRange(description);
                 note.Description = description;
             }
 

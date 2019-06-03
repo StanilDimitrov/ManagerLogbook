@@ -25,6 +25,14 @@ namespace ManagerLogbook.Services.Providers
             }
         }
 
+        public void IsDescriptionIsNullOrEmpty(string description)
+        {
+            if (string.IsNullOrEmpty(description))
+            {
+                throw new ArgumentException(ServicesConstants.DescriptionCanNotBeNull);
+            }
+        }
+
         public void IsDescriptionInRange(string description)
         {
             if (description.Length > 500)
