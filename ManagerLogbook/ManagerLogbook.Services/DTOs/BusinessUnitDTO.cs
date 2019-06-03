@@ -1,4 +1,6 @@
-﻿namespace ManagerLogbook.Services.DTOs
+﻿using System.Collections.Generic;
+
+namespace ManagerLogbook.Services.DTOs
 {
     public class BusinessUnitDTO
     {
@@ -19,6 +21,5 @@
         public string BusinessUnitCategoryName { get; set; }
 
         public string BusinessUnitTownName { get; set; }
-
     }
 }

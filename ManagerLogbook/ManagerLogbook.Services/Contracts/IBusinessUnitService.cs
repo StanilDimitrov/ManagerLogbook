@@ -1,4 +1,5 @@
 ﻿using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,24 +7,32 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface IBusinessUnitService
     {
-        Task<BusinessUnit> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email);
+        Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string infomration, int businessUnitCategoryId, int townId);
 
-        Task<BusinessUnit> GetBusinessUnitById(int businessUnitId);
+        Task<BusinessUnitDTO> GetBusinessUnitById(int businessUnitId);
 
-        Task<BusinessUnit> UpdateBusinessUnitAsync(BusinessUnit businessUnit, string brandName, string address, string phoneNumber, string email, string picture);
+        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string infomration, string email, string picture);
 
         Task<BusinessUnit> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId);
 
-        Task<IReadOnlyCollection<Logbook>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId);
+        Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId);
 
-        Task<BusinessUnitCategory> CreateBusinessUnitCategoryAsync(string businessUnitCategoryName);
+        Task<BusinessUnitCategoryDTO> CreateBusinessUnitCategoryAsync(string businessUnitCategoryName);
 
-        Task<BusinessUnitCategory> UpdateBusinessUnitCategoryAsync(int businessUnitCategoryId, string newBusinessUnitCategoryName);
+        Task<BusinessUnitCategoryDTO> UpdateBusinessUnitCategoryAsync(int businessUnitCategoryId, string newBusinessUnitCategoryName);
 
-        Task<BusinessUnit> AddBusinessUnitCategoryToBusinessUnitAsync(int businessUnitCategoryId, int businessUnitId);
+        Task<BusinessUnitDTO> AddBusinessUnitCategoryToBusinessUnitAsync(int businessUnitCategoryId, int businessUnitId);
 
-        Task<BusinessUnitCategory> GetBusinessUnitCategoryByIdAsync(int businessUnitCategoryId);
+        Task<BusinessUnitCategoryDTO> GetBusinessUnitCategoryByIdAsync(int businessUnitCategoryId);
 
-        Task<IReadOnlyCollection<BusinessUnit>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId);
+        Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId);
+
+        Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsAsync();
+
+        Task<IReadOnlyCollection<Town>> GetAllTownsAsync();
+
+        Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId);
+
+        Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int businessUnitCategoryId, int townId);
     }
 }

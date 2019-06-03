@@ -16,7 +16,10 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Address = "Cherni Vryh 15",
                 PhoneNumber = "1111111111",
                 Email = "info@kempinski.com",
-                BusinessUnitCategoryId=1
+                Information="This is information for BU01",
+                BusinessUnitCategoryId=1,
+                TownId = 1
+                
             };
         }
 
@@ -29,7 +32,9 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Address = "Cherni Vryh 95",
                 PhoneNumber = "0123456789",
                 Email = "info@hilton.com",
-                BusinessUnitCategoryId = 1
+                Information = "This is information for BU02",
+                BusinessUnitCategoryId = 1,
+                TownId = 1
             };
         }
 
@@ -39,6 +44,52 @@ namespace ManagerLogbook.Tests.HelpersMethods
             {
                 Id = 1,
                 Name = "Hotel"
+            };
+        }
+
+        public static Note TestNote01()
+        {
+            return new Note
+            {
+                Id = 1,
+                Description = "Room 37 is dirty",
+                //User = TestUser1(),
+                //NoteCategory = TestNoteCategory2(),
+                LogbookId = 1,
+                //UserId = TestUser1().Id,
+                //Image = "abd22cec-9df6-43ea-b5aa-991689af55d1",
+                //CreatedOn = DateTime.Now.AddDays(-2),
+                //NoteCategoryId = TestNoteCategory2().Id
+            };
+        }
+
+        public static Town TestTown01()
+        {
+            return new Town
+            {
+                Id = 1,
+                Name = "Sofia"
+            };
+        }
+
+        public static Town TestTown02()
+        {
+            return new Town
+            {
+                Id = 2,
+                Name = "Varna"
+            };
+        }
+
+        public static User TestUser01()
+        {
+            return new User
+            {
+                Id = "70c946ce-0c88-4084-ab2e-dfbf53783c05",
+                UserName = "ivan",
+                Email = "dir@bg",
+                PasswordHash = "123456",
+                BusinessUnitId = 1
             };
         }
 

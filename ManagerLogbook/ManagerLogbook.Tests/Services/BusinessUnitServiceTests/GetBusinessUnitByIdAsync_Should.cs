@@ -21,6 +21,8 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
+                await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
+                await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
                 await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit01());
                 await arrangeContext.SaveChangesAsync();
             }
