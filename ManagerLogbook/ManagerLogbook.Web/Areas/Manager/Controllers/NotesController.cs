@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.DTOs;
-using ManagerLogbook.Web.Areas.Manager.Models;
+using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Services.Contracts;
@@ -189,21 +189,15 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Edit(int id)
-        {
-            var noteDTO = await this.noteService.GetNoteByIdAsync(id);
-            var noteViewModel = noteDTO.MapFrom();
-            return View(noteViewModel);
-        }
-
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(NoteViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return BadRequest(string.Format(WebConstants.UnableToEditNote));
+                //return View(model);
             }
 
             try
@@ -229,7 +223,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 var userId = this.User.GetId();
                 noteDTO = await this.noteService
                                   .EditNoteAsync(noteDTO.Id, userId, model.Description,
-                                                 model.Image, model.CategoryId);
+                                                 imageName, model.CategoryId);
 
                 if (noteDTO.Description != model.Description)
                 {
@@ -237,6 +231,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 }
 
                 return Ok(string.Format(WebConstants.NoteEdited));
+                //return RedirectToAction("Index");
+
             }
 
             catch (ArgumentException ex)
@@ -297,7 +293,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
                 var userId = this.User.GetId();
                 noteDTO = await this.noteService
-                                  .DisableNoteActiveStatus(noteDTO.Id, userId);
+                                  .DeactivateNoteActiveStatus(noteDTO.Id, userId);
 
                 if (noteDTO.IsActiveTask)
                 {

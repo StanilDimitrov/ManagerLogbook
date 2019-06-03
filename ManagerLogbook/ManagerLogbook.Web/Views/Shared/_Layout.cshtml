@@ -86,7 +86,7 @@
                     <div class="container">
 
                         @*<nav id="menuBar" class="navbar navbar-default lightHeader animated " role="navigation">
-                        <div class="container">*@
+                            <div class="container">*@
 
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header">
@@ -132,38 +132,40 @@
 
         @*<hr />*@
 
-        <!-- Start Account Modal -->
-        @await Html.PartialAsync("_CreateAccountModalPartial")
-        <!-- End Account Modal -->
         <!-- Start Note Modal -->
         @await Html.PartialAsync("_CreateNoteModalPartial")
         <!-- End Note Modal -->
+        <!-- Start Account Modal -->
+        @await Html.PartialAsync("_CreateAccountModalPartial")
+        <!-- End Account Modal -->
         <!-- Start Login Modal -->
         @await Html.PartialAsync("_LoginModalPartial")
         <!-- End Login Modal -->
 
     </div>
-        <script src="/assets/plugins/jquery/jquery.min.js"></script>
-        <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
-        <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="/assets/plugins/smoothscroll/SmoothScroll.min.js"></script>
-        <script src="/assets/plugins/waypoints/waypoints.min.js"></script>
-        <script src="/assets/plugins/counter-up/jquery.counterup.min.js"></script>
-        <script src="/assets/plugins/datepicker/bootstrap-datepicker.min.js"></script>
-        <script src="/assets/plugins/selectbox/jquery.selectbox-0.1.3.min.js"></script>
-        <script src="/assets/plugins/owl-carousel/owl.carousel.min.js"></script>
-        <script src="/assets/plugins/isotope/isotope.min.js"></script>
-        <script src="/assets/plugins/fancybox/jquery.fancybox.min.js"></script>
-        <script src="/assets/plugins/isotope/isotope-triger.min.js"></script>
-        <script src="/assets/plugins/rateyo/jquery.rateyo.min.js"></script>
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU79W1lu5f6PIiuMqNfT1C6M0e_lq1ECY"></script>
-        <script src="/assets/plugins/map/js/rich-marker.js"></script>
-        <script src="/assets/plugins/map/js/infobox_packed.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-        <script src="/assets/js/map.js"></script>
-        <script src="/assets/js/app.js"></script>
-        <script src="/assets/js/custom.js"></script>
+    <script src="/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/plugins/smoothscroll/SmoothScroll.min.js"></script>
+    <script src="/assets/plugins/waypoints/waypoints.min.js"></script>
+    <script src="/assets/plugins/counter-up/jquery.counterup.min.js"></script>
+    <script src="/assets/plugins/datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/plugins/selectbox/jquery.selectbox-0.1.3.min.js"></script>
+    <script src="/assets/plugins/owl-carousel/owl.carousel.min.js"></script>
+    <script src="/assets/plugins/isotope/isotope.min.js"></script>
+    <script src="/assets/plugins/fancybox/jquery.fancybox.min.js"></script>
+    <script src="/assets/plugins/isotope/isotope-triger.min.js"></script>
+    <script src="/assets/plugins/rateyo/jquery.rateyo.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDU79W1lu5f6PIiuMqNfT1C6M0e_lq1ECY"></script>
+    <script src="/assets/plugins/map/js/rich-marker.js"></script>
+    <script src="/assets/plugins/map/js/infobox_packed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="/assets/js/map.js"></script>
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/custom.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 
-        @RenderSection("Scripts", required: false)
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -2,6 +2,7 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
 using ManagerLogbook.Services.Utils;
@@ -33,6 +34,11 @@ namespace ManagerLogbook.Services
                                          .Include(x => x.NoteCategory)
                                          .FirstOrDefaultAsync(x => x.Id == id);
 
+            if (note == null)
+            {
+                throw new NotFoundException(ServicesConstants.NoteDoesNotExists);
+            }
+
             return note.ToDTO();
         }
 
@@ -54,12 +60,16 @@ namespace ManagerLogbook.Services
                 CreatedOn = DateTime.Now,
                 NoteCategoryId = categoryId,
                 UserId = userId,
-                LogbookId = (int)logbookId
+                LogbookId = logbookId
             };
 
             if (categoryId != null)
             {
                 var noteCategory = await this.context.NoteCategories.FindAsync(categoryId);
+                if (noteCategory == null)
+                {
+                    throw new NotFoundException(ServicesConstants.NoteCategoryDoesNotExists);
+                }
 
                 if (noteCategory.Name == "Task")
                 {
@@ -78,7 +88,7 @@ namespace ManagerLogbook.Services
         }
 
         
-        public async Task<NoteDTO> DisableNoteActiveStatus(int noteId, string userId)
+        public async Task<NoteDTO> DeactivateNoteActiveStatus(int noteId, string userId)
 
         {
             var note = await this.context.Notes
@@ -87,14 +97,19 @@ namespace ManagerLogbook.Services
                                          .FirstOrDefaultAsync(x => x.Id == noteId);
             if (note == null)
             {
-                throw new ArgumentException(ServicesConstants.NoteDoesNotExists);
+                throw new NotFoundException(ServicesConstants.NoteDoesNotExists);
             }
-
+            var user = await this.context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
             var logbookId = note.LogbookId;
+            
 
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToEditNote);
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToEditNote, user.UserName));
             }
             note.IsActiveTask = false;
             this.context.Notes.Update(note);
@@ -112,13 +127,18 @@ namespace ManagerLogbook.Services
                                            .FirstOrDefaultAsync(x => x.Id == noteId);
             if (note == null)
             {
-                throw new ArgumentException(ServicesConstants.NoteDoesNotExists);
+                throw new NotFoundException(ServicesConstants.NoteDoesNotExists);
             }
 
+            var user = await this.context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
 
             if (note.UserId != userId)
             {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToEditNote);
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToEditNote,user.UserName));
             }
 
             if (description != null)
@@ -133,14 +153,20 @@ namespace ManagerLogbook.Services
 
             if (categoryId != null)
             {
+               
                 note.NoteCategoryId = categoryId;
                 var noteCategory = await this.context.NoteCategories.FindAsync(categoryId);
 
+                if (noteCategory == null)
+                {
+                    throw new NotFoundException(ServicesConstants.NoteCategoryDoesNotExists);
+                }
                 if (noteCategory.Name == "Task")
                 {
                     note.IsActiveTask = true;
                 }
             }
+            note.CreatedOn = DateTime.Now;
             await this.context.SaveChangesAsync();
 
             return note.ToDTO();
@@ -149,9 +175,16 @@ namespace ManagerLogbook.Services
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days)
 
         {
+            var user = await this.context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, user.UserName));
             }
 
             var result = await this.context.Notes
@@ -170,9 +203,16 @@ namespace ManagerLogbook.Services
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesWithActiveStatusAsync(string userId, int logbookId)
                                                                                         
         {
+            var user = await this.context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, user.UserName));
             }
 
             return await this.context.Notes
@@ -190,9 +230,16 @@ namespace ManagerLogbook.Services
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesAsync(string userId, int logbookId)
 
         {
+            var user = await this.context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, user.UserName));
             }
 
             return await this.context.Notes
@@ -211,9 +258,16 @@ namespace ManagerLogbook.Services
                                                                                              DateTime startDate, DateTime endDate, string criteria)
 
         {
+            var user = await this.context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
             if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
             {
-                throw new ArgumentException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, user.UserName));
             }
 
             if (endDate == DateTime.MinValue)

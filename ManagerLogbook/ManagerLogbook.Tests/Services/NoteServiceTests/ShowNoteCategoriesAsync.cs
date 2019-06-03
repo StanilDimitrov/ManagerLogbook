@@ -5,9 +5,6 @@ using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Services.NoteServiceTests

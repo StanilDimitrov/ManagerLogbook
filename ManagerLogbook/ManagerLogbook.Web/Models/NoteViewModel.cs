@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ManagerLogbook.Web.Areas.Manager.Models
+namespace ManagerLogbook.Web.Models
 {
     public class NoteViewModel
     {

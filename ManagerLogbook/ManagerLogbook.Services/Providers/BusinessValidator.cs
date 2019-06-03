@@ -13,7 +13,7 @@ namespace ManagerLogbook.Services.Providers
         {
             if (user == null)
             {
-                throw new ArgumentException(ServicesConstants.UserDoesNotExist);
+                throw new ArgumentException(ServicesConstants.UserNotFound);
             }
         }
 

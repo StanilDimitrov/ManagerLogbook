@@ -1,4 +1,65 @@
+$('.submit-edit-form-button').click(function(eventEdit)
+{
+    eventEdit.preventDefault();
+    $thisEditForm = $(this);
+    var id = $thisEditForm.attr('noteid');
+    var urlToEdit = "/Manager/Notes/Edit";
+    var concreteFormOfClickedButton = $('#editModalNote-' + id);
+    var inputs = concreteFormOfClickedButton.find('input');
+    var textarea = concreteFormOfClickedButton.find('textarea');
+    var textFromDescription = textarea[0].value;
+    var image = inputs[1];
+    var token = inputs[2];
+    var imageInputIdSelector = "#image-input-" + id;
 
+    var file = $(imageInputIdSelector)[0];
+    var fileInput = file.files[0];
+
+    var fdata = new FormData();
+    fdata.append("Id", id);
+    fdata.append("Description", textFromDescription);
+    fdata.append("NoteImage", fileInput);
+    fdata.append(token.name, token.value);
+
+    $.ajax({
+        type: 'post',
+        url: urlToEdit,
+        data: fdata,
+        processData: false,
+        contentType: false,
+    }).done(function (response) {
+       
+        toastr.options =
+            {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "onHidden": function () {
+                    // this will be executed after fadeout, i.e. 2secs after notification has been show
+                    //window.location.href = "/AppUsers/Transactions/GetTransaction?=" + transactionId;
+                }
+            }
+        toastr.success(response);
+        window.setTimeout(function () { location.reload() }, 1500);
+        //location.reload();
+    }).fail(function (response) {
+        toastr.options =
+            {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000
+            }
+        toastr.error(response.responseText);
+    });
+});
 
 $(function () {
     const $submitForm = $('#submit-form');
@@ -47,45 +108,51 @@ $(function () {
 $(function () {
     const $submitForm = $('#create-note');
 
-    $submitForm.on('submit', function (event) {
-        event.preventDefault();
+    if ($submitForm.valid()) {
 
-        var $this = $(this);
+        $submitForm.on('submit', function (event) {
+            event.preventDefault();
 
-        const dataToSend = $submitForm.serialize();
-        //var url = "/Admin/Create/Register";
-        var url = $this.attr('action');
+            var $this = $(this);
 
-        $.post(url, dataToSend, function (response) {
-            console.log(response.firstName);
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
+            const dataToSend = $submitForm.serialize();
+            //var url = "/Admin/Create/Register";
+            var url = $this.attr('action');
 
-            toastr.success(response);
+            $.post(url, dataToSend, function (response) {
+                console.log(response.firstName);
+                toastr.options = {
+                    "debug": false,
+                    "positionClass": "toast-top-center",
+                    "onclick": null,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+                    "timeOut": 3000,
+                    "extendedTimeOut": 3000,
+                    "closeButton": true
+                }
 
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
+                toastr.success(response);
+
+            }).fail(function (response) {
+                toastr.options = {
+                    "debug": false,
+                    "positionClass": "toast-top-center",
+                    "onclick": null,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+                    "timeOut": 3000,
+                    "extendedTimeOut": 3000,
+                    "closeButton": true
+                }
+                toastr.error(response.responseText);
             });
-        
-    });
+
+            $('#myModalNote').modal('hide');
+
+        });
+
+    }
     
 });
 
@@ -178,23 +245,31 @@ $(function () {
 
 });
 
-$("a").click(function () {
-    //get data from link
-    var noteId = $(this).data('noteid');
-    var modalFormAction = $('#editModalNote').find('form').attr('action');
+//$("a").click(function () {
+//    //get data from link
+//    var noteId = $(this).data('noteid');
+//    var modalFormAction = $('#editModalNote').find('form').attr('action');
 
-    // update modal with new data
-    var actionWithId = (modalFormAction + '/' + noteId).replace(/[0-9]/g, '');
-        actionWithId = modalFormAction + '/' + noteId;
-    // find textarea in modal
-    // todo by stanil
+//    // update modal with new data
+//    var actionWithId = (modalFormAction + '/' + noteId).replace(/[0-9]/g, '');
+//        actionWithId = modalFormAction + '/' + noteId;
+//    // find textarea in modal
+//    // todo by stanil
 
-    // update textarea with description
-    // todo by stanil
-    $('#editModalNote').find('form').attr('action', actionWithId);
+//    // update textarea with description
+//    // todo by stanil
+//    $('#editModalNote').find('form').attr('action', actionWithId);
 
     
-    //var modalSelected = '#editModalNote';
-});
+//    var modalSelected = '#editModalNote';
+//});
 
+// Resets modal
+$('#myModalRegister').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+})
+
+$('#myModalNote').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+})
 

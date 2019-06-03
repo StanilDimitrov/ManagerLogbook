@@ -1,73 +1,126 @@
-﻿
+﻿@model IEnumerable<NoteViewModel>
 @{
     ViewData["Title"] = "_NoteListPartial";
 }
 
-<table id="ordersTable" class="table table-small-font table-bordered table-striped" cellspacing="0" width="100%">
-    <thead>
-        <tr>
-            <th>№</th>
-            <th width="40%">Description </th>
-            <th width="20%">Created</th>
-            <th>User</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Actions</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int counter = 1;
-        }
-        @foreach (var note in Model)
-        {
-        <tr>
-            <td>@counter</td>
+@*<div class="resultBar barSpaceAdjust">
+    <h2>Found <span> @Model.Count() </span> Results </h2>
+</div>*@
+<table id="ordersTable" class="table table-small-font table-bordered table-striped width-100" cellspacing="0" @*width="100%"*@>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th width="40%">Description </th>
+                <th width="20%">Created</th>
+                <th>User</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Actions</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
             @{
-                counter++;
+                int counter = 1;
             }
-            <td class="comment">@note.Description</td>
-            <td> @note.CreatedOn.ToString("MMMM dd, yyyy")</td>
-            <td>@note.UserName</td>
-            <td>@note.CategoryName</td>
-            <td>
-                @if (note.CategoryName == "Task" && note.IsActiveTask)
-                {
-                    <div class="profileUserInfo-1 width-100">
-                        <span class="label label-success margin-top-20 margin-20">Active</span><br />
-                        <a @*id="deactivate-status" *@  asp-action="Deactivate" asp-route-id="@note.Id" class="btn btn-primary btn-new width-100 margin-20">Deactivate</a><br />
-                    </div>
-                }
-                else if (note.CategoryName == "Task" && !note.IsActiveTask)
-                {
-                    <div class="btn-group">
-                        <span class="label label-danger margin-top-15">Done</span><br />
-                    </div>
-                }
+            @foreach (var note in Model)
+            {
+                <tr>
+                    <td>@counter</td>
+                    @{
+                        counter++;
+                    }
+                    <td class="comment">@note.Description</td>
+                    <td> @note.CreatedOn.ToString("MMMM dd, yyyy")</td>
+                    <td>@note.UserName</td>
+                    <td>@note.CategoryName</td>
+                    <td>
+                        @if (note.CategoryName == "Task" && note.IsActiveTask)
+                        {
+                            <div class="profileUserInfo-1 width-100">
+                                <span class="label label-success margin-top-20 margin-20">Active</span><br />
+                                <a @*id="deactivate-status" *@ asp-action="Deactivate" asp-route-id="@note.Id" class="btn btn-primary btn-new width-100 margin-20">Deactivate</a><br />
+                            </div>
+                        }
+                        else if (note.CategoryName == "Task" && !note.IsActiveTask)
+                        {
+                            <div class="btn-group">
+                                <span class="label label-danger margin-top-15">Done</span><br />
+                            </div>
+                        }
 
-            </td>
-            <td>
-                <div class="profileUserInfo-1 width-100">
-                    @if(note.CanUserEdit)
-                    {
-                        <a class="btn btn-primary margin-10" data-toggle="modal" data-noteid="@note.Id" data-target="#editModalNote">Edit</a><br />
-                    }
-                    @if (note.Image == null)
-                    {
-                        <a class="btn btn-primary btn-new width-100 margin-10" data-toggle="modal" data-target="#uploadModal">Upload Image</a>
-                    }
-                    else
-                    {
-                        <a class="image-link btn btn-primary btn-new width-100 margin-10" href="/images/@note.Image">Show Image</a>
-                    }
+                    </td>
+                    <td>
+                        <div class="profileUserInfo-1 width-100">
+                            @if (note.CanUserEdit)
+                            {
+                                <a class="btn btn-primary margin-10" data-toggle="modal" @*data-noteid="@note.Id" *@ data-target="#editModalNote-@note.Id">Edit</a><br />
+                            }
+                            @if (note.Image != null)
+                            {
+                                <a class="image-link btn btn-primary btn-new width-100 margin-10" href="/images/@note.Image">Show Image</a>
+                            }
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+
+                <!-- Note Modal -->
+                <div class="modal fade" id="editModalNote-@note.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog">
+                        @*@await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])*@
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                @*<a class="close" data-dismiss="modal">x</a>*@
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Edit note</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-danger-custom"></div>
+                                <form id="submit-form-@note.Id" asp-for="@note" enctype="multipart/form-data" asp-area="Manager" asp-controller="Notes" asp-action="Edit" method="post" class="loginForm submit-edit-form" asp-route-id="@note.Id">
+                                    <div class="form-group">
+                                        <i class="fa fa-user" aria-hidden="true"></i>
+                                        <input type="hidden" value="@note.Id" />
+                                        <textarea data-val-required="true" asp-for="@note.Description" class="form-control" placeholder="Please enter a description">@note.Description</textarea>
+                                        <span asp-validation-for="@note.Description" class="text-danger-custom"></span>
+
+                                    </div>
+                                    <div style="padding-bottom:9%">
+                                        <div class="contactSelect">
+                                            <select name="CategoryName" class="select-drop">
+                                                <option value="0">Select Category</option>
+                                                <option value="1">Restaurant</option>
+                                                <option value="2">Bar</option>
+                                                <option value="3">Cafe</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                                    <input type="file" name="NoteImage" id="image-input-@note.Id" class="btn btn-primary file" accept="image/*">
+
+
+                                    <div class="margin-5">
+                                        <button type="submit" class="btn btn-primary btn-block submit-edit-form-button" noteid="@note.Id">Submit</button>
+                                        <div class="margin-5">
+                                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                                            @if (referrer != default(StringValues))
+                                            {
+                                                <a href="@referrer.ToString()">Go Back</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </td>
-            <td></td>
-        </tr>
-        }
+                <!-- End Note Modal -->
+            }
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
 

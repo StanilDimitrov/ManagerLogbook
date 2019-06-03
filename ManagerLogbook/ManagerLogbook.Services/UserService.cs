@@ -25,6 +25,13 @@ namespace ManagerLogbook.Services
             var user = await this.context.Users.Include(x => x.BusinessUnit)
                                                .FirstOrDefaultAsync(x => x.Id == userId);
 
+            //if (user == null)
+            //{
+
+            //    //CUSTOM EXCEPTION
+            //    throw new Exception();
+            //}
+
             return user.ToDTO();
         }
 

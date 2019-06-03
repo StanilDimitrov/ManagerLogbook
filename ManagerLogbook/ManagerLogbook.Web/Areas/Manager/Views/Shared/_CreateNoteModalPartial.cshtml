@@ -1,4 +1,6 @@
-﻿<!-- Note Modal -->
+﻿@model NoteViewModel
+
+<!-- Note Modal -->
 <div class="modal fade" id="myModalNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         @*@await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])*@
@@ -13,9 +15,9 @@
                 <div class="text-danger-custom"></div>
                 <form id="create-note" enctype="multipart/form-data" asp-area="Manager" asp-controller="Notes" asp-action="Create" method="post" class="loginForm">
                     <div class="form-group">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                        <textarea data-val-required="true" name="Description" class="form-control" placeholder="Please enter a description"></textarea>
-                        <span class="text-danger-custom"></span>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <textarea data-val-required="true" asp-for="Description" class="form-control" placeholder="Please enter a description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger-custom"></span>
                     </div>
                     <div style="padding-bottom:9%">
                         <div class="contactSelect">

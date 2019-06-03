@@ -17,7 +17,7 @@ namespace ManagerLogbook.Services.Contracts
             
         Task<NoteDTO> CreateNoteAsync(string userId, int logbookId, string description, string image, int? categoryId);
 
-        Task<NoteDTO> DisableNoteActiveStatus(int noteId, string userId);
+        Task<NoteDTO> DeactivateNoteActiveStatus(int noteId, string userId);
 
         Task<NoteDTO> EditNoteAsync(int noteId, string userId,
                                  string description, string image, int? categoryId);

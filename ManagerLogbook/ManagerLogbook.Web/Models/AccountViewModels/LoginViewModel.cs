@@ -10,7 +10,7 @@ namespace ManagerLogbook.Web.Models.AccountViewModels
     {
         [Required]
         [MaxLength(50)]
-        public string UseName { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

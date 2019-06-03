@@ -87,7 +87,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return Json(model);
+            return BadRequest(model);
         }
 
            #region Helpers

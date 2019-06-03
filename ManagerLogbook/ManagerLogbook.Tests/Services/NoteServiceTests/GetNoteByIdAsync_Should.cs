@@ -39,21 +39,21 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
             }
         }
 
-        [TestMethod]
-        public async Task ReturnNull()
-        {
-            var options = TestUtils.GetOptions(nameof(ReturnNull));
+        //[TestMethod]
+        //public async Task ReturnNotFound()
+        //{
+        //    var options = TestUtils.GetOptions(nameof(ReturnNotFound));
 
-            using (var assertContext = new ManagerLogbookContext(options))
-            {
-                var mockedValidator = new Mock<IBusinessValidator>();
-                var sut = new NoteService(assertContext, mockedValidator.Object);
+        //    using (var assertContext = new ManagerLogbookContext(options))
+        //    {
+        //        var mockedValidator = new Mock<IBusinessValidator>();
+        //        var sut = new NoteService(assertContext, mockedValidator.Object);
                                            
 
-                var noteDTO = await sut.GetNoteByIdAsync(TestHelpersNote.TestNote1().Id);
+        //        var noteDTO = await sut.GetNoteByIdAsync(TestHelpersNote.TestNote1().Id);
 
-                Assert.IsNull(noteDTO);
-            }
-        }
+        //        Assert.IsNull(noteDTO);
+        //    }
+        //}
     }
 }

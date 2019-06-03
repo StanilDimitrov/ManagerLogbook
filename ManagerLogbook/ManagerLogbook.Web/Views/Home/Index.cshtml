@@ -59,31 +59,7 @@
     @await Html.PartialAsync("_BusinessUnitsPartial", Model)
 </section>
 
-<section class="clearfix countUpSection">
-    <div class="container text-block-center">
-        <div class="row">
-            <div class="col-sm-3 col-xs-12">
-                <div class="text-center countItem">
-                    <div class="counter">@*@Model.CitiesCount*@</div>
-                    <div class="counterInfo bg-color-1">Cities</div>
-                </div>
-            </div>
-            <div class="col-sm-3 col-xs-12">
-                <div class="text-center countItem">
-                    <div class="counter">@*@Model.HotelsCount*@</div>
-                    <div class="counterInfo bg-color-3">Hotels</div>
-                </div>
-            </div>
-            <div class="col-sm-3 col-xs-12">
-                <div class="text-center countItem">
-                    <div class="counter">@*@Model.RestaurantsCount*@</div>
-                    <div class="counterInfo bg-color-2">Restaurants</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-</section>
+@await Html.PartialAsync("_FooterPartial", Model)
 
 
 

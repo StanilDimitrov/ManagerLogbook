@@ -1,4 +1,6 @@
-﻿<!-- Note Modal -->
+﻿@model NoteViewModel
+
+<!-- Note Modal -->
 <div class="modal fade" id="myModalNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         @*@await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])*@
@@ -11,10 +13,11 @@
             </div>
             <div class="modal-body">
                 <div class="text-danger-custom"></div>
-                <form id="submit-form" asp-area="Manager" asp-controller="Notes" asp-action="Create" enctype="multipart/form-data" method="post" class="loginForm">
+                <form id="create-note" asp-area="Manager" asp-controller="Notes" asp-action="Create" enctype="multipart/form-data" method="post" class="loginForm">
                     <div class="form-group">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                        <textarea data-val-required="true" name="Description" class="form-control" placeholder="Please enter a description"></textarea>
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <textarea data-val-required="true" asp-for="Description" class="form-control" placeholder="Please enter a description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger-custom"></span>
                         <span class="text-danger-custom"></span>
                     </div>
                     <div style="padding-bottom:9%">
@@ -28,10 +31,10 @@
                         </div>
                     </div>
                     <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" name="NoteImage" class="btn btn-primary file" accept="image/*">
+                    <input type="file" asp-for="NoteImage" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">
-                        <button type="submit" asp-area="Manager" asp-controller="Notes" asp-action="Create" class="btn btn-primary btn-block">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         <div class="margin-5">
                             @{ var referrer = this.Context.Request.Headers["Referer"]; }
                             @if (referrer != default(StringValues))

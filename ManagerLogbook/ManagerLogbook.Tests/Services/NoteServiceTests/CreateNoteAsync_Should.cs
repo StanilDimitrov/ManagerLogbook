@@ -1,6 +1,7 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
@@ -58,9 +59,34 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
         }
 
         [TestMethod]
-        public async Task SucceedCreateWhenTaskCategoryIsAdded()
+        public async Task ThrowsExceptionWhenAddNotExistingCategory()
         {
-            var options = TestUtils.GetOptions(nameof(SucceedCreateWhenTaskCategoryIsAdded));
+            var options = TestUtils.GetOptions(nameof(ThrowsExceptionWhenAddNotExistingCategory));
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Users.AddAsync(TestHelpersNote.TestUser1());
+                await arrangeContext.Logbooks.AddAsync(TestHelpersNote.TestLogbook1());
+                await arrangeContext.SaveChangesAsync();
+            }
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedValidator = new Mock<IBusinessValidator>();
+                var sut = new NoteService(assertContext, mockedValidator.Object);
+                var description = "Room 37 needs cleaning.";
+                var image = "abd22cec-9df6-43ea-b5aa-991689af55d1";
+
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.CreateNoteAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id,
+                                                       description, image, TestHelpersNote.TestNoteCategory2().Id));
+
+                Assert.AreEqual(ex.Message,ServicesConstants.NoteCategoryDoesNotExists);
+
+            }
+        }
+
+        [TestMethod]
+        public async Task SucceedCreateWhenNoteCategoryIsAdded()
+        {
+            var options = TestUtils.GetOptions(nameof(SucceedCreateWhenNoteCategoryIsAdded));
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
                 await arrangeContext.NoteCategories.AddAsync(TestHelpersNote.TestNoteCategory2());

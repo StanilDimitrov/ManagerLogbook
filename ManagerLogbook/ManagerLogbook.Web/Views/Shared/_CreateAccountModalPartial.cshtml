@@ -1,4 +1,6 @@
-﻿<!-- Create Account Modal -->
+﻿@model RegisterViewModel
+
+<!-- Create Account Modal -->
 <div class="modal fade" id="myModalRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         @*@await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])*@
@@ -14,43 +16,45 @@
                 <form id="submit-form-account" asp-area="Admin" asp-controller="Create" asp-action="Register" method="post" class="loginForm">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
-                        <input name="UserName" class="form-control"  placeholder="Username">
-                        <span name="UserName" class="text-danger-custom"></span>
+                        <input asp-for="UserName" class="form-control" placeholder="Username">
+                        <span asp-validation-for="UserName" class="text-danger-custom"></span>
+
                     </div>
                     <div class="form-group">
                         <i class="fa fa-envelope" aria-hidden="true"></i>
-                        <input name="Email" type="email" class="form-control" id="email" placeholder="Email">
+                        <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <i class="fa fa-lock" aria-hidden="true"></i>
-                        <input name="Password" type="password" class="form-control" id="pwd" placeholder="Password">
+                        <input name="Password" type="password" class="form-control" id="pwd" placeholder="Password" required="">
                     </div>
                     <div class="form-group">
                         <i class="fa fa-lock" aria-hidden="true"></i>
-                        <input name="ConfirmPassword" type="password" class="form-control"  placeholder="Password">
+                        <input name="ConfirmPassword" type="password" class="form-control" placeholder="Password" required="" *>
                     </div>
-                    <div class="form-group">
-                        <select name="UserRole" class="form-control">
-                            <option value="Moderator">Role: Moderator</option>
-                            <option value="Manager">Role: Manager</option>
-                            <option value="Admin">Role: Admin</option>
-                        </select>
-                    </div>
-                        <div class="margin-5">
-                            <button type="submit" asp-area="Admin" asp-controller="Create" asp-action="Register" class="btn btn-primary btn-block">Create Account</button>
-                            <div class="margin-5">
-                                @{ var referrer = this.Context.Request.Headers["Referer"]; }
-                                @if (referrer != default(StringValues))
-                                {
-                                    <a href="@referrer.ToString()">Go Back</a>
-                                }
-                            </div>
+                    <div style="padding-bottom:9%">
+                        <div class="contactSelect">
+                            <select name="CategoryName" class="select-drop">
+                                <option value="0">Select Category</option>
+                                <option value="1">Restaurant</option>
+                                <option value="2">Bar</option>
+                                <option value="3">Cafe</option>
+                            </select>
                         </div>
+                    </div>
+                    <div class="margin-5">
+                        <button type="submit" asp-area="Admin" asp-controller="Create" asp-action="Register" class="btn btn-primary btn-block">Create Account</button>
+                        <div class="margin-5">
+                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                            @if (referrer != default(StringValues))
+                            {
+                                <a href="@referrer.ToString()">Go Back</a>
+                            }
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
 <!-- End Create Account Modal -->
-
-
