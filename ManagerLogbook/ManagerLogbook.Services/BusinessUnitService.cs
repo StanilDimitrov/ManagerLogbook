@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
+using ManagerLogbook.Services.Utils;
+using ManagerLogbook.Services.CustomExeptions;
 
 namespace ManagerLogbook.Services
 {
@@ -52,6 +54,11 @@ namespace ManagerLogbook.Services
                                            .Include(t => t.Town)
                                            .FirstOrDefaultAsync(x => x.Id == businessUnitId);
 
+            if (result == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
             return result.ToDTO();
 
         }
@@ -59,6 +66,11 @@ namespace ManagerLogbook.Services
         public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, string picture)
         {
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
 
             if (brandName != null)
             {
@@ -110,20 +122,15 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<BusinessUnit> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId)
-        {
-            var logbook = await this.context.Logbooks.FindAsync(logbookId);
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
-
-            logbook.BusinessUnitId = businessUnitId;
-
-            await this.context.SaveChangesAsync();
-
-            return businessUnit;
-        }
-
         public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId)
         {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
             var logbooksDTO = await this.context.Logbooks
                          .Include(n => n.Notes)
                          .Include(bu => bu.BusinessUnit)
@@ -152,6 +159,11 @@ namespace ManagerLogbook.Services
 
             var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
 
+            if (businessUnitCategory == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
+            }
+
             businessUnitCategory.Name = newBusinessUnitCategoryName;
 
             await this.context.SaveChangesAsync();
@@ -162,6 +174,18 @@ namespace ManagerLogbook.Services
         public async Task<BusinessUnitDTO> AddBusinessUnitCategoryToBusinessUnitAsync(int businessUnitCategoryId, int businessUnitId)
         {
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
+            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
+
+            if (businessUnitCategory == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
+            }
 
             businessUnit.BusinessUnitCategoryId = businessUnitCategoryId;
 
@@ -177,23 +201,33 @@ namespace ManagerLogbook.Services
 
         public async Task<BusinessUnitCategoryDTO> GetBusinessUnitCategoryByIdAsync(int businessUnitCategoryId)
         {
-            var businessUnitCategoryDTO = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
+            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
 
-            await this.context.SaveChangesAsync();
+            if (businessUnitCategory == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
+            }
 
-            return businessUnitCategoryDTO.ToDTO();
+            return businessUnitCategory.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
         {
-            var businessUnitsDTO = await this.context.BusinessUnits
+            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
+
+            if (businessUnitCategory == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
+            }
+
+            var businessUnits = await this.context.BusinessUnits
                          .Include(buc => buc.BusinessUnitCategory)
                          .Include(t => t.Town)
                          .Where(bc => bc.BusinessUnitCategoryId == businessUnitCategoryId)
                          .Select(bu => bu.ToDTO())
                          .ToListAsync();
 
-            return businessUnitsDTO;
+            return businessUnits;
         }
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsAsync()
@@ -219,11 +253,23 @@ namespace ManagerLogbook.Services
 
         public async Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
             var moderatorUser = await this.context.Users.FindAsync(moderatorId);
+
+            if (moderatorUser == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
 
             moderatorUser.BusinessUnitId = businessUnitId;
 
-            var businessUnit = await this.context.BusinessUnits
+            businessUnit = await this.context.BusinessUnits
                          .Include(bc => bc.BusinessUnitCategory)
                          .Include(t => t.Town)
                          .FirstOrDefaultAsync(x => x.Id == businessUnitId);
@@ -248,6 +294,5 @@ namespace ManagerLogbook.Services
 
             return businessUnitsDTO;
         }
-
     }
 }

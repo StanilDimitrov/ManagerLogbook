@@ -114,10 +114,25 @@ namespace ManagerLogbook.Services
             var logbooksDTO = await this.context.Logbooks
                                        .Where(ul => ul.UsersLogbooks.Any(u => u.UserId == userId))
                                        .Include(bu => bu.BusinessUnit)
-                                       .Include(n=>n.Notes)
+                                       .Include(n => n.Notes)
                                        .Select(x => x.ToDTO())
                                        .ToListAsync();
             return logbooksDTO;
-        }        
+        }
+
+        public async Task<LogbookDTO> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId)
+        {
+            var logbook = await this.context.Logbooks
+                   .Include(bu => bu.BusinessUnit)
+                   .Include(n => n.Notes)
+                   .FirstOrDefaultAsync(x => x.Id == logbookId);
+
+
+            logbook.BusinessUnitId = businessUnitId;
+
+            await this.context.SaveChangesAsync();
+
+            return logbook.ToDTO();
+        }
     }
 }

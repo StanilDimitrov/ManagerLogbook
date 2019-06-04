@@ -1,6 +1,7 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
@@ -48,6 +49,31 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
                 Assert.AreEqual(businessUnit.Information, "This is information for BU");                
                 Assert.AreEqual(businessUnit.Email, "info@vitosha.com");
                 Assert.AreEqual(businessUnit.Picture, "picturePath");
+            }
+        }
+
+        [TestMethod]
+        public async Task ThrowsException_UpdateBusinessUnitNotFound()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsException_UpdateBusinessUnitNotFound));
+
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
+                await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
+                await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit01());
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockBusinessValidator = new Mock<IBusinessValidator>();
+
+                var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
+
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateBusinessUnitAsync(2,"name2","Nishava 12","1234567890","information2","email@email.com","picture2"));
+
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNotFound));
             }
         }
     }

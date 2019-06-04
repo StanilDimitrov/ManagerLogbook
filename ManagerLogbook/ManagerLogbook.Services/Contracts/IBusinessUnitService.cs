@@ -13,8 +13,6 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string infomration, string email, string picture);
 
-        Task<BusinessUnit> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId);
-
         Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId);
 
         Task<BusinessUnitCategoryDTO> CreateBusinessUnitCategoryAsync(string businessUnitCategoryName);
