@@ -37,8 +37,6 @@ namespace ManagerLogbook.Services
             //automatic edit 
             var editedDescription = reviewEditor.AutomaticReviewEditor(originalDescription);
 
-            //da li da se podava kato dependency DateTime v constructora?
-
             var review = new Review()
             {
                 OriginalDescription = originalDescription,

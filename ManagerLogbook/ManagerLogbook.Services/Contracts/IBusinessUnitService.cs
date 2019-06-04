@@ -27,10 +27,12 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsAsync();
 
-        Task<IReadOnlyCollection<Town>> GetAllTownsAsync();
+        Task<IReadOnlyCollection<TownDTO>> GetAllTownsAsync();
 
         Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId);
 
         Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int businessUnitCategoryId, int townId);
+
+        Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetAllBusinessUnitsCategoriesAsync();
     }
 }

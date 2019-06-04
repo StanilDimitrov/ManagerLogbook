@@ -242,13 +242,15 @@ namespace ManagerLogbook.Services
             return businessUnitsDTO;
         }
 
-        public async Task<IReadOnlyCollection<Town>> GetAllTownsAsync()
+        public async Task<IReadOnlyCollection<TownDTO>> GetAllTownsAsync()
         {
-            var towns = await this.context.Towns
-                                          .OrderByDescending(n => n.Name)
+            var townsDTO = await this.context.Towns
+                                          .Include(x => x.BusinessUnits)
+                                          .OrderBy(n => n.Name)
+                                          .Select(x => x.ToDTO())
                                           .ToListAsync();
 
-            return towns;
+            return townsDTO;
         }
 
         public async Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
@@ -293,6 +295,16 @@ namespace ManagerLogbook.Services
                               .ToListAsync();
 
             return businessUnitsDTO;
+        }
+
+        public async Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetAllBusinessUnitsCategoriesAsync()
+        {
+            var businessUnitsCategoriesDTO = await this.context.BusinessUnitCategories
+                         .OrderBy(n => n.Name)
+                         .Select(x => x.ToDTO())
+                         .ToListAsync();
+
+            return businessUnitsCategoriesDTO;
         }
     }
 }

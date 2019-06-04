@@ -49,10 +49,20 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<Logbook> GetLogbookById(int logbookId)
+        public async Task<LogbookDTO> GetLogbookById(int logbookId)
         {
-            return await this.context.Logbooks.FindAsync(logbookId);
+            var logbook = await this.context.Logbooks.FindAsync(logbookId);
 
+            if (logbook == null)
+            {
+                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
+
+            var result = await this.context.Logbooks
+                                                       .Include(bu => bu.BusinessUnit)
+                                                       .Include(n => n.Notes)
+                                                       .FirstOrDefaultAsync(x => x.Id == logbook.Id);
+            return result.ToDTO();
         }
 
         public async Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, string picture)
