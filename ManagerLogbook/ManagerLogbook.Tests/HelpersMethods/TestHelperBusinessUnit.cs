@@ -38,6 +38,21 @@ namespace ManagerLogbook.Tests.HelpersMethods
             };
         }
 
+        public static BusinessUnit TestBusinessUnit03()
+        {
+            return new BusinessUnit
+            {
+                Id = 3,
+                Name = "Europa",
+                Address = "Cherni Vryh 95",
+                PhoneNumber = "0123456789",
+                Email = "info@hilton.com",
+                Information = "This is information for BU02",
+                BusinessUnitCategoryId = 2,
+                TownId = 1
+            };
+        }
+
         public static BusinessUnitCategory TestBusinessUnitCategory01()
         {
             return new BusinessUnitCategory

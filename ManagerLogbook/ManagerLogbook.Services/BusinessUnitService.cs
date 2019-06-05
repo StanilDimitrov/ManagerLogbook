@@ -306,5 +306,22 @@ namespace ManagerLogbook.Services
 
             return businessUnitsCategoriesDTO;
         }
+
+        public async Task<IReadOnlyDictionary<string, int>> GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync()
+        {
+            var categoriesCountUnits = await this.context.BusinessUnits
+                         .Include(bu => bu.BusinessUnitCategory)
+                         .GroupBy(c => c.BusinessUnitCategory.Name)
+                         .Select(group => new
+                         {
+                             categoryName = group.Key,
+                             count = group.Count()
+                         })
+                         .OrderBy(c=>c.categoryName)
+                         .ToDictionaryAsync(x => x.categoryName, x => x.count);
+                         
+
+            return categoriesCountUnits;
+        }
     }
 }
