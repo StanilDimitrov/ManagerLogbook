@@ -142,5 +142,23 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 NoteCategoryId = TestNoteCategory1().Id
             };
         }
+
+        public static BusinessUnitCategory TestBusinessUnitCategory01()
+        {
+            return new BusinessUnitCategory
+            {
+                Id = 1,
+                Name = "Hotel"
+            };
+        }
+
+        public static Town TestTown01()
+        {
+            return new Town
+            {
+                Id = 1,
+                Name = "Sofia"
+            };
+        }
     }
 }

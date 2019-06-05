@@ -2,6 +2,7 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
 using ManagerLogbook.Services.Utils;
@@ -48,15 +49,30 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<Logbook> GetLogbookById(int logbookId)
+        public async Task<LogbookDTO> GetLogbookById(int logbookId)
         {
-            return await this.context.Logbooks.FindAsync(logbookId);
+            var logbook = await this.context.Logbooks.FindAsync(logbookId);
 
+            if (logbook == null)
+            {
+                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
+
+            var result = await this.context.Logbooks
+                                                       .Include(bu => bu.BusinessUnit)
+                                                       .Include(n => n.Notes)
+                                                       .FirstOrDefaultAsync(x => x.Id == logbook.Id);
+            return result.ToDTO();
         }
 
         public async Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, string picture)
         {
             var logbook = await this.context.Logbooks.FindAsync(logbookId);
+
+            if (logbook == null)
+            {
+                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
 
             if (string.IsNullOrEmpty(name))
             {
@@ -90,7 +106,18 @@ namespace ManagerLogbook.Services
         public async Task<LogbookDTO> AddManagerToLogbookAsync(string managerId, int logbookId)
         {
             var logbook = await this.context.Logbooks.FindAsync(logbookId);
+
+            if (logbook == null)
+            {
+                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
+
             var manager = await this.context.Users.FindAsync(managerId);
+
+            if (manager == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
 
             if (this.context.UsersLogbooks.Any(u => u.UserId == managerId))
             {
@@ -111,13 +138,49 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksByUserAsync(string userId)
         {
+            var user = await this.context.Users.FindAsync(userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
             var logbooksDTO = await this.context.Logbooks
                                        .Where(ul => ul.UsersLogbooks.Any(u => u.UserId == userId))
                                        .Include(bu => bu.BusinessUnit)
-                                       .Include(n=>n.Notes)
+                                       .Include(n => n.Notes)
                                        .Select(x => x.ToDTO())
                                        .ToListAsync();
             return logbooksDTO;
-        }        
+        }
+
+        public async Task<LogbookDTO> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId)
+        {            
+            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+
+            if (logbook == null)
+            {
+                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
+
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
+            logbook = await this.context.Logbooks
+                   .Include(bu => bu.BusinessUnit)
+                   .Include(n => n.Notes)
+                   .FirstOrDefaultAsync(x => x.Id == logbookId);
+
+
+            logbook.BusinessUnitId = businessUnitId;
+
+            await this.context.SaveChangesAsync();
+
+            return logbook.ToDTO();
+        }
     }
 }

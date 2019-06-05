@@ -11,12 +11,14 @@ namespace ManagerLogbook.Services.Contracts
     {
         Task<LogbookDTO> CreateLogbookAsync(string name, int businessUnitId, string picture);
 
-        Task<Logbook> GetLogbookById(int logbookId);
+        Task<LogbookDTO> GetLogbookById(int logbookId);
 
         Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, string picture);
 
         Task<LogbookDTO> AddManagerToLogbookAsync(string managerId, int logbookId);
 
         Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksByUserAsync(string userId);
+
+        Task<LogbookDTO> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId);
     }
 }

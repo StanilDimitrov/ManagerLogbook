@@ -47,6 +47,24 @@ namespace ManagerLogbook.Tests.HelpersMethods
             };
         }
 
+        public static BusinessUnitCategory TestBusinessUnitCategory02()
+        {
+            return new BusinessUnitCategory
+            {
+                Id = 2,
+                Name = "Restaurant"
+            };
+        }
+
+        public static BusinessUnitCategory TestBusinessUnitCategory03()
+        {
+            return new BusinessUnitCategory
+            {
+                Id = 3,
+                Name = "Spa Center"
+            };
+        }
+
         public static Note TestNote01()
         {
             return new Note
