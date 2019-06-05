@@ -9,7 +9,7 @@ namespace ManagerLogbook.Web.Models
     {
         public IReadOnlyCollection<BusinessUnitViewModel> BusinessUnits { get; set; }
 
-        public int CitiesCount { get; set; }
+        public IReadOnlyCollection<TownViewModel> Cities { get; set; }
 
         public int HotelsCount { get; set; }
 

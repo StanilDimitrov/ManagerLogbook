@@ -20,18 +20,10 @@
                         <span asp-validation-for="Description" class="text-danger-custom"></span>
                         <span class="text-danger-custom"></span>
                     </div>
-                    <div style="padding-bottom:9%">
-                        <div class="contactSelect">
-                            <select name="CategoryName" class="select-drop">
-                                <option value="0">Select Category</option>
-                                <option value="1">Restaurant</option>
-                                <option value="2">Bar</option>
-                                <option value="3">Cafe</option>
-                            </select>
-                        </div>
-                    </div>
+                    <select id="notes-categories-selector" class="form-control" name="CategoryId"></select>
+
                     <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" asp-for="NoteImage" class="btn btn-primary file" accept="image/*">
+                    <input type="file" name="NoteImage" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>

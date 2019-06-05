@@ -11,13 +11,12 @@ namespace ManagerLogbook.Web.Mappers
     {
         public static ManagerViewModel MapFrom(this UserDTO dto)
         {
-         
             return new ManagerViewModel()
             {
                 CurrentLogbookId = dto.CurrentLogbookId,
                 Email = dto.Email,
                 Avatar = dto.Picture,
-                UserName = dto.UserName
+                UserName = dto.UserName,
             };
         }
     }

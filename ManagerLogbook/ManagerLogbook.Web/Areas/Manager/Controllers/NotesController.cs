@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
+using ManagerLogbook.Web.Areas.Manager.Models;
 
 namespace ManagerLogbook.Web.Areas.Manager.Controllers
 {
@@ -23,19 +24,55 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly IImageOptimizer optimizer;
         private readonly INoteService noteService;
         private readonly IUserService userService;
+        private readonly ILogbookService logbookService;
         private readonly IMemoryCache cache;
 
         public NotesController(IImageOptimizer optimizer, INoteService noteService,
-                              IUserService userService, IMemoryCache cache)
+                              IUserService userService, ILogbookService logbookService, IMemoryCache cache)
         {
             this.optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
             this.noteService = noteService ?? throw new ArgumentNullException(nameof(noteService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
         [TempData] public string StatusMessage { get; set; }
 
+
+        public async Task<IActionResult> Index()
+        {
+            try
+            {
+                var model = new IndexNoteViewModel();
+
+                var userId = this.User.GetId();
+                var user = await this.userService.GetUserByIdAsync(userId);
+
+                var logbookId = user.CurrentLogbookId;
+                if (!user.CurrentLogbookId.HasValue)
+                {
+                    return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
+                }
+                var notesDTO = await this.noteService.ShowLogbookNotesAsync(userId, user.CurrentLogbookId.Value);
+                var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+                foreach (var note in notes)
+                {
+                    note.CanUserEdit = note.UserId == userId;
+                }
+                var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
+                model.Notes = notes;
+                model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+                model.Logbooks = (await CacheLogbooks()).Select(x => x.MapFrom()).ToList();
+
+                return View(model);
+            }
+            catch (ArgumentException ex)
+            {
+                StatusMessage = ex.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
 
         public async Task<IActionResult> NotesForDaysBefore(int id)
         {
@@ -50,34 +87,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
                 }
                 var notesDTO = await this.noteService.ShowLogbookNotesForDaysBeforeAsync(userId, user.CurrentLogbookId.Value, id);
-                var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
-                foreach (var note in noteViewModel)
-                {
-                    note.CanUserEdit = note.UserId == userId;
-                }
-                return View(noteViewModel);
-            }
-            catch (ArgumentException ex)
-            {
-                StatusMessage = ex.Message;
-                return RedirectToAction("Error", "Home");
-            }
-        }
-
-
-        public async Task<IActionResult> Index()
-        {
-            try
-            {
-                var userId = this.User.GetId();
-                var user = await this.userService.GetUserByIdAsync(userId);
-
-                var logbookId = user.CurrentLogbookId;
-                if (!user.CurrentLogbookId.HasValue)
-                {
-                    return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
-                }
-                var notesDTO = await this.noteService.ShowLogbookNotesAsync(userId, user.CurrentLogbookId.Value);
                 var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
                 foreach (var note in noteViewModel)
                 {
@@ -118,7 +127,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 return RedirectToAction("Error", "Home");
             }
         }
-
 
         [HttpGet]
         public IActionResult Create()
@@ -268,19 +276,36 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             return View(noteViewModel);
         }
 
-        private async Task<NoteViewModel> CreateDropdown(NoteViewModel model)
+        [HttpGet]
+        public async Task<IActionResult> GetAllNoteCategories()
         {
-            var cashedCategories = await CacheCategories();
+            try
+            {
+                var categories = await this.noteService.GetNoteCategoriesAsync();
+
+                return Json(categories);
+            }
+            catch (ArgumentException ex)
+            {
+                StatusMessage = ex.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
+        private async Task<NoteViewModel> CreateDropdownNoteCategories(NoteViewModel model)
+        {
+            var cashedCategories = await CacheNoteCategories();
 
             model.Categories = cashedCategories.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
             return model;
         }
 
-        private async Task<NoteViewModel> EditDropdown(NoteViewModel model)
+        private async Task<NoteViewModel> EditDropdownNoteCategories(NoteViewModel model)
         {
 
-            var cashedCategories = await CacheCategories();
+            var cashedCategories = await CacheNoteCategories();
 
             List<SelectListItem> selectCategories = new List<SelectListItem>();
 
@@ -301,7 +326,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             return model;
         }
 
-        private async Task<IReadOnlyCollection<NoteGategoryDTO>> CacheCategories()
+        private async Task<IReadOnlyCollection<NoteGategoryDTO>> CacheNoteCategories()
         {
             var cashedCategories = await cache.GetOrCreateAsync<IReadOnlyCollection<NoteGategoryDTO>>("Categories", async (cacheEntry) =>
             {
@@ -311,5 +336,52 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
             return cashedCategories;
         }
+
+        private async Task<ManagerViewModel> CreateDropdownLogbooks(ManagerViewModel model)
+        {
+            var cashedLogbooks = await CacheLogbooks();
+
+            model.Logbooks = cashedLogbooks.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
+
+            return model;
+        }
+
+        private async Task<ManagerViewModel> EditDropdownLogbooks(ManagerViewModel model)
+        {
+
+            var cashedLogbooks = await CacheLogbooks();
+
+            List<SelectListItem> selectLogbooks = new List<SelectListItem>();
+
+            foreach (var logbook in cashedLogbooks)
+            {
+                if (logbook.Name == model.LogbookName)
+                {
+                    selectLogbooks.Add(new SelectListItem(logbook.Name, logbook.Id.ToString(), true));
+                }
+                else
+                {
+                    selectLogbooks.Add(new SelectListItem(logbook.Name, logbook.Id.ToString()));
+                }
+            }
+
+            model.Logbooks = selectLogbooks;
+
+            return model;
+        }
+
+        private async Task<IReadOnlyCollection<LogbookDTO>> CacheLogbooks()
+        {
+            var userId = this.User.GetId();
+
+            var cashedLogbooks = await cache.GetOrCreateAsync<IReadOnlyCollection<LogbookDTO>>("Logbooks", async (cacheEntry) =>
+            {
+                cacheEntry.SlidingExpiration = TimeSpan.FromDays(1);
+                return await this.logbookService.GetAllLogbooksByUserAsync(userId);
+            });
+
+            return cashedLogbooks;
+        }
+
     }
 }

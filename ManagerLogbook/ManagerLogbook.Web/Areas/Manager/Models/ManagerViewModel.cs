@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
         public string Email { get; set; }
 
         public int? CurrentLogbookId { get; set; }
+        public IEnumerable<SelectListItem> Logbooks { get; set; }
+        public string LogbookName { get; set; }
     }
 }

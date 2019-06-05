@@ -22,5 +22,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
         public string BusinessUnitName { get; set; }
 
         public IReadOnlyCollection<NoteViewModel> Notes { get; set; }
+
+        public IReadOnlyCollection<LogbookViewModel> UserLogbooks { get; set; }
     }
 }

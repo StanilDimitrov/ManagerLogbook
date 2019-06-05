@@ -1,0 +1,40 @@
+﻿
+<!-- LOGIN  MODAL -->
+<div class="modal fade" id="myModalLogbook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <a asp-controller="Home" asp-action="Index" class="close" data-dismiss="modal">x</a>
+                @*<button type="button" class="close" data-dismiss="modal">&times;</button>*@
+                <h4 class="modal-title">Switch logbook</h4>
+            </div>
+            <div class="modal-body">
+                <div asp-validation-summary="All" class="text-danger-custom"></div>
+                <form enctype="multipart/form-data" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="loginForm">
+                    <div style="padding-bottom:9%; padding-top:4%">
+                        <div class="contactSelect">
+                            <select name="CategoryName" class="select-drop">
+                                <option value="0">Select Logbook</option>
+                                <option value="1">Restaurant</option>
+                                <option value="2">Bar</option>
+                                <option value="3">Cafe</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="margin-5">
+                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        <div class="margin-5">
+                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                            @if (referrer != default(StringValues))
+                            {
+                                <a href="@referrer.ToString()">Go Back</a>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

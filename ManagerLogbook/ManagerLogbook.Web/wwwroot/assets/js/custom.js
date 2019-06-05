@@ -1,5 +1,4 @@
-$('.submit-edit-form-button').click(function(eventEdit)
-{
+$('.submit-edit-form-button').click(function (eventEdit) {
     eventEdit.preventDefault();
     $thisEditForm = $(this);
     var id = $thisEditForm.attr('noteid');
@@ -28,7 +27,7 @@ $('.submit-edit-form-button').click(function(eventEdit)
         processData: false,
         contentType: false,
     }).done(function (response) {
-       
+
         toastr.options =
             {
                 "debug": false,
@@ -108,52 +107,52 @@ $(function () {
 $(function () {
     const $submitForm = $('#create-note');
 
-    if ($submitForm.valid()) {
+    //if ($submitForm.valid()) {
 
-        $submitForm.on('submit', function (event) {
-            event.preventDefault();
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
 
-            var $this = $(this);
+        var $this = $(this);
 
-            const dataToSend = $submitForm.serialize();
-            //var url = "/Admin/Create/Register";
-            var url = $this.attr('action');
+        const dataToSend = $submitForm.serialize();
+        //var url = "/Admin/Create/Register";
+        var url = $this.attr('action');
 
-            $.post(url, dataToSend, function (response) {
-                console.log(response.firstName);
-                toastr.options = {
-                    "debug": false,
-                    "positionClass": "toast-top-center",
-                    "onclick": null,
-                    "fadeIn": 300,
-                    "fadeOut": 1000,
-                    "timeOut": 3000,
-                    "extendedTimeOut": 3000,
-                    "closeButton": true
-                }
+        $.post(url, dataToSend, function (response) {
+            console.log(response.firstName);
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
 
-                toastr.success(response);
+            toastr.success(response);
 
-            }).fail(function (response) {
-                toastr.options = {
-                    "debug": false,
-                    "positionClass": "toast-top-center",
-                    "onclick": null,
-                    "fadeIn": 300,
-                    "fadeOut": 1000,
-                    "timeOut": 3000,
-                    "extendedTimeOut": 3000,
-                    "closeButton": true
-                }
-                toastr.error(response.responseText);
-            });
-
-            $('#myModalNote').modal('hide');
-
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
         });
 
-    }
-    
+        $('#myModalNote').modal('hide');
+
+    });
+
+    //}
+
 });
 
 
@@ -245,6 +244,27 @@ $(function () {
 
 });
 
+
+$('#add-note-global-button').click(function (event)
+{
+    $.get("/Manager/Notes/GetAllNoteCategories")
+        .done(function (response)
+        {          
+            var s = '<option value="-1" selected disabled hidden>Please Select Category</option>';
+            for (var i = 0; i < response.length; i++)
+            {
+                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            }
+            
+            $("#notes-categories-selector").html(s); 
+
+        }).fail(function (response)
+        {
+            
+        });
+});
+
+
 //$("a").click(function () {
 //    //get data from link
 //    var noteId = $(this).data('noteid');
@@ -260,7 +280,7 @@ $(function () {
 //    // todo by stanil
 //    $('#editModalNote').find('form').attr('action', actionWithId);
 
-    
+
 //    var modalSelected = '#editModalNote';
 //});
 
