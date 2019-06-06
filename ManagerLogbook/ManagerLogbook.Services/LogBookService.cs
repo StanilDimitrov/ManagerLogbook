@@ -36,6 +36,14 @@ namespace ManagerLogbook.Services
 
             businessValidator.IsNameInRange(name);
 
+            var checkLogbookIfExists = await this.context.Logbooks
+                                           .FirstOrDefaultAsync(n => n.Name == name);
+
+            if (checkLogbookIfExists != null)
+            {
+                throw new AlreadyExistsException(ServicesConstants.LogbookAlreadyExists);
+            }
+
             var logbook = new Logbook() { Name = name, Picture = picture, BusinessUnitId = businessUnitId };
 
             this.context.Logbooks.Add(logbook);
@@ -82,6 +90,14 @@ namespace ManagerLogbook.Services
             if (name != null)
             {
                 businessValidator.IsNameInRange(name);
+            }
+
+            var checkLogbookIfExists = await this.context.Logbooks
+                                           .FirstOrDefaultAsync(n => n.Name == name);
+
+            if (checkLogbookIfExists != null)
+            {
+                throw new AlreadyExistsException(ServicesConstants.LogbookAlreadyExists);
             }
 
             logbook.Name = name;
@@ -155,7 +171,7 @@ namespace ManagerLogbook.Services
         }
 
         public async Task<LogbookDTO> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId)
-        {            
+        {
             var logbook = await this.context.Logbooks.FindAsync(logbookId);
 
             if (logbook == null)

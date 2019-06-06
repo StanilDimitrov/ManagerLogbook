@@ -43,7 +43,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 Assert.AreEqual(categoriesWithCountOfBusinessUnits[TestHelperBusinessUnit.TestBusinessUnitCategory01().Name], 2);
                 Assert.AreEqual(categoriesWithCountOfBusinessUnits[TestHelperBusinessUnit.TestBusinessUnitCategory02().Name], 1);
-                //Assert.AreEqual(categoriesWithCountOfBusinessUnits[TestHelperBusinessUnit.TestBusinessUnitCategory03().Name], 0);
+
             }
         }
     }

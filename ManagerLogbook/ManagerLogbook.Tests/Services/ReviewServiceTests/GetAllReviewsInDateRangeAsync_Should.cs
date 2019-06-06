@@ -22,7 +22,6 @@ namespace ManagerLogbook.Tests.Services.ReviewServiceTests
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
                 await arrangeContext.BusinessUnits.AddAsync(TestHelperReview.TestBusinessUnit01());
-                await arrangeContext.Reviews.AddAsync(TestHelperReview.Review01());
                 await arrangeContext.Reviews.AddAsync(TestHelperReview.Review02());
                 await arrangeContext.Reviews.AddAsync(TestHelperReview.Review03());
                 await arrangeContext.SaveChangesAsync();
@@ -35,9 +34,11 @@ namespace ManagerLogbook.Tests.Services.ReviewServiceTests
 
                 var sut = new ReviewService(assertContext, mockBusinessValidator.Object, mockReviewEditor.Object);
 
-                var review = await sut.GetAllReviewsDTOInDateRangeAsync(TestHelperReview.Review02().CreatedOn, TestHelperReview.Review02().CreatedOn.AddYears(2));
+                var review = await sut.GetAllReviewsInDateRangeAsync(TestHelperReview.Review02().CreatedOn, TestHelperReview.Review04().CreatedOn);
 
-                Assert.AreEqual(review.Count, 3);
+                mockBusinessValidator.Verify(x => x.IsDateValid(TestHelperReview.Review02().CreatedOn), Times.Exactly(2));
+
+                Assert.AreEqual(review.Count, 2);
             }
         }
     }

@@ -7,18 +7,18 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface IReviewService
     {
-        Task<ReviewDTO> CreateReviewDTOAsync(string originalDescription, int rating, int businessUnitId);
+        Task<ReviewDTO> CreateReviewAsync(string originalDescription, int rating, int businessUnitId);
         
-        Task<ReviewDTO> UpdateReviewDTOAsync(int reviewId, string editedDescription);
+        Task<ReviewDTO> UpdateReviewAsync(int reviewId, string editedDescription);
 
-        Task<ReviewDTO> MakeVisibleReviewDTOAsync(int reviewId);
+        Task<ReviewDTO> MakeVisibleReviewAsync(int reviewId);
 
-        Task<ICollection<ReviewDTO>> GetAllReviewsDTOByBusinessUnitIdAsync(int businessUnitId);
+        Task<ICollection<ReviewDTO>> GetAllReviewsByBusinessUnitIdAsync(int businessUnitId);
         
-        Task<ICollection<ReviewDTO>> GetAllReviewsDTOByModeratorIdAsync(string moderatorId);
+        Task<ICollection<ReviewDTO>> GetAllReviewsByModeratorIdAsync(string moderatorId);
 
-        Task<ICollection<ReviewDTO>> GetAllReviewsDTOByDateAsync(DateTime date);
+        Task<ICollection<ReviewDTO>> GetAllReviewsByDateAsync(DateTime date);
 
-        Task<ICollection<ReviewDTO>> GetAllReviewsDTOInDateRangeAsync(DateTime startDate, DateTime endDate);
+        Task<ICollection<ReviewDTO>> GetAllReviewsInDateRangeAsync(DateTime startDate, DateTime endDate);
     }
 }

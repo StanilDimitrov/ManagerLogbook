@@ -15,6 +15,7 @@
         public const string NoSuchUserExists = "No such user exists!";
         public const string NotNotFound = "Note does not exists!";
         public const string PhoneNumberIsNotValid = "PhoneNumber {0} is not valid!";
+        public const string DateIsNotValid = "Date is not valid!"; 
         public const string NoLogboogChoosen = "You must choose a logbook to do operations in it.";
         public const string ManagerIsAlreadyInLogbook = "Manager {0} is already exists in logbook {1}!";
         public const string ModeratorIsAlreadyInBusinessUnit = "Moderator {0} is already exists in businessUnit {1}!";
@@ -24,8 +25,11 @@
         public const string UserNotFromLogbook = "User is not manager of logbook.";
         public const string NoteCategoryDoesNotExists = "Note category does not exists.";
         public const string LogbookNotFound = "Logbook does not exists.";
+        public const string LogbookAlreadyExists = "Logbook name already exists.";
         public const string BusinessUnitNotFound = "BusinessUnit does not exists.";
         public const string BusinessUnitCategoryNotFound = "BusinessUnit Category does not exists.";
-        
+        public const string BusinessUnitNameAlreadyExists = "BusinessUnit name already exists.";
+        public const string BusinessUnitCategoryNameAlreadyExists = "BusinessUnitCategory name already exists.";
+        public const string ReviewNotFound = "Review does not exists.";
     }
 }

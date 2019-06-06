@@ -32,7 +32,7 @@ namespace ManagerLogbook.Tests.Services.ReviewServiceTests
 
                 var sut = new ReviewService(assertContext, mockBusinessValidator.Object, mockReviewEditor.Object);
 
-                var review = await sut.CreateReviewDTOAsync(TestHelperReview.Review01().OriginalDescription, TestHelperReview.Review01().Rating, TestHelperReview.Review01().BusinessUnitId );
+                var review = await sut.CreateReviewAsync(TestHelperReview.Review01().OriginalDescription, TestHelperReview.Review01().Rating, TestHelperReview.Review01().BusinessUnitId );
 
                 mockBusinessValidator.Verify(x => x.IsDescriptionInRange("Original Text of Review01"), Times.Exactly(1));
                 mockBusinessValidator.Verify(x => x.IsRatingInRange(1), Times.Exactly(1));
