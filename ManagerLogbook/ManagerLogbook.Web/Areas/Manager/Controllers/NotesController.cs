@@ -63,12 +63,13 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
                 model.Notes = notes;
                 model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
-                model.Logbooks = (await CacheLogbooks()).Select(x => x.MapFrom()).ToList();
+                model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
                 return View(model);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
+                // log
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
@@ -80,22 +81,30 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 var userId = this.User.GetId();
                 var user = await this.userService.GetUserByIdAsync(userId);
-
+                var model = new IndexNoteViewModel();
                 var logbookId = user.CurrentLogbookId;
                 if (!user.CurrentLogbookId.HasValue)
                 {
                     return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
                 }
                 var notesDTO = await this.noteService.ShowLogbookNotesForDaysBeforeAsync(userId, user.CurrentLogbookId.Value, id);
-                var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
-                foreach (var note in noteViewModel)
+                var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+                foreach (var note in notes)
                 {
                     note.CanUserEdit = note.UserId == userId;
                 }
-                return View(noteViewModel);
+                model.Notes = notes;
+                model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+                model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+                return View(model);
             }
             catch (ArgumentException ex)
             {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // log
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
@@ -107,21 +116,28 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 var userId = this.User.GetId();
                 var user = await this.userService.GetUserByIdAsync(userId);
-
+                var model = new IndexNoteViewModel();
                 var logbookId = user.CurrentLogbookId;
                 if (!user.CurrentLogbookId.HasValue)
                 {
                     return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
                 }
                 var notesDTO = await this.noteService.ShowLogbookNotesWithActiveStatusAsync(userId, user.CurrentLogbookId.Value);
-                var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
-                foreach (var note in noteViewModel)
+                var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+                foreach (var note in notes)
                 {
                     note.CanUserEdit = note.UserId == userId;
                 }
-                return View(noteViewModel);
+                model.Notes = notes;
+                model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+                model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+                return View(model);
             }
             catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
             {
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
@@ -174,9 +190,13 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
                 return RedirectToAction("Error", "Home");
             }
-
             catch (ArgumentException ex)
             {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // log error log for net
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
@@ -224,9 +244,16 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
             catch (ArgumentException ex)
             {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // log error log for net
+                //StatusMessage = ex.Message;
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
+
         }
 
         [HttpPost]
@@ -254,44 +281,137 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
             catch (ArgumentException ex)
             {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // log error log for net
+                //StatusMessage = ex.Message;
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
         }
 
-        public async Task<IActionResult> Search(NoteViewModel model, string searchCriteria)
+        [HttpGet]
+        public async Task<IActionResult> Search(IndexNoteViewModel model, string searchCriteria)
         {
             var userId = this.User.GetId();
             var user = await this.userService.GetUserByIdAsync(userId);
-
+            
             var logbookId = user.CurrentLogbookId;
             if (!user.CurrentLogbookId.HasValue)
             {
                 return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
             }
             var notesDTO = await this.noteService
-                                   .SearchNotesByDateAndStringStringAsync(userId, user.CurrentLogbookId.Value,
-                                                                          model.StartDate, model.EndDate, searchCriteria);
-            var noteViewModel = notesDTO.Select(x => x.MapFrom()).ToList();
-            return View(noteViewModel);
+                                     .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
+                                                                          model.StartDate, model.EndDate, model.CategoryId, searchCriteria);
+            model.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+            model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+            model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+            return View(model);
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetFifteenNotesById(int? currPage)
+        //{
+        //    try
+        //    {
+        //        //Authorize
+
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest();
+        //        }
+
+        //        var userId = this.User.GetId();
+        //        var user = await this.userService.GetUserByIdAsync(userId);
+
+        //        var logbookId = user.CurrentLogbookId;
+        //        if (!user.CurrentLogbookId.HasValue)
+        //        {
+        //            return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
+        //        }
+
+        //        var currentPage = currPage ?? 1;
+
+        //        var totalPages = await this.noteService.GetPageCountForNotesAsync(15, user.CurrentLogbookId.Value);
+        //        var fifteenNotesById = await noteService.Get15NotesByIdAsync(currentPage, user.CurrentLogbookId.Value);
+        //        var result = fifteenNotesById.Select(x => x.MapFrom()).ToList();
+
+
+        //        //var viewModel = new UserListViewModel()
+        //        //{
+        //        //    CurrPage = currentPage,
+        //        //    TotalPages = totalPages,
+        //        //    FiveUsersById = result
+        //        //};
+
+        //        if (totalPages > currentPage)
+        //        {
+        //            viewModel.NextPage = currentPage + 1;
+        //        }
+
+        //        if (currentPage > 1)
+        //        {
+        //            viewModel.PrevPage = currentPage - 1;
+        //        }
+
+        //        return PartialView("_UserListTable", viewModel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         [HttpGet]
         public async Task<IActionResult> GetAllNoteCategories()
         {
             try
             {
-                var categories = await this.noteService.GetNoteCategoriesAsync();
+                //var categories = await this.noteService.GetNoteCategoriesAsync();
+                var cacheCategories = await CacheNoteCategories();
 
-                return Json(categories);
+                return Json(cacheCategories);
             }
             catch (ArgumentException ex)
             {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // log error log for net
+                //StatusMessage = ex.Message;
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllLogbooksByUser()
+        {
+            try
+            {
+                var userId = this.User.GetId();
+                //var categories = await this.noteService.GetNoteCategoriesAsync();
+                var cacheLogbooks = await CacheLogbooks(userId);
+
+                return Json(cacheLogbooks);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                // log error log for net
+                //StatusMessage = ex.Message;
+                StatusMessage = ex.Message;
+                return RedirectToAction("Error", "Home");
+            }
+        }
 
         private async Task<NoteViewModel> CreateDropdownNoteCategories(NoteViewModel model)
         {
@@ -328,18 +448,17 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
         private async Task<IReadOnlyCollection<NoteGategoryDTO>> CacheNoteCategories()
         {
-            var cashedCategories = await cache.GetOrCreateAsync<IReadOnlyCollection<NoteGategoryDTO>>("Categories", async (cacheEntry) =>
+            var cashedCategories = await cache.GetOrCreateAsync<IReadOnlyCollection<NoteGategoryDTO>>("NoteCategories", async (cacheEntry) =>
             {
                 cacheEntry.SlidingExpiration = TimeSpan.FromDays(1);
                 return await this.noteService.GetNoteCategoriesAsync();
             });
-
             return cashedCategories;
         }
 
         private async Task<ManagerViewModel> CreateDropdownLogbooks(ManagerViewModel model)
         {
-            var cashedLogbooks = await CacheLogbooks();
+            var cashedLogbooks = await CacheLogbooks(model.Id);
 
             model.Logbooks = cashedLogbooks.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
@@ -349,7 +468,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private async Task<ManagerViewModel> EditDropdownLogbooks(ManagerViewModel model)
         {
 
-            var cashedLogbooks = await CacheLogbooks();
+            var cashedLogbooks = await CacheLogbooks(model.Id);
 
             List<SelectListItem> selectLogbooks = new List<SelectListItem>();
 
@@ -370,10 +489,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             return model;
         }
 
-        private async Task<IReadOnlyCollection<LogbookDTO>> CacheLogbooks()
+        private async Task<IReadOnlyCollection<LogbookDTO>> CacheLogbooks(string userId)
         {
-            var userId = this.User.GetId();
-
             var cashedLogbooks = await cache.GetOrCreateAsync<IReadOnlyCollection<LogbookDTO>>("Logbooks", async (cacheEntry) =>
             {
                 cacheEntry.SlidingExpiration = TimeSpan.FromDays(1);

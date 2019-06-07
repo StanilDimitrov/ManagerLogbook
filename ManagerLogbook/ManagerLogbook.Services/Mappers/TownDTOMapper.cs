@@ -16,8 +16,8 @@ namespace ManagerLogbook.Services.Mappers
             return new TownDTO()
             {
                 Id = entity.Id,
-                TownName = entity.Name,
-                BusinessUnits = entity.BusinessUnits.Select(x => x.ToDTO()).ToList()
+                Name = entity.Name
+               //BusinessUnits = entity.BusinessUnits.Select(x => x.ToDTO()).ToList()
             };
         }
     }

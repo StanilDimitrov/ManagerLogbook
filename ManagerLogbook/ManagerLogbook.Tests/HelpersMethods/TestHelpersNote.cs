@@ -34,8 +34,8 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 UserId = TestUser1().Id,
                 Logbook = TestLogbook1(),
                 CreatedOn = DateTime.Now.AddDays(-2),
-                NoteCategory = TestNoteCategory1(),
-                NoteCategoryId = TestNoteCategory1().Id
+                NoteCategory = TestNoteCategory2(),
+                NoteCategoryId = TestNoteCategory2().Id
             };
         }
 
@@ -160,7 +160,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 IsActiveTask = true,
                 Image = "abd22cec-9df6-43ea-b5aa-991689af55d1",
                 CreatedOn = DateTime.Now,
-                NoteCategoryName = "Task"
+                CategoryName = "Task"
             };
         }
     }

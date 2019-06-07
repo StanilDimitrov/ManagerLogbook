@@ -68,8 +68,21 @@ button.logout-btn:hover {
     color: white;
 }
 
+.padding-bottom-9 {
+    padding-bottom:9% !important;
+}
+
+.padding-custom{
+    padding-bottom:9% !important;
+    padding-top:4% !important;
+}
+
 .footer-bg-image {
     background-image: url(../img/background/bg-footer.jpg);
+}
+
+li:hover {
+    cursor: pointer !important;
 }
 
 .button-custom {

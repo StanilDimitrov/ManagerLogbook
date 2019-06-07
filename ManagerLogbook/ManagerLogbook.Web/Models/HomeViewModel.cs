@@ -9,10 +9,14 @@ namespace ManagerLogbook.Web.Models
     {
         public IReadOnlyCollection<BusinessUnitViewModel> BusinessUnits { get; set; }
 
-        public IReadOnlyCollection<TownViewModel> Cities { get; set; }
+        public IReadOnlyCollection<TownViewModel> Towns { get; set; }
 
-        public int HotelsCount { get; set; }
+        public IReadOnlyCollection<BusinessUnitCategoryViewModel> Categories { get; set; }
 
-        public int RestaurantsCount { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+
+        public int TownId { get; set; }
+        public string TownName { get; set; }
     }
 }

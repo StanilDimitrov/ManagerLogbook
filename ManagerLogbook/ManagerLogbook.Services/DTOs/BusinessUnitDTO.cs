@@ -6,7 +6,7 @@ namespace ManagerLogbook.Services.DTOs
     {
         public int Id { get; set; }
 
-        public string BrandName { get; set; }
+        public string Name { get; set; }
 
         public string Address { get; set; }
 
@@ -18,7 +18,7 @@ namespace ManagerLogbook.Services.DTOs
 
         public string Picture { get; set; }
 
-        public string BusinessUnitCategoryName { get; set; }
+        public string CategoryName { get; set; }
 
         public string BusinessUnitTownName { get; set; }
     }

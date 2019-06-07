@@ -15,7 +15,7 @@ namespace ManagerLogbook.Web.Mappers
                 UserName = dto.UserName,
                 UserId = dto.UserId,
                 IsActiveTask = dto.IsActiveTask,
-                CategoryName = dto.NoteCategoryName,
+                CategoryName = dto.CategoryName,
                 CreatedOn = dto.CreatedOn
             };
         }

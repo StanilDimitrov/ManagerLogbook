@@ -40,7 +40,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 mockedValidator.Verify(x => x.IsDescriptionIsNullOrEmpty(description), Times.Exactly(1));
                 Assert.AreEqual(noteDTO.Id, 1);
                 Assert.AreEqual(noteDTO.Description, description);
-                Assert.IsNull(noteDTO.NoteCategoryName);
+                Assert.IsNull(noteDTO.CategoryName);
                 Assert.IsFalse(noteDTO.IsActiveTask);
             }
         }
@@ -161,7 +161,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 mockedValidator.Verify(x => x.IsDescriptionInRange(description), Times.Exactly(1));
                 Assert.AreEqual(noteDTO.Id, 1);
                 Assert.AreEqual(noteDTO.Description, description);
-                Assert.AreEqual(noteDTO.NoteCategoryName, TestHelpersNote.TestNoteCategory2().Name);
+                Assert.AreEqual(noteDTO.CategoryName, TestHelpersNote.TestNoteCategory2().Name);
                 Assert.IsTrue(noteDTO.IsActiveTask);
             }
         }

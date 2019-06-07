@@ -15,7 +15,7 @@ namespace ManagerLogbook.Services.Mappers
             return new BusinessUnitCategoryDTO()
             {
                 Id = entity.Id,
-                CategoryName = entity.Name
+                Name = entity.Name
             };
         }
     }

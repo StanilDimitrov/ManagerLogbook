@@ -9,6 +9,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
 {
     public class ManagerViewModel
     {
+        public string Id { get; set; }
+
         public string Avatar { get; set; }
 
         public IFormFile AvatarImage { get; set; }

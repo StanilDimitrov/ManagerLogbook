@@ -264,6 +264,21 @@ $('#add-note-global-button').click(function (event)
         });
 });
 
+$('#change-logbook-global-button').click(function (event) {
+    $.get("/Manager/Notes/GetAllLogbooksByUser")
+        .done(function (response) {
+            var s = '<option value="-1" selected disabled hidden>Please Select Logbook</option>';
+            for (var i = 0; i < response.length; i++) {
+                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            }
+
+            $("#logbooks-selector").html(s);
+
+        }).fail(function (response) {
+
+        });
+});
+
 
 //$("a").click(function () {
 //    //get data from link
@@ -291,5 +306,11 @@ $('#myModalRegister').on('hidden.bs.modal', function () {
 
 $('#myModalNote').on('hidden.bs.modal', function () {
     $(this).find('form').trigger('reset');
+})
+
+$('#editModalNote').on('hidden.bs.modal', function () {
+})
+
+$('#logbookModalNote').on('hidden.bs.modal', function () {
 })
 

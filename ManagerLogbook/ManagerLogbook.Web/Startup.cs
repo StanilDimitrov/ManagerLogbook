@@ -4,6 +4,7 @@ using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.Providers;
+using ManagerLogbook.Web.Hubs;
 using ManagerLogbook.Web.Services;
 using ManagerLogbook.Web.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -52,6 +53,7 @@ namespace ManagerLogbook.Web
             services.AddScoped<ILogbookService, LogbookService>();
             services.AddScoped<IImageOptimizer, ImageOptimizer>();
             services.AddMemoryCache();
+            services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -71,10 +73,18 @@ namespace ManagerLogbook.Web
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<CommentHub>("/noteHub");
+                    
+            });
           
 
             app.UseMvc(routes =>
             {
+                
+
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");

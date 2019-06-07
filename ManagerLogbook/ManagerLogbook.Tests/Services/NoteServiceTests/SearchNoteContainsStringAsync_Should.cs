@@ -31,8 +31,8 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => sut.SearchNotesByDateAndStringStringAsync(TestHelpersNote.TestUser2().Id,
-                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null));
+                var ex = await Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => sut.SearchNotesAsync(TestHelpersNote.TestUser2().Id,
+                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null, null));
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, TestHelpersNote.TestUser2().UserName));
             }
         }
@@ -47,8 +47,8 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SearchNotesByDateAndStringStringAsync(TestHelpersNote.TestUser2().Id,
-                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SearchNotesAsync(TestHelpersNote.TestUser2().Id,
+                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null, null));
                 Assert.AreEqual(ex.Message, ServicesConstants.UserNotFound);
             }
         }
@@ -62,6 +62,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 await arrangeContext.Notes.AddAsync(TestHelpersNote.TestNote1());
                 await arrangeContext.Notes.AddAsync(TestHelpersNote.TestNote2());
                 await arrangeContext.Notes.AddAsync(TestHelpersNote.TestNote3());
+                await arrangeContext.NoteCategories.AddAsync(TestHelpersNote.TestNoteCategory1());
                 await arrangeContext.UsersLogbooks.AddAsync(TestHelpersNote.TestUsersLogbooks1());
                 await arrangeContext.SaveChangesAsync();
             }
@@ -71,8 +72,8 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
-                var notesDTO = await sut.SearchNotesByDateAndStringStringAsync(TestHelpersNote.TestUser1().Id,
-                                                                     TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, "room37");
+                var notesDTO = await sut.SearchNotesAsync(TestHelpersNote.TestUser1().Id,
+                                                                     TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, 2,"room37");
                 Assert.AreEqual(notesDTO.Count, 2);
             }
         }

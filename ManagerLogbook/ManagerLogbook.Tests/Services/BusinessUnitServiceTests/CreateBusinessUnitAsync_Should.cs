@@ -40,7 +40,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
                 mockBusinessValidator.Verify(x => x.IsPhoneNumberValid("0123456789"), Times.Exactly(1));
                 mockBusinessValidator.Verify(x => x.IsEmailValid("info@hilton.com"), Times.Exactly(1));
 
-                Assert.AreEqual(businessUnitDTO.BrandName, "Hilton");
+                Assert.AreEqual(businessUnitDTO.Name, "Hilton");
                 Assert.AreEqual(businessUnitDTO.Address, "Cerni Vryh 15");
                 Assert.AreEqual(businessUnitDTO.PhoneNumber, "0123456789");
                 Assert.AreEqual(businessUnitDTO.Email, "info@hilton.com");

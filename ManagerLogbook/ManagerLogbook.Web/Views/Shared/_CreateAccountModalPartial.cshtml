@@ -1,4 +1,4 @@
-﻿@model RegisterViewModel
+﻿@*@model RegisterViewModel*@
 
 <!-- Create Account Modal -->
 <div class="modal fade" id="myModalRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -16,13 +16,13 @@
                 <form id="submit-form-account" asp-area="Admin" asp-controller="Create" asp-action="Register" method="post" class="loginForm">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
-                        <input asp-for="UserName" class="form-control" placeholder="Username">
-                        <span asp-validation-for="UserName" class="text-danger-custom"></span>
+                        <input name="UserName" class="form-control" placeholder="Username">
+                        @*<span asp-validation-for="UserName" class="text-danger-custom"></span>*@
 
                     </div>
                     <div class="form-group">
                         <i class="fa fa-envelope" aria-hidden="true"></i>
-                        <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Email">
+                        <input name="Email" type="email" class="form-control" id="email" placeholder="Email">
                     </div>
                     <div class="form-group">
                         <i class="fa fa-lock" aria-hidden="true"></i>
@@ -32,7 +32,7 @@
                         <i class="fa fa-lock" aria-hidden="true"></i>
                         <input name="ConfirmPassword" type="password" class="form-control" placeholder="Password" required="" *>
                     </div>
-                    <div style="padding-bottom:9%">
+                    <div class="padding-bottom-8">
                         <div class="contactSelect">
                             <select name="CategoryName" class="select-drop">
                                 <option value="0">Select Category</option>

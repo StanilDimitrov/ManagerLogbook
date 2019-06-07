@@ -8,7 +8,7 @@ namespace ManagerLogbook.Services.DTOs
     {
         public int Id { get; set; }
 
-        public string TownName { get; set; }
+        public string Name { get; set; }
 
         public IReadOnlyCollection<BusinessUnitDTO> BusinessUnits { get; set; }
     }

@@ -34,10 +34,11 @@
     @*<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">*@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
-
     <!-- CUSTOM CSS -->
     <link href="/assets/css/app.css" rel="stylesheet">
     <link href="~/assets/css/custom.css" rel="stylesheet">
+
+   
 
     <link rel="stylesheet" href="/assets/css/default.css" id="option_color">
 
@@ -108,7 +109,6 @@
                                         @if (User.IsInRole("Manager"))
                                         {
                                             <li class=""><a asp-area="Manager" asp-controller="Notes" asp-action="Index">Dashboard</a></li>
-                                            <li class=""><a data-toggle="modal" data-target="#myModalLogbook">Switch Logbook</a></li>
                                         }
                                         @if (User.IsInRole("Admin"))
                                         {
@@ -142,11 +142,10 @@
         <!-- Start Login Modal -->
         @await Html.PartialAsync("_LoginModalPartial")
         <!-- End Login Modal -->
-        <!-- Start Login Modal -->
-        @await Html.PartialAsync("_LogbookModalPartial")
-        <!-- End Login Modal -->
-
     </div>
+
+
+
     <script src="/assets/plugins/jquery/jquery.min.js"></script>
     <script src="/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
     <script src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
@@ -167,6 +166,9 @@
     <script src="/assets/js/map.js"></script>
     <script src="/assets/js/app.js"></script>
     <script src="/assets/js/custom.js"></script>
+
+    <!-- AutoComplete -->
+    <script src="/assets/js/autocomplete.js"></script>
 
 
     @await Html.PartialAsync("_ValidationScriptsPartial")

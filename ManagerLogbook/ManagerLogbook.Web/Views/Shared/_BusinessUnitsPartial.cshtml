@@ -12,7 +12,7 @@
                 <div class="resultBar barSpaceAdjust">
                     <h2>We found <span>@*@Model.BusinessUnits.Count()*@</span> Results for you</h2>
                 </div>
-                @*@foreach (var businessUnit in Model.BusinessUnits)
+                @foreach (var businessUnit in Model.BusinessUnits)
         {
             <div class="listContent">
                 <div class="row">
@@ -23,19 +23,19 @@
                     </div>
                     <div class="col-sm-7 col-xs-12">
                         <div class="categoryDetails">
-                            <h2><a href="listing-details-right.html" style="color: #222222">Think Coffee</a> <span class="likeCount"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span></h2>
-                            <p>@businessUnit.Name<span class="placeName">@businessUnit.BusinessUnitTownName</span></p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed eiusmod tempor incididunt  labore et dolore magna aliqua. </p>
+                            <h2><a href="listing-details-right.html" style="color: #222222">@businessUnit.Name </a> <span class="likeCount"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span></h2>
+                            <p>@businessUnit.Address <span class="placeName">@businessUnit.TownName </span></p>
+                            <p>@businessUnit.Information </p>
                             <ul class="list-inline list-tag">
-                                <li><a href="listings-half-screen-map-list.html">@businessUnit.BusinessUnitCategoryName</a></li>
+                                <li><a href="listings-half-screen-map-list.html">@businessUnit.CategoryName</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        }*@
+        }
 
-                <div class="listContent">
+                @*<div class="listContent">
                     <div class="row">
                         <div class="col-sm-5 col-xs-12">
                             <div class="categoryImage">
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>*@
                 <div class="paginationCommon blogPagination categoryPagination text-center" style="padding-bottom:0%;">
                     <nav aria-label="Page navigation">
                         <ul class="pagination ">

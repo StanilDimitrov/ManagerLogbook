@@ -13,6 +13,7 @@ namespace ManagerLogbook.Web.Mappers
         {
             return new ManagerViewModel()
             {
+                Id = dto.Id,
                 CurrentLogbookId = dto.CurrentLogbookId,
                 Email = dto.Email,
                 Avatar = dto.Picture,

@@ -36,7 +36,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 mockBusinessValidator.Verify(x => x.IsNameInRange("Hostel"), Times.Exactly(1));
 
-                Assert.AreEqual(businessUnitCategoryDTO.CategoryName, "Hostel");
+                Assert.AreEqual(businessUnitCategoryDTO.Name, "Hostel");
             }
         }
 

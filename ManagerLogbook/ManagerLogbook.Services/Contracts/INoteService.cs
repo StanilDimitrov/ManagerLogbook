@@ -1,5 +1,4 @@
-﻿using ManagerLogbook.Data.Models;
-using ManagerLogbook.Services.DTOs;
+﻿using ManagerLogbook.Services.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,12 +25,14 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days);
 
-        Task<IReadOnlyCollection<NoteDTO>> SearchNotesByDateAndStringStringAsync(string userId, int logbookId, DateTime startDate,
-                                                                                 DateTime endDate, string criteria);
-
+        Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync(string userId, int logbookId, DateTime startDate,
+                                                                                 DateTime endDate, int? categoryId, string criteria);
         Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesAsync(string userId, int logbookId);
 
         Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync();
 
+        Task<IReadOnlyCollection<NoteDTO>> Get15NotesByIdAsync(int currPage, int logbookId);
+
+        Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId);
     }
 }

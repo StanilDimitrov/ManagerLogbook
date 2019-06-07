@@ -183,7 +183,7 @@ namespace ManagerLogbook.Services
                     note.IsActiveTask = true;
                 }
             }
-            note.CreatedOn = DateTime.Now;
+           
             await this.context.SaveChangesAsync();
 
             return note.ToDTO();
@@ -271,8 +271,8 @@ namespace ManagerLogbook.Services
 
         }
 
-        public async Task<IReadOnlyCollection<NoteDTO>> SearchNotesByDateAndStringStringAsync(string userId, int logbookId, 
-                                                                                             DateTime startDate, DateTime endDate, string criteria)
+        public async Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync(string userId, int logbookId, 
+                                                                                             DateTime startDate, DateTime endDate, int? categoryId, string criteria)
 
         {
             var user = await this.context.Users.FindAsync(userId);
@@ -292,17 +292,44 @@ namespace ManagerLogbook.Services
                 endDate = DateTime.Now;
             }
 
-            var result =  await this.context.Notes
-               .Include(mt => mt.Logbook)
-               .Include(mt => mt.NoteCategory)
-               .Include(mt => mt.User)
-                   .ThenInclude(lb => lb.UsersLogbooks)
+            IQueryable<Note> searchCollection = this.context.Notes
+               
                .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(criteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-               .OrderByDescending(x => x.CreatedOn)
-               .Select(x => x.ToDTO())
-               .ToListAsync();
+               .OrderByDescending(x => x.CreatedOn);
 
-            return result;
+            IQueryable<Note> searchCategoryCollection = this.context.Notes
+               .Where(mt => mt.NoteCategoryId == categoryId)
+               .OrderByDescending(x => x.CreatedOn);
+
+            var search = searchCollection.Intersect(searchCategoryCollection);
+
+            var notesDTO = await search
+                              .Include(mt => mt.Logbook)
+                              .Include(mt => mt.NoteCategory)
+                              .Include(mt => mt.User)
+                                .ThenInclude(lb => lb.UsersLogbooks)
+                              .Select(x => x.ToDTO())
+                              .ToListAsync();
+
+            return notesDTO;
+        }
+
+        public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
+        {
+            IQueryable<BusinessUnit> searchCollection = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
+
+            IQueryable<BusinessUnit> searchCategoryCollection = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId);
+
+            IQueryable<BusinessUnit> searchTownCollection = this.context.BusinessUnits.Where(t => t.TownId == townId);
+
+            var search = searchTownCollection.Intersect(searchCollection.Intersect(searchCategoryCollection));
+
+            var businessUnitsDTO = await search.Include(t => t.Town)
+                              .Include(buc => buc.BusinessUnitCategory)
+                              .Select(x => x.ToDTO())
+                              .ToListAsync();
+
+            return businessUnitsDTO;
         }
 
         public async Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync()
@@ -315,6 +342,40 @@ namespace ManagerLogbook.Services
            return result;
         }
 
+        public async Task<IReadOnlyCollection<NoteDTO>> Get15NotesByIdAsync(int currPage, int logbookId)
+        {
+            if (currPage == 1)
+            {
+               return await context.Notes
+                                         .Where(x => x.LogbookId == logbookId)
+                                         .OrderByDescending(x => x.Id)
+                                         .Take(15)
+                                         .Select(x => x.ToDTO())
+                                         .ToListAsync();
+
+            }
+            else
+            {
+                return  await context
+                                    .Notes
+                                    .Where(x => x.LogbookId == logbookId)
+                                    .OrderByDescending(x => x.Id)
+                                    .Skip((currPage - 1) * 15)
+                                    .Take(15)
+                                    .Select(x => x.ToDTO())
+                                    .ToListAsync();
+
+            }
+        }
+
+        public async Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId)
+        {
+            var allNotesCount = await context.Notes.Where(x => x.LogbookId == logbookId).CountAsync();
+
+            int pageCount = (allNotesCount - 1) / notesPerPage + 1;
+
+            return pageCount;
+        }
     }
 }
 

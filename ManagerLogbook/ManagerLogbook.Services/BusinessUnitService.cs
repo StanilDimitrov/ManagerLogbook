@@ -279,17 +279,17 @@ namespace ManagerLogbook.Services
             return businessUnit.ToDTO();
         }
 
-        public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int businessUnitCategoryId, int townId)
+        public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
         {
             IQueryable<BusinessUnit> searchCollection = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
 
-            IQueryable<BusinessUnit> searchCategoryCollection = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId);
+            //IQueryable<BusinessUnit> searchCategoryCollection = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId);
 
-            IQueryable<BusinessUnit> searchTownCollection = this.context.BusinessUnits.Where(t => t.TownId == townId);
+            //IQueryable<BusinessUnit> searchTownCollection = this.context.BusinessUnits.Where(t => t.TownId == townId);
 
-            var search = searchTownCollection.Intersect(searchCollection.Intersect(searchCategoryCollection));
+            //var search = searchTownCollection.Intersect(searchCollection.Intersect(searchCategoryCollection));
 
-            var businessUnitsDTO = await search.Include(t => t.Town)
+            var businessUnitsDTO = await searchCollection.Include(t => t.Town)
                               .Include(buc => buc.BusinessUnitCategory)
                               .Select(x => x.ToDTO())
                               .ToListAsync();

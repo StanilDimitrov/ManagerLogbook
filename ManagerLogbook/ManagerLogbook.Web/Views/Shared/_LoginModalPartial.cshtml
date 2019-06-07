@@ -1,4 +1,4 @@
-﻿@model LoginViewModel
+﻿@*@model LoginViewModel*@
 
 <!-- Login Modal -->
 <div class="modal fade" id="myModalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -16,23 +16,13 @@
                 <form asp-controller="Account" asp-action="Login" method="post" class="loginForm">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
-                        <input asp-for="UserName" class="form-control" id="username" placeholder="Username">
-                        <span asp-validation-for="UserName" class="text-danger-custom"></span>
+                        <input name="UserName" class="form-control" id="username" placeholder="Username">
+                        <span name="UserName" class="text-danger-custom"></span>
                     </div>
                     <div class="form-group">
                         <i class="fa fa-lock" aria-hidden="true"></i>
-                        <input asp-for="Password" type="password" class="form-control" id="password" placeholder="Password">
-                        <span asp-validation-for="Password" class="text-danger-custom"></span>
-                    </div>
-                    <div style="margin-bottom:9%">
-                        <div class="contactSelect" style="padding-bottom:6%">
-                            <select name="CategoryName" class="select-drop">
-                                <option value="0">Select Category</option>
-                                <option value="1">Restaurant</option>
-                                <option value="2">Bar</option>
-                                <option value="3">Cafe</option>
-                            </select>
-                        </div>
+                        <input name="Password" type="password" class="form-control" id="password" placeholder="Password">
+                        <span name="Password" class="text-danger-custom"></span>
                     </div>
                     <div class="form-group">
                         @*<i class="fa fa-search" aria-hidden="true"></i>*@
@@ -40,7 +30,7 @@
 
                     </div>
                     <div class="checkbox">
-                        <label><input asp-for="RememberMe" type="checkbox"> Remember me</label>
+                        <label><input name="RememberMe" type="checkbox"> Remember me</label>
                         <a asp-action="ForgotPassword" class="pull-right link">Fogot Password?</a>
                     </div>
                 </form>

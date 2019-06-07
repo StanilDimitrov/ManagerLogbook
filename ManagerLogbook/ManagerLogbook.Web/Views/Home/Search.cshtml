@@ -1,0 +1,13 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<div class="col-xs-12">
+    <div class="table-responsive-md font-custom">
+        @await Html.PartialAsync("_BusinessUnitsPartial", Model)
+    </div>
+</div>
+
+@await Html.PartialAsync("_FooterPartial", Model)

@@ -5,7 +5,7 @@ namespace ManagerLogbook.Web.Mappers
 {
     public static class ReviewViewModelMapper
     {
-        public static ReviewViewModel ToDTO(this ReviewDTO dto)
+        public static ReviewViewModel MapFrom(this ReviewDTO dto)
         {
             return new ReviewViewModel()
             {

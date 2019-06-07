@@ -22,7 +22,7 @@ namespace ManagerLogbook.Services.Mappers
                 UserName = entity.User.UserName,
                 UserId = entity.UserId,
                 CategoryId = entity.NoteCategoryId,
-                NoteCategoryName = entity.NoteCategory?.Name
+                CategoryName = entity.NoteCategory?.Name
             };
 
             return dto;

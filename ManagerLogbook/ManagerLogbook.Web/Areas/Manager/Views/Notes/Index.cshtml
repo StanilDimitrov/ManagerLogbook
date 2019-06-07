@@ -1,77 +1,12 @@
 ﻿@model IndexNoteViewModel
 <!-- Dashboard header -->
 
-
-
 <section class="clearfix bg-dark listyPage">
     <div class="container">
         <div class="row">
-            <div class="col-xs-12">
-                <div class="dashboardBoxBg mb30">
-                    <div class="profileIntro">
-                        <div class="row font-custom">
-                            <div class="row">
-                                <form class="example" asp-area="Manager" asp-controller="Notes" asp-action="Search" method="get">
-                                    <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                                        <label for="dateAdded">Start Date</label>
-                                        <div class="dateSelect">
-                                            <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
-                                                <input name="StartDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
-                                                <div class="input-group-addon">
-                                                    <i class="icon-listy icon-calendar"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                                        <label for="dateModified">End Date</label>
-                                        <div class="dateSelect">
-                                            <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
-                                                <input name="EndDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
-                                                <div class="input-group-addon">
-                                                    <i class="icon-listy icon-calendar"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                                        <label for="dateModified">Category</label>
-                                        <div class="contactSelect">
-                                            <select name="CategoryId" class="select-drop">
-                                                <option value="-1" selected disabled hidden></option>
-                                                @foreach (var category in Model.Categories)
-                                                {
-                                                    <option value="@category.CategoryId">@category.CategoryName</option>
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3 col-sm-6 col-xs-12">
-                                        <label for="amount">Search</label>
-                                        <div class="input-group">
-                                            <input type="text" class="form-control width-100" placeholder="Search" name="searchCriteria">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default width-100" type="submit"><i class="icon-listy icon-search-2"></i></button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    @*<div class="form-group">
-                                            <button type="submit" class="btn btn-primary">Search <i class="fa fa-search" aria-hidden="true"></i></button>
-                                        </div>*@
-                                </form>
-                            </div>
-                        </div>
-                        <span class="btn-group btn-panel">
-                            <a asp-area="Manager" asp-controller="Notes" asp-action="NotesForDaysBefore" class="btn btn-primary active">Daily</a>
-                            <a asp-area="Manager" asp-controller="Notes" asp-action="NotesForDaysBefore" asp-route-id="7" class="btn btn-primary">7 Days</a>
-                            <a asp-area="Manager" asp-controller="Notes" asp-action="NotesForDaysBefore" asp-route-id="30" class="btn btn-primary">30 Days</a>
-                            <a asp-area="Manager" asp-controller="Notes" asp-action="ActiveNotes" class="btn btn-primary" asp-route-id="3650">Active</a>
-                            <a asp-area="Manager" asp-controller="Notes" asp-action="Index" class="btn btn-primary">All</a>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
+            <!-- Start Search Menu -->
+            @await Html.PartialAsync("_SearchMenuPartial", Model)
+            <!-- End Search Menu -->
             <div class="col-xs-12">
                 <div class="table-responsive-md font-custom">
                     @await Html.PartialAsync("_NoteListPartial", Model)
@@ -106,18 +41,20 @@
         </div>*@
 
 </section>
-
+<!-- Start Note Modal -->
+@await Html.PartialAsync("_CreateNoteModalPartial")
+<!-- End Note Modal -->
 <!-- Start Note Modal -->
 @await Html.PartialAsync("_EditModalPartial")
 
 <!-- End Note Modal -->
-
 <!-- Start Login Logbook -->
 @await Html.PartialAsync("_LogbookModalPartial")
 <!-- End Login Logbook -->
 
 
 @section Scripts{
+
 
     @*<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>

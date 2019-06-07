@@ -43,7 +43,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
                 mockBusinessValidator.Verify(x => x.IsDescriptionInRange("This is information for BU"), Times.Exactly(1));
                 mockBusinessValidator.Verify(x => x.IsEmailValid("info@vitosha.com"), Times.Exactly(1));
 
-                Assert.AreEqual(businessUnit.BrandName, "Vitosha");
+                Assert.AreEqual(businessUnit.Name, "Vitosha");
                 Assert.AreEqual(businessUnit.Address, "Cerni Vryh 25");
                 Assert.AreEqual(businessUnit.PhoneNumber, "9876543210");
                 Assert.AreEqual(businessUnit.Information, "This is information for BU");                

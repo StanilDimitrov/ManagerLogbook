@@ -18,11 +18,11 @@ namespace ManagerLogbook.Services.Mappers
                 Id = entity.Id,
                 Address = entity.Address,
                 PhoneNumber = entity.PhoneNumber,
-                BrandName = entity.Name,
+                Name = entity.Name,
                 Email = entity.Email,
                 Picture = entity.Picture,
                 Information = entity.Information,
-                BusinessUnitCategoryName = entity.BusinessUnitCategory.Name,
+                CategoryName = entity.BusinessUnitCategory.Name,
                 BusinessUnitTownName = entity.Town.Name                
             };
         }
