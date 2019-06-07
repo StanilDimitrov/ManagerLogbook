@@ -15,8 +15,8 @@ namespace ManagerLogbook.Web.Mappers
                 PhoneNumber = dto.PhoneNumber,
                 Email = dto.Email,
                 Information = dto.Information,
-                BusinessUnitCategoryName = dto.BusinessUnitCategoryName,
-                BusinessUnitTownName = dto.BusinessUnitTownName
+                CategoryName = dto.BusinessUnitCategoryName,
+                TownName = dto.BusinessUnitTownName
             };
         }
 

@@ -108,11 +108,11 @@
                                         @if (User.IsInRole("Manager"))
                                         {
                                             <li class=""><a asp-area="Manager" asp-controller="Notes" asp-action="Index">Dashboard</a></li>
-                                            <li class=""><a data-toggle="modal" data-target="#myModalLogbook">Switch Logbook</a></li>
                                         }
                                         @if (User.IsInRole("Admin"))
                                         {
-                                            <li><a data-toggle="modal" data-target="#myModalRegister">Create Account</a></li>
+                                            <li><a data-toggle="modal" data-target="#myModalRegister" style="padding-bottom:0%">Create Account</a></li>
+                                            <li><a data-toggle="modal" data-target="#myModalBusinessUnit" style="padding-bottom:0%" id="add-business-unit-global-button">Create BusinessUnit</a></li>
                                         }
                                         <li class=""> @await Html.PartialAsync("_LoginPartial")</li>
                                     </ul>
@@ -135,6 +135,9 @@
 
         <!-- Start Note Modal -->
         @await Html.PartialAsync("_CreateNoteModalPartial")
+        <!-- End Note Modal -->
+        <!-- Start BusinessUnit Modal -->
+        @await Html.PartialAsync("_CreateBusinessUnitModalPartial")
         <!-- End Note Modal -->
         <!-- Start Account Modal -->
         @await Html.PartialAsync("_CreateAccountModalPartial")

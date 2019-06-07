@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ManagerLogbook.Web.Models
 {
@@ -27,8 +30,16 @@ namespace ManagerLogbook.Web.Models
 
         public string Picture { get; set; }
 
-        public string BusinessUnitCategoryName { get; set; }
+        public IFormFile BusinessUnitPicture { get; set; }
 
-        public string BusinessUnitTownName { get; set; }
+        public int CategoryId { get; set; }
+        public IEnumerable<SelectListItem> Categories { get; set; }
+        public string CategoryName { get; set; }              
+
+        public int TownId { get; set; }
+        public IEnumerable<SelectListItem> Towns { get; set; }
+        public string TownName { get; set; }
+
+
     }
 }

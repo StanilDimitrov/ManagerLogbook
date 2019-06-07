@@ -34,7 +34,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnitDTO = await sut.CreateBusinnesUnitAsync("Hilton", "Cerni Vryh 15", "0123456789", "info@hilton.com","Information for BU",1,1);
+                var businessUnitDTO = await sut.CreateBusinnesUnitAsync("Hilton", "Cerni Vryh 15", "0123456789", "info@hilton.com","Information for BU",1,1, "picture");
                                 
                 mockBusinessValidator.Verify(x => x.IsNameInRange("Hilton"), Times.Exactly(1));
                 mockBusinessValidator.Verify(x => x.IsAddressInRange("Cerni Vryh 15"), Times.Exactly(1));
@@ -68,7 +68,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
                                 
-                var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => sut.CreateBusinnesUnitAsync("Hilton", "Cerni Vryh 15", "0123456789", "info@hilton.com", "Information for BU", 1, 1));
+                var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => sut.CreateBusinnesUnitAsync("Hilton", "Cerni Vryh 15", "0123456789", "info@hilton.com", "Information for BU", 1, 1,"picture"));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNameAlreadyExists));
             }
