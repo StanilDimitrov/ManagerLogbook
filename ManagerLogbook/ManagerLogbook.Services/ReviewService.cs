@@ -2,6 +2,7 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
 using ManagerLogbook.Services.Utils;
@@ -29,7 +30,7 @@ namespace ManagerLogbook.Services
             this.reviewEditor = reviewEditor ?? throw new ArgumentNullException(nameof(reviewEditor));
         }
 
-        public async Task<ReviewDTO> CreateReviewDTOAsync(string originalDescription, int rating, int businessUnitId)
+        public async Task<ReviewDTO> CreateReviewAsync(string originalDescription, int rating, int businessUnitId)
         {
             businessValidator.IsDescriptionInRange(originalDescription);
             businessValidator.IsRatingInRange(rating);
@@ -58,9 +59,14 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<ReviewDTO> UpdateReviewDTOAsync(int reviewId, string editedDescription)
+        public async Task<ReviewDTO> UpdateReviewAsync(int reviewId, string editedDescription)
         {
             var review = await this.context.Reviews.FindAsync(reviewId);
+
+            if (review == null)
+            {
+                throw new NotFoundException(ServicesConstants.ReviewNotFound);
+            }
 
             businessValidator.IsDescriptionInRange(editedDescription);
 
@@ -75,9 +81,14 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<ReviewDTO> MakeVisibleReviewDTOAsync(int reviewId)
+        public async Task<ReviewDTO> MakeVisibleReviewAsync(int reviewId)
         {
             var review = await this.context.Reviews.FindAsync(reviewId);
+
+            if (review == null)
+            {
+                throw new NotFoundException(ServicesConstants.ReviewNotFound);
+            }
 
             review.isVisible = true;
 
@@ -90,8 +101,15 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsDTOByBusinessUnitIdAsync(int businessUnitId)
+        public async Task<ICollection<ReviewDTO>> GetAllReviewsByBusinessUnitIdAsync(int businessUnitId)
         {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
             var result = await this.context.Reviews
                                     .Where(bu => bu.BusinessUnitId == businessUnitId)
                                     .Include(bu => bu.BusinessUnit)
@@ -101,9 +119,14 @@ namespace ManagerLogbook.Services
             return result;
         }
 
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsDTOByModeratorIdAsync(string moderatorId)
+        public async Task<ICollection<ReviewDTO>> GetAllReviewsByModeratorIdAsync(string moderatorId)
         {
             var userModerator = await this.context.Users.FindAsync(moderatorId);
+
+            if (userModerator == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
 
             var result = await this.context.Reviews
                                     .Where(bu => bu.BusinessUnitId == userModerator.BusinessUnitId)
@@ -114,8 +137,10 @@ namespace ManagerLogbook.Services
             return result;
         }
 
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsDTOByDateAsync(DateTime date)
+        public async Task<ICollection<ReviewDTO>> GetAllReviewsByDateAsync(DateTime date)
         {
+            businessValidator.IsDateValid(date);
+
             var result = await this.context.Reviews
                                      .Where(bu => bu.CreatedOn == date)
                                      .Include(bu => bu.BusinessUnit)
@@ -125,8 +150,14 @@ namespace ManagerLogbook.Services
             return result;
         }
 
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsDTOInDateRangeAsync(DateTime startDate, DateTime endDate)
+        public async Task<ICollection<ReviewDTO>> GetAllReviewsInDateRangeAsync(DateTime startDate, DateTime endDate)
         {
+            businessValidator.IsDateValid(startDate);
+            businessValidator.IsDateValid(endDate);
+
+            startDate = startDate < endDate ? startDate : endDate;
+            endDate = endDate > startDate ? endDate : startDate;
+
             var result = await this.context.Reviews
                                      .Where(bu => bu.CreatedOn >= startDate && bu.CreatedOn <= endDate)
                                      .Include(bu => bu.BusinessUnit)

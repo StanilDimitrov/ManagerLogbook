@@ -15,7 +15,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 OriginalDescription = "Original Text of Review01",
                 EditedDescription = "Original Text of Review01",
                 Rating = 1,
-                CreatedOn = new DateTime(01 / 07 / 2014),
+                CreatedOn = new DateTime(01 / 07 / 2004),
                 isVisible = false,
                 BusinessUnitId = 1
             };
@@ -27,7 +27,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
             {
                 Id = 2,
                 OriginalDescription = "Original Text of Review02",
-                EditedDescription = "Original Text of Review02",
+                EditedDescription = "Edited Text of Review02",
                 Rating = 5,
                 CreatedOn = new DateTime(04 / 14 / 2013),
                 isVisible = false,
@@ -41,9 +41,23 @@ namespace ManagerLogbook.Tests.HelpersMethods
             {
                 Id = 3,
                 OriginalDescription = "Original Text of Review03",
-                EditedDescription = "Original Text of Review03",
+                EditedDescription = "Edited Text of Review03",
                 Rating = 5,
                 CreatedOn = new DateTime(04 / 14 / 2013),
+                isVisible = false,
+                BusinessUnitId = 1
+            };
+        }
+
+        public static Review Review04()
+        {
+            return new Review
+            {
+                Id = 4,
+                OriginalDescription = "Original Text of Review04",
+                EditedDescription = "Edited Text of Review04",
+                Rating = 5,
+                CreatedOn = new DateTime(04 / 14 / 2020),
                 isVisible = false,
                 BusinessUnitId = 1
             };

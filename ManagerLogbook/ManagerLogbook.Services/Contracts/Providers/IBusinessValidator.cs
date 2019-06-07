@@ -20,5 +20,7 @@ namespace ManagerLogbook.Services.Contracts.Providers
         void IsPhoneNumberValid(string phoneNumber);
 
         void IsRatingInRange(int rating);
+
+        void IsDateValid(DateTime date);
     }
 }

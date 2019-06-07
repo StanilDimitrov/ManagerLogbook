@@ -28,6 +28,14 @@ namespace ManagerLogbook.Services
 
         public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string information, int businessUnitCategoryId, int townId)
         {
+            var checkBrandNameIfExists = await this.context.BusinessUnits
+                                           .FirstOrDefaultAsync(n => n.Name == brandName);
+
+            if (checkBrandNameIfExists != null)
+            {
+                throw new AlreadyExistsException(ServicesConstants.BusinessUnitNameAlreadyExists);
+            }
+
             businessValidator.IsNameInRange(brandName);
             businessValidator.IsAddressInRange(address);
             businessValidator.IsEmailValid(email);
@@ -75,6 +83,14 @@ namespace ManagerLogbook.Services
             if (brandName != null)
             {
                 businessValidator.IsNameInRange(brandName);
+            }
+           
+            var checkBrandNameIfExists = await this.context.BusinessUnits
+                                           .FirstOrDefaultAsync(n => n.Name == brandName);
+
+            if (checkBrandNameIfExists != null)
+            {
+                throw new AlreadyExistsException(ServicesConstants.BusinessUnitNameAlreadyExists);
             }
 
             businessUnit.Name = brandName;
@@ -146,6 +162,14 @@ namespace ManagerLogbook.Services
         {
             businessValidator.IsNameInRange(businessUnitCategoryName);
 
+            var checkBusinessUnitCategoryNameIfExists = await this.context.BusinessUnitCategories
+                                           .FirstOrDefaultAsync(n => n.Name == businessUnitCategoryName);
+
+            if (checkBusinessUnitCategoryNameIfExists != null)
+            {
+                throw new AlreadyExistsException(ServicesConstants.BusinessUnitCategoryNameAlreadyExists);
+            }
+           
             var businessUnitCategory = new BusinessUnitCategory() { Name = businessUnitCategoryName };
 
             await this.context.SaveChangesAsync();
@@ -156,6 +180,14 @@ namespace ManagerLogbook.Services
         public async Task<BusinessUnitCategoryDTO> UpdateBusinessUnitCategoryAsync(int businessUnitCategoryId, string newBusinessUnitCategoryName)
         {
             businessValidator.IsNameInRange(newBusinessUnitCategoryName);
+
+            var checkBusinessUnitCategoryNameIfExists = await this.context.BusinessUnitCategories
+                                           .FirstOrDefaultAsync(n => n.Name == newBusinessUnitCategoryName);
+
+            if (checkBusinessUnitCategoryNameIfExists != null)
+            {
+                throw new AlreadyExistsException(ServicesConstants.BusinessUnitCategoryNameAlreadyExists);
+            }
 
             var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
 
@@ -305,6 +337,23 @@ namespace ManagerLogbook.Services
                          .ToListAsync();
 
             return businessUnitsCategoriesDTO;
+        }
+
+        public async Task<IReadOnlyDictionary<string, int>> GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync()
+        {
+            var categoriesCountUnits = await this.context.BusinessUnits
+                         .Include(bu => bu.BusinessUnitCategory)
+                         .GroupBy(c => c.BusinessUnitCategory.Name)
+                         .Select(group => new
+                         {
+                             categoryName = group.Key,
+                             count = group.Count()
+                         })
+                         .OrderBy(c=>c.categoryName)
+                         .ToDictionaryAsync(x => x.categoryName, x => x.count);
+                         
+
+            return categoriesCountUnits;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace ManagerLogbook.Services.Providers
 {
-    public class BusinessValidator: IBusinessValidator
+    public class BusinessValidator : IBusinessValidator
     {
 
         public void DoesUserExists(User user)
@@ -53,11 +53,11 @@ namespace ManagerLogbook.Services.Providers
         {
             try
             {
-                var addr = new System.Net.Mail.MailAddress(email);                
+                var addr = new System.Net.Mail.MailAddress(email);
             }
             catch
             {
-                throw new ArgumentException(ServicesConstants.EmailIsNotValid,email);
+                throw new ArgumentException(ServicesConstants.EmailIsNotValid, email);
             }
         }
 
@@ -73,10 +73,24 @@ namespace ManagerLogbook.Services.Providers
 
         public void IsRatingInRange(int raiting)
         {
-            if (raiting>=0 && raiting<=5)
+            if (raiting >= 0 && raiting <= 5)
             {
                 throw new ArgumentException(ServicesConstants.RatingNotInRange);
             }
-        }       
+        }
+
+        public void IsDateValid(DateTime date)
+        {
+            DateTime checkDate;
+
+            if (DateTime.TryParse(Convert.ToString(date), out checkDate))
+            {
+
+            }
+            else
+            {
+                throw new ArgumentException(ServicesConstants.DateIsNotValid);
+            }
+        }
     }
 }

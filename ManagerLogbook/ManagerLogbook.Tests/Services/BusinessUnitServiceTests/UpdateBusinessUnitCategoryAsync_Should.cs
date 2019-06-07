@@ -64,5 +64,30 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitCategoryNotFound));
             }
         }
+
+        [TestMethod]
+        public async Task ThrowsException_UpdateBusinessUnitCategoryAlreadyExists()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsException_UpdateBusinessUnitCategoryAlreadyExists));
+
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
+                await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
+                await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit01());
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockBusinessValidator = new Mock<IBusinessValidator>();
+
+                var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
+
+                var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => sut.UpdateBusinessUnitCategoryAsync(1, TestHelperBusinessUnit.TestBusinessUnitCategory01().Name));
+
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitCategoryNameAlreadyExists));
+            }
+        }
     }
 }

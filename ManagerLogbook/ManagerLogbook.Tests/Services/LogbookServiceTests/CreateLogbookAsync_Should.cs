@@ -1,6 +1,7 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
@@ -27,6 +28,29 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.CreateLogbookAsync(null,1,"picture"));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.NameCanNotBeNullOrEmpty));
+            }
+        }
+
+        [TestMethod]
+        public async Task ThrowsExeptionWhenLogbookNameAlreadyExists()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenLogbookNameAlreadyExists));
+
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Logbooks.AddAsync(TestHelpersLogbook.TestLogbook01());
+                await arrangeContext.Notes.AddAsync(TestHelpersLogbook.TestNote01());
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedBusinessValidator = new Mock<IBusinessValidator>();
+                var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
+
+                var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => sut.CreateLogbookAsync(TestHelpersLogbook.TestLogbook01().Name,1, "picture"));
+
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.LogbookAlreadyExists));
             }
         }
 
