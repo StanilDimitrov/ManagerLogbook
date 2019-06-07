@@ -7,11 +7,11 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface IBusinessUnitService
     {
-        Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string infomration, int businessUnitCategoryId, int townId);
+        Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string infomration, int businessUnitCategoryId, int townId, string picture);
 
         Task<BusinessUnitDTO> GetBusinessUnitById(int businessUnitId);
 
-        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string infomration, string email, string picture);
+        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, string picture);
 
         Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId);
 

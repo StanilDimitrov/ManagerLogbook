@@ -63,5 +63,10 @@ namespace ManagerLogbook.Services
 
         }
 
+        public async Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsAsync()
+        {
+            
+            return null;
+        }
     }
 }

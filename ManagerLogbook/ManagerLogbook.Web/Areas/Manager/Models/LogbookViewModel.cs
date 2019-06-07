@@ -17,7 +17,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
 
         public string Picture { get; set; }
 
-        public IFormFile LogbookPictuture { get; set; }
+        public IFormFile LogbookPicture { get; set; }
 
         public string BusinessUnitName { get; set; }
 
