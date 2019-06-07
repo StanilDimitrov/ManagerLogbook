@@ -26,7 +26,7 @@ namespace ManagerLogbook.Services
             this.businessValidator = businessValidator ?? throw new ArgumentNullException(nameof(businessValidator));
         }
 
-        public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string information, int businessUnitCategoryId, int townId)
+        public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string information, int businessUnitCategoryId, int townId, string picture)
         {
             var checkBrandNameIfExists = await this.context.BusinessUnits
                                            .FirstOrDefaultAsync(n => n.Name == brandName);
@@ -42,7 +42,7 @@ namespace ManagerLogbook.Services
             businessValidator.IsPhoneNumberValid(phoneNumber);
             businessValidator.IsDescriptionInRange(information);
 
-            var businessUnit = new BusinessUnit() { Name = brandName, Address = address, PhoneNumber = phoneNumber, Email = email, Information = information, BusinessUnitCategoryId = businessUnitCategoryId, TownId = townId };
+            var businessUnit = new BusinessUnit() { Name = brandName, Address = address, PhoneNumber = phoneNumber, Email = email, Information = information, BusinessUnitCategoryId = businessUnitCategoryId, TownId = townId, Picture = picture };
 
             this.context.BusinessUnits.Add(businessUnit);
             await this.context.SaveChangesAsync();
@@ -84,7 +84,7 @@ namespace ManagerLogbook.Services
             {
                 businessValidator.IsNameInRange(brandName);
             }
-           
+
             var checkBrandNameIfExists = await this.context.BusinessUnits
                                            .FirstOrDefaultAsync(n => n.Name == brandName);
 
@@ -169,7 +169,7 @@ namespace ManagerLogbook.Services
             {
                 throw new AlreadyExistsException(ServicesConstants.BusinessUnitCategoryNameAlreadyExists);
             }
-           
+
             var businessUnitCategory = new BusinessUnitCategory() { Name = businessUnitCategoryName };
 
             await this.context.SaveChangesAsync();
@@ -325,9 +325,30 @@ namespace ManagerLogbook.Services
                               .Include(buc => buc.BusinessUnitCategory)
                               .Select(x => x.ToDTO())
                               .ToListAsync();
-
             return businessUnitsDTO;
         }
+
+        //public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
+        //{
+        //    IQueryable<int> searchCollectionInt = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower())).Select(x => x.Id);
+
+        //    IQueryable<int> searchCategoryCollectionInt = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId).Select(x => x.Id);
+
+        //    IQueryable<int> searchTownCollectionInt = this.context.BusinessUnits.Where(t => t.TownId == townId).Select(x => x.Id);
+
+        //    var searchInt = searchTownCollectionInt.Intersect(searchCollectionInt.Intersect(searchCategoryCollectionInt));
+
+        //    var businessUnitsIDs = new List<BusinessUnit>();
+        //    foreach (var id in searchInt)
+        //    {
+        //        var currentBusinessUnit = await this.context.BusinessUnits.FindAsync(id);
+        //        businessUnitsIDs.Add(currentBusinessUnit);
+        //    }
+
+        //    var businessUnitsDTOid = businessUnitsIDs.Select(x => x.ToDTO()).ToList();
+
+        //    return businessUnitsDTOid;
+        //}
 
         public async Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetAllBusinessUnitsCategoriesAsync()
         {
@@ -349,9 +370,9 @@ namespace ManagerLogbook.Services
                              categoryName = group.Key,
                              count = group.Count()
                          })
-                         .OrderBy(c=>c.categoryName)
+                         .OrderBy(c => c.categoryName)
                          .ToDictionaryAsync(x => x.categoryName, x => x.count);
-                         
+
 
             return categoriesCountUnits;
         }

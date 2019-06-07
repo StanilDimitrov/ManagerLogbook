@@ -1,0 +1,61 @@
+﻿<!-- Note Modal -->
+<div class="modal fade" id="myModalBusinessUnit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<a class="close" data-dismiss="modal">x</a>*@
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create business unit</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-danger-custom"></div>
+                <form id="create-note" asp-area="Admin" asp-controller="BusinessUnits" asp-action="Create" enctype="multipart/form-data" method="post" class="loginForm">
+                    <div class="form-group">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <input name="Name" class="form-control" id="name" placeholder="Enter a name of business unit">
+                        <span class="text-danger-custom"></span>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <textarea data-val-required="true" name="Information" class="form-control" placeholder="Please enter a information"></textarea>
+                        <span class="text-danger-custom"></span>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <input name="Address" class="form-control" id="address" placeholder="Enter an address of business unit">
+                        <span class="text-danger-custom"></span>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-mobile" aria-hidden="true"></i>
+                        <input name="PhoneNumber" class="form-control" id="phoneNumber" placeholder="Enter a phonenumber of business unit">
+                        <span class="text-danger-custom"></span>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        <input name="Email" class="form-control" id="email" placeholder="Enter an email of business unit">
+                        <span class="text-danger-custom"></span>
+                    </div>
+
+                    <select id="town-selector" class="form-control" name="TownId"></select>
+                    <select id="business-unit-categories-selector" class="form-control" name="CategoryId"></select>
+
+                    <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input type="file" name="BusinessUnitPicture" class="btn btn-primary file" accept="image/*">
+
+                    <div class="margin-5">
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <div class="margin-5">
+                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                            @if (referrer != default(StringValues))
+                            {
+                                <a href="@referrer.ToString()">Go Back</a>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Note Modal -->
