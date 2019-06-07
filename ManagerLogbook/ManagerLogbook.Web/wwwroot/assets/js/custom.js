@@ -264,6 +264,33 @@ $('#add-note-global-button').click(function (event)
         });
 });
 
+$('#add-business-unit-global-button').click(function (event) {
+    $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories")
+        .done(function (response) {
+            var s = '<option value="-1" selected disabled hidden>Please Select Category</option>';
+            for (var i = 0; i < response.length; i++) {
+                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            }
+
+            $("#business-unit-categories-selector").html(s);
+
+        }).fail(function (response) {
+
+        });
+    $.get("/Admin/BusinessUnits/GetAllTowns")
+        .done(function (response) {
+            var s = '<option value="-1" selected disabled hidden>Select City</option>';
+            for (var i = 0; i < response.length; i++) {
+                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            }
+
+            $("#towns-selector").html(s);
+
+        }).fail(function (response) {
+
+        });
+});
+
 $('#change-logbook-global-button').click(function (event) {
     $.get("/Manager/Notes/GetAllLogbooksByUser")
         .done(function (response) {
@@ -313,6 +340,11 @@ $('#editModalNote').on('hidden.bs.modal', function () {
 
 $('#logbookModalNote').on('hidden.bs.modal', function () {
 })
+
+$('#myModalBusinessUnit').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+})
+
 
 $('input.myTextInput').on('input', function (e) {
     alert('Changed!')

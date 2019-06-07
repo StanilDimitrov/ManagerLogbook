@@ -287,4 +287,12 @@ form.example button {
 
 .image-preview-input-title {
     margin-left: 2px;
-}	
+}
+
+.padding-bottom-0 {
+    padding-bottom: 0% !important;
+}
+
+.margin-bottom-0{
+    margin-bottom: 0% !important;
+}
