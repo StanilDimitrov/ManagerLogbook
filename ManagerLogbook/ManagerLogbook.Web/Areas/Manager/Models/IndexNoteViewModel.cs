@@ -21,9 +21,13 @@ namespace ManagerLogbook.Web.Models
 
         public DateTime EndDate { get; set; }
 
+        public string SearchCriteria { get; set; }
+
         //public int? CategoryId { get; set; }
         //public IEnumerable<SelectListItem> Categories { get; set; }
         //public string CategoryName { get; set; }
+
+        public SearchViewModel SearchModel { get; set; }
 
         public IReadOnlyCollection<NoteViewModel> Notes { get; set; }
 

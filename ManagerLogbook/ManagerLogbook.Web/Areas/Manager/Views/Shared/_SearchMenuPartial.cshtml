@@ -5,7 +5,7 @@
         <div class="profileIntro">
             <div class="row font-custom">
                 <div class="row">
-                    <form class="example" asp-area="Manager" asp-controller="Notes" asp-action="Search" method="get">
+                    <form class="example" id="search-notes-form" asp-area="Manager" asp-controller="Notes" asp-action="Search" asp-for="@Model" method="get">
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             <label for="dateAdded">Start Date</label>
                             <div class="dateSelect">
@@ -31,10 +31,10 @@
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             <label for="dateModified">Category</label>
                             <div class="contactSelect">
-                                <select name="CategoryId" class="select-drop">
+                                <select name="CategoryId" id="category-id-from-selector" class="select-drop">
+                                    <option value="null" selected @*disabled*@ hidden>Select Category</option>
                                     @foreach (var category in Model.Categories)
                                     {
-                                        <option value="null" selected @*disabled*@ hidden>Select Category</option>
                                         {
                                             <option value="@category.CategoryId">@category.CategoryName</option>
                                         }
@@ -46,7 +46,7 @@
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             <label for="amount">Search</label>
                             <div class="input-group">
-                                <input type="text" class="form-control width-100" placeholder="Search" name="searchCriteria">
+                                <input type="text" asp-for="SearchCriteria" class="form-control width-100" id="search-for-note-phrase" placeholder="Search">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default width-100" type="submit"><i class="icon-listy icon-search-2"></i></button>
                                 </span>
@@ -55,6 +55,8 @@
                         @*<div class="form-group">
                                 <button type="submit" class="btn btn-primary">Search <i class="fa fa-search" aria-hidden="true"></i></button>
                             </div>*@
+
+                        <span id="anti-forgery-for-note-search">@Html.AntiForgeryToken()</span>
                     </form>
                 </div>
             </div>

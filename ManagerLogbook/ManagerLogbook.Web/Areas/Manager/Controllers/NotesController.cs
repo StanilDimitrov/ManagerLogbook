@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using ManagerLogbook.Web.Areas.Manager.Models;
+using ManagerLogbook.Services.CustomExeptions;
 
 namespace ManagerLogbook.Web.Areas.Manager.Controllers
 {
@@ -61,7 +62,10 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     note.CanUserEdit = note.UserId == userId;
                 }
                 var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
-                model.Notes = notes;
+                model.SearchModel = new SearchViewModel()
+                {
+                    Notes = notes
+                };               
                 model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                 model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
@@ -93,12 +97,20 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 {
                     note.CanUserEdit = note.UserId == userId;
                 }
-                model.Notes = notes;
+                model.SearchModel = new SearchViewModel()
+                {
+                    Notes = notes
+                };
+                //model.Notes = notes;
                 model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                 model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
                 return View(model);
             }
-            catch (ArgumentException ex)
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotAuthorizedException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -128,12 +140,20 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 {
                     note.CanUserEdit = note.UserId == userId;
                 }
-                model.Notes = notes;
+                model.SearchModel = new SearchViewModel()
+                {
+                    Notes = notes
+                };
+                //model.Notes = notes;
                 model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                 model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
                 return View(model);
             }
-            catch (ArgumentException ex)
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotAuthorizedException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -194,6 +214,14 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotAuthorizedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 // log error log for net
@@ -246,6 +274,14 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotAuthorizedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 // log error log for net
@@ -279,7 +315,11 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 return RedirectToAction("Index");
             }
 
-            catch (ArgumentException ex)
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotAuthorizedException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -292,8 +332,9 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Search(IndexNoteViewModel model, string searchCriteria)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(IndexNoteViewModel model)
         {
             var userId = this.User.GetId();
             var user = await this.userService.GetUserByIdAsync(userId);
@@ -305,11 +346,15 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             var notesDTO = await this.noteService
                                      .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
-                                                                          model.StartDate, model.EndDate, model.CategoryId, searchCriteria);
-            model.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
-            model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
-            model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
-            return View(model);
+                                                                          model.StartDate, model.EndDate, model.CategoryId, model.SearchCriteria);
+            //model.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+            //model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+            //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+
+            var searchModel = new SearchViewModel();
+            searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+
+            return PartialView("_NoteListPartial", searchModel);
         }
 
         //[HttpGet]
@@ -379,6 +424,14 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotAuthorizedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 // log error log for net
@@ -400,7 +453,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
                 return Json(cacheLogbooks);
             }
-            catch (ArgumentException ex)
+            catch (NotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }

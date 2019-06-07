@@ -314,3 +314,43 @@ $('#editModalNote').on('hidden.bs.modal', function () {
 $('#logbookModalNote').on('hidden.bs.modal', function () {
 })
 
+$('input.myTextInput').on('input', function (e) {
+    alert('Changed!')
+});
+
+$('#search-notes-form').on('input submit', function (eventSearchNote)
+{
+    eventSearchNote.preventDefault();
+
+    var searchPhrase = $('#search-for-note-phrase').val();
+
+    if (searchPhrase.length > 2)
+    {
+        
+        $this = $(this);
+
+        var inputs = $this.find('input');
+        var categoryId = $('#category-id-from-selector').val();
+
+        var urlencodedInputs = inputs.serialize();
+
+        var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId;
+
+
+        $.post("/Manager/Notes/Search", inputsToSend)
+            .done(function (data) {
+
+                console.log(data);
+                
+
+                $('#note-partial-holder').empty();
+                $('#note-partial-holder').append(data);
+
+
+            }).fail(function (data) {
+
+            });
+    }   
+
+});
+
