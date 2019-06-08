@@ -41,6 +41,9 @@
         </div>*@
 
 </section>
+@await Html.PartialAsync("_FooterPartial", Model)
+
+
 <!-- Start Note Modal -->
 @await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)
 <!-- End Note Modal -->

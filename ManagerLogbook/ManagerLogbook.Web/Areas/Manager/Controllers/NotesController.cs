@@ -65,7 +65,9 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 model.SearchModel = new SearchViewModel()
                 {
                     Notes = notes
-                };               
+                };
+               
+               
                 model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                 model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
@@ -185,7 +187,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
                 if (model.NoteImage != null)
                 {
-                    imageName = optimizer.OptimizeImage(model.NoteImage, 268, 182);
+                    imageName = optimizer.OptimizeImage(model.NoteImage, 350, 235);
                 }
 
                 var userId = this.User.GetId();

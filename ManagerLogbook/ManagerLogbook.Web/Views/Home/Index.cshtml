@@ -64,7 +64,7 @@
 
 
 
-    @await Html.PartialAsync("_BusinessUnitsPartial", Model)
+    @await Html.PartialAsync("_BusinessUnitsPartial", Model.SearchModelBusiness)
 
     <!-- Start Note Modal -->
     @await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)

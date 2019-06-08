@@ -30,13 +30,17 @@ namespace ManagerLogbook.Web.Controllers
             var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
            
-            model.BusinessUnits = (await CacheBusinessUnits()).Select(x => x.MapFrom()).ToList();
+            var businessUnits = (await CacheBusinessUnits()).Select(x => x.MapFrom()).ToList();
             model.Towns = (await CacheTowns()).Select(x => x.MapFrom()).ToList();
             model.Categories = (await CacheCategories()).Select(x => x.MapFrom()).ToList();
             var businessCategories = await this.businessUnitService.GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
             model.Footer = new FooterViewModel()
             {
                 BusinessUnitsCategories = businessCategories
+            };
+            model.SearchModelBusiness = new BusinessUnitSearch()
+            {
+                BusinessUnits = businessUnits
             };
             return View(model);
         }

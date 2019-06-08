@@ -434,3 +434,37 @@ $('#search-notes-form').on('input submit', function (eventSearchNote)
 
 });
 
+$('#search-business-form').on('input submit', function (eventSearchNote) {
+    eventSearchNote.preventDefault();
+
+    var searchPhrase = $('#search-for-business-phrase').val();
+
+    if (searchPhrase.length > 2) {
+
+        $this = $(this);
+
+        var inputs = $this.find('input');
+        var categoryId = $('#category-id-from-selector').val();
+        var townId = $('#town-id-from-selector').val();
+
+        var urlencodedInputs = inputs.serialize();
+
+        var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&TownId=" + townId;
+
+
+        $.get("/BusinessUnit/Search", inputsToSend)
+            .done(function (data) {
+
+                console.log(data);
+
+
+                $('#business-partial-holder').empty();
+                $('#business-partial-holder').append(data);
+
+
+            }).fail(function (data) {
+
+            });
+    }
+
+});
