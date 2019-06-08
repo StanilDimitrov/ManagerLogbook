@@ -1,98 +1,114 @@
 ﻿@model BusinessUnitViewModel
+<!-- Dashboard header -->
+@if (this.User.IsInRole("Admin"))
+{
+    <section class="navbar-dashboard-area">
+        <nav class="navbar navbar-default lightHeader navbar-dashboard" role="navigation">
+            <div class="container">
 
-<!-- BLOG DETAILS -->
-<section class="clearfix blogDetials">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-8 col-xs-12">
-                <div class="thumbnail blogContent">
-                    <div class="caption">
-                        <h3>@Model.Name</h3>                        
-                        <img src="assets/img/blog/blog-1.jpg" alt="Image blog" class="img-responsive">
-                        <p>@Model.Information</p>
-                    </div>
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-dash">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                 </div>
-                <div class="commentArea">
-                    <h3>Reviews (3) </h3>
 
-                    <div class="media media-comment">
-                        <div class="media-body">
-                            <span class="date" style="color: black">14 Feb 2018</span>
-                            <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan
-                                totam rem ape riam,
-                            </p>
-                        </div>
-                    </div>
-                    <div class="media media-comment">
-                        <div class="media-body">
-                            <span class="date">14 Feb 2018</span>
-                            <p>
-                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudan
-                                totam rem ape riam,
-                            </p>
-                        </div>
-                    </div>
-                    <h3 class="mt20">Write a review</h3>
-                    <form class="deafultForm">
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <label for="messageBox" class="constrol-label">Message</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </form>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-dash">
+                    <ul class="nav navbar-nav mr0">
+                        <li class="">
+                            <a data-toggle="modal" id="update-global-button" data-target="#myModalUpdateBusinessUnit"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i> Update business unit</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="modal" id="add-moderator-global-button" data-target="#myModalAddModeratorToBusinessUnit"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Add Moderator to business unit</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="modal" id="remove-moderator-global-button" data-target="#myModalRemoveModeratorToBusinessUnit"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Remove Moderator to business unit</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-            <div class="col-sm-4 col-xs-12">
-                <div class="listSidebar">
-                    <h3>Location</h3>
-                    <div class="contactInfo">
-                        <ul class="list-unstyled list-address">
-                            <li>
-                                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                16/14 Babor Road, Mohammad pur <br> Dhaka, Bangladesh
-                            </li>
-                            <li>
-                                <i class="fa fa-phone" aria-hidden="true"></i>
-                                +55 654 545 122 <br> +55 654 545 123
-                            </li>
-                            <li>
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
-                                <a href="#">info@startravelbangladesh.com</a> <a href="#">info@startravelbangladesh.com</a>
-                            </li>
-                        </ul>
+        </nav>
+    </section>
+}
+    <!-- Dashboard header -->
+    <!-- BLOG DETAILS -->
+    <section class="clearfix blogDetials">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-xs-12">
+                    <div class="thumbnail blogContent">
+                        <div class="caption">
+                            <h3>@Model.Name</h3>
+                            <img src="~/images/@(Model.Picture ?? "noimage.jpg")" alt="Image blog" class="img-responsive">
+                            <p>@Model.Information</p>
+                        </div>
+                    </div>
+                    <div class="commentArea">
+                        <h3>Reviews (@Model.Reviews.Count()) </h3>
+                        <div id="reviews-list">
+                            @await Html.PartialAsync("_ReviewsPartial",Model)
+                        </div>
+                        @*@foreach (var review in Model.Reviews)
+                        {
+                            <div class="media media-comment">
+                                <div class="media-body">
+                                    <span class="date" style="color: black">@review.CreatedOn.ToString(("dd MMMM yyyy"))</span>
+                                    <p>
+                                        @review.EditedDescription
+                                    </p>
+                                </div>
+                            </div>
+                        }*@
+                        <h3 class="mt20">Write a review</h3>
+                        <form id="b-note" asp-controller="Reviews" asp-action="Create" method="post">
+                            <div class="row">
+                                <div class="form-group col-xs-12">
+                                    <label for="messageBox" class="constrol-label">Message</label>
+                                    <textarea id="reviewDescription" asp-for="@Model.Review.OriginalDescription" class="form-control" rows="3"></textarea>
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                        <input type="hidden" class="form-control" id="business-unit-id-input" value="@Model.Id" />
+
+
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="listSidebar">
+                        <h3>Location</h3>
+                        <div class="contactInfo">
+                            <ul class="list-unstyled list-address">
+                                <li>
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                    @Model.Address <br> @Model.TownName
+                                </li>
+                                <li>
+                                    <i class="fa fa-phone" aria-hidden="true"></i>
+                                    @Model.PhoneNumber
+                                </li>
+                                <li>
+                                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                                    <a href="#">@Model.Email</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-<section class="clearfix countUpSection">
-    <div class="container text-block-center">
-        <div class="row">
-            <div class="col-sm-3 col-xs-12">
-                <div class="text-center countItem">
-                    <div class="counter">0</div>
-                    <div class="counterInfo bg-color-1">Cities</div>
-                </div>
-            </div>
-            <div class="col-sm-3 col-xs-12">
-                <div class="text-center countItem">
-                    <div class="counter">0</div>
-                    <div class="counterInfo bg-color-3">Hotels</div>
-                </div>
-            </div>
-            <div class="col-sm-3 col-xs-12">
-                <div class="text-center countItem">
-                    <div class="counter">0</div>
-                    <div class="counterInfo bg-color-2">Restaurants</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </section>
 
-</section>
+
+    @section Scripts{
+
+    <script src="~/assets/js/create-review.js"></script>
+    }
+
+   

@@ -13,7 +13,8 @@ namespace ManagerLogbook.Web.Mappers
                 EditedDescription = dto.EditedDescription,
                 CreatedOn = dto.CreatedOn,
                 isVisible = dto.isVisible,
-                Rating = dto.Rating
+                Rating = dto.Rating,
+                BusinessUnitId = dto.BusinessUnitId
             };
         }
     }

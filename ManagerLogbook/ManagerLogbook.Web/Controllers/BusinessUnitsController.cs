@@ -12,11 +12,13 @@ namespace ManagerLogbook.Web.Controllers
     public class BusinessUnitsController : Controller
     {
         private readonly IBusinessUnitService businessUnitService;
+        private readonly IReviewService reviewService;
 
-        public BusinessUnitsController(IBusinessUnitService businessUnitService)
+        public BusinessUnitsController(IBusinessUnitService businessUnitService,
+                                       IReviewService reviewService)
         {
             this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
-
+            this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
         }
 
         public async Task<IActionResult> Details(int id)
@@ -25,6 +27,12 @@ namespace ManagerLogbook.Web.Controllers
 
             var model = businessUnit.MapFrom();
 
+            var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
+
+            model.Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList();
+
+            //model.Review = new ReviewViewModel();
+            
             return View(model);
         }
     }

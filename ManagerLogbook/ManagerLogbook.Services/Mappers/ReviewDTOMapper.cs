@@ -20,7 +20,8 @@ namespace ManagerLogbook.Services.Mappers
                EditedDescription = entity.EditedDescription,
                CreatedOn = entity.CreatedOn,
                Rating  = entity.Rating,
-               isVisible = entity.isVisible
+               isVisible = entity.isVisible,
+               BusinessUnitId = entity.BusinessUnitId
             };
         }
     }
