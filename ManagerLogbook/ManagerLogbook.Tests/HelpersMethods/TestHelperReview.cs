@@ -16,7 +16,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 EditedDescription = "Original Text of Review01",
                 Rating = 1,
                 CreatedOn = new DateTime(01 / 07 / 2004),
-                isVisible = false,
+                isVisible = true,
                 BusinessUnitId = 1
             };
         }
@@ -30,7 +30,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 EditedDescription = "Edited Text of Review02",
                 Rating = 5,
                 CreatedOn = new DateTime(04 / 14 / 2013),
-                isVisible = false,
+                isVisible = true,
                 BusinessUnitId = 1
             };
         }

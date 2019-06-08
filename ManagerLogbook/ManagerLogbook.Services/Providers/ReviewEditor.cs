@@ -31,5 +31,21 @@ namespace ManagerLogbook.Services.Providers
 
             return editDescription;
         }
+
+        public bool CheckReviewVisibility(string editDescription)
+        {
+            bool isVisible = true; 
+
+            int countReplaceChars = editDescription.TakeWhile(c => c == '*').Count();
+
+            double isVisibleRatio = countReplaceChars * 1.00 / editDescription.Length; 
+
+            if(isVisibleRatio>0.25)
+            {
+                isVisible = false;
+            }
+
+            return isVisible;
+        }
     }
 }
