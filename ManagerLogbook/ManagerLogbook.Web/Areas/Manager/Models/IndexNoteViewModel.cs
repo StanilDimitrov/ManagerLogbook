@@ -23,6 +23,8 @@ namespace ManagerLogbook.Web.Models
 
         public string SearchCriteria { get; set; }
 
+        public NoteViewModel Note { get; set; }
+
         //public int? CategoryId { get; set; }
         //public IEnumerable<SelectListItem> Categories { get; set; }
         //public string CategoryName { get; set; }
