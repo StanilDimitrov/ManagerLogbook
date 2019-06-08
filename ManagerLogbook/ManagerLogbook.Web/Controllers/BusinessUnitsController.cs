@@ -35,5 +35,16 @@ namespace ManagerLogbook.Web.Controllers
             
             return View(model);
         }
+
+        public async Task<IActionResult> GetReviewsList(int id)
+        {
+            var businessUnit = new BusinessUnitViewModel();
+
+            var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
+
+            businessUnit.Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList();
+
+            return PartialView("_ReviewsPartial", businessUnit);
+        }
     }
 }

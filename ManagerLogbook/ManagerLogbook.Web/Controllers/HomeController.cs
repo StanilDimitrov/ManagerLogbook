@@ -29,7 +29,7 @@ namespace ManagerLogbook.Web.Controllers
             var businessUnitsDTO = await this.businessUnitService.GetAllBusinessUnitsAsync();
             var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
-           
+
             var businessUnits = (await CacheBusinessUnits()).Select(x => x.MapFrom()).ToList();
             model.Towns = (await CacheTowns()).Select(x => x.MapFrom()).ToList();
             model.Categories = (await CacheCategories()).Select(x => x.MapFrom()).ToList();
@@ -38,7 +38,7 @@ namespace ManagerLogbook.Web.Controllers
             {
                 BusinessUnitsCategories = businessCategories
             };
-            model.SearchModelBusiness = new BusinessUnitSearch()
+            model.SearchModelBusiness = new BusinessUnitSearchViewModel()
             {
                 BusinessUnits = businessUnits
             };
@@ -51,11 +51,12 @@ namespace ManagerLogbook.Web.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> Search(HomeViewModel model, string currentInput)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(HomeViewModel model)
         {
             var businessUnitsDTO = await this.businessUnitService
-                                             .SearchBusinessUnitsAsync(currentInput, model.CategoryId,
+                                             .SearchBusinessUnitsAsync(model.SearchCriteria, model.CategoryId,
                                              model.TownId);
 
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
@@ -71,7 +72,12 @@ namespace ManagerLogbook.Web.Controllers
                 BusinessUnitsCategories = businessCategories
             };
 
-            return View(model);
+            var searchModel = new BusinessUnitSearchViewModel();
+
+            searchModel.BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList();
+
+            return PartialView("_BusinessUnitsPartial", searchModel);
+
         }
 
         [HttpGet]

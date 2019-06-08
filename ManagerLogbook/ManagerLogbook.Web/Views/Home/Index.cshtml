@@ -22,15 +22,15 @@
         <div class="row">
             <div class="col-xs-12 ">
                 <div class="bg-search-white">
-                    <form class="form-inline" asp-action="Search" asp-controller="Home" method="get" autocomplete="Search">
+                    <form class="form-inline" id="search-business-form" asp-action="Search" asp-controller="Home" method="get">
                         <div class="form-group">
                             @*<label>Search</label>*@
-                            <input type="text" class="form-control" id="autocomplete-search-business-unit" name="currentInput" placeholder="Enter your keywords">
+                            <input type="text" class="form-control" id="search-for-business-phrase" asp-for="SearchCriteria" placeholder="Enter your keywords">
                         </div>
                         <div class="form-group">
                             <div class="searchSelectbox">
                                 @*<label for="dateModified">City</label>*@
-                                <select name="TownId" id="guiest_id3" class="select-drop">
+                                <select name="TownId" id="town-id-from-selector" class="select-drop">
                                     <option value="null" selected @*disabled*@ hidden>Select Location</option>
                                     @foreach (var town in Model.Towns)
                                     {
@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <div class="searchSelectbox">
                                 @*<label for="dateModified">Category</label>*@
-                                <select name="CategoryId" id="guiest_id4" class="select-drop">
+                                <select name="CategoryId" id="category-id-from-selector" class="select-drop">
                                     <option value="null" placeholder="Category" selected @*disabled*@ hidden>Select Category</option>
                                     @foreach (var category in Model.Categories)
                                     {
@@ -55,6 +55,7 @@
                             @*<label for="dateModified"></label>*@
                             <button type="submit" class="btn btn-primary">Search </button>
                         </div>
+                        <span id="anti-forgery-for-business-search">@Html.AntiForgeryToken()</span>
                     </form>
                 </div>
             </div>
@@ -63,8 +64,10 @@
     @*</section>**@
 
 
-
-    @await Html.PartialAsync("_BusinessUnitsPartial", Model.SearchModelBusiness)
+    <div id="business-partial-holder">
+        @await Html.PartialAsync("_BusinessUnitsPartial", Model.SearchModelBusiness)
+    </div>
+   
 
     <!-- Start Note Modal -->
     @await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)

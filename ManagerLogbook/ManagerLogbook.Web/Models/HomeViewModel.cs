@@ -24,12 +24,15 @@ namespace ManagerLogbook.Web.Models
          
         public BusinessUnitViewModel BusinessUnit { get; set; }
 
-        public BusinessUnitSearch SearchModelBusiness { get; set; }
+        public BusinessUnitSearchViewModel SearchModelBusiness { get; set; }
 
-        public int CategoryId { get; set; }
+        public string SearchCriteria { get; set; }
+
+        public int? CategoryId { get; set; }
         public string CategoryName { get; set; }
 
-        public int TownId { get; set; }
+        public int? TownId { get; set; }
         public string TownName { get; set; }
+
     }
 }

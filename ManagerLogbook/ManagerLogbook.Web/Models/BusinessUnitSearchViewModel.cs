@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Models
 {
-    public class BusinessUnitSearch
+    public class BusinessUnitSearchViewModel
     {
         public IReadOnlyCollection<BusinessUnitViewModel> BusinessUnits { get; set; }
     }

@@ -198,10 +198,11 @@ $(function () {
             }
             toastr.error(response.responseText);
         });
-
     });
-
 });
+
+
+
 
 $(function () {
     const $submitForm = $('#submit-form-account');
@@ -434,29 +435,31 @@ $('#search-notes-form').on('input submit', function (eventSearchNote)
 
 });
 
-$('#search-business-form').on('input submit', function (eventSearchNote) {
-    eventSearchNote.preventDefault();
+$('#search-business-form').on('input submit', function (eventSearchBusiness) {
+    eventSearchBusiness.preventDefault();
 
     var searchPhrase = $('#search-for-business-phrase').val();
-
+    
     if (searchPhrase.length > 2) {
 
         $this = $(this);
 
         var inputs = $this.find('input');
+        
         var categoryId = $('#category-id-from-selector').val();
         var townId = $('#town-id-from-selector').val();
 
         var urlencodedInputs = inputs.serialize();
-
+        
         var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&TownId=" + townId;
+        //console.log(inputs);
+        //debugger;
 
-
-        $.get("/BusinessUnit/Search", inputsToSend)
+        $.post("/Home/Search", inputsToSend)
             .done(function (data) {
 
-                console.log(data);
-
+                //console.log(data);
+                //debugger;
 
                 $('#business-partial-holder').empty();
                 $('#business-partial-holder').append(data);
@@ -468,3 +471,4 @@ $('#search-business-form').on('input submit', function (eventSearchNote) {
     }
 
 });
+
