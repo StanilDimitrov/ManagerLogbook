@@ -25,7 +25,7 @@
                     <form class="form-inline" asp-action="Search" asp-controller="Home" method="get" autocomplete="Search">
                         <div class="form-group">
                             @*<label>Search</label>*@
-                            <input type="text" class="form-control" id="autocomplete-search-business-unit" name="currentInput" placeholder="Enter your keywords" >
+                            <input type="text" class="form-control" id="autocomplete-search-business-unit" name="currentInput" placeholder="Enter your keywords">
                         </div>
                         <div class="form-group">
                             <div class="searchSelectbox">
@@ -43,7 +43,7 @@
                             <div class="searchSelectbox">
                                 @*<label for="dateModified">Category</label>*@
                                 <select name="CategoryId" id="guiest_id4" class="select-drop">
-                                    <option value="null" placeholder="Category" selected @*disabled*@  hidden>Select Category</option>
+                                    <option value="null" placeholder="Category" selected @*disabled*@ hidden>Select Category</option>
                                     @foreach (var category in Model.Categories)
                                     {
                                         <option value="@category.Id">@category.Name</option>
@@ -65,6 +65,19 @@
 
 
     @await Html.PartialAsync("_BusinessUnitsPartial", Model)
+
+    <!-- Start Note Modal -->
+    @await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)
+    <!-- End Note Modal -->
+    <!-- Start BusinessUnit Modal -->
+    @await Html.PartialAsync("_CreateBusinessUnitModalPartial", Model.BusinessUnit)
+    <!-- End Note Modal -->
+    <!-- Start Account Modal -->
+    @await Html.PartialAsync("_CreateAccountModalPartial", Model.Register)
+    <!-- End Account Modal -->
+    <!-- Start Login Modal -->
+    @await Html.PartialAsync("_LoginModalPartial", Model.Login)
+    <!-- End Login Modal -->
 
 </section>
 

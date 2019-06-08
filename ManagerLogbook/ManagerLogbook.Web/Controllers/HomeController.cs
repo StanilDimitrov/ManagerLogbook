@@ -33,7 +33,11 @@ namespace ManagerLogbook.Web.Controllers
             model.BusinessUnits = (await CacheBusinessUnits()).Select(x => x.MapFrom()).ToList();
             model.Towns = (await CacheTowns()).Select(x => x.MapFrom()).ToList();
             model.Categories = (await CacheCategories()).Select(x => x.MapFrom()).ToList();
-           
+            var businessCategories = await this.businessUnitService.GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
+            model.Footer = new FooterViewModel()
+            {
+                BusinessUnitsCategories = businessCategories
+            };
             return View(model);
         }
 
@@ -56,6 +60,13 @@ namespace ManagerLogbook.Web.Controllers
             model.BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList();
             model.Towns = townsDTO.Select(x => x.MapFrom()).ToList();
             model.Categories = categoriesDTO.Select(x => x.MapFrom()).ToList();
+
+            var businessCategories = await this.businessUnitService.GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
+            var footer = new FooterViewModel()
+            {
+                BusinessUnitsCategories = businessCategories
+            };
+
             return View(model);
         }
 

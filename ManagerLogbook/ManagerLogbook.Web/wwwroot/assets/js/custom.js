@@ -1,4 +1,5 @@
 $('.submit-edit-form-button').click(function (eventEdit) {
+
     eventEdit.preventDefault();
     $thisEditForm = $(this);
     var id = $thisEditForm.attr('noteid');
@@ -38,8 +39,7 @@ $('.submit-edit-form-button').click(function (eventEdit) {
                 "timeOut": 3000,
                 "extendedTimeOut": 3000,
                 "onHidden": function () {
-                    // this will be executed after fadeout, i.e. 2secs after notification has been show
-                    //window.location.href = "/AppUsers/Transactions/GetTransaction?=" + transactionId;
+                   
                 }
             }
         toastr.success(response);
@@ -157,6 +157,53 @@ $(function () {
 
 
 $(function () {
+    const $submitForm = $('#create-business-unit');
+
+    //if ($submitForm.valid()) {
+
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
+
+        var $this = $(this);
+
+        const dataToSend = $submitForm.serialize();
+        //var url = "/Admin/Create/Register";
+        var url = $this.attr('action');
+
+        $.post(url, dataToSend, function (response) {
+            console.log(response.firstName);
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+
+            toastr.success(response);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+
+    });
+
+});
+
+$(function () {
     const $submitForm = $('#submit-form-account');
 
     $submitForm.on('submit', function (event) {
@@ -263,6 +310,7 @@ $('#add-note-global-button').click(function (event)
             
         });
 });
+
 
 $('#add-business-unit-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories")

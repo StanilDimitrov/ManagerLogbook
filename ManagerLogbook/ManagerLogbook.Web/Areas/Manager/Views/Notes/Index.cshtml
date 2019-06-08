@@ -42,7 +42,7 @@
 
 </section>
 <!-- Start Note Modal -->
-@await Html.PartialAsync("_CreateNoteModalPartial")
+@await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)
 <!-- End Note Modal -->
 <!-- Start Note Modal -->
 @await Html.PartialAsync("_EditModalPartial")

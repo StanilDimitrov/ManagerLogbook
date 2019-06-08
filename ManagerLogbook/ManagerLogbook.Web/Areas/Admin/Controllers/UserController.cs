@@ -82,12 +82,12 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                     //StatusMessage = $"Successfully created user \"{model.FirstName} {model.LastName}\" with role \"{model.UserRole}\"";
                     //return RedirectToAction("Register");
                 }
-                return BadRequest($"User with {model.Email} is already registered.");
+                return BadRequest($"User with {model.UserName} is already registered.");
                 //AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return BadRequest(model);
+            return BadRequest("Please enter a valid data.");
         }
 
            #region Helpers

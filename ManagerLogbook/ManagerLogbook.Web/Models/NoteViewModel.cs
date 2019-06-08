@@ -18,7 +18,7 @@ namespace ManagerLogbook.Web.Models
 
         public string Image { get; set; }
 
-        public IFormFile NoteImage{ get; set; }
+        public IFormFile NoteImage { get; set; }
 
         public bool IsActiveTask { get; set; }
 
