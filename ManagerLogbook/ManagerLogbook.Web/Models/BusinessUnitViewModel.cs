@@ -1,3 +1,4 @@
+using ManagerLogbook.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
@@ -38,6 +39,10 @@ namespace ManagerLogbook.Web.Models
 
         public int TownId { get; set; }
         public IEnumerable<SelectListItem> Towns { get; set; }
-        public string TownName { get; set; }               
+        public string TownName { get; set; }
+
+        public IReadOnlyCollection<ReviewViewModel> Reviews { get; set; }
+
+        public ReviewViewModel Review { get; set; }
     }
 }

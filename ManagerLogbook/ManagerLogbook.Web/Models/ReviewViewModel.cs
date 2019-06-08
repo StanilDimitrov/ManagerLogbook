@@ -13,14 +13,12 @@ namespace ManagerLogbook.Web.Models
         [Required]
         [MaxLength(500)]
         public string OriginalDescription { get; set; }
-
-        [Required]
+                
         [MaxLength(500)]
         public string EditedDescription { get; set; }
-
-        [Required]
-        [Range(0, 5,
-        ErrorMessage = "Value for {0} must be between {1} and {2}.")]
+                
+        //[Range(0, 5,
+        //ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public int Rating { get; set; }
 
         public DateTime CreatedOn { get; set; }
@@ -28,5 +26,7 @@ namespace ManagerLogbook.Web.Models
         public bool isVisible { get; set; }
 
         public string BusinessUnitName { get; set; }
+
+        public int BusinessUnitId { get; set; }
     }
 }

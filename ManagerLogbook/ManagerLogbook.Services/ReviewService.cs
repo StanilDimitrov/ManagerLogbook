@@ -30,7 +30,7 @@ namespace ManagerLogbook.Services
             this.reviewEditor = reviewEditor ?? throw new ArgumentNullException(nameof(reviewEditor));
         }
 
-        public async Task<ReviewDTO> CreateReviewAsync(string originalDescription, int rating, int businessUnitId)
+        public async Task<ReviewDTO> CreateReviewAsync(string originalDescription, int businessUnitId, int rating)
         {
             businessValidator.IsDescriptionInRange(originalDescription);
             businessValidator.IsRatingInRange(rating);

@@ -17,5 +17,7 @@ namespace ManagerLogbook.Services.DTOs
         public bool isVisible { get; set; }
        
         public string BusinessUnitName { get; set; }
+
+        public int BusinessUnitId { get; set; }
     }
 }

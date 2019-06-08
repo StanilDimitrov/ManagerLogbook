@@ -7,7 +7,7 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface IReviewService
     {
-        Task<ReviewDTO> CreateReviewAsync(string originalDescription, int rating, int businessUnitId);
+        Task<ReviewDTO> CreateReviewAsync(string originalDescription, int businessUnitId, int rating);
         
         Task<ReviewDTO> UpdateReviewAsync(int reviewId, string editedDescription);
 

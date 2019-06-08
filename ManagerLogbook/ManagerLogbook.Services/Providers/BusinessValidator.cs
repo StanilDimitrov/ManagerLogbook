@@ -73,7 +73,7 @@ namespace ManagerLogbook.Services.Providers
 
         public void IsRatingInRange(int raiting)
         {
-            if (raiting >= 0 && raiting <= 5)
+            if (raiting > 0 && raiting <= 5)
             {
                 throw new ArgumentException(ServicesConstants.RatingNotInRange);
             }

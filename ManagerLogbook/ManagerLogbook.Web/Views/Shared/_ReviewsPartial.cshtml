@@ -1,0 +1,17 @@
+﻿@model BusinessUnitViewModel
+
+@{
+    ViewData["Title"] = "_ReviewPartial";
+}
+
+@foreach (var review in Model.Reviews)
+{
+    <div class="media media-comment">
+        <div class="media-body">
+            <span class="date" style="color: black">@review.CreatedOn.ToString(("dd MMMM yyyy"))</span>
+            <p>
+                @review.EditedDescription
+            </p>
+        </div>
+    </div>
+}

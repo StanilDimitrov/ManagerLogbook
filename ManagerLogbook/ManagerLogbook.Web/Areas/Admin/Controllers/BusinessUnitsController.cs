@@ -56,22 +56,27 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             {
                 string imageName = null;
 
-                if (model.Picture != null)
+                if (model.BusinessUnitPicture != null)
                 {
                     imageName = optimizer.OptimizeImage(model.BusinessUnitPicture, 268, 182);
                 }
 
-                var businessUnit = await this.businessUnitService.CreateBusinnesUnitAsync(model.Name, model.Address, model.PhoneNumber, model.Email, model.Information, model.CategoryId, model.TownId, model.Picture);
+                var businessUnit = await this.businessUnitService.CreateBusinnesUnitAsync(model.Name, model.Address, model.PhoneNumber, model.Email, model.Information, model.CategoryId, model.TownId, imageName);
 
                 if (businessUnit.Name == model.Name)
                 {
                     return Ok(string.Format(WebConstants.BusinessUnitCreated));
                 }
 
-                return RedirectToAction("Error", "Home");
+                return BadRequest(string.Format(WebConstants.BusinessUnitNotCreated));
             }
 
             catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            catch (Exception ex)
             {
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
