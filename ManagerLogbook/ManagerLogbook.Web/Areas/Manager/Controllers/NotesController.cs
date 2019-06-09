@@ -81,6 +81,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
         }
 
+        [HttpPost]
         public async Task<IActionResult> NotesForDaysBefore(int id)
         {
             try
@@ -99,14 +100,16 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 {
                     note.CanUserEdit = note.UserId == userId;
                 }
-                model.SearchModel = new SearchViewModel()
-                {
-                    Notes = notes
-                };
+                //model.SearchModel = new SearchViewModel()
+                //{
+                //    Notes = notes
+                //};
+                var searchModel = new SearchViewModel();
+                searchModel.Notes = notes;
                 //model.Notes = notes;
-                model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
-                model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
-                return View(model);
+                //model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+                //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+                return PartialView("_NoteListPartial", searchModel);
             }
             catch (NotFoundException ex)
             {
@@ -349,7 +352,11 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             var notesDTO = await this.noteService
                                      .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
                                                                           model.StartDate, model.EndDate, model.CategoryId, model.SearchCriteria);
-            //model.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+            var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+            foreach (var note in notes)
+            {
+                note.CanUserEdit = note.UserId == userId;
+            }
             //model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
             //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 

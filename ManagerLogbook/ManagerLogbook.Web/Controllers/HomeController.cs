@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.Contracts;
+﻿using log4net;
+using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
@@ -15,6 +16,9 @@ namespace ManagerLogbook.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private static readonly ILog log =
+        LogManager.GetLogger(typeof(HomeController));
+
         private readonly IBusinessUnitService businessUnitService;
         private readonly IMemoryCache cache;
 
@@ -26,6 +30,7 @@ namespace ManagerLogbook.Web.Controllers
 
         public async Task<IActionResult> Index(HomeViewModel model)
         {
+            //log.Error("Unexpected exception occured:", ex);
             var businessUnitsDTO = await this.businessUnitService.GetAllBusinessUnitsAsync();
             var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
@@ -51,8 +56,8 @@ namespace ManagerLogbook.Web.Controllers
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Search(HomeViewModel model)
         {
             var businessUnitsDTO = await this.businessUnitService

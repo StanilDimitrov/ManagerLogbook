@@ -39,7 +39,7 @@ $('.submit-edit-form-button').click(function (eventEdit) {
                 "timeOut": 3000,
                 "extendedTimeOut": 3000,
                 "onHidden": function () {
-                   
+
                 }
             }
         toastr.success(response);
@@ -65,7 +65,6 @@ $(function () {
 
     $submitForm.on('submit', function (event) {
         event.preventDefault();
-
         var $this = $(this);
 
         const dataToSend = $submitForm.serialize();
@@ -73,7 +72,6 @@ $(function () {
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
-            console.log(response.firstName);
             toastr.options = {
                 "debug": false,
                 "positionClass": "toast-top-center",
@@ -115,11 +113,11 @@ $(function () {
         var $this = $(this);
 
         const dataToSend = $submitForm.serialize();
+
         //var url = "/Admin/Create/Register";
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
-            console.log(response.firstName);
             toastr.options = {
                 "debug": false,
                 "positionClass": "toast-top-center",
@@ -154,7 +152,6 @@ $(function () {
     //}
 
 });
-
 
 $(function () {
     const $submitForm = $('#create-business-unit');
@@ -217,7 +214,6 @@ $(function () {
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
-            console.log(response.firstName);
             toastr.options = {
                 "debug": false,
                 "positionClass": "toast-top-center",
@@ -261,7 +257,7 @@ $(function () {
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
-            console.log(response.firstName);
+            //console.log(response.firstName);
             toastr.options = {
                 "debug": false,
                 "positionClass": "toast-top-center",
@@ -293,22 +289,18 @@ $(function () {
 });
 
 
-$('#add-note-global-button').click(function (event)
-{
+$('#add-note-global-button').click(function (event) {
     $.get("/Manager/Notes/GetAllNoteCategories")
-        .done(function (response)
-        {          
+        .done(function (response) {
             var s = '<option value="-1" selected disabled hidden>Please Select Category</option>';
-            for (var i = 0; i < response.length; i++)
-            {
+            for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
             }
-            
-            $("#notes-categories-selector").html(s); 
 
-        }).fail(function (response)
-        {
-            
+            $("#notes-categories-selector").html(s);
+
+        }).fail(function (response) {
+
         });
 });
 
@@ -399,15 +391,13 @@ $('input.myTextInput').on('input', function (e) {
     alert('Changed!')
 });
 
-$('#search-notes-form').on('input submit', function (eventSearchNote)
-{
+$('#search-notes-form').on('input submit', function (eventSearchNote) {
     eventSearchNote.preventDefault();
 
     var searchPhrase = $('#search-for-note-phrase').val();
 
-    if (searchPhrase.length > 2)
-    {
-        
+    if (searchPhrase.length > 2) {
+
         $this = $(this);
 
         var inputs = $this.find('input');
@@ -422,7 +412,7 @@ $('#search-notes-form').on('input submit', function (eventSearchNote)
             .done(function (data) {
 
                 console.log(data);
-                
+
 
                 $('#note-partial-holder').empty();
                 $('#note-partial-holder').append(data);
@@ -431,7 +421,7 @@ $('#search-notes-form').on('input submit', function (eventSearchNote)
             }).fail(function (data) {
 
             });
-    }   
+    }
 
 });
 
@@ -439,23 +429,23 @@ $('#search-business-form').on('input submit', function (eventSearchBusiness) {
     eventSearchBusiness.preventDefault();
 
     var searchPhrase = $('#search-for-business-phrase').val();
-    
-    if (searchPhrase.length > 2) {
 
+    if (searchPhrase.length > 2) {
+        
         $this = $(this);
 
         var inputs = $this.find('input');
-        
+
         var categoryId = $('#category-id-from-selector').val();
         var townId = $('#town-id-from-selector').val();
 
         var urlencodedInputs = inputs.serialize();
-        
+
         var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&TownId=" + townId;
         //console.log(inputs);
         //debugger;
 
-        $.post("/Home/Search", inputsToSend)
+        $.get("/Home/Search", inputsToSend)
             .done(function (data) {
 
                 //console.log(data);
@@ -472,3 +462,30 @@ $('#search-business-form').on('input submit', function (eventSearchBusiness) {
 
 });
 
+$('#search-notes-7-days').click(function (eventSearchNotes) {
+    eventSearchNotes.preventDefault();
+
+    $this = $(this);
+    var btn = $(this).attr('value');
+    var clickedBtnID = $(this).attr('id');
+    //var id = $thisEditForm.attr('noteid');
+
+    //var inputs = $this.find('input');
+    console.log(btn);
+
+    $.post("/Manager/Notes/NotesForDaysBefore/"+btn)
+        .done(function (data) {
+
+            //console.log(data);
+            //debugger;
+
+            $('#notes-partial-holder').empty();
+            $('#notes-partial-holder').append(data);
+
+
+        }).fail(function (data) {
+
+        });
+
+
+});

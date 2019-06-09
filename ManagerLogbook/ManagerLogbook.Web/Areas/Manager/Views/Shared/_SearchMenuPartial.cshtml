@@ -10,7 +10,7 @@
                             <label for="dateAdded">Start Date</label>
                             <div class="dateSelect">
                                 <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
-                                    <input asp-for="StartDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                                    <input name="StartDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
                                     <div class="input-group-addon">
                                         <i class="icon-listy icon-calendar"></i>
                                     </div>
@@ -21,7 +21,7 @@
                             <label for="dateModified">End Date</label>
                             <div class="dateSelect">
                                 <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
-                                    <input asp-for="EndDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                                    <input name="EndDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
                                     <div class="input-group-addon">
                                         <i class="icon-listy icon-calendar"></i>
                                     </div>
@@ -60,13 +60,13 @@
                     </form>
                 </div>
             </div>
-            <span class="btn-group btn-panel">
+            <div  class="btn-group btn-panel">
                 <a asp-area="Manager" asp-controller="Notes" asp-action="NotesForDaysBefore" class="btn btn-primary active">Daily</a>
-                <a asp-area="Manager" asp-controller="Notes" asp-action="NotesForDaysBefore" asp-route-id="7" class="btn btn-primary">7 Days</a>
+                <a id="search-notes-7-days" value="7" class="btn btn-primary">7 Days</a>
                 <a asp-area="Manager" asp-controller="Notes" asp-action="NotesForDaysBefore" asp-route-id="30" class="btn btn-primary">30 Days</a>
                 <a asp-area="Manager" asp-controller="Notes" asp-action="ActiveNotes" class="btn btn-primary" asp-route-id="3650">Active</a>
                 <a asp-area="Manager" asp-controller="Notes" asp-action="Index" class="btn btn-primary">All</a>
-            </span>
+            </div>
         </div>
     </div>
 </div>

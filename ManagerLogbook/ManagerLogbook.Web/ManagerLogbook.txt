@@ -1,0 +1,2 @@
+2019-06-09 15:14:19,407 INFO ManagerLogbook.Web.Program - Application - Main is invoked
+2019-06-09 15:16:46,836 INFO ManagerLogbook.Web.Controllers.HomeController - Unexpected exception occured:
