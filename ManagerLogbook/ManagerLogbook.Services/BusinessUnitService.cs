@@ -330,12 +330,36 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
         {
-            IQueryable<int> searchCollectionInt = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower())).Select(x => x.Id);
+            IQueryable<int> searchCollectionInt;
+            if (searchCriteria != null)
+            {
+                searchCollectionInt = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower())).Select(x => x.Id);
+            }
+            else
+            {
+                searchCollectionInt = this.context.BusinessUnits.Select(x => x.Id);
+            }
 
-            IQueryable<int> searchCategoryCollectionInt = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId).Select(x => x.Id);
+            IQueryable<int> searchCategoryCollectionInt;
+            if (businessUnitCategoryId != null)
+            {
+                searchCategoryCollectionInt = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId).Select(x => x.Id);
+            }
+            else
+            {
+                searchCategoryCollectionInt = this.context.BusinessUnits.Select(x => x.Id);
+            }
 
-            IQueryable<int> searchTownCollectionInt = this.context.BusinessUnits.Where(t => t.TownId == townId).Select(x => x.Id);
-
+            IQueryable<int> searchTownCollectionInt;
+            if (townId != null)
+            {
+                searchTownCollectionInt = this.context.BusinessUnits.Where(t => t.TownId == townId).Select(x => x.Id);
+            }
+            else
+            {
+                searchTownCollectionInt = this.context.BusinessUnits.Select(x => x.Id);
+            }
+            
             var searchInt = searchTownCollectionInt.Intersect(searchCollectionInt.Intersect(searchCategoryCollectionInt));
 
             var businessUnitsIDs = new List<BusinessUnit>();

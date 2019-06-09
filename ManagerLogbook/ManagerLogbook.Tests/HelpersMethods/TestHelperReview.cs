@@ -44,7 +44,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 EditedDescription = "Edited Text of Review03",
                 Rating = 5,
                 CreatedOn = new DateTime(04 / 14 / 2013),
-                isVisible = false,
+                isVisible = true,
                 BusinessUnitId = 1
             };
         }
