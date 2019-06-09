@@ -117,7 +117,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                     optimizer.DeleteOldImage(model.Picture);
                 }
 
-                businessUnitDTO = await this.businessUnitService.UpdateBusinessUnitAsync(model.Id, model.Name, model.Address, model.PhoneNumber, model.Information, model.Email, imageName);
+                businessUnitDTO = await this.businessUnitService.UpdateBusinessUnitAsync(model.Id, model.Name, model.Address, model.PhoneNumber, model.Information, model.Email, model.CategoryId, model.TownId, imageName);
 
                 if (businessUnitDTO.Name != model.Name)
                 {

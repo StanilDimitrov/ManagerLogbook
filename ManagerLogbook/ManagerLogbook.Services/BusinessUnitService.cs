@@ -71,7 +71,7 @@ namespace ManagerLogbook.Services
 
         }
 
-        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, string picture)
+        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, int businessUnitCategoryId, int townId, string picture)
         {
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
 
@@ -122,6 +122,8 @@ namespace ManagerLogbook.Services
             }
 
             businessUnit.Information = information;
+
+
 
             if (picture != null)
             {
@@ -311,6 +313,32 @@ namespace ManagerLogbook.Services
             return businessUnit.ToDTO();
         }
 
+        public async Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
+            var moderatorUser = await this.context.Users.FindAsync(moderatorId);
+
+            if (moderatorUser == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
+            moderatorUser.BusinessUnitId = null;
+
+            businessUnit = await this.context.BusinessUnits
+                         .Include(bc => bc.BusinessUnitCategory)
+                         .Include(t => t.Town)
+                         .FirstOrDefaultAsync(x => x.Id == businessUnitId);
+
+            return businessUnit.ToDTO();
+        }
+
         //public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
         //{
         //    IQueryable<BusinessUnit> searchCollection = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
@@ -368,6 +396,8 @@ namespace ManagerLogbook.Services
                 var currentBusinessUnit = await this.context.BusinessUnits.FindAsync(id);
                 businessUnitsIDs.Add(currentBusinessUnit);
             }
+
+            var test = businessUnitsIDs;
 
             var businessUnitsDTOid = businessUnitsIDs.Select(x => x.ToDTO()).ToList();
 
