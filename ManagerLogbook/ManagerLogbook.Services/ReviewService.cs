@@ -38,13 +38,16 @@ namespace ManagerLogbook.Services
             //automatic edit 
             var editedDescription = reviewEditor.AutomaticReviewEditor(originalDescription);
 
+            //check visibility
+            var checkVisibility = reviewEditor.CheckReviewVisibility(editedDescription);
+
             var review = new Review()
             {
                 OriginalDescription = originalDescription,
                 EditedDescription = editedDescription,
                 Rating = rating,
                 CreatedOn = DateTime.Now,
-                isVisible = false,
+                isVisible = checkVisibility,
                 BusinessUnitId = businessUnitId
             };
 
@@ -112,8 +115,10 @@ namespace ManagerLogbook.Services
 
             var result = await this.context.Reviews
                                     .Where(bu => bu.BusinessUnitId == businessUnitId)
+                                    .Where(co=>co.isVisible==true)
                                     .Include(bu => bu.BusinessUnit)
-                                    .Select(r => r.ToDTO())
+                                    .OrderByDescending(co => co.CreatedOn)
+                                    .Select(r => r.ToDTO())                                    
                                     .ToListAsync();
 
             return result;
@@ -131,6 +136,7 @@ namespace ManagerLogbook.Services
             var result = await this.context.Reviews
                                     .Where(bu => bu.BusinessUnitId == userModerator.BusinessUnitId)
                                     .Include(bu => bu.BusinessUnit)
+                                    .OrderByDescending(co => co.CreatedOn)
                                     .Select(r => r.ToDTO())
                                     .ToListAsync();
 
@@ -143,7 +149,9 @@ namespace ManagerLogbook.Services
 
             var result = await this.context.Reviews
                                      .Where(bu => bu.CreatedOn == date)
+                                     .Where(co => co.isVisible == true)
                                      .Include(bu => bu.BusinessUnit)
+                                     .OrderByDescending(co => co.CreatedOn)
                                      .Select(r => r.ToDTO())
                                      .ToListAsync();
 
@@ -160,7 +168,9 @@ namespace ManagerLogbook.Services
 
             var result = await this.context.Reviews
                                      .Where(bu => bu.CreatedOn >= startDate && bu.CreatedOn <= endDate)
+                                     .Where(co => co.isVisible == true)
                                      .Include(bu => bu.BusinessUnit)
+                                     .OrderByDescending(co => co.CreatedOn)
                                      .Select(r => r.ToDTO())
                                      .ToListAsync();
 
