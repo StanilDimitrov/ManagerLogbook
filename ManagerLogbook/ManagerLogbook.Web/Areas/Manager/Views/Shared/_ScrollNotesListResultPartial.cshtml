@@ -1,0 +1,48 @@
+﻿@model SearchViewModel
+
+@{
+    int counter = 1;
+}
+@foreach (var note in Model.Notes)
+{
+    <tr>
+        <td>@counter</td>
+        @{
+            counter++;
+        }
+        <td class="comment">@note.Description</td>
+        <td> @note.CreatedOn.ToString("MMMM dd, yyyy")</td>
+        <td>@note.UserName</td>
+        <td>@note.CategoryName</td>
+        <td>
+            @if (note.CategoryName == "Task" && note.IsActiveTask)
+            {
+                <div class="profileUserInfo-1 width-100">
+                    <span class="label label-success margin-top-20 margin-20">Active</span><br />
+                    <a @*id="deactivate-status" *@ asp-action="Deactivate" asp-route-id="@note.Id" class="btn btn-primary btn-new width-100 margin-20">Deactivate</a><br />
+                </div>
+            }
+            else if (note.CategoryName == "Task" && !note.IsActiveTask)
+            {
+                <div class="btn-group">
+                    <span class="label label-danger margin-top-15">Done</span><br />
+                </div>
+            }
+
+        </td>
+        <td>
+            <div class="profileUserInfo-1 width-100">
+                @if (note.CanUserEdit)
+                {
+                    <a class="btn btn-primary margin-10" data-toggle="modal" @*data-noteid="@note.Id" *@ data-target="#editModalNote-@note.Id">Edit</a><br />
+                }
+                @if (note.Image != null)
+                {
+                    <a class="image-link btn btn-primary btn-new width-100 margin-10" href="/images/@note.Image">Show Image</a>
+                }
+            </div>
+        </td>
+        <td></td>
+    </tr>
+    <input type="hidden" id="scroll-page-count" value="@Model.ScrollPage" />
+}

@@ -23,7 +23,7 @@ namespace ManagerLogbook.Services.Mappers
                 Picture = entity.Picture,
                 Information = entity.Information,
                 CategoryName = entity.BusinessUnitCategory.Name,
-                BusinessUnitTownName = entity.Town.Name                
+                BusinessUnitTownName = entity.Town.Name
             };
         }
     }

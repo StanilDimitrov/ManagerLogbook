@@ -26,41 +26,11 @@
 </section>
 
 
-
 <!-- Start Note Modal -->
 @await Html.PartialAsync("_EditModalPartial")
     )
 <!-- End Note Modal -->
 
-@section Scripts{
-
-    <!-- jQuery -->
-    <script src="jquery-3.1.1.min.js" type='text/javascript'></script>
-
-    <!-- Infinity Scrolling -->
-    <script src="jquery-ias.min" type='text/javascript'></script>
-
-    <script src='bootstrap/js/bootstrap.min.js' type='text/javascript'></script>
-
-    <script type="text/javascript"
-            src="https://viralpatel.net/blogs/demo/jquery/jquery.shorten.1.0.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $(".comment").shorten({
-                "showChars": 100,
-                "moreText": "More",
-                "lessText": "Less",
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $('.image-link').magnificPopup({ type: 'image' });
-        });
-    </script>
-}
 
 
 

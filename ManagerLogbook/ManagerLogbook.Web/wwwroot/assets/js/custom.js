@@ -396,7 +396,7 @@ $('#search-notes-form').on('input submit', function (eventSearchNote) {
 
     var searchPhrase = $('#search-for-note-phrase').val();
 
-    if (searchPhrase.length > 2) {
+    //if (searchPhrase.length > 2) {
 
         $this = $(this);
 
@@ -409,10 +409,7 @@ $('#search-notes-form').on('input submit', function (eventSearchNote) {
 
 
         $.post("/Manager/Notes/Search", inputsToSend)
-            .done(function (data) {
-
-                console.log(data);
-
+            .done(function (data) {             
 
                 $('#note-partial-holder').empty();
                 $('#note-partial-holder').append(data);
@@ -421,7 +418,7 @@ $('#search-notes-form').on('input submit', function (eventSearchNote) {
             }).fail(function (data) {
 
             });
-    }
+    //}
 
 });
 
@@ -430,39 +427,49 @@ $('#search-business-form').on('input submit', function (eventSearchBusiness) {
 
     var searchPhrase = $('#search-for-business-phrase').val();
 
-    if (searchPhrase.length > 2) {
-        
-        $this = $(this);
+    //if (searchPhrase.length > 2) {
 
-        var inputs = $this.find('input');
+    $this = $(this);
 
-        var categoryId = $('#category-id-from-selector').val();
-        var townId = $('#town-id-from-selector').val();
+    var inputs = $this.find('input');
 
-        var urlencodedInputs = inputs.serialize();
+    var categoryId = $('#category-id-from-selector').val();
+    var townId = $('#town-id-from-selector').val();
 
-        var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&TownId=" + townId;
-        //console.log(inputs);
-        //debugger;
+    var urlencodedInputs = inputs.serialize();
 
-        $.get("/Home/Search", inputsToSend)
-            .done(function (data) {
+    var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&TownId=" + townId;
+    //console.log(inputs);
+    //debugger;
 
-                //console.log(data);
-                //debugger;
+    $.get("/Home/Search", inputsToSend)
+        .done(function (data) {
 
-                $('#business-partial-holder').empty();
-                $('#business-partial-holder').append(data);
+            //console.log(data);
+            //debugger;
+
+            $('#business-partial-holder').empty();
+            $('#business-partial-holder').append(data);
 
 
-            }).fail(function (data) {
+        }).fail(function (data) {
 
-            });
-    }
+        });
+    //}
 
 });
 
-$('#search-notes-7-days').click(function (eventSearchNotes) {
+
+function shortenTextFunction()
+{
+    $(".comment").shorten({
+        "showChars": 100,
+        "moreText": "More",
+        "lessText": "Less",
+    });
+};
+
+$('#search-criterias-holder').on('click', '#search-notes-7-days', function (eventSearchNotes) {
     eventSearchNotes.preventDefault();
 
     $this = $(this);
@@ -473,19 +480,66 @@ $('#search-notes-7-days').click(function (eventSearchNotes) {
     //var inputs = $this.find('input');
     console.log(btn);
 
-    $.post("/Manager/Notes/NotesForDaysBefore/"+btn)
-        .done(function (data) {
+    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
+        .done(function (dataFrom7Days) {            
 
-            //console.log(data);
-            //debugger;
+            $('#note-partial-holder').empty();
 
-            $('#notes-partial-holder').empty();
-            $('#notes-partial-holder').append(data);
+            $('#note-partial-holder').append(dataFrom7Days);
 
+            shortenTextFunction();
 
-        }).fail(function (data) {
+        }).fail(function (dataFrom7Days) {
 
         });
 
-
+    
 });
+
+
+
+
+
+
+
+$(document).ready(function () {
+    $('.image-link').magnificPopup({ type: 'image' });
+});
+
+
+
+
+
+//$(window).on('scroll',  function (someEvent)
+//{
+//    if ($(window).scrollTop() + $(window).height() > $(document).height() - 100)
+//    {    
+//        setTimeout(2000);
+
+//        var searchFormToGetParams = $('#search-notes-form');
+//        var searchPhrase = $('#search-for-note-phrase').val();
+//        var inputs = searchFormToGetParams.find('input');
+//        var categoryId = $('#category-id-from-selector').val();
+//        var urlencodedInputs = inputs.serialize();
+//        var scrollPageCount = parseInt($('#scroll-page-counter').value);
+//        var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&ScrollPage=" + scrollPageCount;
+
+//       $.post("/Manager/Notes/SearchNotesScrollResult", inputsToSend)
+//           .done(function (dataFromScrollSearch)
+//           {
+//               $('#addintional-notes-scroll').append(dataFromScrollSearch);
+//               //totalPagesForScrollSearch += 1;
+
+//               //$('#addintional-notes-scroll').append("MAIKA MU DEIBA sqlAAAAAAAAAAAAAAAA");
+
+//               //$("#addintional-notes-scroll").append($("<li>DADSADASA</li>").html('something')
+//               //    .addClass('myclass'));
+
+
+//           }).fail(function (dataFromScrollSearch)
+//           {
+
+//       });
+
+//    }
+//});
