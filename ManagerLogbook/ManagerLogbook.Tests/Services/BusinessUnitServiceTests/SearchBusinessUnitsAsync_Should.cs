@@ -1,4 +1,5 @@
 ﻿//using ManagerLogbook.Data;
+//using ManagerLogbook.Data.Models;
 //using ManagerLogbook.Services;
 //using ManagerLogbook.Services.Contracts.Providers;
 //using ManagerLogbook.Services.Utils;
@@ -25,17 +26,18 @@
 //                await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit02());
 //                await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
 //                await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
-                
+
 //                await arrangeContext.SaveChangesAsync();
 //            }
 
 //            using (var assertContext = new ManagerLogbookContext(options))
 //            {
 //                var mockBusinessValidator = new Mock<IBusinessValidator>(MockBehavior.Strict);
-                               
+//                var mockBusinessUnit = new Mock<BusinessUnit>();
+              
 //                var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
-                
-//                var businessUnits = await sut.SearchBusinessUnitsAsync("Kempinski",1,1);
+
+//                var businessUnits = await sut.SearchBusinessUnitsAsync("Kempinski", 1, 1);
 
 //                Assert.AreEqual(businessUnits.Count, 1);
 //            }
