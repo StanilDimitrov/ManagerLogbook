@@ -9,13 +9,7 @@ namespace ManagerLogbook.Web.Models
 {
     public class IndexNoteViewModel
     {
-        public int? PrevPage { get; set; }
-
-        public int CurrPage { get; set; }
-
-        public int? NextPage { get; set; }
-
-        public int TotalPages { get; set; }
+        
 
         public DateTime StartDate { get; set; }
 

@@ -26,7 +26,7 @@ namespace ManagerLogbook.Services.Contracts
         Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days);
 
         Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync(string userId, int logbookId, DateTime startDate,
-                                                                                 DateTime endDate, int? categoryId, string criteria);
+                                                                                 DateTime endDate, int? categoryId, string criteria, int currPage = 1);
         Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesAsync(string userId, int logbookId);
 
         Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync();

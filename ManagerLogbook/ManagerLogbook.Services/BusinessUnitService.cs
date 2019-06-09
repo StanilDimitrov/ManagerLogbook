@@ -358,50 +358,34 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
         {
-            IQueryable<int> searchCollectionInt;
+            IQueryable<BusinessUnit> searchCollection;
             if (searchCriteria != null)
             {
-                searchCollectionInt = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower())).Select(x => x.Id);
+                searchCollection = this.context.BusinessUnits
+                    .Include(x=>x.BusinessUnitCategory)
+                    .Include(x=>x.Town)
+                    .Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
             }
             else
             {
-                searchCollectionInt = this.context.BusinessUnits.Select(x => x.Id);
+                searchCollection = this.context.BusinessUnits
+                    .Include(x => x.BusinessUnitCategory)
+                    .Include(x => x.Town);
             }
 
-            IQueryable<int> searchCategoryCollectionInt;
             if (businessUnitCategoryId != null)
             {
-                searchCategoryCollectionInt = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId).Select(x => x.Id);
+                searchCollection = searchCollection.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId);
             }
-            else
-            {
-                searchCategoryCollectionInt = this.context.BusinessUnits.Select(x => x.Id);
-            }
-
-            IQueryable<int> searchTownCollectionInt;
+           
             if (townId != null)
             {
-                searchTownCollectionInt = this.context.BusinessUnits.Where(t => t.TownId == townId).Select(x => x.Id);
-            }
-            else
-            {
-                searchTownCollectionInt = this.context.BusinessUnits.Select(x => x.Id);
-            }
-            
-            var searchInt = searchTownCollectionInt.Intersect(searchCollectionInt.Intersect(searchCategoryCollectionInt));
-
-            var businessUnitsIDs = new List<BusinessUnit>();
-            foreach (var id in searchInt)
-            {
-                var currentBusinessUnit = await this.context.BusinessUnits.FindAsync(id);
-                businessUnitsIDs.Add(currentBusinessUnit);
+                searchCollection = searchCollection.Where(t => t.TownId == townId);
             }
 
-            var test = businessUnitsIDs;
+            var searchResult = await searchCollection.Select(x => x.ToDTO()).ToListAsync();
 
-            var businessUnitsDTOid = businessUnitsIDs.Select(x => x.ToDTO()).ToList();
-
-            return businessUnitsDTOid;
+            return searchResult;
         }
 
         public async Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetAllBusinessUnitsCategoriesAsync()

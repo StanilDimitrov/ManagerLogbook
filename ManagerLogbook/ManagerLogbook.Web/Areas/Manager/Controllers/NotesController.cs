@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using ManagerLogbook.Web.Areas.Manager.Models;
 using ManagerLogbook.Services.CustomExeptions;
+using log4net;
 
 namespace ManagerLogbook.Web.Areas.Manager.Controllers
 {
@@ -27,6 +28,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly IUserService userService;
         private readonly ILogbookService logbookService;
         private readonly IMemoryCache cache;
+        private static readonly ILog log =
+        LogManager.GetLogger(typeof(NotesController));
 
         public NotesController(IImageOptimizer optimizer, INoteService noteService,
                               IUserService userService, ILogbookService logbookService, IMemoryCache cache)
@@ -62,20 +65,37 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     note.CanUserEdit = note.UserId == userId;
                 }
                 var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
+
+                var totalPages = await noteService.GetPageCountForNotesAsync(15, (int)logbookId);  
+
                 model.SearchModel = new SearchViewModel()
                 {
+                    CurrPage = 1,
+                    TotalPages = totalPages,
                     Notes = notes
                 };
-               
-               
+
+                if (totalPages > 1)
+                {
+                    model.SearchModel.NextPage = 2;
+                }
+
                 model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                 model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
                 return View(model);
             }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (NotAuthorizedException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
-                // log
+                log.Error("Unexpected exception occured:", ex);
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
@@ -121,8 +141,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             catch (Exception ex)
             {
-                // log
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -164,7 +183,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -229,7 +248,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             catch (Exception ex)
             {
-                // log error log for net
+                log.Error("Unexpected exception occured:", ex);
                 StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
@@ -289,12 +308,9 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             catch (Exception ex)
             {
-                // log error log for net
-                //StatusMessage = ex.Message;
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-
         }
 
         [HttpPost]
@@ -330,11 +346,61 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             catch (Exception ex)
             {
-                // log error log for net
-                //StatusMessage = ex.Message;
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GetNotesInPage(SearchViewModel model)
+        {
+            var userId = this.User.GetId();
+            var user = await this.userService.GetUserByIdAsync(userId);
+            var currPage = model.CurrPage;
+
+            var logbookId = user.CurrentLogbookId;
+
+            if (!user.CurrentLogbookId.HasValue)
+            {
+                return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
+            }
+
+            var notesDTO = await this.noteService
+                                     .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
+                                                                          model.StartDate, model.EndDate, model.CategoryId, model.SearchCriteria);
+
+            var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+
+            foreach (var note in notes)
+            {
+                note.CanUserEdit = note.UserId == userId;
+            }
+
+            var totalPages = await noteService.GetPageCountForNotesAsync(15, (int)logbookId);
+
+            //model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+            //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+
+            var searchModel = new SearchViewModel()
+            {
+                CurrPage = model.CurrPage,
+                TotalPages = totalPages
+            };
+
+            if (totalPages > currPage)
+            {
+                searchModel.NextPage = currPage + 1;
+            }
+
+            if (currPage > 1)
+            {
+                searchModel.PrevPage = currPage - 1;
+            }
+
+            searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+
+            return PartialView("_NoteListPartial", searchModel);
         }
 
         [HttpPost]
@@ -357,14 +423,99 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 note.CanUserEdit = note.UserId == userId;
             }
+
+            var totalPages = await noteService.GetPageCountForNotesAsync(15, (int)logbookId);
+
+
             //model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
             //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
             var searchModel = new SearchViewModel();
+
             searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
 
             return PartialView("_NoteListPartial", searchModel);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SearchNotesScrollResult(SearchViewModel model)
+        {
+            if (model.ScrollPage == 0)
+            {
+                model.ScrollPage = 1;
+            }
+            var userId = this.User.GetId();
+            var user = await this.userService.GetUserByIdAsync(userId);
+            var currPage = model.CurrPage;
+
+            var logbookId = user.CurrentLogbookId;
+
+            if (!user.CurrentLogbookId.HasValue)
+            {
+                return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
+            }
+
+            var notesDTO = await this.noteService
+                                     .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
+                                                                          model.StartDate, model.EndDate, model.CategoryId, model.SearchCriteria, model.ScrollPage);
+
+            var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+
+            foreach (var note in notes)
+            {
+                note.CanUserEdit = note.UserId == userId;
+            }
+
+            var totalPages = await noteService.GetPageCountForNotesAsync(15, (int)logbookId);
+
+            //model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+            //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+
+            var searchModel = new SearchViewModel()
+            {
+                ScrollPage = model.ScrollPage + 1,
+                TotalPages = totalPages
+            };
+
+            searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+
+            return PartialView("_ScrollNotesListResultPartial", searchModel);
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ScrollSearchResult(SearchViewModel model)
+        //{
+        //    var userId = this.User.GetId();
+        //    var user = await this.userService.GetUserByIdAsync(userId);
+
+        //    var logbookId = user.CurrentLogbookId;
+        //    if (!user.CurrentLogbookId.HasValue)
+        //    {
+        //        return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
+        //    }
+        //    var notesDTO = await this.noteService
+        //                             .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
+        //                                                                  model.StartDate, model.EndDate, model.CategoryId, model.SearchCriteria);
+        //    var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+        //    foreach (var note in notes)
+        //    {
+        //        note.CanUserEdit = note.UserId == userId;
+        //    }
+
+        //    var totalPages = await noteService.GetPageCountForNotesAsync(15, (int)logbookId);
+
+
+        //    //model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+        //    //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+
+        //    var searchModel = new SearchViewModel();
+
+        //    searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+
+        //    return PartialView("_NoteListPartial", searchModel);
+        //}
 
         //[HttpGet]
         //public async Task<IActionResult> GetFifteenNotesById(int? currPage)
@@ -424,7 +575,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         {
             try
             {
-                //var categories = await this.noteService.GetNoteCategoriesAsync();
                 var cacheCategories = await CacheNoteCategories();
 
                 return Json(cacheCategories);
@@ -443,9 +593,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             catch (Exception ex)
             {
-                // log error log for net
-                //StatusMessage = ex.Message;
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -468,9 +616,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             catch (Exception ex)
             {
-                // log error log for net
-                //StatusMessage = ex.Message;
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }

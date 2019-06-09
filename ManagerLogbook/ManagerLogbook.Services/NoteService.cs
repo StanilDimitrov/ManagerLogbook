@@ -271,8 +271,14 @@ namespace ManagerLogbook.Services
 
         }
 
-        public async Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync(string userId, int logbookId, 
-                                                                                             DateTime startDate, DateTime endDate, int? categoryId, string criteria)
+        public async Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync
+            (string userId, 
+            int logbookId, 
+            DateTime startDate, 
+            DateTime endDate, 
+            int? categoryId, 
+            string searchCriteria,
+            int currPage = 1)
 
         {
             var user = await this.context.Users.FindAsync(userId);
@@ -292,49 +298,35 @@ namespace ManagerLogbook.Services
                 endDate = DateTime.Now;
             }
 
+            IQueryable<Note> searchCollection;
+            if (searchCriteria != null)
+            {
+                searchCollection = this.context.Notes
+                    .Include(x => x.NoteCategory)
+                    .Include(x => x.User)
+                    .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+                    .OrderByDescending(x => x.CreatedOn);
+            }
+            else
+            {
+                searchCollection = this.context.Notes
+                     .Include(x => x.NoteCategory)
+                     .Include(x => x.User)
+                     .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+                     .OrderByDescending(x => x.CreatedOn);
+            }
 
-            //IQueryable<int> searchCollectionInt = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower())).Select(x => x.Id);
+            if (categoryId != null)
+            {
+                searchCollection = searchCollection.Where(x => x.NoteCategoryId == categoryId);
+            }
 
-            //IQueryable<int> searchCategoryCollectionInt = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId).Select(x => x.Id);
+            var searchResult = await searchCollection.Select(x => x.ToDTO())
+                .Skip((currPage - 1) * 15)
+                .Take(15).ToListAsync();
 
-            //IQueryable<int> searchTownCollectionInt = this.context.BusinessUnits.Where(t => t.TownId == townId).Select(x => x.Id);
-
-            //var searchInt = searchTownCollectionInt.Intersect(searchCollectionInt.Intersect(searchCategoryCollectionInt));
-
-            //var businessUnitsIDs = new List<BusinessUnit>();
-            //foreach (var id in searchInt)
-            //{
-            //    var currentBusinessUnit = await this.context.BusinessUnits.FindAsync(id);
-            //    businessUnitsIDs.Add(currentBusinessUnit);
-            //}
-
-            //var businessUnitsDTOid = businessUnitsIDs.Select(x => x.ToDTO()).ToList();
-
-            //return businessUnitsDTOid;
-
-
-            IQueryable<Note> searchCollection = this.context.Notes
-               
-               .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(criteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-               .OrderByDescending(x => x.CreatedOn);
-
-            IQueryable<Note> searchCategoryCollection = this.context.Notes
-               .Where(mt => mt.NoteCategoryId == categoryId)
-               .OrderByDescending(x => x.CreatedOn);
-
-            var search = searchCollection.Intersect(searchCategoryCollection);
-
-            var notesDTO = await search
-                              .Include(mt => mt.Logbook)
-                              .Include(mt => mt.NoteCategory)
-                              .Include(mt => mt.User)
-                                .ThenInclude(lb => lb.UsersLogbooks)
-                              .Select(x => x.ToDTO())
-                              .ToListAsync();
-
-            return notesDTO;
+            return searchResult; 
         }
-
 
         public async Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync()
 
