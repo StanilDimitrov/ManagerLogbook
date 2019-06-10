@@ -14,6 +14,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using ManagerLogbook.Web.Areas.Manager.Models;
+using Microsoft.AspNetCore.Identity;
+using ManagerLogbook.Data.Models;
+using log4net;
+using ManagerLogbook.Services.CustomExeptions;
 
 namespace ManagerLogbook.Web.Areas.Admin.Controllers
 {
@@ -24,6 +28,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         private readonly IBusinessUnitService businessUnitService;
         private readonly IUserService userService;
         private readonly IImageOptimizer optimizer;
+        private static readonly ILog log = LogManager.GetLogger(typeof(BusinessUnitsController));
 
         public BusinessUnitsController(IBusinessUnitService businessUnitService,
                                       IUserService userService,
@@ -33,9 +38,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.optimizer = optimizer ?? throw new System.ArgumentNullException(nameof(optimizer));
         }
-
-        [TempData]
-        public string StatusMessage { get; set; }
 
         [HttpGet]
         public IActionResult Create()
@@ -65,10 +67,10 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 if (businessUnit.Name == model.Name)
                 {
-                    return Ok(string.Format(WebConstants.BusinessUnitCreated));
+                    return Ok(string.Format(WebConstants.BusinessUnitCreated, model.Name));
                 }
 
-                return BadRequest(string.Format(WebConstants.BusinessUnitNotCreated));
+                return BadRequest(string.Format(WebConstants.BusinessUnitNotCreated,model.Name));
             }
 
             catch (ArgumentException ex)
@@ -78,7 +80,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -98,7 +100,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return BadRequest(string.Format(WebConstants.UnableToUpdateBusinessUnit));
+                return BadRequest(string.Format(WebConstants.UnableToUpdateBusinessUnit, model.Name));
             }
 
             try
@@ -121,24 +123,35 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 if (businessUnitDTO.Name != model.Name)
                 {
-                    return BadRequest(string.Format(WebConstants.UnableToUpdateBusinessUnit));
+                    return BadRequest(string.Format(WebConstants.UnableToUpdateBusinessUnit,model.Name));
                 }
 
-                return Ok(string.Format(WebConstants.BusinessUnitUpdated));
+                return Ok(string.Format(WebConstants.BusinessUnitUpdated, model.Name));
             }
 
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (AlreadyExistsException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (ArgumentException ex)
             {
-                StatusMessage = ex.Message;
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }
 
-        //public async Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
         [HttpGet]
         public async Task<IActionResult> AddModeratorToBusinessUnit(int businessUnitId)
         {
-            var moderators = await this.userService.GetAllModeratorsAsync();
+            var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(businessUnitId);
 
             if (moderators == null)
             {
@@ -147,7 +160,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             var moderatorViewModel = moderators.Select(m => m.MapFrom()).ToList();
 
-            ViewData["BusinessUnitId"] = businessUnitId;
             return View(moderatorViewModel);
         }
 
@@ -158,27 +170,61 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             try
             {
                 var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);
-                if (businessUnit == null)
-                {
-                    return BadRequest(string.Format(WebConstants.BusinessUniNotExist));
-                }
 
                 var moderator = await this.userService.GetUserByIdAsync(moderatorId);
-                if (moderator == null)
-                {
-                    return BadRequest(string.Format(WebConstants.ModeratorNotExist));
-                }
 
                 await this.businessUnitService.AddModeratorToBusinessUnitsAsync(moderatorId, businessUnitId);
 
-                StatusMessage = string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, moderator.UserName, businessUnit.Name);
-
-                return RedirectToAction("Details", "BusinessUnits", new { id = businessUnit.Id });
+                return Ok(string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, moderator.UserName, businessUnit.Name));
             }
-            catch (ArgumentException ex)
+            catch (NotFoundException ex)
             {
-                StatusMessage = ex.Message;
-                return RedirectToAction("AddModeratorToBusinessUnit", "BusinessUJnit");
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Unexpected exception occured:", ex);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RemoveModeratorFromBusinessUnit(int businessUnitId)
+        {
+            var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(businessUnitId);
+
+            if (moderators == null)
+            {
+                return BadRequest(string.Format(WebConstants.ModeratorNotExist));
+            }
+
+            var moderatorViewModel = moderators.Select(m => m.MapFrom()).ToList();
+
+            return View(moderatorViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveModeratorFromBusinessUnit(string moderatorId, int businessUnitId)
+        {
+            try
+            {
+                var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);
+
+                var moderator = await this.userService.GetUserByIdAsync(moderatorId);
+
+                await this.businessUnitService.RemoveModeratorFromBusinessUnitsAsync(moderatorId, businessUnitId);
+
+                return Ok(string.Format(WebConstants.SuccessfullyRemovedModeratorFromBusinessUnit, moderator.UserName, businessUnit.Name));
+            }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Unexpected exception occured:", ex);
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -189,11 +235,13 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             {
                 var categories = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
 
+
+
                 return Json(categories);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }
@@ -207,11 +255,23 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 return Json(towns);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
+        }
+
+        public async Task<IActionResult> GetAllModerators(int businessUnitId)
+        {
+            var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(businessUnitId);
+
+            if (moderators == null)
+            {
+                return BadRequest(string.Format(WebConstants.ModeratorNotExist));
+            }
+
+            return Json(moderators);
         }
 
         public IActionResult Index()

@@ -1,4 +1,4 @@
-﻿@model BusinessUnitViewModel
+﻿@model IndexBusinessUnitViewModel
 <!-- Dashboard header -->
 @if (this.User.IsInRole("Admin"))
 {
@@ -20,13 +20,13 @@
                 <div class="collapse navbar-collapse navbar-dash">
                     <ul class="nav navbar-nav mr0">
                         <li class="">
-                            <a data-toggle="modal" id="update-global-button" data-target="#myModalUpdateBusinessUnit"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i> Update business unit</a>
+                            <a data-toggle="modal" id="update-global-button" data-target="#myModalUpdateBusinessUnit"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i> Update</a>
                         </li>
                         <li class="">
-                            <a data-toggle="modal" id="add-moderator-global-button" data-target="#myModalAddModeratorToBusinessUnit"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Add Moderator to business unit</a>
+                            <a data-toggle="modal" id="add-moderator-global-button" data-target="#myModalAddModerator"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Add Moderator</a>
                         </li>
                         <li class="">
-                            <a data-toggle="modal" id="remove-moderator-global-button" data-target="#myModalRemoveModeratorToBusinessUnit"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Remove Moderator to business unit</a>
+                            <a data-toggle="modal" id="remove-moderator-global-button" data-target="#myModalRemoveModerator"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Remove Moderator</a>
                         </li>
                     </ul>
                 </div>
@@ -34,25 +34,25 @@
         </nav>
     </section>
 }
-    <!-- Dashboard header -->
-    <!-- BLOG DETAILS -->
-    <section class="clearfix blogDetials">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-8 col-xs-12">
-                    <div class="thumbnail blogContent">
-                        <div class="caption">
-                            <h3>@Model.Name</h3>
-                            <img src="~/images/@(Model.Picture ?? "noimage.jpg")" alt="Image blog" class="img-responsive">
-                            <p>@Model.Information</p>
-                        </div>
+<!-- Dashboard header -->
+<!-- BLOG DETAILS -->
+<section class="clearfix blogDetials">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-xs-12">
+                <div class="thumbnail blogContent">
+                    <div class="caption">
+                        <h3>@Model.BusinessUnit.Name</h3>
+                        <img src="~/images/@(Model.BusinessUnit.Picture ?? "noimage.jpg")" alt="Image blog" class="img-responsive">
+                        <p>@Model.BusinessUnit.Information</p>
                     </div>
-                    <div class="commentArea">
-                        @*<h3>Reviews (@Model.Reviews.Count()) </h3>*@
-                        <div id="reviews-list">
-                            @await Html.PartialAsync("_ReviewsPartial",Model)
-                        </div>
-                        @*@foreach (var review in Model.Reviews)
+                </div>
+                <div class="commentArea">
+                    @*<h3>Reviews (@Model.Reviews.Count()) </h3>*@
+                    <div id="reviews-list">
+                        @await Html.PartialAsync("_ReviewsPartial", Model)
+                    </div>
+                    @*@foreach (var review in Model.Reviews)
                         {
                             <div class="media media-comment">
                                 <div class="media-body">
@@ -63,52 +63,67 @@
                                 </div>
                             </div>
                         }*@
-                        <h3 class="mt20">Write a review</h3>
-                        <form id="b-note" asp-controller="Reviews" asp-action="Create" method="post">
-                            <div class="row">
-                                <div class="form-group col-xs-12">
-                                    <label for="messageBox" class="constrol-label">Message</label>
-                                    <textarea id="reviewDescription" asp-for="@Model.Review.OriginalDescription" class="form-control" rows="3"></textarea>
-                                </div>
-                                <div class="form-group col-xs-12">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </div>
+                    <h3 class="mt20">Write a review</h3>
+                    <form id="b-note" asp-controller="Reviews" asp-action="Create" method="post">
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <label for="messageBox" class="constrol-label">Message</label>
+                                <textarea id="reviewDescription" asp-for="@Model.BusinessUnit.Review.OriginalDescription" class="form-control" rows="3"></textarea>
                             </div>
-                        </form>
-                        <input type="hidden" class="form-control" id="business-unit-id-input" value="@Model.Id" />
-
-
-                    </div>
-                </div>
-                <div class="col-sm-4 col-xs-12">
-                    <div class="listSidebar">
-                        <h3>Location</h3>
-                        <div class="contactInfo">
-                            <ul class="list-unstyled list-address">
-                                <li>
-                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                    @Model.Address <br> @Model.TownName
-                                </li>
-                                <li>
-                                    <i class="fa fa-phone" aria-hidden="true"></i>
-                                    @Model.PhoneNumber
-                                </li>
-                                <li>
-                                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                                    <a href="#">@Model.Email</a>
-                                </li>
-                            </ul>
+                            <div class="form-group col-xs-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
                         </div>
+                    </form>
+                    <input type="hidden" class="form-control" id="business-unit-id-input" value="@Model.BusinessUnit.Id" />
+
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="listSidebar">
+                    <h3>Location</h3>
+                    <div class="contactInfo">
+                        <ul class="list-unstyled list-address">
+                            <li>
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                @Model.BusinessUnit.Address <br> @Model.BusinessUnit.TownName
+                            </li>
+                            <li>
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                @Model.BusinessUnit.PhoneNumber
+                            </li>
+                            <li>
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <a href="#">@Model.BusinessUnit.Email</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+<!-- Start Update To BusinessUnit Modal -->
+@await Html.PartialAsync("_UpdateBusinessUnitModalPartial", Model.BusinessUnit)
+<!-- End Update To BusinessUnit Modal -->
+<!-- Start Add Moderator To BusinessUnit Modal -->
+@await Html.PartialAsync("_AddModeratorModalPartial", Model.BusinessUnit)
+<!-- End Add Moderator To BusinessUnit Modal -->
+<!-- Start Remove Moderator From BusinessUnit Modal -->
+@await Html.PartialAsync("_RemoveModeratorModalPartial", Model.BusinessUnit)
+<!-- End Remove Moderator From BusinessUnit Modal -->
+<!-- Start Login Modal -->
+@await Html.PartialAsync("_LoginModalPartial", Model.Login)
+<!-- End Login Modal -->
+<!-- Start Account Modal -->
+@await Html.PartialAsync("_CreateAccountModalPartial", Model.Register)
+<!-- End Account Modal -->
 
 
-    @section Scripts{
+@section Scripts{
 
     <script src="~/assets/js/create-review.js"></script>
-    }
+}
 
-   

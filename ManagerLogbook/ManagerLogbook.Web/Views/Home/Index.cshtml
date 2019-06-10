@@ -67,14 +67,14 @@
     <div id="business-partial-holder">
         @await Html.PartialAsync("_BusinessUnitsPartial", Model.SearchModelBusiness)
     </div>
-   
+
 
     <!-- Start Note Modal -->
     @await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)
     <!-- End Note Modal -->
     <!-- Start BusinessUnit Modal -->
     @await Html.PartialAsync("_CreateBusinessUnitModalPartial", Model.BusinessUnit)
-    <!-- End Note Modal -->
+    <!-- End BusinessUnit Modal -->    
     <!-- Start Account Modal -->
     @await Html.PartialAsync("_CreateAccountModalPartial", Model.Register)
     <!-- End Account Modal -->

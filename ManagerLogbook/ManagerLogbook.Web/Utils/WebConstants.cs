@@ -15,13 +15,14 @@ namespace ManagerLogbook.Web.Utils
         public const string UnableToEditNote = "Unable to edit note.";
         public const string UnableToDisableStatusNote = "Unable to disable status.";
         public const string SuccessfullyDeactivateActiveStatus = "Note active status was successfully deactivated.";
-        public const string BusinessUnitCreated = "Business unit was successfully created.";
-        public const string UnableToUpdateBusinessUnit = "Unable to update business unit.";
-        public const string BusinessUnitUpdated = "Business unit was successfully updated.";
-        public const string BusinessUnitNotCreated = "Unable to create business unit.";
+        public const string BusinessUnitCreated = "Business unit {0} was successfully created.";
+        public const string UnableToUpdateBusinessUnit = "Unable to update business unit {0}.";
+        public const string BusinessUnitUpdated = "Business unit {0} was successfully updated.";
+        public const string BusinessUnitNotCreated = "Unable to create business unit {0}.";
         public const string BusinessUniNotExist = "Business unit does not exists.";
         public const string ModeratorNotExist = "Moderator does not exists.";
-        public const string SuccessfullyAddedModeratorToBusinessUnit = "Moderator was successfully added to business unit.";
+        public const string SuccessfullyAddedModeratorToBusinessUnit = "Moderator {0} was successfully added to business unit {1}.";
+        public const string SuccessfullyRemovedModeratorFromBusinessUnit = "Moderator {0} was successfully removed from business unit {1}.";        
         public const string ReviewCreated = "Review was successfully created.";
         public const string ReviewNotCreated = "Unable to create review.";        
     }

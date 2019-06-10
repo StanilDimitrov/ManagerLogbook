@@ -12,6 +12,7 @@
             <div class="modal-body">
                 <div class="text-danger-custom"></div>
                 <form id="update-business-unit" asp-area="Admin" asp-controller="BusinessUnits" asp-action="Update" enctype="multipart/form-data" method="post" class="loginForm">
+                    <input type="hidden" asp-for="Id" value="@Model.Id">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         <input asp-for="Name" class="form-control" id="name" placeholder="Name">
