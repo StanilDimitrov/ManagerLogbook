@@ -23,28 +23,28 @@ namespace ManagerLogbook.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
+            var model = new IndexBusinessUnitViewModel();
+
             var businessUnit = await this.businessUnitService.GetBusinessUnitById(id);
 
-            var model = businessUnit.MapFrom();
+            model.BusinessUnit = businessUnit.MapFrom();
 
             var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
 
             model.Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList();
-
-            //model.Review = new ReviewViewModel();
-            
+                                  
             return View(model);
         }
 
         public async Task<IActionResult> GetReviewsList(int id)
         {
-            var businessUnit = new BusinessUnitViewModel();
+            var model = new IndexBusinessUnitViewModel();
 
             var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
 
-            businessUnit.Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList();
+            model.Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList();
 
-            return PartialView("_ReviewsPartial", businessUnit);
+            return PartialView("_ReviewsPartial", model);
         }
     }
 }

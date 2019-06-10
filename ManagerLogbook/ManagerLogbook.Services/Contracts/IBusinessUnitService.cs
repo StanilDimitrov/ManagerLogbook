@@ -11,7 +11,7 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<BusinessUnitDTO> GetBusinessUnitById(int businessUnitId);
 
-        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, string picture);
+        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, int businessUnitCategoryId, int townId, string picture);
 
         Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId);
 
@@ -30,6 +30,8 @@ namespace ManagerLogbook.Services.Contracts
         Task<IReadOnlyCollection<TownDTO>> GetAllTownsAsync();
 
         Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId);
+
+        Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId);
 
         Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId);
 

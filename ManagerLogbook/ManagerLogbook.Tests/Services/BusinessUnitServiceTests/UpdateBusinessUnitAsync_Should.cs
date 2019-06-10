@@ -35,7 +35,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnit = await sut.UpdateBusinessUnitAsync(TestHelperBusinessUnit.TestBusinessUnit01().Id, "Vitosha", "Cerni Vryh 25", "9876543210", "This is information for BU", "info@vitosha.com", "picturePath");
+                var businessUnit = await sut.UpdateBusinessUnitAsync(TestHelperBusinessUnit.TestBusinessUnit01().Id, "Vitosha", "Cerni Vryh 25", "9876543210", "This is information for BU", "info@vitosha.com", 1,1, "picturePath");
 
                 mockBusinessValidator.Verify(x => x.IsNameInRange("Vitosha"), Times.Exactly(1));
                 mockBusinessValidator.Verify(x => x.IsAddressInRange("Cerni Vryh 25"), Times.Exactly(1));
@@ -71,7 +71,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateBusinessUnitAsync(2,"name2","Nishava 12","1234567890","information2","email@email.com","picture2"));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateBusinessUnitAsync(2,"name2","Nishava 12","1234567890","information2","email@email.com",1,1,"picture2"));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNotFound));
             }
@@ -96,7 +96,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => sut.UpdateBusinessUnitAsync(1, TestHelperBusinessUnit.TestBusinessUnit01().Name, "Nishava 12", "1234567890", "information2", "email@email.com", "picture2"));
+                var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => sut.UpdateBusinessUnitAsync(1, TestHelperBusinessUnit.TestBusinessUnit01().Name, "Nishava 12", "1234567890", "information2", "email@email.com", 1,1,"picture2"));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNameAlreadyExists));
             }

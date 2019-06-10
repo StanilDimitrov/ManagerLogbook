@@ -9,16 +9,21 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Services.CustomExeptions;
+using ManagerLogbook.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ManagerLogbook.Services
 {
     public class UserService : IUserService
     {
         private readonly ManagerLogbookContext context;
+        private readonly UserManager<User> userManager;
 
-        public UserService(ManagerLogbookContext context)
+        public UserService(ManagerLogbookContext context,
+                          UserManager<User> userManager)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public async Task<UserDTO> GetUserByIdAsync(string userId)
@@ -63,10 +68,22 @@ namespace ManagerLogbook.Services
 
         }
 
-        public async Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsAsync()
+        public async Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsNotPresentInBusinessUnitAsync(int businessUnitId)
         {
-            
-            return null;
+            var usersOfRoleModerator = await this.userManager.GetUsersInRoleAsync("Moderator");
+
+            var moderators = usersOfRoleModerator.Where(x => x.BusinessUnitId != businessUnitId).Select(x => x.ToDTO()).ToList();
+
+            return moderators.ToList();
+        }
+
+        public async Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsPresentInBusinessUnitAsync(int businessUnitId)
+        {
+            var usersOfRoleModerator = await this.userManager.GetUsersInRoleAsync("Moderator");
+
+            var moderators = usersOfRoleModerator.Where(x => x.BusinessUnitId == businessUnitId).Select(x => x.ToDTO()).ToList();
+
+            return moderators.ToList();
         }
     }
 }

@@ -29,9 +29,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
         }
 
-        [TempData]
-        public string StatusMessage { get; set; }
-
         public IActionResult Index()
         {
             return View();

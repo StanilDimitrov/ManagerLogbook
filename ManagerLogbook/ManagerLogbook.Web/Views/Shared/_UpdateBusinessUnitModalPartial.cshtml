@@ -1,16 +1,18 @@
 ﻿@model BusinessUnitViewModel
-<!-- BusinessUnit Modal -->
-<div class="modal fade" id="myModalBusinessUnit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- Update Business Unit Modal -->
+<div class="modal fade" id="myModalUpdateBusinessUnit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
+                @*<a class="close" data-dismiss="modal">x</a>*@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Create a business unit</h4>
+                <h4 class="modal-title">Update Business Unit</h4>
             </div>
             <div class="modal-body">
                 <div class="text-danger-custom"></div>
-                <form id="create-business-unit" asp-area="Admin" asp-controller="BusinessUnits" asp-action="Create" enctype="multipart/form-data" method="post" class="loginForm">
+                <form id="update-business-unit" asp-area="Admin" asp-controller="BusinessUnits" asp-action="Update" enctype="multipart/form-data" method="post" class="loginForm">
+                    <input type="hidden" asp-for="Id" value="@Model.Id">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         <input asp-for="Name" class="form-control" id="name" placeholder="Name">
@@ -56,8 +58,33 @@
                         </div>
                     </div>
                 </form>
+                @*<form id="submit-form" enctype="multipart/form-data" asp-area="Admin" asp-controller="BusinessUnits" asp-action="Update" method="post" class="loginForm">
+                        <div class="form-group">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <textarea data-val-required="true" name="Description" class="form-control" placeholder="Please enter a description"></textarea>
+                            <span class="text-danger-custom"></span>
+                        </div>
+                        <div class="padding-bottom-8">
+                            <div class="contactSelect">
+                                <select id="notes-categories-selector" class="form-control" name="CategoryId"></select>
+                            </div>
+                        </div>
+                        <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                        <input type="file" name="NoteImage" class="btn btn-primary file" accept="image/*">
+
+                        <div class="margin-5">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                            <div class="margin-5">
+                                @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                                @if (referrer != default(StringValues))
+                                {
+                                    <a href="@referrer.ToString()">Go Back</a>
+                                }
+                            </div>
+                        </div>
+                    </form>*@
             </div>
         </div>
     </div>
 </div>
-<!-- End BusinessUnit Modal -->
+<!-- End Update Business Unit Modal -->

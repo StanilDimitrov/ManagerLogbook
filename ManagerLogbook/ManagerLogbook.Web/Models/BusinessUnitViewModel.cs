@@ -33,15 +33,17 @@ namespace ManagerLogbook.Web.Models
 
         public IFormFile BusinessUnitPicture { get; set; }
 
+        public string ModeratorId { get; set; }
+        public IEnumerable<SelectListItem> Moderators { get; set; }
+        public string ModeratorName { get; set; }
+
         public int CategoryId { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
         public string CategoryName { get; set; }              
 
         public int TownId { get; set; }
         public IEnumerable<SelectListItem> Towns { get; set; }
-        public string TownName { get; set; }
-
-        public IReadOnlyCollection<ReviewViewModel> Reviews { get; set; }
+        public string TownName { get; set; }        
 
         public ReviewViewModel Review { get; set; }
     }

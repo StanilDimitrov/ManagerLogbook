@@ -31,7 +31,7 @@ namespace ManagerLogbook.Services.DTOs
         public string Information { get; set; }
 
         public string Picture { get; set; }
-
+        
         public string CategoryName { get; set; }
 
         public string BusinessUnitTownName { get; set; }

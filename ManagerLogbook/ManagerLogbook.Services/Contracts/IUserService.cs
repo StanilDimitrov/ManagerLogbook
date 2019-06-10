@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.DTOs;
+﻿using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<UserDTO> SwitchLogbookAsync(string userId, int logbookId);
 
-        Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsAsync();        
+        Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsNotPresentInBusinessUnitAsync(int businessUnitId);
+
+        Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsPresentInBusinessUnitAsync(int businessUnitId);
     }
 }

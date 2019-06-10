@@ -71,7 +71,7 @@ namespace ManagerLogbook.Services
 
         }
 
-        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, string picture)
+        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, int businessUnitCategoryId, int townId, string picture)
         {
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
 
@@ -122,6 +122,8 @@ namespace ManagerLogbook.Services
             }
 
             businessUnit.Information = information;
+
+
 
             if (picture != null)
             {
@@ -310,6 +312,49 @@ namespace ManagerLogbook.Services
 
             return businessUnit.ToDTO();
         }
+
+        public async Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
+            var moderatorUser = await this.context.Users.FindAsync(moderatorId);
+
+            if (moderatorUser == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
+            moderatorUser.BusinessUnitId = null;
+
+            businessUnit = await this.context.BusinessUnits
+                         .Include(bc => bc.BusinessUnitCategory)
+                         .Include(t => t.Town)
+                         .FirstOrDefaultAsync(x => x.Id == businessUnitId);
+
+            return businessUnit.ToDTO();
+        }
+
+        //public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
+        //{
+        //    IQueryable<BusinessUnit> searchCollection = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
+
+        //    //IQueryable<BusinessUnit> searchCategoryCollection = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId);
+
+        //    //IQueryable<BusinessUnit> searchTownCollection = this.context.BusinessUnits.Where(t => t.TownId == townId);
+
+        //    //var search = searchTownCollection.Intersect(searchCollection.Intersect(searchCategoryCollection));
+
+        //    var businessUnitsDTO = await searchCollection.Include(t => t.Town)
+        //                      .Include(buc => buc.BusinessUnitCategory)
+        //                      .Select(x => x.ToDTO())
+        //                      .ToListAsync();
+        //    return businessUnitsDTO;
+        //}
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
         {
