@@ -1,2 +1,32 @@
 2019-06-09 15:14:19,407 INFO ManagerLogbook.Web.Program - Application - Main is invoked
 2019-06-09 15:16:46,836 INFO ManagerLogbook.Web.Controllers.HomeController - Unexpected exception occured:
+2019-06-10 11:06:53,455 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:07:02,298 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:07:09,744 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:07:24,644 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:09:50,982 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:10:49,427 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:12:24,158 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:14:08,761 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:15:24,372 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 11:15:32,114 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70

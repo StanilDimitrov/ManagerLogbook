@@ -23,7 +23,8 @@ namespace ManagerLogbook.Web.Utils
         public const string ModeratorNotExist = "Moderator does not exists.";
         public const string SuccessfullyAddedModeratorToBusinessUnit = "Moderator was successfully added to business unit.";
         public const string ReviewCreated = "Review was successfully created.";
-        public const string ReviewNotCreated = "Unable to create review.";        
+        public const string ReviewNotCreated = "Unable to create review.";
+        public const string EnterValidData = "Please enter a valid data.";
     }
 }
 

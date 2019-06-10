@@ -40,7 +40,7 @@
                     {
                         <div class="profileUserInfo-1 width-100">
                             <span class="label label-success margin-top-20 margin-20">Active</span><br />
-                            <a @*id="deactivate-status" *@ asp-action="Deactivate" asp-route-id="@note.Id" class="btn btn-primary btn-new width-100 margin-20">Deactivate</a><br />
+                            <a id="deactivate-note" value="@note.Id" class="btn btn-primary btn-new width-100 margin-20">Deactivate</a><br />
                         </div>
                     }
                     else if (note.CategoryName == "Task" && !note.IsActiveTask)
