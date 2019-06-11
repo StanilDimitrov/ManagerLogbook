@@ -1,4 +1,6 @@
-﻿<!-- LOGIN  MODAL -->
+﻿@model IndexNoteViewModel
+
+<!-- LOGBOOK  MODAL -->
 <div class="modal fade" id="myModalLogbook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -8,11 +10,10 @@
                 <h4 class="modal-title">Choose logbook</h4>
             </div>
             <div class="modal-body">
-                <div asp-validation-summary="All" class="text-danger-custom"></div>
-                <form  asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="loginForm">
-                    <select id="logbooks-selector" class="form-control" name="CategoryId"></select>
+                <form id="submit-form-logbook" asp-area="Manager" asp-controller="Users" asp-action="SwitchLogbook" method="post" class="loginForm">
+                    <select id="logbooks-selector" class="form-control" name="CurrentLogbookId"></select>
                     <div class="margin-5">
-                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        <button type="submit"  class="btn btn-primary btn-block">Save</button>
                         <div class="margin-5">
                             @{ var referrer = this.Context.Request.Headers["Referer"]; }
                             @if (referrer != default(StringValues))

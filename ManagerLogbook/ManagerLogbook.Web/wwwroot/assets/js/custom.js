@@ -3,6 +3,7 @@ $('.submit-edit-form-button').click(function (eventEdit) {
     eventEdit.preventDefault();
     $thisEditForm = $(this);
     var id = $thisEditForm.attr('noteid');
+   
     var urlToEdit = "/Manager/Notes/Edit";
     var concreteFormOfClickedButton = $('#editModalNote-' + id);
     var inputs = concreteFormOfClickedButton.find('input');
@@ -20,7 +21,7 @@ $('.submit-edit-form-button').click(function (eventEdit) {
     fdata.append("Description", textFromDescription);
     fdata.append("NoteImage", fileInput);
     fdata.append(token.name, token.value);
-
+    
     $.ajax({
         type: 'post',
         url: urlToEdit,
@@ -39,11 +40,12 @@ $('.submit-edit-form-button').click(function (eventEdit) {
                 "timeOut": 3000,
                 "extendedTimeOut": 3000,
                 "onHidden": function () {
-
                 }
             }
+        $('#editModalNote -' + id).modal('hide');
         toastr.success(response);
-        window.setTimeout(function () { location.reload() }, 1500);
+        
+        //window.setTimeout(function () { location.reload() }, 1500);
         //location.reload();
     }).fail(function (response) {
         toastr.options =
@@ -59,6 +61,54 @@ $('.submit-edit-form-button').click(function (eventEdit) {
         toastr.error(response.responseText);
     });
 });
+
+$(function () {
+    const $submitForm = $('#create-note');
+
+    //if ($submitForm.valid()) {
+
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
+        
+        var $this = $(this);
+
+        const dataToSend = $submitForm.serialize();
+
+        //var url = "/Admin/Create/Register";
+        var url = $this.attr('action');
+        
+        $.post(url, dataToSend, function (response) {
+           
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            $('#myModalNote').modal('hide');
+            toastr.success(response);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+    });
+
+});
+
 
 function shortenTextFunction() {
     $(".comment").shorten({
@@ -116,105 +166,6 @@ $(function () {
 });
 
 $(function () {
-    const $submitForm = $('#create-note');
-
-    //if ($submitForm.valid()) {
-
-    $submitForm.on('submit', function (event) {
-        event.preventDefault();
-
-        var $this = $(this);
-
-        const dataToSend = $submitForm.serialize();
-
-        //var url = "/Admin/Create/Register";
-        var url = $this.attr('action');
-
-        $.post(url, dataToSend, function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-
-            toastr.success(response);
-
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
-        });
-
-        $('#myModalNote').modal('hide');
-
-    });
-
-    //}
-
-});
-
-$(function () {
-    const $submitForm = $('#create-business-unit');
-
-    //if ($submitForm.valid()) {
-
-    $submitForm.on('submit', function (event) {
-        event.preventDefault();
-
-        var $this = $(this);
-
-        const dataToSend = $submitForm.serialize();
-        //var url = "/Admin/Create/Register";
-        var url = $this.attr('action');
-
-        $.post(url, dataToSend, function (response) {
-            console.log(response.firstName);
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-
-            toastr.success(response);
-
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
-        });
-    });
-});
-
-
-
-
-$(function () {
     const $submitForm = $('#submit-form-account');
 
     $submitForm.on('submit', function (event) {
@@ -238,6 +189,7 @@ $(function () {
                 "closeButton": true
             }
 
+            $('#myModalRegister').modal('hide');
             toastr.success(response);
 
         }).fail(function (response) {
@@ -254,8 +206,97 @@ $(function () {
             toastr.error(response.responseText);
         });
     });
-
 });
+
+$(function () {
+    const $submitForm = $('#submit-form-logbook');
+
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
+
+        var $this = $(this);
+
+        const dataToSend = $submitForm.serialize();
+      
+        //var url = "/Manager/Users/SwitchLogbook/";
+        var url = $this.attr('action');
+       
+        $.post(url, dataToSend, function (response) {
+            console.log(dataToSend);
+            
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+
+            toastr.success(response);
+            $('#myModalLogbook').modal('hide');
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+    });
+});
+
+
+$(function () {
+    const $submitForm = $('#submit-form-moderator');
+
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
+
+        var $this = $(this);
+
+        const dataToSend = $submitForm.serialize();
+        var url = $this.attr('action');
+
+        $.post(url, dataToSend, function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+
+            $('#myModalLogbook').modal('hide');
+            toastr.success(response);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+    });
+});
+
 
 $(function () {
     const $submitForm = $('#deactivate-status');
@@ -364,38 +405,15 @@ $('#add-note-global-button').click(function (event) {
 });
 
 
-$('#add-business-unit-global-button').click(function (event) {
-    $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories")
+$('#edit-note-global-button').click(function (event) {
+    $.get("/Manager/Notes/GetAllNoteCategories")
         .done(function (response) {
             var s = '<option value="-1" selected disabled hidden>Please Select Category</option>';
             for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
             }
 
-            $("#business-unit-categories-selector").html(s);
-
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
-        });
-
-    $.get("/Admin/BusinessUnits/GetAllTowns")
-        .done(function (response) {
-            var s = '<option value="-1" selected disabled hidden>Select City</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
-            }
-
-            $("#towns-selector").html(s);
+            $("#notes-categories-selector-1").html(s);
 
         }).fail(function (response) {
             toastr.options = {
@@ -412,6 +430,7 @@ $('#add-business-unit-global-button').click(function (event) {
 
         });
 });
+
 
 $('#change-logbook-global-button').click(function (event) {
     $.get("/Manager/Notes/GetAllLogbooksByUser")
@@ -538,7 +557,7 @@ $('#search-business-form').on('input submit', function (eventSearchBusiness) {
     var searchPhrase = $('#search-for-business-phrase').val();
 
     var shouldRequest = // check if at least 500 ms have passed
-         eventSearchBusiness.type === 'submit' ||
+        eventSearchBusiness.type === 'submit' ||
         (eventSearchBusiness.type === 'input' && searchPhrase.length > 2);
 
     lastKeypress = currentKeypress;
@@ -778,8 +797,6 @@ $('#search-criterias-holder').on('click', '#search-notes-today', function (event
 });
 
 
-
-
 $("#myModalRegister").on('show.bs.modal', function () {
     $(this).find('.text-danger-custom').empty();
     console.log($(this).find('.field-validation-error'));
@@ -833,3 +850,17 @@ $("#myModalUpdateBusinessUnit").on('show.bs.modal', function () {
 
 //    }
 //});
+
+
+function centerModal() {
+    $(this).css('display', 'block');
+    var $dialog = $(this).find(".modal-dialog");
+    var offset = ($(window).height() - $dialog.height()) / 2;
+    // Center modal vertically in window
+    $dialog.css("margin-top", offset);
+}
+
+$('.modalModalImage').on('show.bs.modal', centerModal);
+$(window).on("resize", function () {
+    $('.modalModalImage:visible').each(centerModal);
+});

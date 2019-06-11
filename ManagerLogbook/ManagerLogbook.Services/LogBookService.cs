@@ -67,9 +67,11 @@ namespace ManagerLogbook.Services
             }
 
             var result = await this.context.Logbooks
-                                                       .Include(bu => bu.BusinessUnit)
-                                                       .Include(n => n.Notes)
-                                                       .FirstOrDefaultAsync(x => x.Id == logbook.Id);
+                                           .Include(bu => bu.BusinessUnit)
+                                           .Include(n => n.Notes)
+                                           .Include(n => n.UsersLogbooks)
+                                               .ThenInclude( n => n.User)
+                                           .FirstOrDefaultAsync(x => x.Id == logbook.Id);
             return result.ToDTO();
         }
 

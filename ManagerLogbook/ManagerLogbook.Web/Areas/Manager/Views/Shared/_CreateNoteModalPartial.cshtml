@@ -15,7 +15,7 @@
                 <form id="create-note" asp-area="Manager" asp-controsller="Notes" asp-action="Create" enctype="multipart/form-data" method="post" class="loginForm">
                     <div class="form-group">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <textarea @*data-val-required="true"*@ asp-for="Description" class="form-control" placeholder="Please enter a description"></textarea>
+                        <textarea asp-for="Description" class="form-control" placeholder="Please enter a description"></textarea>
                         <span asp-validation-for="Description" class="text-danger-custom"></span>
                     </div>
                     <select id="notes-categories-selector" class="form-control" name="CategoryId"></select>

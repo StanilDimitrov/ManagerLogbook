@@ -30,3 +30,57 @@ System.NullReferenceException: Object reference not set to an instance of an obj
 2019-06-10 11:15:32,114 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
 System.NullReferenceException: Object reference not set to an instance of an object.
    at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 70
+2019-06-10 22:59:37,200 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.UsersController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Services.Mappers.NoteDTOMapper.ToDTO(Note entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\NoteDTOMapper.cs:line 15
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.<>c.<ToDTO>b__0_0(Note x) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 22
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.ToList()
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.ToDTO(Logbook entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 16
+   at ManagerLogbook.Services.LogbookService.GetLogbookById(Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 73
+   at ManagerLogbook.Web.Areas.Manager.Controllers.UsersController.SwitchLogbook(ManagerViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\UsersController.cs:line 41
+2019-06-10 23:00:00,211 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.UsersController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Services.Mappers.NoteDTOMapper.ToDTO(Note entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\NoteDTOMapper.cs:line 15
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.<>c.<ToDTO>b__0_0(Note x) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 22
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.ToList()
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.ToDTO(Logbook entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 16
+   at ManagerLogbook.Services.LogbookService.GetLogbookById(Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 73
+   at ManagerLogbook.Web.Areas.Manager.Controllers.UsersController.SwitchLogbook(ManagerViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\UsersController.cs:line 41
+2019-06-10 23:00:35,109 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.UsersController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Services.Mappers.NoteDTOMapper.ToDTO(Note entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\NoteDTOMapper.cs:line 15
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.<>c.<ToDTO>b__0_0(Note x) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 22
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.ToList()
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.ToDTO(Logbook entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 16
+   at ManagerLogbook.Services.LogbookService.GetLogbookById(Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 73
+   at ManagerLogbook.Web.Areas.Manager.Controllers.UsersController.SwitchLogbook(ManagerViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\UsersController.cs:line 41
+2019-06-10 23:02:39,262 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.UsersController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Services.Mappers.NoteDTOMapper.ToDTO(Note entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\NoteDTOMapper.cs:line 15
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.<>c.<ToDTO>b__0_0(Note x) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 22
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.ToList()
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.ToDTO(Logbook entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 16
+   at ManagerLogbook.Services.LogbookService.GetLogbookById(Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 73
+   at ManagerLogbook.Web.Areas.Manager.Controllers.UsersController.SwitchLogbook(ManagerViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\UsersController.cs:line 41
+2019-06-10 23:03:07,640 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.UsersController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Services.Mappers.NoteDTOMapper.ToDTO(Note entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\NoteDTOMapper.cs:line 15
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.<>c.<ToDTO>b__0_0(Note x) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 22
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.ToList()
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.ToDTO(Logbook entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 16
+   at ManagerLogbook.Services.LogbookService.GetLogbookById(Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 73
+   at ManagerLogbook.Web.Areas.Manager.Controllers.UsersController.SwitchLogbook(ManagerViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\UsersController.cs:line 41
+2019-06-10 23:06:23,511 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.UsersController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Services.Mappers.NoteDTOMapper.ToDTO(Note entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\NoteDTOMapper.cs:line 15
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.<>c.<ToDTO>b__0_0(Note x) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 22
+   at System.Linq.Enumerable.SelectEnumerableIterator`2.ToList()
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at ManagerLogbook.Services.Mappers.LogbookDTOMapper.ToDTO(Logbook entity) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Mappers\LogbookDTOMapper.cs:line 16
+   at ManagerLogbook.Services.LogbookService.GetLogbookById(Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 73
+   at ManagerLogbook.Web.Areas.Manager.Controllers.UsersController.SwitchLogbook(ManagerViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\UsersController.cs:line 41

@@ -18,12 +18,12 @@
                 <div class="row">
                     <div class="col-sm-5 col-xs-12">
                         <div class="categoryImage">
-                            <img src="~/images/@(businessUnit.Picture ?? "noimage.jpg")" alt="Image category" class="img-responsive img-rounded">
+                            <a href="/BusinessUnits/Details/@businessUnit.Id"><img src="~/images/@(businessUnit.Picture ?? "noimage.jpg")" href= alt="Image category" class="img-responsive img-rounded"></a> 
                         </div>
                     </div>
                     <div class="col-sm-7 col-xs-12">
                         <div class="categoryDetails">
-                            <h2><a href="listing-details-right.html" style="color: #222222">@businessUnit.Name </a> <span class="likeCount"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span></h2>
+                            <h2><a href="/BusinessUnits/Details/@businessUnit.Id" style="color: #222222">@businessUnit.Name </a> <span class="likeCount"><i class="fa fa-heart-o" aria-hidden="true"></i> 10 k</span></h2>
                             <p>@businessUnit.Address <span class="placeName">@businessUnit.TownName </span></p>
                             <p>@businessUnit.Information </p>
                             <ul class="list-inline list-tag">

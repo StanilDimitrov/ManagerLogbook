@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div asp-validation-summary="All" class="text-danger-custom"></div>
                 <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="loginForm">
-                    <select id="moderator-selector" class="form-control" asp-for="ModeratorId"></select>
+                    <select id="moderator-selector-remove" class="form-control" asp-for="ModeratorId"></select>
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Save</button>
                         <div class="margin-5">

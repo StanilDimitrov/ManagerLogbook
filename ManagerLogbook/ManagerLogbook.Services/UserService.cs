@@ -41,8 +41,9 @@ namespace ManagerLogbook.Services
 
         public async Task<UserDTO> SwitchLogbookAsync(string userId, int logbookId)
         {
-            var user = await this.context.Users.Include(x => x.BusinessUnit)
-                                             .FirstOrDefaultAsync(x => x.Id == userId);
+            var user = await this.context.Users
+                                         .Include(x => x.BusinessUnit)
+                                         .FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user == null)
             {

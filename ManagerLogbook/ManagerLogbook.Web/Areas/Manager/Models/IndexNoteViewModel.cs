@@ -10,12 +10,19 @@ namespace ManagerLogbook.Web.Models
     public class IndexNoteViewModel
     {
         
-
         public DateTime StartDate { get; set; }
 
         public DateTime EndDate { get; set; }
 
         public string SearchCriteria { get; set; }
+
+        public LogbookViewModel CurrentLogbook { get; set; }
+
+        public ManagerViewModel Manager { get; set; }
+
+        //public string CurrentLogbookName { get; set; }
+
+        //public int CurrentLogbookId { get; set; }
 
         public NoteViewModel Note { get; set; }
 

@@ -53,16 +53,16 @@
                         @await Html.PartialAsync("_ReviewsPartial", Model)
                     </div>
                     @*@foreach (var review in Model.Reviews)
-                        {
-                            <div class="media media-comment">
-                                <div class="media-body">
-                                    <span class="date" style="color: black">@review.CreatedOn.ToString(("dd MMMM yyyy"))</span>
-                                    <p>
-                                        @review.EditedDescription
-                                    </p>
-                                </div>
-                            </div>
-                        }*@
+                {
+                    <div class="media media-comment">
+                        <div class="media-body">
+                            <span class="date" style="color: black">@review.CreatedOn.ToString(("dd MMMM yyyy"))</span>
+                            <p>
+                                @review.EditedDescription
+                            </p>
+                        </div>
+                    </div>
+                }*@
                     <h3 class="mt20">Write a review</h3>
                     <form id="b-note" asp-controller="Reviews" asp-action="Create" method="post">
                         <div class="row">
@@ -101,6 +101,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
     </div>
 </section>
@@ -111,9 +112,10 @@
 <!-- Start Add Moderator To BusinessUnit Modal -->
 @await Html.PartialAsync("_AddModeratorModalPartial", Model.BusinessUnit)
 <!-- End Add Moderator To BusinessUnit Modal -->
+
 <!-- Start Remove Moderator From BusinessUnit Modal -->
 @await Html.PartialAsync("_RemoveModeratorModalPartial", Model.BusinessUnit)
-<!-- End Remove Moderator From BusinessUnit Modal -->
+
 <!-- Start Login Modal -->
 @await Html.PartialAsync("_LoginModalPartial", Model.Login)
 <!-- End Login Modal -->

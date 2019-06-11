@@ -54,8 +54,19 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 var user = await this.userService.GetUserByIdAsync(userId);
                 var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
                 var logbookId = user.CurrentLogbookId;
+                
                 if (user.CurrentLogbookId.HasValue)
                 {
+                    var currentLogbook = await this.logbookService.GetLogbookById(user.CurrentLogbookId.Value);
+                    model.CurrentLogbook = new LogbookViewModel()
+                    {
+                        CurrentLogbookId = logbookId,
+                        Name =currentLogbook.Name
+                    };
+                    model.Manager = new ManagerViewModel()
+                    {
+                        CurrentLogbookId = logbookId,
+                    };
                     //return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
                     var notesDTO = await this.noteService.ShowLogbookNotesAsync(userId, user.CurrentLogbookId.Value);
                     var notes = notesDTO.Select(x => x.MapFrom()).ToList();
@@ -189,20 +200,13 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
         }
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(NoteViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
-                return BadRequest();
-                //return View(model);
+                return BadRequest(WebConstants.EnterValidData);
             }
 
             try
@@ -217,11 +221,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 var userId = this.User.GetId();
                 var user = await this.userService.GetUserByIdAsync(userId);
 
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
                 if (!user.CurrentLogbookId.HasValue)
                 {
                     return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
@@ -234,7 +233,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     return Ok(string.Format(WebConstants.NoteCreated));
                 }
 
-                return RedirectToAction("Error", "Home");
+                return BadRequest(WebConstants.UnableToCreateNote);
             }
             catch (ArgumentException ex)
             {

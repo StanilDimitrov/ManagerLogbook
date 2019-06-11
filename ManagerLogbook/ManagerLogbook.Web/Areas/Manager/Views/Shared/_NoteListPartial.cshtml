@@ -55,7 +55,7 @@
                     <div class="profileUserInfo-1 width-100">
                         @if (note.CanUserEdit)
                         {
-                            <a class="btn btn-primary margin-10" data-toggle="modal" @*data-noteid="@note.Id" *@ data-target="#editModalNote-@note.Id">Edit</a><br />
+                            <a class="btn btn-primary margin-10" data-toggle="modal" @*data-noteid="@note.Id" *@ id="edit-note-global-button" data-target="#editModalNote-@note.Id">Edit</a><br />
                         }
                         @if (note.Image != null)
                         {
@@ -69,7 +69,6 @@
             <!-- Note Modal -->
             <div class="modal fade" id="editModalNote-@note.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                 <div class="modal-dialog">
-                    @*@await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])*@
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -85,20 +84,8 @@
                                     <input type="hidden" value="@note.Id" />
                                     <textarea data-val-required="true" asp-for="@note.Description" class="form-control" placeholder="Please enter a description">@note.Description</textarea>
                                     <span asp-validation-for="@note.Description" class="text-danger-custom"></span>
-
-                                    @*<select id="notes-categories-selector" class="form-control" name="CategoryId"></select>*@
                                 </div>
-                                <div style="padding-bottom:9%">
-                                    <div class="contactSelect">
-                                        <select name="CategoryName" class="select-drop">
-                                            <option value="0">Select Category</option>
-                                            <option value="1">Restaurant</option>
-                                            <option value="2">Bar</option>
-                                            <option value="3">Cafe</option>
-                                        </select>
-                                    </div>
-                                </div>
-
+                                <select id="notes-categories-selector-1" class="form-control" name="CategoryId"></select>    
 
                                 <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
                                 <input type="file" name="NoteImage" id="image-input-@note.Id" class="btn btn-primary file" accept="image/*">
@@ -118,8 +105,8 @@
                     </div>
                 </div>
             </div>
-            <!-- End Note Modal -->        
-                                       }
+            <!-- End Note Modal -->
+        }
     </tbody>
 
 
