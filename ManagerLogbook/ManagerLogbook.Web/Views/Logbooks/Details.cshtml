@@ -20,17 +20,26 @@
                 <div class="collapse navbar-collapse navbar-dash">
                     <ul class="nav navbar-nav mr0">
                         <li class="">
-                            <a data-toggle="modal" id="update-global-button" data-target="#myModalUpdateLogbook"><i class="fa fa-wrench" aria-hidden="true"></i> Update Logbook</a>
+                            <a data-toggle="modal" id="update-global-button" data-target="#myModalUpdateLogbook"><i class="fa fa-wrench" aria-hidden="true"></i> Update</a>
                         </li>
 
                         <li class="dropdown singleDro ">
                             <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i>Managers<i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                            <ul class="dropdown-menu">
-                                @foreach (var manager in Model.AssignedManagers)
-                                {
-                                    <li><a asp-controller="Account" asp-action="Details" asp-route-id="@manager.Id">@manager.UserName</a></li>
-                                }
-                            </ul>
+                            @if (Model.AssignedManagers.Count != 0)
+                            {
+                                <ul class="dropdown-menu">
+                                    @foreach (var manager in Model.AssignedManagers)
+                                    {
+                                        <li><a asp-controller="Account" asp-action="Details" asp-route-id="@manager.Id">@manager.UserName</a></li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="dropdown-menu">
+                                     There are no managers available 
+                                </ul>
+                            }
                         </li>
                         <li class="">
                             <a data-toggle="modal" id="add-manager-global-button" data-target="#myModalAddManager"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Manager</a>
@@ -67,18 +76,18 @@
                 <div class="col-sm-4 col-xs-12">
                     <div class="panel panel-default panel-card">
                         <div class="panel-heading">
-                            Managers 
+                            Managers
                         </div>
                         <div class="panel-body">
                             <h2>@Model.AssignedManagers.Count()</h2>
-                            <p>Last added: @Model.AssignedManagers.OrderByDescending(x=>x.Id).First().UserName</p>
+                            <p>Last added: @Model.AssignedManagers.OrderByDescending(x => x.Id).First().UserName</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-4 col-xs-12">
                     <div class="panel panel-default panel-card">
                         <div class="panel-heading">
-                            Active Notes 
+                            Active Notes
                         </div>
                         <div class="panel-body">
                             <h2>@Model.ActiveNotes.Count()</h2>
@@ -89,7 +98,7 @@
                 <div class="col-sm-4 col-xs-12">
                     <div class="panel panel-default panel-card">
                         <div class="panel-heading">
-                            Total Notes 
+                            Total Notes
                         </div>
                         <div class="panel-body">
                             <h2>@Model.TotalNotes.Count()</h2>

@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Web.Models.AccountViewModels;
+﻿using ManagerLogbook.Services.DTOs;
+using ManagerLogbook.Web.Models.AccountViewModels;
 using System.Collections.Generic;
 
 
@@ -13,9 +14,13 @@ namespace ManagerLogbook.Web.Models
         public LoginViewModel Login { get; set; }
 
         public FooterViewModel Footer { get; set; }
-         
+
+        public LogbookViewModel Logbook { get; set; }
+
         public BusinessUnitViewModel BusinessUnit { get; set; }
 
         public IReadOnlyCollection<ReviewViewModel> Reviews { get; set; }
+
+        public IReadOnlyCollection<LogbookDTO> Logbooks { get; set; }
     }
 }

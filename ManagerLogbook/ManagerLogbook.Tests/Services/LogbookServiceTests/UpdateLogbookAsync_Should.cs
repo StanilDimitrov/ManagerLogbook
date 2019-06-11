@@ -35,7 +35,7 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var logbookDTO = await sut.UpdateLogbookAsync(1, "Hotel", "picture");
+                var logbookDTO = await sut.UpdateLogbookAsync(1, "Hotel", 1,"picture");
 
                 Assert.AreEqual(logbookDTO.Name, "Hotel");
                 Assert.AreEqual(logbookDTO.Picture, "picture");
@@ -60,7 +60,7 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.UpdateLogbookAsync(1, null, "picture"));
+                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.UpdateLogbookAsync(1, null, 1, "picture"));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.NameCanNotBeNullOrEmpty));
             }
@@ -84,7 +84,7 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateLogbookAsync(2, null, "picture"));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateLogbookAsync(2, null, 1, "picture"));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.LogbookNotFound));
             }
@@ -108,7 +108,7 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateLogbookAsync(2, TestHelpersLogbook.TestLogbook01().Name, "picture"));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateLogbookAsync(2, TestHelpersLogbook.TestLogbook01().Name,1, "picture"));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.LogbookNotFound));
             }

@@ -18,7 +18,7 @@ namespace ManagerLogbook.Web.Controllers
                                        IReviewService reviewService)
         {
             this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
-            this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
+            this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));            
         }
 
         public async Task<IActionResult> Details(int id)
@@ -32,6 +32,10 @@ namespace ManagerLogbook.Web.Controllers
             var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
 
             model.Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList();
+
+            model.Logbooks = await this.businessUnitService.GetAllLogbooksForBusinessUnitAsync(businessUnit.Id);
+
+            //model.Logbooks = logbookDTOs.Select(x => x.MapFrom()).ToList();
                                   
             return View(model);
         }

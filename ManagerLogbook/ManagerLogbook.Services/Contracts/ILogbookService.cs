@@ -13,7 +13,7 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<LogbookDTO> GetLogbookById(int logbookId);
 
-        Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, string picture);
+        Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, int businessUnitId, string picture);
 
         Task<LogbookDTO> AddManagerToLogbookAsync(string managerId, int logbookId);
 

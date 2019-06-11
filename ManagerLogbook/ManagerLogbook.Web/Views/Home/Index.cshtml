@@ -74,7 +74,10 @@
     <!-- End Note Modal -->
     <!-- Start BusinessUnit Modal -->
     @await Html.PartialAsync("_CreateBusinessUnitModalPartial", Model.BusinessUnit)
-    <!-- End BusinessUnit Modal -->    
+    <!-- End BusinessUnit Modal -->
+    <!-- Start Logbook Modal -->
+    @await Html.PartialAsync("_CreateLogbookModalPartial", Model.Logbook)
+    <!-- End Logbook Modal -->
     <!-- Start Account Modal -->
     @await Html.PartialAsync("_CreateAccountModalPartial", Model.Register)
     <!-- End Account Modal -->
