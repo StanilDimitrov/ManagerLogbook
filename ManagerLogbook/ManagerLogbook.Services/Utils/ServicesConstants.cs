@@ -18,6 +18,7 @@
         public const string DateIsNotValid = "Date is not valid!"; 
         public const string NoLogboogChoosen = "You must choose a logbook to do operations in it.";
         public const string ManagerIsAlreadyInLogbook = "Manager {0} is already exists in logbook {1}!";
+        public const string ManagerIsNotPresentInLogbook = "Manager {0} is not present in logbook {1}!";
         public const string ModeratorIsAlreadyInBusinessUnit = "Moderator {0} is already exists in businessUnit {1}!";
         public const string CategoryIsAlreadyInBusinessUnit = "Category {0} is already exists!";
         public const string NameCanNotBeNullOrEmpty = "Name can not be null or empty string!";
@@ -31,5 +32,6 @@
         public const string BusinessUnitNameAlreadyExists = "BusinessUnit name already exists.";
         public const string BusinessUnitCategoryNameAlreadyExists = "BusinessUnitCategory name already exists.";
         public const string ReviewNotFound = "Review does not exists.";
+        
     }
 }

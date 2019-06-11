@@ -17,6 +17,8 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<LogbookDTO> AddManagerToLogbookAsync(string managerId, int logbookId);
 
+        Task<LogbookDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId);
+
         Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksByUserAsync(string userId);
 
         Task<LogbookDTO> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId);

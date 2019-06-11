@@ -40,6 +40,17 @@ namespace ManagerLogbook.Tests.HelpersMethods
             };
         }
 
+        public static Logbook TestLogbook04()
+        {
+            return new Logbook
+            {
+                Id = 4,
+                Name = new string('a', 49),
+                Picture = "pictureLogbook04",
+                BusinessUnitId = 1
+            };
+        }
+
         public static BusinessUnit TestBusinessUnit01()
         {
             return new BusinessUnit
@@ -118,6 +129,17 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 LogbookId = 3,
             };
         }
+
+        public static UsersLogbooks TestUsersLogbooks04()
+        {
+            return new UsersLogbooks
+            {
+                UserId = "70c946ce-0c88-4084-ab2e-dfbf53783c05",
+                LogbookId = 4,
+            };
+        }
+
+
 
         public static NoteCategory TestNoteCategory1()
         {

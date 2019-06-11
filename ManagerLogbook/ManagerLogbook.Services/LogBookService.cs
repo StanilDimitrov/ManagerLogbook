@@ -152,6 +152,44 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
+        public async Task<LogbookDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId)
+        {
+            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+
+            if (logbook == null)
+            {
+                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
+
+            var manager = await this.context.Users.FindAsync(managerId);
+
+            if (manager == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
+            if (this.context.UsersLogbooks.Any(u => u.UserId != managerId))
+            {
+                throw new ArgumentException(string.Format(ServicesConstants.ManagerIsNotPresentInLogbook, manager.UserName, logbook.Name));
+            }
+
+            var relationToRemove = new UsersLogbooks() { UserId = manager.Id, LogbookId = logbook.Id };
+
+            //marked to be deleted
+            //this.context.Entry(relationToRemove).State = EntityState.Deleted;
+
+            this.context.UsersLogbooks.Attach(relationToRemove);
+            this.context.UsersLogbooks.Remove(relationToRemove);
+            await this.context.SaveChangesAsync();
+
+            var result = await this.context.Logbooks
+                              .Include(bu => bu.BusinessUnit)
+                              .Include(n => n.Notes)
+                              .FirstOrDefaultAsync(x => x.Id == logbook.Id);
+
+            return result.ToDTO();
+        }
+
         public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksByUserAsync(string userId)
         {
             var user = await this.context.Users.FindAsync(userId);
