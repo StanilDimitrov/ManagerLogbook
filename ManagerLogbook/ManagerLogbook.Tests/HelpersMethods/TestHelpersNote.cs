@@ -113,6 +113,8 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 UserName = "ivan",
                 Email = "dir@bg",
                 PasswordHash = "123456",
+                BusinessUnitId = 1,
+                
             };
         }
 
@@ -134,7 +136,7 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Id = "6422552b-c251-491c-bcff-b2216430b6e4",
                 UserName = "georgi",
                 Email = "gol@bg",
-                PasswordHash = "123456"
+                PasswordHash = "123456",
             };
         }
 

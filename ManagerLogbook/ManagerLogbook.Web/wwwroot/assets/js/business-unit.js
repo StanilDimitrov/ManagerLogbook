@@ -132,7 +132,10 @@ $(function () {
 
 
 $('#add-moderator-global-button').click(function (event) {
-    $.get("/Admin/BusinessUnits/GetAllModeratorsNotPresent")
+
+    var btn = $("#my-add-moderator-value").attr('value');
+
+    $.get("/Admin/BusinessUnits/GetAllModeratorsNotPresent/" + btn)
   
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Moderator</option>';
@@ -148,8 +151,11 @@ $('#add-moderator-global-button').click(function (event) {
 });
 
 $('#remove-moderator-global-button').click(function (event) {
+
     $this = $(this);
-    var btn = $(this).attr('value');
+  
+    var btn = $("#my-remove-moderator-value").attr('value');
+    
     $.get("/Admin/BusinessUnits/GetAllModeratorsPresent/" + btn)
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Moderator</option>';
@@ -165,7 +171,12 @@ $('#remove-moderator-global-button').click(function (event) {
 });
 
 $('#add-business-unit-global-button').click(function (event) {
-    $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories")
+
+    $this = $(this);
+
+    var btn = $("#my-add-moderator-value").attr('value');
+
+    $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories/" + btn)
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
             for (var i = 0; i < response.length; i++) {
@@ -212,6 +223,61 @@ $('#add-business-unit-global-button').click(function (event) {
 
         });
 });
+
+$('#update-global-button').click(function (event) {
+
+    $this = $(this);
+
+    var btn = $("#my-add-moderator-value").attr('value');
+
+    $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories/" + btn)
+        .done(function (response) {
+            var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
+            for (var i = 0; i < response.length; i++) {
+                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            }
+
+            $("#business-unit-categories-selector").html(s);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+
+    $.get("/Admin/BusinessUnits/GetAllTowns")
+        .done(function (response) {
+            var s = '<option value="-1" selected disabled hidden>Select City</option>';
+            for (var i = 0; i < response.length; i++) {
+                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            }
+
+            $("#towns-selector").html(s);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+
+        });
+});
+
 
 $(function () {
     const $submitForm = $('#submit-form-add-moderator');

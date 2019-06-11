@@ -11,7 +11,7 @@
             <div class="modal-body">
                 <div asp-validation-summary="All" class="text-danger-custom"></div>
                 <form id="submit-form-add-moderator" asp-area="Admin" asp-controller="BusinessUnits" asp-action="AddModeratorToBusinessUnit" method="post" class="loginForm">
-                    <input type="hidden" asp-for="Id" value="@Model.Id">
+                    <input type="hidden" id="my-add-moderator-value" value="@Model.Id">
                     <select id="moderator-selector" class="form-control" asp-for="ModeratorId"></select>
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Save</button>
