@@ -37,11 +37,11 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             this.optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
         }
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -83,13 +83,13 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Update(int id)
-        {
-            var logbook = await this.logbookService.GetLogbookById(id);
-            var logbookViewModel = logbook.MapFrom();
-            return View(logbookViewModel);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Update(int id)
+        //{
+        //    var logbook = await this.logbookService.GetLogbookById(id);
+        //    var logbookViewModel = logbook.MapFrom();
+        //    return View(logbookViewModel);
+        //}
 
 
         [HttpPost]
@@ -146,27 +146,30 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> AddManagerToLogbook(int logbookId)
-        {
-            var managers = await this.userService.GetAllManagersNotPresentInLogbookAsync(logbookId);
+        //[HttpGet]
+        //public async Task<IActionResult> AddManagerToLogbook(int logbookId)
+        //{
+        //    var managers = await this.userService.GetAllManagersNotPresentInLogbookAsync(logbookId);
 
-            if (managers == null)
-            {
-                return BadRequest(string.Format(WebConstants.ManagerNotExist));
-            }
+        //    if (managers == null)
+        //    {
+        //        return BadRequest(string.Format(WebConstants.ManagerNotExist));
+        //    }
 
-            var managerViewModel = managers.Select(m => m.MapFrom()).ToList();
+        //    var managerViewModel = managers.Select(m => m.MapFrom()).ToList();
 
-            return View(managerViewModel);
-        }
+        //    return View(managerViewModel);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddManagerToLogbook(string managerId, int logbookId)
+        public async Task<IActionResult> AddManagerToLogbook(LogbookViewModel model)
         {
             try
             {
+                var managerId = model.ManagerId;
+                var logbookId = model.Id;
+
                 var logbook = await this.logbookService.GetLogbookById(logbookId);
 
                 var manager = await this.userService.GetUserByIdAsync(managerId);
@@ -190,27 +193,30 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> RemoveManagerFromLogbook(int logbookId)
-        {
-            var managers = await this.userService.GetAllManagersPresentInLogbookAsync(logbookId);
+        //[HttpGet]
+        //public async Task<IActionResult> RemoveManagerFromLogbook(int logbookId)
+        //{
+        //    var managers = await this.userService.GetAllManagersPresentInLogbookAsync(logbookId);
 
-            if (managers == null)
-            {
-                return BadRequest(string.Format(WebConstants.ManagerNotExist));
-            }
+        //    if (managers == null)
+        //    {
+        //        return BadRequest(string.Format(WebConstants.ManagerNotExist));
+        //    }
 
-            var managerViewModel = managers.Select(m => m.MapFrom()).ToList();
+        //    var managerViewModel = managers.Select(m => m.MapFrom()).ToList();
 
-            return View(managerViewModel);
-        }
+        //    return View(managerViewModel);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveManagerFromLogbook(string managerId, int logbookId)
+        public async Task<IActionResult> RemoveManagerFromLogbook(LogbookViewModel model)
         {
             try
             {
+                var managerId = model.ManagerId;
+                var logbookId = model.Id;
+
                 var logbook = await this.logbookService.GetLogbookById(logbookId);
 
                 var manager = await this.userService.GetUserByIdAsync(managerId);
