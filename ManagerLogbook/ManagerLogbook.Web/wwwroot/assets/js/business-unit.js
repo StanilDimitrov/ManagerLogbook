@@ -132,9 +132,10 @@ $(function () {
 
 
 $('#add-moderator-global-button').click(function (event) {
-    $.get("/Admin/BusinessUnits/GetAllModerators")
+    $.get("/Admin/BusinessUnits/GetAllModeratorsNotPresent")
+  
         .done(function (response) {
-            var s = '<option value="-1" selected disabled hidden>Please Select Moderator</option>';
+            var s = '<option value="null" selected disabled hidden>Please Select Moderator</option>';
             for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
             }
@@ -147,9 +148,11 @@ $('#add-moderator-global-button').click(function (event) {
 });
 
 $('#remove-moderator-global-button').click(function (event) {
-    $.get("/Admin/BusinessUnits/GetAllModerators")
+    $this = $(this);
+    var btn = $(this).attr('value');
+    $.get("/Admin/BusinessUnits/GetAllModeratorsPresent/" + btn)
         .done(function (response) {
-            var s = '<option value="-1" selected disabled hidden>Please Select Moderator</option>';
+            var s = '<option value="null" selected disabled hidden>Please Select Moderator</option>';
             for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
             }
@@ -164,7 +167,7 @@ $('#remove-moderator-global-button').click(function (event) {
 $('#add-business-unit-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories")
         .done(function (response) {
-            var s = '<option value="-1" selected disabled hidden>Please Select Category</option>';
+            var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
             for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
             }

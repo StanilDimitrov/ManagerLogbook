@@ -11,19 +11,20 @@ using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Data.Models;
 using Microsoft.AspNetCore.Identity;
+using ManagerLogbook.Services.Contracts.Providers;
 
 namespace ManagerLogbook.Services
 {
     public class UserService : IUserService
     {
         private readonly ManagerLogbookContext context;
-        private readonly UserManager<User> userManager;
+        private readonly IUserServiceRapper userRapper;
 
         public UserService(ManagerLogbookContext context,
-                          UserManager<User> userManager)
+                          IUserServiceRapper userRapper)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            this.userRapper = userRapper ?? throw new ArgumentNullException(nameof(userRapper));
         }
 
         public async Task<UserDTO> GetUserByIdAsync(string userId)
@@ -71,7 +72,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsNotPresentInBusinessUnitAsync(int businessUnitId)
         {
-            var usersOfRoleModerator = await this.userManager.GetUsersInRoleAsync("Moderator");
+            var usersOfRoleModerator = await this.userRapper.GetAllUsersInRoleAsync("Moderator");
 
             var moderators = usersOfRoleModerator
                             .Where(x => x.BusinessUnitId != businessUnitId)
@@ -83,7 +84,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsPresentInBusinessUnitAsync(int businessUnitId)
         {
-            var usersOfRoleModerator = await this.userManager.GetUsersInRoleAsync("Moderator");
+            var usersOfRoleModerator = await this.userRapper.GetAllUsersInRoleAsync("Moderator");
 
             var moderators = usersOfRoleModerator.Where(x => x.BusinessUnitId == businessUnitId)
                                                   .Select(x => x.ToDTO())
@@ -94,7 +95,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<UserDTO>> GetAllManagersNotPresentInLogbookAsync(int logbookId)
         {
-            var usersOfRoleManager = await this.userManager.GetUsersInRoleAsync("Manager");
+            var usersOfRoleManager = await this.userRapper.GetAllUsersInRoleAsync("Manager");
 
             var managersInLogbook = await this.context.UsersLogbooks
                                                           .Where(x => x.LogbookId == logbookId)
@@ -115,7 +116,7 @@ namespace ManagerLogbook.Services
                             .Select(x => x.User.ToDTO())
                             .ToListAsync();
 
-            return null;
+            return managersInLogbook;
         }
     }
 }

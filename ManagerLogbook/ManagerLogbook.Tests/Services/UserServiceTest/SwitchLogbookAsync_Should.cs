@@ -1,104 +1,105 @@
-﻿//using ManagerLogbook.Data;
-//using ManagerLogbook.Services;
-//using ManagerLogbook.Services.Contracts.Providers;
-//using ManagerLogbook.Services.CustomExeptions;
-//using ManagerLogbook.Services.Utils;
-//using ManagerLogbook.Tests.HelpersMethods;
-//using ManagerLogbook.Tests.Utils;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using Moq;
-//using System;
-//using System.Threading.Tasks;
+﻿using ManagerLogbook.Data;
+using ManagerLogbook.Services;
+using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
+using ManagerLogbook.Services.Utils;
+using ManagerLogbook.Tests.HelpersMethods;
+using ManagerLogbook.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Threading.Tasks;
 
-//namespace ManagerLogbook.Tests.Services.UserServiceTest
-//{
-//    [TestClass]
-//    public class SwitchLogbookAsync_Should
-//    {
-//        [TestMethod]
-//        public async Task ThrowsExeption_WhenUserIsManagerOfLogbook()
-//        {
-//            var options = TestUtils.GetOptions(nameof(ThrowsExeption_WhenUserIsManagerOfLogbook));
-//            using (var arrangeContext = new ManagerLogbookContext(options))
-//            {
-//                await arrangeContext.Users.AddAsync(TestHelpersNote.TestUser1());
-//                await arrangeContext.Logbooks.AddAsync(TestHelpersNote.TestLogbook1());
-//                await arrangeContext.SaveChangesAsync();
-//            }
+namespace ManagerLogbook.Tests.Services.UserServiceTest
+{
+    [TestClass]
+    public class SwitchLogbookAsync_Should
+    {
+        [TestMethod]
+        public async Task ThrowsExeption_WhenUserIsManagerOfLogbook()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsExeption_WhenUserIsManagerOfLogbook));
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Users.AddAsync(TestHelpersNote.TestUser1());
+                await arrangeContext.Logbooks.AddAsync(TestHelpersNote.TestLogbook1());
+                await arrangeContext.SaveChangesAsync();
+            }
 
-//            using (var assertContext = new ManagerLogbookContext(options))
-//            {
-//                var mockedValidator = new Mock<IBusinessValidator>();
-//                var sut = new UserService(assertContext);
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
 
-//                var ex = await Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
+                var mockedRapper = new Mock<IUserServiceRapper>();
+                var sut = new UserService(assertContext, mockedRapper.Object);
 
-//                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserNotManagerOfLogbook, TestHelpersNote.TestUser1().UserName, TestHelpersNote.TestLogbook1().Name));
-                                                          
-//            }
-//        }
+                var ex = await Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
 
-//        [TestMethod]
-//        public async Task ThrowsExeption_WhenLogbookNotFound()
-//        {
-//            var options = TestUtils.GetOptions(nameof(ThrowsExeption_WhenUserIsManagerOfLogbook));
-//            using (var arrangeContext = new ManagerLogbookContext(options))
-//            {
-//                await arrangeContext.Users.AddAsync(TestHelpersNote.TestUser1());
-//                await arrangeContext.SaveChangesAsync();
-//            }
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserNotManagerOfLogbook, TestHelpersNote.TestUser1().UserName, TestHelpersNote.TestLogbook1().Name));
 
-//            using (var assertContext = new ManagerLogbookContext(options))
-//            {
-//                var mockedValidator = new Mock<IBusinessValidator>();
-//                var sut = new UserService(assertContext);
+            }
+        }
 
-//                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
+        [TestMethod]
+        public async Task ThrowsExeption_WhenLogbookNotFound()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsExeption_WhenUserIsManagerOfLogbook));
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Users.AddAsync(TestHelpersNote.TestUser1());
+                await arrangeContext.SaveChangesAsync();
+            }
 
-//                Assert.AreEqual(ex.Message, ServicesConstants.LogbookNotFound);
-//            }
-//        }
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedRapper = new Mock<IUserServiceRapper>();
+                var sut = new UserService(assertContext, mockedRapper.Object);
 
-//        [TestMethod]
-//        public async Task ThrowsExeption_WhenUserNotFound()
-//        {
-//            var options = TestUtils.GetOptions(nameof(ThrowsExeption_WhenUserNotFound));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
 
-//            using (var assertContext = new ManagerLogbookContext(options))
-//            {
-//                var mockedValidator = new Mock<IBusinessValidator>();
-//                var sut = new UserService(assertContext);
+                Assert.AreEqual(ex.Message, ServicesConstants.LogbookNotFound);
+            }
+        }
 
-//                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
+        [TestMethod]
+        public async Task ThrowsExeption_WhenUserNotFound()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsExeption_WhenUserNotFound));
 
-//                Assert.AreEqual(ex.Message, ServicesConstants.UserNotFound);
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedRapper = new Mock<IUserServiceRapper>();
+                var sut = new UserService(assertContext, mockedRapper.Object);
 
-//            }
-//        }
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
 
-//        [TestMethod]
-//        public async Task SuccessfullySwitch()
-//        {
-//            var options = TestUtils.GetOptions(nameof(SuccessfullySwitch));
-//            using (var arrangeContext = new ManagerLogbookContext(options))
-//            {
-//                await arrangeContext.Users.AddAsync(TestHelpersNote.TestUser1());
-//                await arrangeContext.Logbooks.AddAsync(TestHelpersNote.TestLogbook1());
-//                await arrangeContext.UsersLogbooks.AddAsync(TestHelpersNote.TestUsersLogbooks1());
-//                await arrangeContext.SaveChangesAsync();
-//            }
+                Assert.AreEqual(ex.Message, ServicesConstants.UserNotFound);
 
-//            using (var assertContext = new ManagerLogbookContext(options))
-//            {
-//                var mockedValidator = new Mock<IBusinessValidator>();
+            }
+        }
 
-//                var sut = new UserService(assertContext);
+        [TestMethod]
+        public async Task SuccessfullySwitch()
+        {
+            var options = TestUtils.GetOptions(nameof(SuccessfullySwitch));
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Users.AddAsync(TestHelpersNote.TestUser1());
+                await arrangeContext.Logbooks.AddAsync(TestHelpersNote.TestLogbook1());
+                await arrangeContext.UsersLogbooks.AddAsync(TestHelpersNote.TestUsersLogbooks1());
+                await arrangeContext.SaveChangesAsync();
+            }
 
-//                var userDTO = await sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, 
-//                                                           TestHelpersNote.TestLogbook1().Id);
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedRapper = new Mock<IUserServiceRapper>();
 
-//                Assert.AreEqual(userDTO.CurrentLogbookId, TestHelpersNote.TestLogbook1().Id);
-//            }
-//        }
-//    }
-//}
+                var sut = new UserService(assertContext, mockedRapper.Object);
+
+                var userDTO = await sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id,
+                                                           TestHelpersNote.TestLogbook1().Id);
+
+                Assert.AreEqual(userDTO.CurrentLogbookId, TestHelpersNote.TestLogbook1().Id);
+            }
+        }
+    }
+}

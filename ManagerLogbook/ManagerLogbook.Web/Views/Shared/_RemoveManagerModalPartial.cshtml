@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <div asp-validation-summary="All" class="text-danger-custom"></div>
-                <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="loginForm">
+                <form asp-area="Admin" asp-controller="BusinessUnits" asp-action="" method="post" class="loginForm">
                     <select id="manager-selector" class="form-control" asp-for="ManagerId"></select>
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Save</button>
