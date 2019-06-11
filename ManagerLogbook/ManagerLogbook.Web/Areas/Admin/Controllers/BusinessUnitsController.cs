@@ -262,9 +262,21 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        public async Task<IActionResult> GetAllModerators(int businessUnitId)
+        public async Task<IActionResult> GetAllModeratorsNotPresentInBusinessUnitAsync(int businessUnitId)
         {
             var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(businessUnitId);
+
+            if (moderators == null)
+            {
+                return BadRequest(string.Format(WebConstants.ModeratorNotExist));
+            }
+
+            return Json(moderators);
+        }
+
+        public async Task<IActionResult> GetAllModeratorsPresentInBusinessUnitAsync(int businessUnitId)
+        {
+            var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(businessUnitId);
 
             if (moderators == null)
             {

@@ -1,5 +1,5 @@
 ﻿using ManagerLogbook.Services.DTOs;
-using ManagerLogbook.Web.Areas.Manager.Models;
+using ManagerLogbook.Web.Models;
 
 namespace ManagerLogbook.Web.Mappers
 {
