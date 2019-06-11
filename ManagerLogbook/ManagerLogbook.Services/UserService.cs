@@ -115,7 +115,7 @@ namespace ManagerLogbook.Services
                             .Select(x => x.User.ToDTO())
                             .ToListAsync();
 
-            return null;
+            return managersInLogbook;
         }
     }
 }
