@@ -36,10 +36,16 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.User.GetId();
+                var user = await this.userService.GetUserByIdAsync(userId);
                 if (model.CurrentLogbookId.HasValue)
                 {
                     var logbook = await this.logbookService.GetLogbookById(model.CurrentLogbookId.Value);
-                    var user = await this.userService.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value);
+                    if (user.CurrentLogbookId ==  model.CurrentLogbookId)
+                    {
+                        return BadRequest((string.Format(WebConstants.AlreadyInLogbook,  user.UserName, logbook.Name)));
+                    }
+                    
+                    user = await this.userService.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value);
                     return Ok(string.Format(WebConstants.SwitchLogbook, logbook.Name));
                 }
 
