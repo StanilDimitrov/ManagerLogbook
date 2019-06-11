@@ -151,6 +151,7 @@ namespace ManagerLogbook.Services
 
             var logbooksDTO = await this.context.Logbooks
                          .Include(n => n.Notes)
+                         .ThenInclude(u => u.User)
                          .Include(bu => bu.BusinessUnit)
                          .ThenInclude(t => t.Town)
                          .Where(bu => bu.BusinessUnitId == businessUnitId)
@@ -362,8 +363,8 @@ namespace ManagerLogbook.Services
             if (searchCriteria != null)
             {
                 searchCollection = this.context.BusinessUnits
-                    .Include(x=>x.BusinessUnitCategory)
-                    .Include(x=>x.Town)
+                    .Include(x => x.BusinessUnitCategory)
+                    .Include(x => x.Town)
                     .Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
             }
             else
@@ -377,7 +378,7 @@ namespace ManagerLogbook.Services
             {
                 searchCollection = searchCollection.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId);
             }
-           
+
             if (townId != null)
             {
                 searchCollection = searchCollection.Where(t => t.TownId == townId);

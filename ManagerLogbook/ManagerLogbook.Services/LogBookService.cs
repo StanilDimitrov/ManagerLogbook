@@ -75,13 +75,20 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, string picture)
+        public async Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, int businessUnitId, string picture)
         {
             var logbook = await this.context.Logbooks.FindAsync(logbookId);
 
             if (logbook == null)
             {
                 throw new NotFoundException(ServicesConstants.LogbookNotFound);
+            }
+
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
             }
 
             if (string.IsNullOrEmpty(name))

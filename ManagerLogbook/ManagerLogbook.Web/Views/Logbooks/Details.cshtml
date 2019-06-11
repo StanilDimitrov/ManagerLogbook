@@ -1,4 +1,4 @@
-﻿@model LogbookViewModel
+﻿@model IndexLogbookViewModel
 <!-- Dashboard header -->
 @if (this.User.IsInRole("Admin"))
 {
@@ -20,13 +20,32 @@
                 <div class="collapse navbar-collapse navbar-dash">
                     <ul class="nav navbar-nav mr0">
                         <li class="">
-                            <a data-toggle="modal" id="update-global-button" data-target="#myModalUpdateLogbook"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i> Update</a>
+                            <a data-toggle="modal" id="update-global-button" data-target="#myModalUpdateLogbook"><i class="fa fa-wrench" aria-hidden="true"></i> Update</a>
+                        </li>
+
+                        <li class="dropdown singleDro ">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i>Managers<i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                            @if (Model.AssignedManagers.Count != 0)
+                            {
+                                <ul class="dropdown-menu">
+                                    @foreach (var manager in Model.AssignedManagers)
+                                    {
+                                        <li><a asp-controller="Account" asp-action="Details" asp-route-id="@manager.Id">@manager.UserName</a></li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="dropdown-menu">
+                                     There are no managers available 
+                                </ul>
+                            }
                         </li>
                         <li class="">
-                            <a data-toggle="modal" id="add-manager-global-button" data-target="#myModalAddManager"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Add Manager</a>
+                            <a data-toggle="modal" id="add-manager-global-button" data-target="#myModalAddManager"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Manager</a>
                         </li>
                         <li class="">
-                            <a data-toggle="modal" id="remove-manager-global-button" data-target="#myModalRemoveManager"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Remove Manager</a>
+                            <a data-toggle="modal" id="remove-manager-global-button" data-target="#myModalRemoveManager"><i class="fa fa-user-times" aria-hidden="true"></i> Remove Manager</a>
                         </li>
                     </ul>
                 </div>
@@ -42,30 +61,75 @@
             <div class="col-sm-8 col-xs-12">
                 <div class="thumbnail blogContent">
                     <div class="caption">
-                        <h3>@Model.Name</h3>
-                        <img src="~/images/@(Model.Picture ?? "noimage.jpg")" alt="Image blog" class="img-responsive">
+                        <h4>Logbook name:</h4>
+                        <h3>@Model.Logbook.Name</h3>
+                        <h4>in business unit: @Model.Logbook.BusinessUnitName</h4>
+                        <img src="~/images/@(Model.Logbook.Picture ?? "noimage.jpg")" alt="Image blog" class="img-responsive">
                     </div>
                 </div>
             </div>
         </div>
+
+        @if (this.User.IsInRole("Manager"))
+        {
+            <div class="row">
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default panel-card">
+                        <div class="panel-heading">
+                            Managers
+                        </div>
+                        <div class="panel-body">
+                            <h2>@Model.AssignedManagers.Count()</h2>
+                            <p>Last added: @Model.AssignedManagers.OrderByDescending(x => x.Id).First().UserName</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default panel-card">
+                        <div class="panel-heading">
+                            Active Notes
+                        </div>
+                        <div class="panel-body">
+                            <h2>@Model.ActiveNotes.Count()</h2>
+                            <p>Last added: @Model.ActiveNotes.OrderByDescending(x => x.CreatedOn).First().CreatedOn.ToString(("dd MMMM yyyy HH:mm:ss"))</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    <div class="panel panel-default panel-card">
+                        <div class="panel-heading">
+                            Total Notes
+                        </div>
+                        <div class="panel-body">
+                            <h2>@Model.TotalNotes.Count()</h2>
+                            <p><p>Last added: @Model.TotalNotes.OrderByDescending(x => x.CreatedOn).First().CreatedOn.ToString(("dd MMMM yyyy HH:mm:ss"))</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </section>
 
+
 <!-- Start Update To Logbook Modal -->
-@await Html.PartialAsync("_UpdateLogbookModalPartial", Model)
+@await Html.PartialAsync("_UpdateLogbookModalPartial", Model.Logbook)
 <!-- End Update To Logbook Modal -->
 <!-- Start Add Manager To Logbook Modal -->
-@await Html.PartialAsync("_AddManagerModalPartial", Model)
+@await Html.PartialAsync("_AddManagerModalPartial", Model.Logbook)
 <!-- End Add Manager To Logbook Modal -->
 <!-- Start Remove Manager From Logbook Modal -->
-@await Html.PartialAsync("_RemoveManagerModalPartial", Model)
+@await Html.PartialAsync("_RemoveManagerModalPartial", Model.Logbook)
 <!-- End Remove Manager From Logbook Modal -->
 <!-- Start Login Modal -->
-@await Html.PartialAsync("_LoginModalPartial", Model)
+@await Html.PartialAsync("_LoginModalPartial", Model.Login)
 <!-- End Login Modal -->
 <!-- Start Account Modal -->
-@await Html.PartialAsync("_CreateAccountModalPartial", Model)
+@await Html.PartialAsync("_CreateAccountModalPartial", Model.Register)
 <!-- End Account Modal -->
+<!-- Start BusinessUnit Modal -->
+@await Html.PartialAsync("_CreateBusinessUnitModalPartial", Model.BusinessUnit)
+<!-- End BusinessUnit Modal -->
 
 
 @section Scripts{

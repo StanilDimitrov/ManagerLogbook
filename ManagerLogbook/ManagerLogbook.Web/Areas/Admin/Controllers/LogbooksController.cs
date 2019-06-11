@@ -117,7 +117,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                     optimizer.DeleteOldImage(model.Picture);
                 }
 
-                logbookDTO = await this.logbookService.UpdateLogbookAsync(model.Id, model.Name, imageName);
+                logbookDTO = await this.logbookService.UpdateLogbookAsync(model.Id, model.Name, model.BusinessUnitId, imageName);
 
                 if (logbookDTO.Name != model.Name)
                 {
