@@ -255,47 +255,7 @@ $(function () {
 });
 
 
-$(function () {
-    const $submitForm = $('#submit-form-moderator');
 
-    $submitForm.on('submit', function (event) {
-        event.preventDefault();
-
-        var $this = $(this);
-
-        const dataToSend = $submitForm.serialize();
-        var url = $this.attr('action');
-
-        $.post(url, dataToSend, function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-
-            $('#myModalLogbook').modal('hide');
-            toastr.success(response);
-
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
-        });
-    });
-});
 
 
 $(function () {
@@ -435,7 +395,7 @@ $('#edit-note-global-button').click(function (event) {
 $('#change-logbook-global-button').click(function (event) {
     $.get("/Manager/Notes/GetAllLogbooksByUser")
         .done(function (response) {
-            var s = '<option value="-1" selected disabled hidden>Please Select Logbook</option>';
+            var s = '<option value="null" selected disabled hidden>Please Select Logbook</option>';
             for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
             }

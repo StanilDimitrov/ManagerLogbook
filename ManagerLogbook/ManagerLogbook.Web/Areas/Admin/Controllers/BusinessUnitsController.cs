@@ -208,7 +208,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveModeratorFromBusinessUnit(BusinessUnitViewModel model)
+        public async Task<IActionResult> RemoveModerator(BusinessUnitViewModel model)
         {
             try
             {
@@ -268,9 +268,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        public async Task<IActionResult> GetAllModeratorsNotPresentInBusinessUnitAsync(int businessUnitId)
+        public async Task<IActionResult> GetAllModeratorsNotPresent(int id)
         {
-            var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(businessUnitId);
+            var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(id);
 
             if (moderators == null)
             {
@@ -280,9 +280,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             return Json(moderators);
         }
 
-        public async Task<IActionResult> GetAllModeratorsPresentInBusinessUnitAsync(int businessUnitId)
+        public async Task<IActionResult> GetAllModeratorsPresent(int id)
         {
-            var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(businessUnitId);
+            var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(id);
 
             if (moderators == null)
             {

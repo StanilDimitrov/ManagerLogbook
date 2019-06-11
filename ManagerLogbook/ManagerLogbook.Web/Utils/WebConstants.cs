@@ -35,6 +35,7 @@ namespace ManagerLogbook.Web.Utils
         public const string ReviewNotCreated = "Unable to create review.";
         public const string EnterValidData = "Please enter a valid data.";
         public const string SwitchLogbook = "Successfully switch to logbook \"{0}\".";
+        public const string AlreadyInLogbook = "User \"{0}\" is  already logged in logbook \"{1}\".";
     }
 }
 

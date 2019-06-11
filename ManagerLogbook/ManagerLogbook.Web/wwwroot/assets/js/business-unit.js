@@ -1,58 +1,13 @@
 $(function () {
-    const $submitForm = $('#create-business-unit');     
-
-    $submitForm.on('submit', function (event) {
-        event.preventDefault();
-
-        var $this = $(this);
-
-        const dataToSend = $submitForm.serialize();
-        
-        var url = $this.attr('action');
-
-        $.post(url, dataToSend, function (response) {
-            console.log(response.firstName);
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-
-            toastr.success(response);
-
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
-        });
-    });
-});
-
-$(function () {
     const $submitForm = $('#create-business-unit');
 
-    //if ($submitForm.valid()) {
-
     $submitForm.on('submit', function (event) {
         event.preventDefault();
 
         var $this = $(this);
 
         const dataToSend = $submitForm.serialize();
-        //var url = "/Admin/Create/Register";
+
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
@@ -83,22 +38,67 @@ $(function () {
             }
             toastr.error(response.responseText);
         });
-
     });
 });
+
+//$(function () {
+//    const $submitForm = $('#create-business-unit');
+
+//    //if ($submitForm.valid()) {
+
+//    $submitForm.on('submit', function (event) {
+//        event.preventDefault();
+
+//        var $this = $(this);
+
+//        const dataToSend = $submitForm.serialize();
+//        //var url = "/Admin/Create/Register";
+//        var url = $this.attr('action');
+
+//        $.post(url, dataToSend, function (response) {
+//            console.log(response.firstName);
+//            toastr.options = {
+//                "debug": false,
+//                "positionClass": "toast-top-center",
+//                "onclick": null,
+//                "fadeIn": 300,
+//                "fadeOut": 1000,
+//                "timeOut": 3000,
+//                "extendedTimeOut": 3000,
+//                "closeButton": true
+//            }
+//            $('#myModalBusinessUnit').modal('hide');
+//            toastr.success(response);
+
+//        }).fail(function (response) {
+//            toastr.options = {
+//                "debug": false,
+//                "positionClass": "toast-top-center",
+//                "onclick": null,
+//                "fadeIn": 300,
+//                "fadeOut": 1000,
+//                "timeOut": 3000,
+//                "extendedTimeOut": 3000,
+//                "closeButton": true
+//            }
+//            toastr.error(response.responseText);
+//        });
+
+//    });
+//});
 
 
 
 $(function () {
     const $submitForm = $('#update-business-unit');
-       
+
     $submitForm.on('submit', function (event) {
         event.preventDefault();
 
         var $this = $(this);
 
         const dataToSend = $submitForm.serialize();
-                var url = $this.attr('action');
+        var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
             toastr.options = {
@@ -132,9 +132,10 @@ $(function () {
 
 
 $('#add-moderator-global-button').click(function (event) {
-    $.get("/Admin/BusinessUnits/GetAllModerators")
+    $.get("/Admin/BusinessUnits/GetAllModeratorsNotPresent")
+  
         .done(function (response) {
-            var s = '<option value="-1" selected disabled hidden>Please Select Moderator</option>';
+            var s = '<option value="null" selected disabled hidden>Please Select Moderator</option>';
             for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
             }
@@ -147,9 +148,11 @@ $('#add-moderator-global-button').click(function (event) {
 });
 
 $('#remove-moderator-global-button').click(function (event) {
-    $.get("/Admin/BusinessUnits/GetAllModerators")
+    $this = $(this);
+    var btn = $(this).attr('value');
+    $.get("/Admin/BusinessUnits/GetAllModeratorsPresent/" + btn)
         .done(function (response) {
-            var s = '<option value="-1" selected disabled hidden>Please Select Moderator</option>';
+            var s = '<option value="null" selected disabled hidden>Please Select Moderator</option>';
             for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
             }
@@ -164,7 +167,7 @@ $('#remove-moderator-global-button').click(function (event) {
 $('#add-business-unit-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories")
         .done(function (response) {
-            var s = '<option value="-1" selected disabled hidden>Please Select Category</option>';
+            var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
             for (var i = 0; i < response.length; i++) {
                 s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
             }
@@ -208,4 +211,89 @@ $('#add-business-unit-global-button').click(function (event) {
             toastr.error(response.responseText);
 
         });
+});
+
+$(function () {
+    const $submitForm = $('#submit-form-add-moderator');
+
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
+
+        var $this = $(this);
+
+        const dataToSend = $submitForm.serialize();
+        var url = $this.attr('action');
+
+        $.post(url, dataToSend, function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+
+            $('#myModalAddModerator').modal('hide');
+            toastr.success(response);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+    });
+});
+
+
+$(function () {
+    const $submitForm = $('#submit-form-remove-moderator');
+
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
+
+        var $this = $(this);
+
+        const dataToSend = $submitForm.serialize();
+        var url = $this.attr('action');
+
+        $.post(url, dataToSend, function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+
+            $('#myModalAddModerator').modal('hide');
+            toastr.success(response);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+    });
 });

@@ -296,3 +296,9 @@ form.example button {
 .margin-bottom-0{
     margin-bottom: 0% !important;
 }
+
+.no-margin-padding {
+    margin-top: 0% !important;
+    padding-top: 0% !important;
+}
+
