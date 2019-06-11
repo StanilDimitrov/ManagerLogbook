@@ -73,18 +73,49 @@ namespace ManagerLogbook.Services
         {
             var usersOfRoleModerator = await this.userManager.GetUsersInRoleAsync("Moderator");
 
-            var moderators = usersOfRoleModerator.Where(x => x.BusinessUnitId != businessUnitId).Select(x => x.ToDTO()).ToList();
+            var moderators = usersOfRoleModerator
+                            .Where(x => x.BusinessUnitId != businessUnitId)
+                            .Select(x => x.ToDTO())
+                            .ToList();
 
-            return moderators.ToList();
+            return moderators;
         }
 
         public async Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsPresentInBusinessUnitAsync(int businessUnitId)
         {
             var usersOfRoleModerator = await this.userManager.GetUsersInRoleAsync("Moderator");
 
-            var moderators = usersOfRoleModerator.Where(x => x.BusinessUnitId == businessUnitId).Select(x => x.ToDTO()).ToList();
+            var moderators = usersOfRoleModerator.Where(x => x.BusinessUnitId == businessUnitId)
+                                                  .Select(x => x.ToDTO())
+                                                  .ToList();
 
-            return moderators.ToList();
+            return moderators;
+        }
+
+        public async Task<IReadOnlyCollection<UserDTO>> GetAllManagersNotPresentInLogbookAsync(int logbookId)
+        {
+            var usersOfRoleManager = await this.userManager.GetUsersInRoleAsync("Manager");
+
+            var managersInLogbook = await this.context.UsersLogbooks
+                                                          .Where(x => x.LogbookId == logbookId)
+                                                          .Select(x => x.User)
+                                                          .ToListAsync();
+
+            var managersNotInLogbook = usersOfRoleManager.Except(managersInLogbook)
+                                                         .Select(x=>x.ToDTO())
+                                                         .ToList();
+
+            return managersNotInLogbook;
+        }
+
+        public async Task<IReadOnlyCollection<UserDTO>> GetAllManagersPresentInLogbookAsync(int logbookId)
+        {
+            var managersInLogbook = await this.context.UsersLogbooks
+                            .Where(x => x.LogbookId == logbookId)
+                            .Select(x => x.User.ToDTO())
+                            .ToListAsync();
+
+            return null;
         }
     }
 }

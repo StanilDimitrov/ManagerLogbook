@@ -39,11 +39,11 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             this.optimizer = optimizer ?? throw new System.ArgumentNullException(nameof(optimizer));
         }
 
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -85,13 +85,13 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Update(int id)
-        {
-            var businessUnit = await this.businessUnitService.GetBusinessUnitById(id);
-            var businessUnitViewModel = businessUnit.MapFrom();
-            return View(businessUnitViewModel);
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> Update(int id)
+        //{
+        //    var businessUnit = await this.businessUnitService.GetBusinessUnitById(id);
+        //    var businessUnitViewModel = businessUnit.MapFrom();
+        //    return View(businessUnitViewModel);
+        //}
 
 
         [HttpPost]
@@ -148,27 +148,30 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> AddModeratorToBusinessUnit(int businessUnitId)
-        {
-            var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(businessUnitId);
+        //[HttpGet]
+        //public async Task<IActionResult> AddModeratorToBusinessUnit(int businessUnitId)
+        //{
+        //    var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(businessUnitId);
 
-            if (moderators == null)
-            {
-                return BadRequest(string.Format(WebConstants.ModeratorNotExist));
-            }
+        //    if (moderators == null)
+        //    {
+        //        return BadRequest(string.Format(WebConstants.ModeratorNotExist));
+        //    }
 
-            var moderatorViewModel = moderators.Select(m => m.MapFrom()).ToList();
+        //    var moderatorViewModel = moderators.Select(m => m.MapFrom()).ToList();
 
-            return View(moderatorViewModel);
-        }
+        //    return View(moderatorViewModel);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddModeratorToBusinessUnit(string moderatorId, int businessUnitId)
+        public async Task<IActionResult> AddModeratorToBusinessUnit(BusinessUnitViewModel model)
         {
             try
             {
+                var businessUnitId = model.Id;
+                var moderatorId = model.ModeratorId;
+
                 var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);
 
                 var moderator = await this.userService.GetUserByIdAsync(moderatorId);
@@ -188,27 +191,30 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> RemoveModeratorFromBusinessUnit(int businessUnitId)
-        {
-            var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(businessUnitId);
+        //[HttpGet]
+        //public async Task<IActionResult> RemoveModeratorFromBusinessUnit(int businessUnitId)
+        //{
+        //    var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(businessUnitId);
 
-            if (moderators == null)
-            {
-                return BadRequest(string.Format(WebConstants.ModeratorNotExist));
-            }
+        //    if (moderators == null)
+        //    {
+        //        return BadRequest(string.Format(WebConstants.ModeratorNotExist));
+        //    }
 
-            var moderatorViewModel = moderators.Select(m => m.MapFrom()).ToList();
+        //    var moderatorViewModel = moderators.Select(m => m.MapFrom()).ToList();
 
-            return View(moderatorViewModel);
-        }
+        //    return View(moderatorViewModel);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveModeratorFromBusinessUnit(string moderatorId, int businessUnitId)
+        public async Task<IActionResult> RemoveModeratorFromBusinessUnit(BusinessUnitViewModel model)
         {
             try
             {
+                var moderatorId = model.ModeratorId;
+                var businessUnitId = model.Id;
+
                 var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);
 
                 var moderator = await this.userService.GetUserByIdAsync(moderatorId);
@@ -262,9 +268,21 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        public async Task<IActionResult> GetAllModerators(int businessUnitId)
+        public async Task<IActionResult> GetAllModeratorsNotPresentInBusinessUnitAsync(int businessUnitId)
         {
             var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(businessUnitId);
+
+            if (moderators == null)
+            {
+                return BadRequest(string.Format(WebConstants.ModeratorNotExist));
+            }
+
+            return Json(moderators);
+        }
+
+        public async Task<IActionResult> GetAllModeratorsPresentInBusinessUnitAsync(int businessUnitId)
+        {
+            var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(businessUnitId);
 
             if (moderators == null)
             {

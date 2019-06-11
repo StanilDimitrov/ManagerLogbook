@@ -1,9 +1,10 @@
 ﻿using ManagerLogbook.Web.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ManagerLogbook.Web.Areas.Manager.Models
+namespace ManagerLogbook.Web.Models
 {
     public class LogbookViewModel
     {
@@ -20,6 +21,11 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
         public IFormFile LogbookPicture { get; set; }
 
         public string BusinessUnitName { get; set; }
+        public int BusinessUnitId { get; set; }
+
+        public string ManagerId { get; set; }
+        public IEnumerable<SelectListItem> Managers { get; set; }
+        public string ManagerName { get; set; }
 
         public IReadOnlyCollection<NoteViewModel> Notes { get; set; }
 

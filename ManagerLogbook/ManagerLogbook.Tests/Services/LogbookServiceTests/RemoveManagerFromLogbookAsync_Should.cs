@@ -14,18 +14,18 @@ using System.Threading.Tasks;
 namespace ManagerLogbook.Tests.Services.LogbookServiceTests
 {
     [TestClass]
-    public class AddManagerToLogbookAsync_Should
+    public class RemoveManagerFromLogbookAsync_Should
     {
         [TestMethod]
-        public async Task ThrowsExeptionWhenManagerIsAlreadyAddedToLogbook()
+        public async Task ThrowsExeptionWhenManagerIsNotPresentInLogbook()
         {
-            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenManagerIsAlreadyAddedToLogbook));
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenManagerIsNotPresentInLogbook));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
-                await arrangeContext.Users.AddAsync(TestHelpersLogbook.TestUser01());                
+                await arrangeContext.Users.AddAsync(TestHelpersLogbook.TestUser01());
                 await arrangeContext.Logbooks.AddAsync(TestHelpersLogbook.TestLogbook01());
-                await arrangeContext.UsersLogbooks.AddAsync(TestHelpersLogbook.TestUsersLogbooks01());
+                await arrangeContext.UsersLogbooks.AddAsync(TestHelpersLogbook.TestUsersLogbooks02());
                 await arrangeContext.SaveChangesAsync();
             }
 
@@ -34,23 +34,23 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.AddManagerToLogbookAsync(TestHelpersLogbook.TestUser01().Id, 1));
+                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.RemoveManagerFromLogbookAsync(TestHelpersLogbook.TestUser01().Id, TestHelpersLogbook.TestLogbook01().Id));
 
-                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.ManagerIsAlreadyInLogbook, TestHelpersLogbook.TestUser01().UserName, TestHelpersLogbook.TestLogbook01().Name));
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.ManagerIsNotPresentInLogbook, TestHelpersLogbook.TestUser01().UserName, TestHelpersLogbook.TestLogbook01().Name));
             }
         }
 
         [TestMethod]
-        public async Task Succeed_ReturnLogbookWhenManagerIsAdded()
+        public async Task Succeed_ReturnLogbookWhenManagerWasRemoved()
         {
-            var options = TestUtils.GetOptions(nameof(Succeed_ReturnLogbookWhenManagerIsAdded));
+            var options = TestUtils.GetOptions(nameof(Succeed_ReturnLogbookWhenManagerWasRemoved));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
                 await arrangeContext.Users.AddAsync(TestHelpersLogbook.TestUser01());
                 await arrangeContext.Users.AddAsync(TestHelpersLogbook.TestUser02());
-                await arrangeContext.Logbooks.AddAsync(TestHelpersLogbook.TestLogbook01());
-                await arrangeContext.UsersLogbooks.AddAsync(TestHelpersLogbook.TestUsersLogbooks01());
+                await arrangeContext.Logbooks.AddAsync(TestHelpersLogbook.TestLogbook04());
+                await arrangeContext.UsersLogbooks.AddAsync(TestHelpersLogbook.TestUsersLogbooks04());
                 await arrangeContext.SaveChangesAsync();
             }
 
@@ -59,16 +59,16 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                await sut.AddManagerToLogbookAsync(TestHelpersLogbook.TestUser02().Id, TestHelpersLogbook.TestLogbook01().Id);
+                await sut.RemoveManagerFromLogbookAsync(TestHelpersLogbook.TestUser01().Id, TestHelpersLogbook.TestLogbook04().Id);
                                 
-                Assert.AreEqual(assertContext.UsersLogbooks.Select(x=>x.LogbookId).Count(),2);
+                Assert.AreEqual(assertContext.UsersLogbooks.Select(x => x.LogbookId).Count(), 0);
             }
         }
 
         [TestMethod]
-        public async Task ThrowsExeptionWhenManagerWasNotFound()
+        public async Task ThrowsExeptionWhenManagerWasNotFoundByRemoveManagerFromLogbook()
         {
-            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenManagerIsAlreadyAddedToLogbook));
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenManagerWasNotFoundByRemoveManagerFromLogbook));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
@@ -83,16 +83,16 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.AddManagerToLogbookAsync("2", TestHelpersLogbook.TestLogbook01().Id));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.RemoveManagerFromLogbookAsync("2", TestHelpersLogbook.TestLogbook01().Id));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserNotFound));
             }
         }
 
         [TestMethod]
-        public async Task ThrowsExeptionWhenLogbookWasNotFound()
+        public async Task ThrowsExeptionWhenLogbookWasNotFoundByRemoveManagerFromLogbook()
         {
-            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenLogbookWasNotFound));
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenLogbookWasNotFoundByRemoveManagerFromLogbook));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
@@ -107,7 +107,7 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.AddManagerToLogbookAsync(TestHelpersLogbook.TestUser01().Id, 2));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.RemoveManagerFromLogbookAsync(TestHelpersLogbook.TestUser01().Id, 2));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.LogbookNotFound));
             }

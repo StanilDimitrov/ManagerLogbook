@@ -36,7 +36,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnitDTO = await sut.AddModeratorToBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id ,TestHelperBusinessUnit.TestBusinessUnit01().Id);
+                var businessUnitDTO = await sut.AddModeratorToBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
 
                 var moderatorUser = await assertContext.Users.FindAsync(TestHelperBusinessUnit.TestUser01().Id);
 
@@ -69,7 +69,7 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var moderatorUser = await assertContext.Users.FindAsync(TestHelperBusinessUnit.TestUser01().Id);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.AddModeratorToBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id,2));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.AddModeratorToBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, 2));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNotFound));
             }
