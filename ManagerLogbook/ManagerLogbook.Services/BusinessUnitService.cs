@@ -88,7 +88,7 @@ namespace ManagerLogbook.Services
             var checkBrandNameIfExists = await this.context.BusinessUnits
                                            .FirstOrDefaultAsync(n => n.Name == brandName);
 
-            if (checkBrandNameIfExists != null)
+            if (checkBrandNameIfExists != null && businessUnit.Name !=brandName)
             {
                 throw new AlreadyExistsException(ServicesConstants.BusinessUnitNameAlreadyExists);
             }

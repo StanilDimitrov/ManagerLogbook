@@ -104,7 +104,7 @@ namespace ManagerLogbook.Services
             var checkLogbookIfExists = await this.context.Logbooks
                                            .FirstOrDefaultAsync(n => n.Name == name);
 
-            if (checkLogbookIfExists != null)
+            if (checkLogbookIfExists != null && logbook.Name != name)
             {
                 throw new AlreadyExistsException(ServicesConstants.LogbookAlreadyExists);
             }
@@ -161,7 +161,7 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<LogbookDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId)
+        public async Task RemoveManagerFromLogbookAsync(string managerId, int logbookId)
         {
             var logbook = await this.context.Logbooks.FindAsync(logbookId);
 
@@ -192,12 +192,12 @@ namespace ManagerLogbook.Services
             this.context.UsersLogbooks.Remove(entityToRemove);
             await this.context.SaveChangesAsync();
 
-            var result = await this.context.Logbooks
-                              .Include(bu => bu.BusinessUnit)
-                              .Include(n => n.Notes)
-                              .FirstOrDefaultAsync(x => x.Id == logbook.Id);
+            //var result = await this.context.Logbooks
+            //                  .Include(bu => bu.BusinessUnit)
+            //                  .Include(n => n.Notes)
+            //                  .FirstOrDefaultAsync(x => x.Id == logbook.Id);
 
-            return result.ToDTO();
+            //return result.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksByUserAsync(string userId)
