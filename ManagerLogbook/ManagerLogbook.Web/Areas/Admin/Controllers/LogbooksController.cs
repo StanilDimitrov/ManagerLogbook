@@ -49,7 +49,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return BadRequest(WebConstants.EnterValidData);
             }
 
             try
@@ -240,9 +240,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
         }
 
-        public async Task<IActionResult> GetAllManagersNotPresentInLogbookAsync(int logbookId)
+        public async Task<IActionResult> GetAllManagersNotPresent(int id)
         {
-            var managers = await this.userService.GetAllManagersNotPresentInLogbookAsync(logbookId);
+            var managers = await this.userService.GetAllManagersNotPresentInLogbookAsync(id);
 
             if (managers == null)
             {
@@ -252,9 +252,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             return Json(managers);
         }
 
-        public async Task<IActionResult> GetAllManagersPresentInLogbookAsync(int logbookId)
+        public async Task<IActionResult> GetAllManagersPresent(int id)
         {
-            var managers = await this.userService.GetAllManagersPresentInLogbookAsync(logbookId);
+            var managers = await this.userService.GetAllManagersPresentInLogbookAsync(id);
 
             if (managers == null)
             {

@@ -10,8 +10,9 @@
             </div>
             <div class="modal-body">
                 <div asp-validation-summary="All" class="text-danger-custom"></div>
-                <form asp-area="Admin" asp-controller="BusinessUnits" asp-action="" method="post" class="loginForm">
-                    <select id="manager-selector" class="form-control" asp-for="ManagerId"></select>
+                <form id="submit-form-remove-manager" asp-area="Admin" asp-controller="Logbooks" asp-action="RemoveManagerFromLogbook" method="post" class="loginForm">
+                    <select id="manager-selector-remove" class="form-control" asp-for="ManagerId"></select>
+                    <input type="hidden" id="my-remove-manager-value" value="@Model.Id">
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Save</button>
                         <div class="margin-5">

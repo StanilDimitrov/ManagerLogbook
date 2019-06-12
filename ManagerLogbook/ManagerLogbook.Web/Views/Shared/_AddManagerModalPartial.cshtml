@@ -10,8 +10,10 @@
             </div>
             <div class="modal-body">
                 <div asp-validation-summary="All" class="text-danger-custom"></div>
-                <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="loginForm">
+                <form id="submit-form-add-manager" asp-area="Admin" asp-controller="Logbooks" asp-action="AddManagerToLogbook" method="post" class="loginForm">
                     <select id="manager-selector" class="form-control" asp-for="ManagerId"></select>
+                    <input type="hidden" id="logbook-id" value="@Model.Id">
+                    @*<input type="hidden" name="Id" value="@Model.Id">*@
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Save</button>
                         <div class="margin-5">

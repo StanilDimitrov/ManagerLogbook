@@ -15,7 +15,7 @@
                     <input type="hidden" asp-for="Id" value="@Model.Id">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
-                        <input asp-for="Name" class="form-control" id="name" placeholder="Name">
+                        <input asp-for="Name" class="form-control" id="name-update" placeholder="Name">
                         <span asp-validation-for="Name" class="text-danger-custom"></span>
                     </div>
                     <div class="form-group">
@@ -25,24 +25,24 @@
                     </div>
                     <div class="form-group">
                         <i class="fa fa-home" aria-hidden="true"></i>
-                        <input asp-for="Address" class="form-control" id="address" placeholder="Address">
+                        <input asp-for="Address" class="form-control" id="address-update" placeholder="Address">
                         <span asp-validation-for="Address" class="text-danger-custom"></span>
                         <span class="text-danger-custom"></span>
                     </div>
                     <div class="form-group">
                         <i class="fa fa-mobile" aria-hidden="true"></i>
-                        <input asp-for="PhoneNumber" class="form-control" id="phoneNumber" placeholder="Phone number">
+                        <input asp-for="PhoneNumber" class="form-control" id="phoneNumber-update" placeholder="Phone number">
                         <span asp-validation-for="PhoneNumber" class="text-danger-custom"></span>
                     </div>
                     <div class="form-group">
                         <i class="fa fa-envelope" aria-hidden="true"></i>
-                        <input asp-for="Email" class="form-control" id="email-business" placeholder="Email">
+                        <input asp-for="Email" class="form-control" id="email-business-update" placeholder="Email">
                         <span asp-validation-for="Email" class="text-danger-custom"></span>
                     </div>
 
-                    <select id="towns-selector" class="form-control" asp-for="TownId"></select>
+                    <select id="towns-selector-update" class="form-control" asp-for="TownId"></select>
 
-                    <select id="business-unit-categories-selector" class="form-control margin-5" asp-for="CategoryId"></select>
+                    <select id="business-unit-categories-selector-update" class="form-control margin-5" asp-for="CategoryId"></select>
 
                     <label asp-for="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
                     <input type="file" asp-for="BusinessUnitPicture" class="btn btn-primary file" accept="image/*">

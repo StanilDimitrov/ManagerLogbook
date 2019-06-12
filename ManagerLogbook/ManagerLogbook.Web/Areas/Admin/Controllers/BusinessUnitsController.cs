@@ -51,7 +51,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return View(model);
+                return BadRequest(WebConstants.EnterValidData);
             }
 
             try
@@ -240,8 +240,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             try
             {
                 var categories = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
-
-
 
                 return Json(categories);
             }

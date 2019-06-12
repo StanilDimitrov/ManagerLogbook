@@ -305,7 +305,7 @@ namespace ManagerLogbook.Services
             }
 
             moderatorUser.BusinessUnitId = businessUnitId;
-
+            await this.context.SaveChangesAsync();
             businessUnit = await this.context.BusinessUnits
                          .Include(bc => bc.BusinessUnitCategory)
                          .Include(t => t.Town)
@@ -331,6 +331,7 @@ namespace ManagerLogbook.Services
             }
 
             moderatorUser.BusinessUnitId = null;
+            await this.context.SaveChangesAsync();
 
             businessUnit = await this.context.BusinessUnits
                          .Include(bc => bc.BusinessUnitCategory)

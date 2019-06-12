@@ -6,6 +6,7 @@ using ManagerLogbook.Data.Models;
 using ManagerLogbook.Web.Controllers;
 using ManagerLogbook.Web.Models.AccountViewModels;
 using ManagerLogbook.Web.Services;
+using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -78,16 +79,16 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return Ok($"User with Username: \"{user.UserName}\" addedd succesfully!");
+                    return Ok(string.Format(WebConstants.UserCreated, model.UserName));
                     //StatusMessage = $"Successfully created user \"{model.FirstName} {model.LastName}\" with role \"{model.UserRole}\"";
                     //return RedirectToAction("Register");
                 }
-                return BadRequest($"User with {model.UserName} is already registered.");
+                return BadRequest(string.Format(WebConstants.UserExists, model.UserName));
                 //AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
-            return BadRequest("Please enter a valid data.");
+            return BadRequest(WebConstants.EnterValidData);
         }
 
            #region Helpers

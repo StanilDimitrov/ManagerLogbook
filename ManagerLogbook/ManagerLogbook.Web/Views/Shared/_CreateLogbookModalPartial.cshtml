@@ -10,14 +10,13 @@
             </div>
             <div class="modal-body">
                 <div class="text-danger-custom"></div>
-                <form id="create-business-unit" asp-area="Admin" asp-controller="Logbooks" asp-action="Create" enctype="multipart/form-data" method="post" class="loginForm">
+                <form id="create-logbook" asp-area="Admin" asp-controller="Logbooks" asp-action="Create" enctype="multipart/form-data" method="post" class="loginForm">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         <input asp-for="Name" class="form-control" id="name" placeholder="Name">
                         <span asp-validation-for="Name" class="text-danger-custom"></span>
-                    </div>                  
-
-                    <select id="business-unit-selector" class="form-control margin-5" asp-for="BusinessUnitId"></select>
+                    </div>
+                    <select id="business-unit-create-selector" class="form-control" asp-for="BusinessUnitId"></select>
 
                     <label asp-for="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
                     <input type="file" asp-for="LogbookPicture" class="btn btn-primary file" accept="image/*">
