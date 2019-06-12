@@ -67,33 +67,38 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     {
                         CurrentLogbookId = logbookId,
                     };
-                    //return BadRequest(string.Format(WebConstants.NoLogbookChoosen));
-                    var notesDTO = await this.noteService.ShowLogbookNotesAsync(userId, user.CurrentLogbookId.Value);
+                   
+                    var notesDTO = await this.noteService.Get15NotesByIdAsync(1, user.CurrentLogbookId.Value);
+
                     var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+                   
+
                     foreach (var note in notes)
                     {
                         note.CanUserEdit = note.UserId == userId;
                     }
                     var totalPages = await noteService.GetPageCountForNotesAsync(15, (int)logbookId);
 
-                    //if (totalPages > 1)
-                    //{
-                    //    model.SearchModel.NextPage = 2;
-                    //}
+
                     model.SearchModel = new SearchViewModel()
                     {
-                        //CurrPage = 1,
-                        //TotalPages = totalPages,
+                        CurrPage = 1,
+                        TotalPages = totalPages,
                         Notes = notes
                     };
 
-                    model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+                    if (totalPages > 1)
+                    {
+                        model.SearchModel.NextPage = 2;
+                    }
+
+                    model.SearchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                     model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
                     return View(model);
                 }
 
-                model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+                model.SearchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                 model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
                 return View(model);
@@ -165,7 +170,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 var userId = this.User.GetId();
                 var user = await this.userService.GetUserByIdAsync(userId);
-                var model = new IndexNoteViewModel();
+                //var model = new IndexNoteViewModel();
                 var logbookId = user.CurrentLogbookId;
                 if (user.CurrentLogbookId.HasValue)
                 {
@@ -178,8 +183,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     var searchModel = new SearchViewModel();
                     searchModel.Notes = notes;
 
-                    model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
-                    model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+                    searchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+                    //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
                     return PartialView("_NoteListPartial", searchModel);
                 }
 
@@ -371,7 +376,13 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         {
             var userId = this.User.GetId();
             var user = await this.userService.GetUserByIdAsync(userId);
-            var currPage = model.CurrPage;
+
+            var currPage = 1;
+
+            if (model.CurrPage > 0)
+            {
+                currPage = model.CurrPage;
+            }
 
             var logbookId = user.CurrentLogbookId;
 
@@ -381,8 +392,14 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
 
             var notesDTO = await this.noteService
-                                     .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
-                                                                          model.StartDate, model.EndDate, model.CategoryId, model.SearchCriteria);
+                                     .SearchNotesAsync(
+                userId, 
+                user.CurrentLogbookId.Value,                                                                          
+                model.StartDate, 
+                model.EndDate, 
+                model.CategoryId, 
+                model.SearchCriteria,
+                model.CurrPage);
 
             var notes = notesDTO.Select(x => x.MapFrom()).ToList();
 
@@ -419,7 +436,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Search(IndexNoteViewModel model)
+        public async Task<IActionResult> Search(SearchViewModel model)
         {
             var userId = this.User.GetId();
             var user = await this.userService.GetUserByIdAsync(userId);
@@ -431,7 +448,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             var notesDTO = await this.noteService
                                      .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
-                                                                          model.StartDate, model.EndDate, model.CategoryId, model.SearchCriteria);
+                                                      model.StartDate, model.EndDate, model.CategoryId,
+                                                      model.SearchCriteria, model.DaysBefore, model.CurrPage);
             var notes = notesDTO.Select(x => x.MapFrom()).ToList();
             foreach (var note in notes)
             {

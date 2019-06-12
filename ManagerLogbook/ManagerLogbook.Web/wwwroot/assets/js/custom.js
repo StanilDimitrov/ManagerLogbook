@@ -306,34 +306,7 @@ $('#search-criterias-holder').on('click', '#search-notes-30-days', function (eve
         });
 });
 
-$('#search-criterias-holder').on('click', '#search-notes-active', function (eventSearchNotes) {
-    eventSearchNotes.preventDefault();
 
-
-    $.get("/Manager/Notes/ActiveNotes/")
-        .done(function (dataAll) {
-
-            $('#note-partial-holder').empty();
-
-            $('#note-partial-holder').append(dataAll);
-
-            shortenTextFunction();
-            showImage();
-
-        }).fail(function (dataAll) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(dataAll.responseText);
-        });
-});
 
 $('#search-criterias-holder').on('click', '#deactivate-note', function (eventDeactivateNote) {
     eventDeactivateNote.preventDefault();
@@ -367,67 +340,7 @@ $('#search-criterias-holder').on('click', '#deactivate-note', function (eventDea
 });
 
 
-$('#search-criterias-holder').on('click', '#search-notes-all', function (eventSearchNotes) {
-    eventSearchNotes.preventDefault();
 
-    $this = $(this);
-    var btn = $(this).attr('value');
-
-    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
-        .done(function (dataAll) {
-
-            $('#note-partial-holder').empty();
-
-            $('#note-partial-holder').append(dataAll);
-
-            shortenTextFunction();
-            showImage();
-
-        }).fail(function (dataAll) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(dataAll.responseText);
-        });
-});
-
-$('#search-criterias-holder').on('click', '#search-notes-today', function (eventSearchNotes) {
-    eventSearchNotes.preventDefault();
-
-    $this = $(this);
-    var btn = $(this).attr('value');
-
-    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
-        .done(function (dataAll) {
-
-            $('#note-partial-holder').empty();
-
-            $('#note-partial-holder').append(dataAll);
-
-            shortenTextFunction();
-            showImage();
-
-        }).fail(function (dataAll) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(dataAll.responseText);
-        });
-});
 
 
 $("#myModalRegister").on('show.bs.modal', function () {
@@ -450,32 +363,30 @@ $("#myModalUpdateBusinessUnit").on('show.bs.modal', function () {
     console.log($(this).find('.field-validation-error'));
 });
 
-$("#note-partial-holder").on('scroll',  function (someEvent)
+dataLoading = false;
+var scrollPageCount = 2;
+
+$("#note-partial-holder").on('click', '.note-pagination-button-table', function (someEvent)
 {
-    debugger;
-    //if ($(window).scrollTop() + $(window).height() > $(document).height() - 100)
-    //{    
-        setTimeout(2000);
+    var $this = $(this)
+    var currPage = parseInt($this.attr('at'));
 
         var searchFormToGetParams = $('#search-notes-form');
         var searchPhrase = $('#search-for-note-phrase').val();
         var inputs = searchFormToGetParams.find('input');
         var categoryId = $('#category-id-from-selector').val();
         var urlencodedInputs = inputs.serialize();
-        var scrollPageCount = parseInt($('#scroll-page-counter').value);
-        var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&ScrollPage=" + scrollPageCount;
-
-       $.post("/Manager/Notes/SearchNotesScrollResult", inputsToSend)
+    var daysBefore = $('.search-notes-common-days');
+    var days = parseInt(daysBefore.value);
+        
+    var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&CurrPage=" + currPage + "&DaysBefore=" + days;
+            dataLoading = true;
+            $.post("/Manager/Notes/GetNotesInPage", inputsToSend)
            .done(function (dataFromScrollSearch)
            {
-               debugger
-               $('#addintional-notes-scroll').append(dataFromScrollSearch);
-               //totalPagesForScrollSearch += 1;
 
-               //$('#addintional-notes-scroll').append("MAIKA MU DEIBA sqlAAAAAAAAAAAAAAAA");
-
-               //$("#addintional-notes-scroll").append($("<li>DADSADASA</li>").html('something')
-               //    .addClass('myclass'));
+               $('#note-partial-holder').empty();
+               $('#note-partial-holder').append(dataFromScrollSearch);
 
 
            }).fail(function (dataFromScrollSearch)
@@ -483,7 +394,7 @@ $("#note-partial-holder").on('scroll',  function (someEvent)
 
        });
 
-    //}
+ 
 });
 
 

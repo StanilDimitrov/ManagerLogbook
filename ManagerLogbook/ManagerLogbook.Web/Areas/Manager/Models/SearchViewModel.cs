@@ -21,13 +21,20 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
         public DateTime EndDate { get; set; }
 
         public int? CategoryId { get; set; }
+        public IReadOnlyCollection<NoteCategoryViewModel> Categories { get; set; }
+        public string CategoryName { get; set; }
 
         public string SearchCriteria { get; set; }
 
         public int ScrollPage { get; set; }
 
+        public int DaysBefore { get; set; }
+
         public string SkipNotesForScrollResult { get; set; }
 
         public IReadOnlyCollection<NoteViewModel> Notes { get; set; }
+
+        //public int? CategoryId { get; set; }
+        
     }
 }

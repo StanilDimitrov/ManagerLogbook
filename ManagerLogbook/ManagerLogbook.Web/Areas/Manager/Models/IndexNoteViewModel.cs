@@ -35,9 +35,7 @@ namespace ManagerLogbook.Web.Models
 
         public IReadOnlyCollection<NoteViewModel> Notes { get; set; }
 
-        public int? CategoryId { get; set; }
-        public IReadOnlyCollection<NoteCategoryViewModel> Categories { get; set; }
-        public string CategoryName { get; set; }
+        
 
         public IReadOnlyCollection<LogbookViewModel> Logbooks { get; set; }
     }

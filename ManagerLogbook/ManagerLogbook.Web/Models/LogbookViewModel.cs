@@ -17,7 +17,6 @@ namespace ManagerLogbook.Web.Models
         public int? CurrentLogbookId { get; set; }
 
         public string Picture { get; set; }
-
         public IFormFile LogbookPicture { get; set; }
 
         public string BusinessUnitName { get; set; }

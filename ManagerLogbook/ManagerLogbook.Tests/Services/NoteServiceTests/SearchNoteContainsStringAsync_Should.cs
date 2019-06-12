@@ -32,7 +32,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
                 var ex = await Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => sut.SearchNotesAsync(TestHelpersNote.TestUser2().Id,
-                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null, null));
+                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null, null, null));
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, TestHelpersNote.TestUser2().UserName));
             }
         }
@@ -48,7 +48,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
                 var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SearchNotesAsync(TestHelpersNote.TestUser2().Id,
-                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null, null));
+                                                                                        TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, null, null, null));
                 Assert.AreEqual(ex.Message, ServicesConstants.UserNotFound);
             }
         }
@@ -73,7 +73,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
                 var notesDTO = await sut.SearchNotesAsync(TestHelpersNote.TestUser1().Id,
-                                                                     TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, 2,"room37");
+                                                                     TestHelpersNote.TestLogbook1().Id, DateTime.MinValue, DateTime.MinValue, 2,"room37", null);
                 Assert.AreEqual(notesDTO.Count, 2);
             }
         }

@@ -192,7 +192,6 @@ $('#create-logbook-global-button').click(function (event) {
                 s += '<option value="null">No business units available</option>';
             }
             
-
             $("#business-unit-create-selector").html(s);
 
         }).fail(function (response) {

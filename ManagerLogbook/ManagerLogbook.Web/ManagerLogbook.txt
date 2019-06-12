@@ -609,3 +609,199 @@ Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException: Database operation e
    at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
    at ManagerLogbook.Services.LogbookService.RemoveManagerFromLogbookAsync(String managerId, Int32 logbookId) in D:\work\Telerik\Projects\FinalProject\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 193
    at ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController.RemoveManagerFromLogbook(LogbookViewModel model) in D:\work\Telerik\Projects\FinalProject\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\LogbooksController.cs:line 225
+2019-06-12 17:20:26,948 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.Collections.Generic.List`1.set_Item(Int32 index, T value)
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 80
+2019-06-12 18:41:56,494 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 93
+2019-06-12 18:41:58,883 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 93
+2019-06-12 18:42:39,703 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 87
+2019-06-12 18:42:47,610 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 87
+2019-06-12 19:07:18,974 ERROR ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController - Unexpected exception occured:
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: Violation of PRIMARY KEY constraint 'PK_UsersLogbooks'. Cannot insert duplicate key in object 'dbo.UsersLogbooks'. The duplicate key value is (5955176d-8960-4bd1-8c8e-1674ff6dc8f7, 3).
+The statement has been terminated.
+   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__122_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteAsync(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(DbContext _, ValueTuple`2 parameters, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IReadOnlyList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at ManagerLogbook.Services.LogbookService.AddManagerToLogbookAsync(String managerId, Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 154
+   at ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController.AddManagerToLogbook(LogbookViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\LogbooksController.cs:line 177
+2019-06-12 19:11:50,518 ERROR ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController - Unexpected exception occured:
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: Violation of PRIMARY KEY constraint 'PK_UsersLogbooks'. Cannot insert duplicate key in object 'dbo.UsersLogbooks'. The duplicate key value is (52db264c-de87-4028-bc2c-7f3cb807b9cc, 3).
+The statement has been terminated.
+   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__122_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteAsync(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(DbContext _, ValueTuple`2 parameters, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IReadOnlyList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at ManagerLogbook.Services.LogbookService.AddManagerToLogbookAsync(String managerId, Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 154
+   at ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController.AddManagerToLogbook(LogbookViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\LogbooksController.cs:line 177
+2019-06-12 19:11:50,519 ERROR ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController - Unexpected exception occured:
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: Violation of PRIMARY KEY constraint 'PK_UsersLogbooks'. Cannot insert duplicate key in object 'dbo.UsersLogbooks'. The duplicate key value is (52db264c-de87-4028-bc2c-7f3cb807b9cc, 3).
+The statement has been terminated.
+   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__122_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteAsync(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(DbContext _, ValueTuple`2 parameters, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IReadOnlyList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at ManagerLogbook.Services.LogbookService.AddManagerToLogbookAsync(String managerId, Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 154
+   at ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController.AddManagerToLogbook(LogbookViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\LogbooksController.cs:line 177
+2019-06-12 19:12:06,684 ERROR ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController - Unexpected exception occured:
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: Violation of PRIMARY KEY constraint 'PK_UsersLogbooks'. Cannot insert duplicate key in object 'dbo.UsersLogbooks'. The duplicate key value is (08ed82c9-5608-493c-8bae-10ca612a3d6d, 3).
+The statement has been terminated.
+   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__122_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteAsync(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(DbContext _, ValueTuple`2 parameters, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IReadOnlyList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at ManagerLogbook.Services.LogbookService.AddManagerToLogbookAsync(String managerId, Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 154
+   at ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController.AddManagerToLogbook(LogbookViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\LogbooksController.cs:line 177
+2019-06-12 21:15:07,795 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:15:14,323 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:15:50,422 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:16:22,150 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:16:58,091 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:17:07,104 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:19:11,979 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:22:09,542 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:22:09,549 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:22:09,554 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:22:59,937 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:22:59,944 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:22:59,950 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:23:56,969 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:23:56,977 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:23:56,982 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:26:00,871 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:26:40,601 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:26:40,613 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:26:47,186 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:26:47,192 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:26:47,199 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:28:41,478 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:28:41,485 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:28:41,490 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:29:28,822 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:29:28,829 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:29:28,836 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:30:14,835 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:30:14,871 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:31:52,617 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:33:22,641 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-12 21:34:17,119 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186

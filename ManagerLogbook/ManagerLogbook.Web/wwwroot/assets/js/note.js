@@ -314,3 +314,93 @@ function shortenTextFunction() {
 function showImage() {
     $('.image-link').magnificPopup({ type: 'image' });
 };
+
+$('#search-criterias-holder').on('click', '#search-notes-all', function (eventSearchNotes) {
+    eventSearchNotes.preventDefault();
+
+    $this = $(this);
+    var btn = $(this).attr('value');
+
+    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
+        .done(function (dataAll) {
+
+            $('#note-partial-holder').empty();
+
+            $('#note-partial-holder').append(dataAll);
+
+            shortenTextFunction();
+            showImage();
+
+        }).fail(function (dataAll) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(dataAll.responseText);
+        });
+});
+
+$('#search-criterias-holder').on('click', '#search-notes-today', function (eventSearchNotes) {
+    eventSearchNotes.preventDefault();
+
+    $this = $(this);
+    var btn = $(this).attr('value');
+
+    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
+        .done(function (dataAll) {
+
+            $('#note-partial-holder').empty();
+
+            $('#note-partial-holder').append(dataAll);
+
+            shortenTextFunction();
+            showImage();
+
+        }).fail(function (dataAll) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(dataAll.responseText);
+        });
+});
+
+$('#search-criterias-holder').on('click', '#search-notes-active', function (eventSearchNotesActive) {
+    eventSearchNotesActive.preventDefault();
+   
+    $.get("/Manager/Notes/ActiveNotes")
+        .done(function (dataAll) {
+
+            $('#note-partial-holder').empty();
+
+            $('#note-partial-holder').append(dataAll);
+            
+            shortenTextFunction();
+            showImage();
+            
+        }).fail(function (dataAll) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(dataAll.responseText);
+        });
+});
