@@ -43,9 +43,9 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
         }
 
         [TestMethod]
-        public async Task ThrowsExeptionWhenNameIsNullOrEmpty()
+        public async Task ThrowsExeptionWhenNameIsNull()
         {
-            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenNameIsNullOrEmpty));
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenNameIsNull));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {
@@ -67,9 +67,82 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
         }
 
         [TestMethod]
+        public async Task ThrowsExeptionWhenLogbookIsNull()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenLogbookIsNull));
+
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Logbooks.AddAsync(TestHelpersLogbook.TestLogbook01());
+                await arrangeContext.BusinessUnits.AddAsync(TestHelpersLogbook.TestBusinessUnit01());
+                await arrangeContext.Notes.AddAsync(TestHelpersLogbook.TestNote01());
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedBusinessValidator = new Mock<IBusinessValidator>();
+                var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
+
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateLogbookAsync(10, "name", 1, "picture"));
+
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.LogbookNotFound));
+            }
+        }
+
+        [TestMethod]
+        public async Task ThrowsExeptionWhenBusinessUnitIsNull()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenBusinessUnitIsNull));
+
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Logbooks.AddAsync(TestHelpersLogbook.TestLogbook01());
+                await arrangeContext.BusinessUnits.AddAsync(TestHelpersLogbook.TestBusinessUnit01());
+                await arrangeContext.Notes.AddAsync(TestHelpersLogbook.TestNote01());
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedBusinessValidator = new Mock<IBusinessValidator>();
+                var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
+
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.UpdateLogbookAsync(1, "name", 100, "picture"));
+
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNotFound));
+            }
+        }
+
+
+        [TestMethod]
+        public async Task ThrowsExeptionWhenNameIsEmpty()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenNameIsEmpty));
+
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.Logbooks.AddAsync(TestHelpersLogbook.TestLogbook01());
+                await arrangeContext.BusinessUnits.AddAsync(TestHelpersLogbook.TestBusinessUnit01());
+                await arrangeContext.Notes.AddAsync(TestHelpersLogbook.TestNote01());
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedBusinessValidator = new Mock<IBusinessValidator>();
+                var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
+
+                var ex = await Assert.ThrowsExceptionAsync<ArgumentException>(() => sut.UpdateLogbookAsync(1, string.Empty, 1, "picture"));
+
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.NameCanNotBeNullOrEmpty));
+            }
+        }
+
+        [TestMethod]
         public async Task ThrowsExeptionWhenLogbookNameWasNotFound()
         {
-            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenNameIsNullOrEmpty));
+            var options = TestUtils.GetOptions(nameof(ThrowsExeptionWhenLogbookNameWasNotFound));
 
             using (var arrangeContext = new ManagerLogbookContext(options))
             {

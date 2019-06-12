@@ -77,29 +77,30 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
             }
         }
 
-        //[TestMethod]
-        //public async Task ThrowsException_UpdateBusinessUnitNameAlreadyExists()
-        //{
-        //    var options = TestUtils.GetOptions(nameof(ThrowsException_UpdateBusinessUnitNameAlreadyExists));
+        [TestMethod]
+        public async Task ThrowsException_UpdateBusinessUnitNameAlreadyExists()
+        {
+            var options = TestUtils.GetOptions(nameof(ThrowsException_UpdateBusinessUnitNameAlreadyExists));
 
-        //    using (var arrangeContext = new ManagerLogbookContext(options))
-        //    {
-        //        await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
-        //        await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
-        //        await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit01());
-        //        await arrangeContext.SaveChangesAsync();
-        //    }
+            using (var arrangeContext = new ManagerLogbookContext(options))
+            {
+                await arrangeContext.BusinessUnitCategories.AddAsync(TestHelperBusinessUnit.TestBusinessUnitCategory01());
+                await arrangeContext.Towns.AddAsync(TestHelperBusinessUnit.TestTown01());
+                await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit01());
+                await arrangeContext.BusinessUnits.AddAsync(TestHelperBusinessUnit.TestBusinessUnit02());
+                await arrangeContext.SaveChangesAsync();
+            }
 
-        //    using (var assertContext = new ManagerLogbookContext(options))
-        //    {
-        //        var mockBusinessValidator = new Mock<IBusinessValidator>();
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockBusinessValidator = new Mock<IBusinessValidator>();
 
-        //        var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
+                var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-        //        var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => sut.UpdateBusinessUnitAsync(1, TestHelperBusinessUnit.TestBusinessUnit01().Name, "Nishava 12", "1234567890", "information2", "email@email.com", 1,1,"picture2"));
+                var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => sut.UpdateBusinessUnitAsync(1, TestHelperBusinessUnit.TestBusinessUnit02().Name, "Nishava 12", "1234567890", "information2", "email@email.com", 1, 1, "picture2"));
 
-        //        Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNameAlreadyExists));
-        //    }
-        //}
+                Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNameAlreadyExists));
+            }
+        }
     }
 }
