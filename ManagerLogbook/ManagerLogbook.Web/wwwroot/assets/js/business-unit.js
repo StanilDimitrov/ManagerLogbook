@@ -137,9 +137,15 @@ $('#add-moderator-global-button').click(function (event) {
   
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Moderator</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
+                }
             }
+            else {
+                s += '<option value="null">No moderators available</option>';
+            }
+            
 
             $("#moderator-selector").html(s);
 
@@ -163,7 +169,7 @@ $('#remove-moderator-global-button').click(function (event) {
                 }
             }
             else {
-                s += '<option value="null">No moderators in business unit</option>';
+                s += '<option value="null">No moderators available</option>';
             }
             $("#moderator-selector-remove").html(s);
 
@@ -181,10 +187,15 @@ $('#add-business-unit-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories/" + btn)
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
-
+            else {
+                s += '<option value="null">No categories available</option>';
+            }
+           
             $("#business-unit-categories-selector").html(s);
 
         }).fail(function (response) {
@@ -204,10 +215,15 @@ $('#add-business-unit-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllTowns")
         .done(function (response) {
             var s = '<option value="-1" selected disabled hidden>Select City</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
-
+            else {
+                s += '<option value="null">No cities available</option>';
+            }
+            
             $("#towns-selector").html(s);
 
         }).fail(function (response) {
@@ -233,10 +249,15 @@ $('#update-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllBusinessUnitCategories/")
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
-
+            else {
+                s += '<option value="null">No categories available</option>';
+            }
+          
             $("#business-unit-categories-selector-update").html(s);
 
         }).fail(function (response) {
@@ -256,9 +277,15 @@ $('#update-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllTowns")
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Select City</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
+            else {
+                s += '<option value="null">No cities available</option>';
+            }
+            
 
             $("#towns-selector-update").html(s);
 
@@ -293,7 +320,6 @@ $(function () {
         var urlencodedInputs = inputs.serialize();
 
         var inputsToSend = urlencodedInputs + "&ModeratorId=" + moderatorId + "&Id=" + businessUnitId;
-        debugger;
 
         var url = $this.attr('action');
 
@@ -335,12 +361,23 @@ $(function () {
     $submitForm.on('submit', function (event) {
         event.preventDefault();
 
-        var $this = $(this);
+        //var $this = $(this);
 
-        const dataToSend = $submitForm.serialize();
+        //const dataToSend = $submitForm.serialize();
+        //var url = $this.attr('action');
+
+        var $this = $(this);
+        var inputs = $this.find('input');
+        var moderatorId = $('#moderator-selector-remove').val();
+        var businessUnitId = $('#my-remove-moderator-value').val();
+
+        var urlencodedInputs = inputs.serialize();
+
+        var inputsToSend = urlencodedInputs + "&ModeratorId=" + moderatorId + "&Id=" + businessUnitId;
         var url = $this.attr('action');
 
-        $.post(url, dataToSend, function (response) {
+        $.post(url, inputsToSend, function (response) {
+            
             toastr.options = {
                 "debug": false,
                 "positionClass": "toast-top-center",
@@ -352,7 +389,7 @@ $(function () {
                 "closeButton": true
             }
 
-            $('#myModalAddModerator').modal('hide');
+            $('#myModalRemoveModerator').modal('hide');
             toastr.success(response);
 
         }).fail(function (response) {

@@ -244,9 +244,6 @@ $('#search-criterias-holder').on('click', '#search-notes-7-days', function (even
 
     $this = $(this);
     var btn = $(this).attr('value');
-    //var clickedBtnID = $(this).attr('id');
-
-    //console.log(btn);
 
     $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
         .done(function (dataFrom7Days) {
@@ -369,6 +366,7 @@ $('#search-criterias-holder').on('click', '#deactivate-note', function (eventDea
         });
 });
 
+
 $('#search-criterias-holder').on('click', '#search-notes-all', function (eventSearchNotes) {
     eventSearchNotes.preventDefault();
 
@@ -488,6 +486,18 @@ $("#note-partial-holder").on('scroll',  function (someEvent)
     //}
 });
 
+
+function shortenTextFunction() {
+    $(".comment").shorten({
+        "showChars": 100,
+        "moreText": "More",
+        "lessText": "Less",
+    });
+};
+
+function showImage() {
+    $('.image-link').magnificPopup({ type: 'image' });
+};
 
 function centerModal() {
     $(this).css('display', 'block');

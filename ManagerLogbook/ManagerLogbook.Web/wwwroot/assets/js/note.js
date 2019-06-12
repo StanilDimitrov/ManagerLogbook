@@ -71,8 +71,18 @@ $(function () {
         event.preventDefault();
 
         var $this = $(this);
+        var inputs = $this.find('input');
+        var image = $('#image-input-create-note').val();
+        
+       
 
-        const dataToSend = $submitForm.serialize();
+        var urlencodedInputs = inputs.serialize();
+
+        var inputsToSend = urlencodedInputs + "&NoteImage=" + image;
+
+        //var $this = $(this);
+
+        //const dataToSend = $submitForm.serialize();
 
         //var url = "/Admin/Create/Register";
         var url = $this.attr('action');
@@ -156,50 +166,20 @@ $(function () {
     });
 });
 
-$('#search-criterias-holder').on('click', '#search-notes-7-days', function (eventSearchNotes) {
-    eventSearchNotes.preventDefault();
-
-    $this = $(this);
-    var btn = $(this).attr('value');
-    //var clickedBtnID = $(this).attr('id');
-
-    //console.log(btn);
-
-    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
-        .done(function (dataFrom7Days) {
-
-            $('#note-partial-holder').empty();
-
-            $('#note-partial-holder').append(dataFrom7Days);
-
-            shortenTextFunction();
-            showImage();
-
-        }).fail(function (dataFrom7Days) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(dataFrom7Days.responseText);
-
-        });
-});
-
 
 $('#add-note-global-button').click(function (event) {
     $.get("/Manager/Notes/GetAllNoteCategories")
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
-
+            else {
+                s += '<option value="null">No categories available</option>';
+            }
+            
             $("#notes-categories-selector").html(s);
 
         }).fail(function (response) {
@@ -223,9 +203,15 @@ $('#edit-note-global-button').click(function (event) {
     $.get("/Manager/Notes/GetAllNoteCategories")
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
+            else {
+                s += '<option value="null">No categories available</option>';
+            }
+            
 
             $("#notes-categories-selector-1").html(s);
 
@@ -249,9 +235,15 @@ $('#change-logbook-global-button').click(function (event) {
     $.get("/Manager/Notes/GetAllLogbooksByUser")
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Logbook</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
+            else {
+                s += '<option value="null">No logbooks available</option>';
+            }
+            
 
             $("#logbooks-selector").html(s);
 

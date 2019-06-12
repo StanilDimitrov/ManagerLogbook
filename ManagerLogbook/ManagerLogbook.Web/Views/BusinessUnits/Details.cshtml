@@ -126,7 +126,7 @@
 </section>
 
 <!-- Start BusinessUnit Modal -->
-@await Html.PartialAsync("_CreateBusinessUnitModalPartial", Model.BusinessUnit)
+@await Html.PartialAsync("_CreateBusinessUnitModalPartial", new BusinessUnitViewModel())
 <!-- End BusinessUnit Modal -->
 <!-- Start Update To BusinessUnit Modal -->
 @await Html.PartialAsync("_UpdateBusinessUnitModalPartial", Model.BusinessUnit)

@@ -184,3 +184,23 @@ The statement has been terminated.
    at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
    at ManagerLogbook.Services.BusinessUnitService.CreateBusinnesUnitAsync(String brandName, String address, String phoneNumber, String email, String information, Int32 businessUnitCategoryId, Int32 townId, String picture) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\BusinessUnitService.cs:line 48
    at ManagerLogbook.Web.Areas.Admin.Controllers.BusinessUnitsController.Create(BusinessUnitViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\BusinessUnitsController.cs:line 66
+2019-06-12 12:25:33,183 ERROR ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController - Unexpected exception occured:
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while updating the entries. See the inner exception for details. ---> System.Data.SqlClient.SqlException: Violation of PRIMARY KEY constraint 'PK_UsersLogbooks'. Cannot insert duplicate key in object 'dbo.UsersLogbooks'. The duplicate key value is (27c3dc16-5e1c-4cf8-aad0-c498219ece92, 3).
+The statement has been terminated.
+   at System.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__122_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommand.ExecuteAsync(IRelationalConnection connection, DbCommandMethod executeMethod, IReadOnlyDictionary`2 parameterValues, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(DbContext _, ValueTuple`2 parameters, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IReadOnlyList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at ManagerLogbook.Services.LogbookService.AddManagerToLogbookAsync(String managerId, Int32 logbookId) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 154
+   at ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController.AddManagerToLogbook(LogbookViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\LogbooksController.cs:line 177

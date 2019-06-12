@@ -7,8 +7,13 @@ $('#add-manager-global-button').click(function (event) {
 
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Manager</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
+                }
+            }
+            else {
+                s += '<option value="null">No managers available</option>';
             }
 
             $("#manager-selector").html(s);
@@ -26,10 +31,15 @@ $('#remove-manager-global-button').click(function (event) {
 
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Manager</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].userName + '</option>';
+                }
             }
-
+            else {
+                s += '<option value="null">No managers available</option>';
+            }
+            
             $("#manager-selector-remove").html(s);
 
         }).fail(function (response) {
@@ -47,11 +57,11 @@ $(function () {
         var inputs = $this.find('input');
         var managerId = $('#manager-selector').val();
         var logbookId = $('#logbook-id').val();
-        
+       
         var urlencodedInputs = inputs.serialize();
 
         var inputsToSend = urlencodedInputs + "&ManagerId=" + managerId + "&Id=" + logbookId;
-       
+        debugger;
        
         var url = $this.attr('action');
 
@@ -93,10 +103,15 @@ $('#update-logbook-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllBusinessUnits/")
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Business unit</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
-
+            else {
+                s += '<option value="null">No business units available</option>';
+            }
+            
             $("#business-unit-update-selector").html(s);
 
         }).fail(function (response) {
@@ -121,9 +136,15 @@ $('#create-logbook-global-button').click(function (event) {
     $.get("/Admin/BusinessUnits/GetAllBusinessUnits/")
         .done(function (response) {
             var s = '<option value="null" selected disabled hidden>Please Select Business unit</option>';
-            for (var i = 0; i < response.length; i++) {
-                s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
             }
+            else {
+                s += '<option value="null">No business units available</option>';
+            }
+            
 
             $("#business-unit-create-selector").html(s);
 
