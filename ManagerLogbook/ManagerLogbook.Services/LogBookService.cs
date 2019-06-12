@@ -177,18 +177,19 @@ namespace ManagerLogbook.Services
                 throw new NotFoundException(ServicesConstants.UserNotFound);
             }
 
-            if (this.context.UsersLogbooks.Any(u => u.UserId != managerId))
+            var entityToRemove = await this.context.UsersLogbooks.FindAsync(manager.Id, logbookId);
+            if(entityToRemove == null)
             {
                 throw new ArgumentException(string.Format(ServicesConstants.ManagerIsNotPresentInLogbook, manager.UserName, logbook.Name));
             }
 
-            var relationToRemove = new UsersLogbooks() { UserId = manager.Id, LogbookId = logbook.Id };
+            ///var relationToRemove = new UsersLogbooks() { UserId = manager.Id, LogbookId = logbook.Id };
 
             //marked to be deleted
             //this.context.Entry(relationToRemove).State = EntityState.Deleted;
 
-            this.context.UsersLogbooks.Attach(relationToRemove);
-            this.context.UsersLogbooks.Remove(relationToRemove);
+            //this.context.UsersLogbooks.Attach(relationToRemove);
+            this.context.UsersLogbooks.Remove(entityToRemove);
             await this.context.SaveChangesAsync();
 
             var result = await this.context.Logbooks

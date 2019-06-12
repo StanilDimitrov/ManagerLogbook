@@ -1,7 +1,7 @@
 ﻿
 $('#add-manager-global-button').click(function (event) {
 
-    var btn = $("#my-add-manager-value").attr('value');
+    var btn = $("#logbook-id").attr('value');
 
     $.get("/Admin/Logbooks/GetAllManagersNotPresent/" + btn)
 
@@ -25,7 +25,7 @@ $('#add-manager-global-button').click(function (event) {
 
 $('#remove-manager-global-button').click(function (event) {
 
-    var btn = $("#my-remove-manager-value").attr('value');
+    var btn = $("#logbook-id-remove").attr('value');
     
     $.get("/Admin/Logbooks/GetAllManagersPresent/" + btn)
 
@@ -61,7 +61,6 @@ $(function () {
         var urlencodedInputs = inputs.serialize();
 
         var inputsToSend = urlencodedInputs + "&ManagerId=" + managerId + "&Id=" + logbookId;
-        debugger;
        
         var url = $this.attr('action');
 
@@ -78,6 +77,54 @@ $(function () {
             }
 
             $('#myModalAddManager').modal('hide');
+            toastr.success(response);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
+    });
+});
+
+$(function () {
+    const $submitForm = $('#submit-form-remove-manager');
+
+    $submitForm.on('submit', function (event) {
+        event.preventDefault();
+
+        var $this = $(this);
+        var inputs = $this.find('input');
+        var managerId = $('#manager-selector-remove').val();
+        var logbookId = $('#logbook-id-remove').val();
+
+        var urlencodedInputs = inputs.serialize();
+
+        var inputsToSend = urlencodedInputs + "&ManagerId=" + managerId + "&Id=" + logbookId;
+
+        var url = $this.attr('action');
+
+        $.post(url, inputsToSend, function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+
+            $('#myModalRemoveManager').modal('hide');
             toastr.success(response);
 
         }).fail(function (response) {

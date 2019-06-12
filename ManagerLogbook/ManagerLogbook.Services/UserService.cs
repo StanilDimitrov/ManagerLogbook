@@ -98,7 +98,7 @@ namespace ManagerLogbook.Services
             var usersOfRoleManager = await this.userRapper.GetAllUsersInRoleAsync("Manager");
 
             var managersInLogbook = await this.context.UsersLogbooks
-                                                          .Where(x => x.LogbookId != logbookId)
+                                                          .Where(x => x.LogbookId == logbookId)
                                                           .Select(x => x.User)
                                                           .ToListAsync();
 
