@@ -212,8 +212,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         {
             try
             {
-                var moderatorId = model.ModeratorId;
                 var businessUnitId = model.Id;
+                var moderatorId = model.ModeratorId;
+                
 
                 var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);
 
@@ -242,6 +243,22 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                 var categories = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
 
                 return Json(categories);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Unexpected exception occured:", ex);
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllBusinessUnits()
+        {
+            try
+            {
+                var businessUnits = await this.businessUnitService.GetAllBusinessUnitsAsync();
+
+                return Json(businessUnits);
             }
             catch (Exception ex)
             {

@@ -144,7 +144,7 @@ namespace ManagerLogbook.Services
                 throw new NotFoundException(ServicesConstants.UserNotFound);
             }
 
-            if (this.context.UsersLogbooks.Any(u => u.UserId == managerId))
+            if (this.context.UsersLogbooks.Any(u => u.UserId == managerId && u.LogbookId==logbook.Id))
             {
                 throw new ArgumentException(string.Format(ServicesConstants.ManagerIsAlreadyInLogbook, manager.UserName, logbook.Name));
             }
