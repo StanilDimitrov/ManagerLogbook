@@ -214,8 +214,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         {
             try
             {
-                var managerId = model.ManagerId;
                 var logbookId = model.Id;
+                var managerId = model.ManagerId;
+                
 
                 var logbook = await this.logbookService.GetLogbookById(logbookId);
 
