@@ -18,7 +18,7 @@ namespace ManagerLogbook.Web.Models
 
         public LogbookViewModel CurrentLogbook { get; set; }
 
-        public ManagerViewModel Manager { get; set; }
+        public UserViewModel Manager { get; set; }
 
         //public string CurrentLogbookName { get; set; }
 

@@ -9,6 +9,7 @@ namespace ManagerLogbook.Web.Mappers
         {
             return new ReviewViewModel()
             {
+                Id = dto.Id,
                 OriginalDescription = dto.OriginalDescription,
                 EditedDescription = dto.EditedDescription,
                 CreatedOn = dto.CreatedOn,

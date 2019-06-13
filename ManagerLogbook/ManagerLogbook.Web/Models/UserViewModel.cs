@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ManagerLogbook.Web.Areas.Manager.Models
+namespace ManagerLogbook.Web.Models
 {
-    public class ManagerViewModel
+    public class UserViewModel
     {
         public string Id { get; set; }
 
@@ -22,5 +19,9 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
         public int? CurrentLogbookId { get; set; }
         public IEnumerable<SelectListItem> Logbooks { get; set; }
         public string LogbookName { get; set; }
+
+        public string UserRole { get; set; }
+
+        public int? BusinessUnitId { get; set; }
     }
 }

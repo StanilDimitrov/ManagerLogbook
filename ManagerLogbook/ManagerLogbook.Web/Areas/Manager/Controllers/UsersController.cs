@@ -29,7 +29,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SwitchLogbook(ManagerViewModel model)
+        public async Task<IActionResult> SwitchLogbook(UserViewModel model)
         {
             try
             {
