@@ -17,7 +17,7 @@ namespace ManagerLogbook.Web.Mappers
                 Information = dto.Information,
                 CategoryName = dto.CategoryName,
                 TownName = dto.BusinessUnitTownName,
-                Picture = dto.Picture
+                Picture = dto.Picture,
             };
         }
 

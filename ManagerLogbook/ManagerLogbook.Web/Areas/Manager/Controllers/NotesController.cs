@@ -16,6 +16,8 @@ using Microsoft.Extensions.Caching.Memory;
 using ManagerLogbook.Web.Areas.Manager.Models;
 using ManagerLogbook.Services.CustomExeptions;
 using log4net;
+using Microsoft.AspNetCore.SignalR;
+using ManagerLogbook.Web.Hubs;
 
 namespace ManagerLogbook.Web.Areas.Manager.Controllers
 {
@@ -28,17 +30,25 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly IUserService userService;
         private readonly ILogbookService logbookService;
         private readonly IMemoryCache cache;
+        private readonly IHubContext<NoteHub> hubContext;
         private static readonly ILog log =
         LogManager.GetLogger(typeof(NotesController));
 
-        public NotesController(IImageOptimizer optimizer, INoteService noteService,
-                              IUserService userService, ILogbookService logbookService, IMemoryCache cache)
+        public NotesController(IImageOptimizer optimizer, 
+                              IUserService userService, 
+                              INoteService noteService,
+                              ILogbookService logbookService, 
+                              IMemoryCache cache,
+                              IHubContext<NoteHub> hubContext)
         {
+            
+
             this.optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
             this.noteService = noteService ?? throw new ArgumentNullException(nameof(noteService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            this.hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
         }
 
         [TempData] public string StatusMessage { get; set; }
@@ -63,9 +73,10 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                         CurrentLogbookId = logbookId,
                         Name =currentLogbook.Name
                     };
-                    model.Manager = new ManagerViewModel()
+                    model.Manager = new UserViewModel()
                     {
                         CurrentLogbookId = logbookId,
+                        Id = userId
                     };
 
                     model.CurrentLogbookId = logbookId;
@@ -699,7 +710,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             return cashedCategories;
         }
 
-        private async Task<ManagerViewModel> CreateDropdownLogbooks(ManagerViewModel model)
+        private async Task<UserViewModel> CreateDropdownLogbooks(UserViewModel model)
         {
             var cashedLogbooks = await CacheLogbooks(model.Id);
 
@@ -708,7 +719,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             return model;
         }
 
-        private async Task<ManagerViewModel> EditDropdownLogbooks(ManagerViewModel model)
+        private async Task<UserViewModel> EditDropdownLogbooks(UserViewModel model)
         {
 
             var cashedLogbooks = await CacheLogbooks(model.Id);

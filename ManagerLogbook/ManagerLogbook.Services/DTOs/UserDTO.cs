@@ -8,6 +8,8 @@
        
         public string BusinessUnitName { get; set; }
 
+        public int? BusinessUnitId { get; set; }
+
         public string UserName { get; set; }
 
         public string Email { get; set; }

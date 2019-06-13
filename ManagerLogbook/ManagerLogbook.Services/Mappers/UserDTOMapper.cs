@@ -17,6 +17,7 @@ namespace ManagerLogbook.Services.Mappers
                 Id = entity.Id,
                 Picture = entity.Picture,
                 BusinessUnitName = entity.BusinessUnit?.Name,
+                BusinessUnitId = entity.BusinessUnitId,
                 UserName = entity.UserName,
                 Email = entity.Email,
                 CurrentLogbookId = entity.CurrentLogbookId
