@@ -239,72 +239,7 @@ $('#search-business-form').on('input submit', function (eventSearchBusiness) {
 });
 
 
-$('#search-criterias-holder').on('click', '#search-notes-7-days', function (eventSearchNotes) {
-    eventSearchNotes.preventDefault();
 
-    $this = $(this);
-    var btn = $(this).attr('value');
-
-    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
-        .done(function (dataFrom7Days) {
-
-            $('#note-partial-holder').empty();
-
-            $('#note-partial-holder').append(dataFrom7Days);
-
-            shortenTextFunction();
-            showImage();
-
-        }).fail(function (dataFrom7Days) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(dataFrom7Days.responseText);
-
-        });
-});
-
-$('#search-criterias-holder').on('click', '#search-notes-30-days', function (eventSearchNotes) {
-    eventSearchNotes.preventDefault();
-
-    $this = $(this);
-    var btn = $(this).attr('value');
-    //var clickedBtnID = $(this).attr('id');
-
-    //console.log(btn);
-
-    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
-        .done(function (dataFrom30Days) {
-
-            $('#note-partial-holder').empty();
-
-            $('#note-partial-holder').append(dataFrom30Days);
-
-            shortenTextFunction();
-            showImage();
-
-        }).fail(function (dataFrom30Days) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(dataFrom30Days.responseText);
-
-        });
-});
 
 
 

@@ -28,7 +28,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
 
         public int ScrollPage { get; set; }
 
-        public int DaysBefore { get; set; }
+        public int? DaysBefore { get; set; }
 
         public string SkipNotesForScrollResult { get; set; }
 

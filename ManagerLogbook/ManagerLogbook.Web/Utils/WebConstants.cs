@@ -7,7 +7,7 @@ namespace ManagerLogbook.Web.Utils
 {
     public static class WebConstants
     {
-        public const string SuccessfullyAddNote = "Note created successfully.";
+        public const string SuccessfullyAddNote = "Note was created successfully.";
         public const string SuccessfullyUpdateNote = "Note was updated successfully.";
         public const string NoLogbookChoosen = "Please choose a logbook.";
         public const string NoteCreated = "Note was successfully created.";
@@ -27,10 +27,10 @@ namespace ManagerLogbook.Web.Utils
         public const string BusinessUniNotExist = "Business unit does not exists.";
         public const string ModeratorNotExist = "Moderator does not exists.";
         public const string ManagerNotExist = "Manager does not exists.";
-        public const string SuccessfullyAddedModeratorToBusinessUnit = "Moderator \"{0}\" was successfully added to business unit {1}.";
-        public const string SuccessfullyRemovedModeratorFromBusinessUnit = "Moderator \"{0} was successfully removed from business unit {1}.";
-        public const string SuccessfullyAddedManagerToLogbook = "Manager \"{0}\" was successfully added to logbook {1}.";
-        public const string SuccessfullyRemovedManagerFromLogbook = "Manager \"{0}\" was successfully removed from logbook {1}.";
+        public const string SuccessfullyAddedModeratorToBusinessUnit = "Moderator \"{0}\" was successfully added to business unit business unit \"{1}\".";
+        public const string SuccessfullyRemovedModeratorFromBusinessUnit = "Moderator \"{0}\" was successfully removed from business unit \"{1}\".";
+        public const string SuccessfullyAddedManagerToLogbook = "Manager \"{0}\" was successfully added to logbook \"{1}\".";
+        public const string SuccessfullyRemovedManagerFromLogbook = "Manager \"{0}\" was successfully removed from logbook \"{1}\".";
         public const string ReviewCreated = "Review was successfully created.";
         public const string ReviewNotCreated = "Unable to create review.";
         public const string EnterValidData = "Please enter a valid data.";

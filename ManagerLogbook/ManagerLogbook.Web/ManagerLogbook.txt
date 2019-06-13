@@ -805,3 +805,10 @@ System.NullReferenceException: Object reference not set to an instance of an obj
 2019-06-12 21:34:17,119 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
 System.NullReferenceException: Object reference not set to an instance of an object.
    at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.ActiveNotes() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 186
+2019-06-13 10:32:48,198 ERROR ManagerLogbook.Web.Areas.Manager.Controllers.NotesController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Web.Areas.Manager.Controllers.NotesController.Index() in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Manager\Controllers\NotesController.cs:line 101
+2019-06-13 11:26:10,483 ERROR ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController - Unexpected exception occured:
+ManagerLogbook.Services.CustomExeptions.AlreadyExistsException: Logbook name already exists.
+   at ManagerLogbook.Services.LogbookService.CreateLogbookAsync(String name, Int32 businessUnitId, String picture) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\LogBookService.cs:line 47
+   at ManagerLogbook.Web.Areas.Admin.Controllers.LogbooksController.Create(LogbookViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\Fourth_Final_Project_3_Repo\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\LogbooksController.cs:line 64

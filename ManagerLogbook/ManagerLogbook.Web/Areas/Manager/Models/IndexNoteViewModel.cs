@@ -22,7 +22,7 @@ namespace ManagerLogbook.Web.Models
 
         //public string CurrentLogbookName { get; set; }
 
-        //public int CurrentLogbookId { get; set; }
+        public int? CurrentLogbookId { get; set; }
 
         public NoteViewModel Note { get; set; }
 

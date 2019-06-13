@@ -77,6 +77,15 @@ namespace ManagerLogbook.Tests.HelpersMethods
             };
         }
 
+        public static UsersLogbooks TestUsersLogbooks2()
+        {
+            return new UsersLogbooks
+            {
+                UserId = TestUser2().Id,
+                LogbookId = TestLogbook2().Id
+            };
+        }
+
         public static NoteCategory TestNoteCategory1()
         {
             return new NoteCategory
@@ -149,7 +158,14 @@ namespace ManagerLogbook.Tests.HelpersMethods
             };
         }
 
-        
+        public static Logbook TestLogbook2()
+        {
+            return new Logbook
+            {
+                Id = 1,
+                Name = "Restaurant Marinela"
+            };
+        }
 
         public static NoteDTO TestNoteDTO1()
         {

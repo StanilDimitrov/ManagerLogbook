@@ -13,27 +13,25 @@ using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Services.UserServiceTest
 {
-    //[TestClass]
-    //public class GetAllManagersNotPresentInLogbookAsync
-    //{
-    //    [TestMethod]
-    //    public async Task ReturnRightCollection()
-    //    {
-    //        var options = TestUtils.GetOptions(nameof(ReturnRightCollection));
-    //        using (var arrangeContext = new ManagerLogbookContext(options))
-    //        {
-    //            await arrangeContext.UsersLogbooks.AddAsync(TestHelpersNote.TestUsersLogbooks1());
-    //            await arrangeContext.SaveChangesAsync();
-    //        }
+    [TestClass]
+    public class GetAllManagersNotPresentInLogbookAsync
+    {
+        [TestMethod]
+        public async Task ReturnRightCollection()
+        {
+            var options = TestUtils.GetOptions(nameof(ReturnRightCollection));
 
-    //        using (var assertContext = new ManagerLogbookContext(options))
-    //        {
-    //            var mockedRapper = new Mock<IUserServiceRapper>();
-    //            var sut = new UserService(assertContext, mockedRapper.Object);
+            using (var assertContext = new ManagerLogbookContext(options))
+            {
+                var mockedRapper = new Mock<IUserServiceRapper>();
+                var sut = new UserService(assertContext, mockedRapper.Object);
+                var managers = new List<User>() { TestHelpersNote.TestUser1(), TestHelpersNote.TestUser2() };
 
-    //            var usersDTO = await sut.GetAllManagersNotPresentInLogbookAsync(1);
-    //            Assert.AreEqual(usersDTO.Count, 1);
-    //        }
-    //    }
-    //}
+                mockedRapper.Setup(x => x.GetAllUsersInRoleAsync("Manager")).ReturnsAsync(managers);
+
+                var usersDTO = await sut.GetAllManagersNotPresentInLogbookAsync(1);
+                Assert.AreEqual(usersDTO.Count, 2);
+            }
+        }
+    }
 }

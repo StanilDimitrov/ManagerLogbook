@@ -1,5 +1,7 @@
 ﻿@model SearchViewModel
 
+@if(Model.Categories != null)
+{ 
 <div class="col-xs-12">
     <div class="dashboardBoxBg mb30">
         <div class="profileIntro">
@@ -46,6 +48,7 @@
                         <div class="form-group col-md-3 col-sm-6 col-xs-12">
                             <label for="amount">Search</label>
                             <div class="input-group">
+                                <input type="hidden"  id="current-page-id"  value="@Model.CurrPage" />
                                 <input type="text" asp-for="SearchCriteria" class="form-control width-100" id="search-for-note-phrase" placeholder="Search">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default width-100" type="submit"><i class="icon-listy icon-search-2"></i></button>
@@ -70,4 +73,4 @@
         </div>
     </div>
 </div>
-
+}
