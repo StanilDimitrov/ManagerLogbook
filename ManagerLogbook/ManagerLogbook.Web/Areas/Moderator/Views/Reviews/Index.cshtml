@@ -18,12 +18,13 @@
             <div class="collapse navbar-collapse navbar-dash">
                 <ul class="nav navbar-nav mr0">
                     <li class="active">
-                    <a asp-controller="Reviews" asp-action="Details" asp-route-id="@Model.Reviews.Select(x=>x.BusinessUnitId)">@Model.Reviews.Select(x=>x.BusinessUnitName)</a>
-                    <a href="/Moderator/Reviews/Details/@Model.Reviews.Select(x=>x.BusinessUnitId)"><i class="fa fa-tachometer icon-dash" aria-hidden="true"></i> @Model.Reviews.Select(x => x.BusinessUnitName)</a>
+
+                    <li class="active">
+                        <a href="/BusinessUnits/Details/@Model.BusinessUnit.Id"><i class="fa fa-home" aria-hidden="true"></i> @Model.BusinessUnit.Name </a>
                     </li>
-                    <li class="">
-                        <a data-toggle="modal" id="change-logbook-global-button" data-target="#myModalLogbook"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i> Logbooks</a>
-                    </li>
+                    @*<li class="">
+                        <a asp-controller="BusinessUnits" asp-action="Details" asp-route-id="@Model.Reviews.Select(x=>x.BusinessUnitId)"<i class="fa fa-home" aria-hidden="true"></i> @Model.Reviews.Select(x=>x.BusinessUnitName)</a>
+                    </li>*@
                     <li class="">
                         <a href="profile.html"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Personal Details</a>
                     </li>
@@ -76,11 +77,11 @@
 </section>
 
 <!-- Start Note Modal -->
-@await Html.PartialAsync("_EditModalPartial")
+@*@await Html.PartialAsync("_EditModalPartial")*@
 
 <!-- End Note Modal -->
 <!-- Start Login Logbook -->
-@await Html.PartialAsync("_LogbookModalPartial", Model)
+@*@await Html.PartialAsync("_LogbookModalPartial", Model)*@
 <!-- End Login Logbook -->
 
 

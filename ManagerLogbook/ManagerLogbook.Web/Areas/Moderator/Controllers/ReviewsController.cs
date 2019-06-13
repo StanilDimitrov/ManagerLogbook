@@ -6,33 +6,43 @@ using log4net;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Web.Areas.Moderator.Models;
+using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ManagerLogbook.Web.Areas.Moderator.Controllers
 {
+    [Area("Moderator")]
+    [Authorize(Roles = "Moderator")]
     public class ReviewsController : Controller
     {
         private readonly IReviewService reviewService;
+        private readonly IBusinessUnitService businessUnitService;
+        private readonly IUserService userService;
         private static readonly ILog log = LogManager.GetLogger(typeof(ReviewsController));
 
-        public ReviewsController(IReviewService reviewService)
+        public ReviewsController(IReviewService reviewService,
+                                 IBusinessUnitService businessUnitService,
+                                 IUserService userService)
         {
             this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
+            this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
+            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        public async Task<IActionResult> Details(int id)
-        {
-            var model = new IndexReviewViewModel();
+        //public async Task<IActionResult> Details(int id)
+        //{
+        //    var model = new IndexReviewViewModel();
 
-            var reviews = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
+        //    var reviews = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
 
-            model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
+        //    model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -72,9 +82,21 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
             }
         }
 
-        public IActionResult Index()
-        {
-            return View();
+        public async Task<IActionResult> Index()
+        {          
+            var model = new IndexReviewViewModel();
+
+            var userId = this.User.GetId();
+            var user = await this.userService.GetUserByIdAsync(userId);
+
+            //var businessUnit = await this.businessUnitService.GetBusinessUnitById(user);
+
+            var reviews = await this.reviewService.GetAllReviewsByModeratorIdAsync(userId);
+
+            model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
+            //model.BusinessUnit = 
+
+            return View(model);            
         }
     }
 }

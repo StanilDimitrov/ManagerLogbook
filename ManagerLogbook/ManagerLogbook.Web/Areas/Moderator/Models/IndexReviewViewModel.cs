@@ -11,6 +11,6 @@ namespace ManagerLogbook.Web.Areas.Moderator.Models
     {
         public ICollection<ReviewViewModel> Reviews { get; set; }
 
-
+        public BusinessUnitViewModel BusinessUnit { get; set; }
     }
 }
