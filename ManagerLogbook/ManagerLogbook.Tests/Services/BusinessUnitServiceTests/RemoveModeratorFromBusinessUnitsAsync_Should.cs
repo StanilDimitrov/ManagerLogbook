@@ -36,7 +36,8 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnitDTO = await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id ,TestHelperBusinessUnit.TestBusinessUnit01().Id);
+                await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id ,TestHelperBusinessUnit.TestBusinessUnit01().Id);
+                //var businessUnitDTO = await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id ,TestHelperBusinessUnit.TestBusinessUnit01().Id);
 
                 var moderatorUser = await assertContext.Users.FindAsync(TestHelperBusinessUnit.TestUser01().Id);
 
@@ -65,8 +66,8 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnit = await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
-
+                //var businessUnit = await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
+                await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
                 var moderatorUser = await assertContext.Users.FindAsync(TestHelperBusinessUnit.TestUser01().Id);
 
                 var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.AddModeratorToBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, 2));
@@ -96,7 +97,8 @@ namespace ManagerLogbook.Tests.Services.BusinessUnitServiceTests
 
                 var sut = new BusinessUnitService(assertContext, mockBusinessValidator.Object);
 
-                var businessUnit = await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
+                //var businessUnit = await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
+                await sut.RemoveModeratorFromBusinessUnitsAsync(TestHelperBusinessUnit.TestUser01().Id, TestHelperBusinessUnit.TestBusinessUnit01().Id);
 
                 var moderatorUser = await assertContext.Users.FindAsync(TestHelperBusinessUnit.TestUser01().Id);
 

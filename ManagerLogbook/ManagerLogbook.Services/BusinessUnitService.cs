@@ -314,7 +314,8 @@ namespace ManagerLogbook.Services
             return businessUnit.ToDTO();
         }
 
-        public async Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        public async Task RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+           // public async Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
 
@@ -333,12 +334,12 @@ namespace ManagerLogbook.Services
             moderatorUser.BusinessUnitId = null;
             await this.context.SaveChangesAsync();
 
-            businessUnit = await this.context.BusinessUnits
-                         .Include(bc => bc.BusinessUnitCategory)
-                         .Include(t => t.Town)
-                         .FirstOrDefaultAsync(x => x.Id == businessUnitId);
+            //businessUnit = await this.context.BusinessUnits
+            //             .Include(bc => bc.BusinessUnitCategory)
+            //             .Include(t => t.Town)
+            //             .FirstOrDefaultAsync(x => x.Id == businessUnitId);
 
-            return businessUnit.ToDTO();
+            //return businessUnit.ToDTO();
         }
 
         //public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
