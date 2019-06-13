@@ -73,9 +73,9 @@ $(function () {
         var $this = $(this);
         var inputs = $this.find('input');
         var image = $('#image-input-create-note').val();
-        
+        //var file = $(image)[0];
+        //var fileInput = file.files[0];
        
-
         var urlencodedInputs = inputs.serialize();
 
         var inputsToSend = urlencodedInputs + "&NoteImage=" + image;
@@ -86,8 +86,8 @@ $(function () {
 
         //var url = "/Admin/Create/Register";
         var url = $this.attr('action');
-
-        $.post(url, dataToSend, function (response) {
+        
+        $.post(url, inputsToSend, function (response) {
 
             toastr.options = {
                 "debug": false,
@@ -120,51 +120,51 @@ $(function () {
 });
 
 
-$(function () {
-    const $submitForm = $('#submit-form-logbook');
+//$(function () {
+//    const $submitForm = $('#submit-form-logbook');
 
-    $submitForm.on('submit', function (event) {
-        event.preventDefault();
+//    $submitForm.on('submit', function (event) {
+//        event.preventDefault();
 
-        var $this = $(this);
+//        var $this = $(this);
 
-        const dataToSend = $submitForm.serialize();
+//        const dataToSend = $submitForm.serialize();
 
-        //var url = "/Manager/Users/SwitchLogbook/";
-        var url = $this.attr('action');
+//        //var url = "/Manager/Users/SwitchLogbook/";
+//        var url = $this.attr('action');
 
-        $.post(url, dataToSend, function (response) {
-            console.log(dataToSend);
+//        $.post(url, dataToSend, function (response) {
+//            //console.log(dataToSend);
 
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
+//            toastr.options = {
+//                "debug": false,
+//                "positionClass": "toast-top-center",
+//                "onclick": null,
+//                "fadeIn": 300,
+//                "fadeOut": 1000,
+//                "timeOut": 3000,
+//                "extendedTimeOut": 3000,
+//                "closeButton": true
+//            }
 
-            toastr.success(response);
-            $('#myModalLogbook').modal('hide');
+//            toastr.success(response);
+//            $('#myModalLogbook').modal('hide');
 
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
-        });
-    });
-});
+//        }).fail(function (response) {
+//            toastr.options = {
+//                "debug": false,
+//                "positionClass": "toast-top-center",
+//                "onclick": null,
+//                "fadeIn": 300,
+//                "fadeOut": 1000,
+//                "timeOut": 3000,
+//                "extendedTimeOut": 3000,
+//                "closeButton": true
+//            }
+//            toastr.error(response.responseText);
+//        });
+//    });
+//});
 
 
 $('#add-note-global-button').click(function (event) {
@@ -243,7 +243,6 @@ $('#change-logbook-global-button').click(function (event) {
             else {
                 s += '<option value="null">No logbooks available</option>';
             }
-            
 
             $("#logbooks-selector").html(s);
 
@@ -274,11 +273,13 @@ $('#search-notes-form').on('input submit', function (eventSearchNote) {
 
     var inputs = $this.find('input');
     var categoryId = $('#category-id-from-selector').val();
+    var currentPage = $('#current-page-hidden-input').val();
+    var totalPages = $('#total-pages-hidden-input').val();
 
     var urlencodedInputs = inputs.serialize();
 
-    var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId;
-
+    var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&CurrPage=" + currentPage + "&TotalPages=" + totalPages;
+    
 
     $.post("/Manager/Notes/Search", inputsToSend)
         .done(function (data) {
@@ -374,6 +375,73 @@ $('#search-criterias-holder').on('click', '#search-notes-today', function (event
                 "closeButton": true
             }
             toastr.error(dataAll.responseText);
+        });
+});
+
+$('#search-criterias-holder').on('click', '#search-notes-7-days', function (eventSearchNotes) {
+    eventSearchNotes.preventDefault();
+
+    $this = $(this);
+    var btn = $(this).attr('value');
+
+    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
+        .done(function (dataFrom7Days) {
+
+            $('#note-partial-holder').empty();
+
+            $('#note-partial-holder').append(dataFrom7Days);
+
+            shortenTextFunction();
+            showImage();
+
+        }).fail(function (dataFrom7Days) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(dataFrom7Days.responseText);
+
+        });
+});
+
+$('#search-criterias-holder').on('click', '#search-notes-30-days', function (eventSearchNotes) {
+    eventSearchNotes.preventDefault();
+
+    $this = $(this);
+    var btn = $(this).attr('value');
+    //var clickedBtnID = $(this).attr('id');
+
+    //console.log(btn);
+
+    $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
+        .done(function (dataFrom30Days) {
+
+            $('#note-partial-holder').empty();
+
+            $('#note-partial-holder').append(dataFrom30Days);
+
+            shortenTextFunction();
+            showImage();
+
+        }).fail(function (dataFrom30Days) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(dataFrom30Days.responseText);
+
         });
 });
 

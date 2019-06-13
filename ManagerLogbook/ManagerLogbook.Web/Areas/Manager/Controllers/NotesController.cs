@@ -67,6 +67,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     {
                         CurrentLogbookId = logbookId,
                     };
+
+                    model.CurrentLogbookId = logbookId;
                    
                     var notesDTO = await this.noteService.Get15NotesByIdAsync(1, user.CurrentLogbookId.Value);
 
@@ -91,18 +93,19 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     {
                         model.SearchModel.NextPage = 2;
                     }
-
+                   
                     model.SearchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                     model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
                     return View(model);
                 }
-
-                model.SearchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
-                model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
+                model.SearchModel = new SearchViewModel();
+                //model.SearchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
+                //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
                 return View(model);
             }
+            
             catch (NotFoundException ex)
             {
                 return BadRequest(ex.Message);

@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using log4net;
-using ManagerLogbook.Services;
+﻿using log4net;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Web.Areas.Manager.Models;
 using ManagerLogbook.Web.Extensions;
+using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Areas.Manager.Controllers
 {
@@ -44,9 +42,9 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     {
                         return BadRequest((string.Format(WebConstants.AlreadyInLogbook,  user.UserName, logbook.Name)));
                     }
-                    
                     user = await this.userService.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value);
-                    return Ok(string.Format(WebConstants.SwitchLogbook, logbook.Name));
+                    //return Ok(string.Format(WebConstants.SwitchLogbook, logbook.Name));
+                    return RedirectToAction("Index", "Notes");
                 }
 
                 return BadRequest(WebConstants.NoLogbookChoosen);
