@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Utils;
@@ -12,15 +13,13 @@ namespace ManagerLogbook.Web.Controllers
     public class ReviewsController : Controller
     {
         private readonly IReviewService reviewService;
+        private static readonly ILog log = LogManager.GetLogger(typeof(ReviewsController));
 
         public ReviewsController(IReviewService reviewService)
         {
             this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
         }
-
-        [TempData]
-        public string StatusMessage { get; set; }
-
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ReviewViewModel model)
@@ -49,7 +48,7 @@ namespace ManagerLogbook.Web.Controllers
 
             catch (Exception ex)
             {
-                StatusMessage = ex.Message;
+                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }

@@ -38,6 +38,9 @@ namespace ManagerLogbook.Web.Utils
         public const string AlreadyInLogbook = "User \"{0}\" is  already logged in logbook \"{1}\".";
         public const string UserCreated = "User \"{0}\"  addedd succesfully!";
         public const string UserExists = "User \"{0}\" already exists.";
+        public const string UnableToEditReview = "Unable to edit review.";
+        public const string ReviewEdited = "Review was successfully edited.";
+        
     }
 }
 

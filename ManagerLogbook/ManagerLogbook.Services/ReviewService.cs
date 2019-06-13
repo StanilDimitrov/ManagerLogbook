@@ -115,10 +115,10 @@ namespace ManagerLogbook.Services
 
             var result = await this.context.Reviews
                                     .Where(bu => bu.BusinessUnitId == businessUnitId)
-                                    .Where(co=>co.isVisible==true)
+                                    .Where(co => co.isVisible == true)
                                     .Include(bu => bu.BusinessUnit)
                                     .OrderByDescending(co => co.CreatedOn)
-                                    .Select(r => r.ToDTO())                                    
+                                    .Select(r => r.ToDTO())
                                     .ToListAsync();
 
             return result;
@@ -175,6 +175,21 @@ namespace ManagerLogbook.Services
                                      .ToListAsync();
 
             return result;
+        }
+
+        public async Task<ReviewDTO> GetReviewByIdAsync(int reviewId)
+        {
+            var result = await this.context.Reviews
+                                    .Include(bu => bu.BusinessUnit)
+                                    .FirstOrDefaultAsync(r => r.Id == reviewId);
+                                    
+            if (result == null)
+            {
+                throw new NotFoundException(ServicesConstants.ReviewNotFound);
+            }
+
+            return result.ToDTO();
+
         }
     }
 }

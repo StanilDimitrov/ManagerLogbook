@@ -20,5 +20,7 @@ namespace ManagerLogbook.Services.Contracts
         Task<ICollection<ReviewDTO>> GetAllReviewsByDateAsync(DateTime date);
 
         Task<ICollection<ReviewDTO>> GetAllReviewsInDateRangeAsync(DateTime startDate, DateTime endDate);
+
+        Task<ReviewDTO> GetReviewByIdAsync(int reviewId);
     }
 }
