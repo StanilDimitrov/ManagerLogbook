@@ -1,21 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Models;
-using ManagerLogbook.Web.Extensions;
-using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Services.Contracts;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Caching.Memory;
-using ManagerLogbook.Web.Areas.Manager.Models;
-using Microsoft.AspNetCore.Identity;
-using ManagerLogbook.Data.Models;
 using log4net;
 using ManagerLogbook.Services.CustomExeptions;
 
