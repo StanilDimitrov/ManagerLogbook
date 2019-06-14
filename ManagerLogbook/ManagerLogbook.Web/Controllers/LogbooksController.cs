@@ -44,11 +44,6 @@ namespace ManagerLogbook.Web.Controllers
             }
 
             return View(model);
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
+        }        
     }
 }

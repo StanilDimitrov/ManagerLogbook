@@ -11,7 +11,7 @@ namespace ManagerLogbook.Services.Contracts
         
         Task<ReviewDTO> UpdateReviewAsync(int reviewId, string editedDescription);
 
-        Task<ReviewDTO> MakeVisibleReviewAsync(int reviewId);
+        Task<ReviewDTO> MakeInVisibleReviewAsync(int reviewId);
 
         Task<ICollection<ReviewDTO>> GetAllReviewsByBusinessUnitIdAsync(int businessUnitId);
         

@@ -51,11 +51,6 @@ namespace ManagerLogbook.Web.Controllers
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
+        }               
     }
 }
