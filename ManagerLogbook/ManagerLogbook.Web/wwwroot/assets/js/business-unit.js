@@ -12,6 +12,8 @@ $(function () {
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
+            $('#business-unit-details-change').empty();
+            $('#business-unit-details-change').append(dataToSend);
             toastr.options = {
                 "debug": false,
                 "positionClass": "toast-top-center",
@@ -24,6 +26,7 @@ $(function () {
             }
             $('#myModalBusinessUnit').modal('hide');
             toastr.success(response);
+            
 
         }).fail(function (response) {
             toastr.options = {
