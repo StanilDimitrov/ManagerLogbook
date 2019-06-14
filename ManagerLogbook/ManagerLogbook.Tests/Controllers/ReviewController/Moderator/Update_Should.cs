@@ -22,8 +22,10 @@ namespace ManagerLogbook.Tests.Controllers.ReviewController.Moderator
         public async Task Succeed()
         {
             var reviewServiceMock = new Mock<IReviewService>();
-
-            var sut = new ReviewsController(reviewServiceMock.Object);
+            var businessUnitService = new Mock<IBusinessUnitService>();
+            var userService = new Mock<IUserService>();
+            
+            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitService.Object, userService.Object);
 
             var reviewViewModel = new ReviewViewModel()
             {
@@ -45,8 +47,10 @@ namespace ManagerLogbook.Tests.Controllers.ReviewController.Moderator
         public async Task ThrowsBadRequestWhenReviewViewModelIsNotValid()
         {
             var reviewServiceMock = new Mock<IReviewService>();
+            var businessUnitService = new Mock<IBusinessUnitService>();
+            var userService = new Mock<IUserService>();
 
-            var sut = new ReviewsController(reviewServiceMock.Object);
+            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitService.Object, userService.Object);
 
             var reviewViewModel = new ReviewViewModel()
             {
@@ -69,8 +73,10 @@ namespace ManagerLogbook.Tests.Controllers.ReviewController.Moderator
         public async Task ThrowsBadRequestWhenReviewWasNotUpdated()
         {
             var reviewServiceMock = new Mock<IReviewService>();
+            var businessUnitService = new Mock<IBusinessUnitService>();
+            var userService = new Mock<IUserService>();
 
-            var sut = new ReviewsController(reviewServiceMock.Object);
+            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitService.Object, userService.Object);
 
             var reviewViewModel = new ReviewViewModel()
             {
