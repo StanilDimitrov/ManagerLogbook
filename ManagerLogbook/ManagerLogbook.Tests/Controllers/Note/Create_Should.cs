@@ -11,6 +11,9 @@ using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Services.Contracts;
 using Microsoft.Extensions.Caching.Memory;
 using ManagerLogbook.Tests.HelpersMethods;
+using ManagerLogbook.Data.Models;
+using System.Security.Claims;
+using ManagerLogbook.Data;
 
 namespace ManagerLogbook.Tests.Controllers.NoteController
 {
@@ -26,11 +29,27 @@ namespace ManagerLogbook.Tests.Controllers.NoteController
         //    var memoryCacheMock = new Mock<IMemoryCache>();
         //    var imageOptimizerMock = new Mock<IImageOptimizer>();
 
+        //    var fakeUser = new User() { UserName = "User" };
+
+        //    var claim = new Claim("fakeUserName", "fakeUserId");
+        //    var mockIdentity =
+        //        Mock.Of<ClaimsPrincipal>(ci => ci.FindFirst(It.IsAny<string>()) == claim);
+        //    var mockControllerContext = new ControllerContext
+        //    {
+        //        HttpContext = new DefaultHttpContext
+        //        {
+        //            User = mockIdentity
+        //        }
+        //    };
+        //    var mockDbContext = new Mock<ManagerLogbookContext>();
+        //    var userManager = TestHelpersUsersController.GetUserManager(mockDbContext.Object);
+
         //    var sut = new NotesController(imageOptimizerMock.Object,
         //                                   userServiceMock.Object,
         //                                   noteServiceMock.Object,
         //                                   logbookServiceMock.Object,
-        //                                   memoryCacheMock.Object);
+        //                                   memoryCacheMock.Object,
+        //                                   userManager);
 
 
         //    var noteViewModel = new NoteViewModel()
@@ -45,6 +64,6 @@ namespace ManagerLogbook.Tests.Controllers.NoteController
         //    var actionResult = await sut.Create(TestHelpersNoteController.TestNoteViewModel1());
         //    Assert.IsInstanceOfType(actionResult, typeof(OkObjectResult));
         //}
-              
+
     }
 }

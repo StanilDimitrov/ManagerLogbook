@@ -18,6 +18,8 @@ using ManagerLogbook.Services.CustomExeptions;
 using log4net;
 using Microsoft.AspNetCore.SignalR;
 using ManagerLogbook.Web.Hubs;
+using ManagerLogbook.Data.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ManagerLogbook.Web.Areas.Manager.Controllers
 {
@@ -30,6 +32,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly IUserService userService;
         private readonly ILogbookService logbookService;
         private readonly IMemoryCache cache;
+        private readonly UserManager<User> userManager;
+
         //private readonly IHubContext<NoteHub> hubContext;
         private static readonly ILog log =
         LogManager.GetLogger(typeof(NotesController));
@@ -38,21 +42,20 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                               IUserService userService, 
                               INoteService noteService,
                               ILogbookService logbookService, 
-                              IMemoryCache cache
+                              IMemoryCache cache,
+                              UserManager<User> userManager
                              /* IHubContext<NoteHub> hubContext*/)
         {
             
 
-            this.optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
-            this.noteService = noteService ?? throw new ArgumentNullException(nameof(noteService));
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
-            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            this.optimizer = optimizer;
+            this.noteService = noteService;
+            this.userService = userService;
+            this.logbookService = logbookService;
+            this.cache = cache;
+            this.userManager = userManager;
             /*this.hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext)*//*);*/
         }
-
-        [TempData] public string StatusMessage { get; set; }
-
 
         public async Task<IActionResult> Index()
         {
@@ -60,7 +63,12 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 var model = new IndexNoteViewModel();
 
-                var userId = this.User.GetId();
+                //var userId = this.User.GetId();
+                var userId = this.userManager.GetUserId(User);
+                if (userId == null)
+                {
+                    throw new NotFoundException(WebConstants.UserNotFound);
+                }
                 var user = await this.userService.GetUserByIdAsync(userId);
                 var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
                 var logbookId = user.CurrentLogbookId;
@@ -237,8 +245,12 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 {
                     imageName = optimizer.OptimizeImage(model.NoteImage, 350, 235);
                 }
-
-                var userId = this.User.GetId();
+                var userId = this.userManager.GetUserId(User);
+                if (userId == null)
+                {
+                    throw new NotFoundException(WebConstants.UserNotFound);
+                }
+                //var userId = this.User.GetId();
                 var user = await this.userService.GetUserByIdAsync(userId);
 
                 if (!user.CurrentLogbookId.HasValue)
@@ -270,7 +282,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             catch (Exception ex)
             {
                 log.Error("Unexpected exception occured:", ex);
-                StatusMessage = ex.Message;
                 return RedirectToAction("Error", "Home");
             }
         }

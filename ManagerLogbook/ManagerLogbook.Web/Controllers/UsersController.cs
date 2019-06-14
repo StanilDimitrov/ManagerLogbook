@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using log4net;
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,21 +19,34 @@ namespace ManagerLogbook.Web.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService userService;
-        private readonly UserManager<User> userManager;
+        private static readonly ILog log =
+        LogManager.GetLogger(typeof(UsersController));
 
-        public UsersController(IUserService userService, UserManager<User> userManager)
+
+        public UsersController(IUserService userService)
         {
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            this.userService = userService;
         }
 
         public async Task<IActionResult> Details(string id)
         {
-            var user = await this.userService.GetUserByIdAsync(id);
-            var model = new IndexUserViewModel();
-            model.User = user.MapFrom();
+            try
+            {
+                var user = await this.userService.GetUserByIdAsync(id);
+                var model = new IndexUserViewModel();
+                model.User = user.MapFrom();
 
-            return View(model);
+                return View(model);
+            }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Unexpected exception occured:", ex);
+                return RedirectToAction("Error", "Home");
+            }
         }
     }
 }
