@@ -219,10 +219,5 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             return Json(managers);
         }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }

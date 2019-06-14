@@ -84,7 +84,7 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<ReviewDTO> MakeVisibleReviewAsync(int reviewId)
+        public async Task<ReviewDTO> MakeInVisibleReviewAsync(int reviewId)
         {
             var review = await this.context.Reviews.FindAsync(reviewId);
 
@@ -93,7 +93,7 @@ namespace ManagerLogbook.Services
                 throw new NotFoundException(ServicesConstants.ReviewNotFound);
             }
 
-            review.isVisible = true;
+            review.isVisible = false;
 
             await this.context.SaveChangesAsync();
 

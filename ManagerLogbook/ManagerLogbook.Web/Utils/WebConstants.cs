@@ -40,8 +40,8 @@ namespace ManagerLogbook.Web.Utils
         public const string UserExists = "User \"{0}\" already exists.";
         public const string UnableToEditReview = "Unable to edit review.";
         public const string ReviewEdited = "Review was successfully edited.";
+        public const string ReviewDeactivated = "Review was successfully deactivated";        
         public const string UserNotFound = "User was not found.";
-
     }
 }
 

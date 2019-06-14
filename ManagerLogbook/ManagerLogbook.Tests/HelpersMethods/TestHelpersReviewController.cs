@@ -30,9 +30,23 @@ namespace ManagerLogbook.Tests.HelpersMethods
         {
             return new ReviewDTO
             {
+                Id=2,
                 OriginalDescription = "This is second review",
                 EditedDescription = "This is EDIT second review",
                 BusinessUnitId = 2,
+                Rating = 1
+            };
+        }
+
+        public static ReviewDTO TestReviewDTO03()
+        {
+            return new ReviewDTO
+            {
+                Id = 3,
+                OriginalDescription = "This is third review",
+                EditedDescription = "This is EDIT third review",
+                isVisible = false,
+                BusinessUnitId = 3,
                 Rating = 1
             };
         }

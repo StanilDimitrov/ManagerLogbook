@@ -34,9 +34,9 @@ namespace ManagerLogbook.Tests.Services.ReviewServiceTests
 
                 var sut = new ReviewService(assertContext, mockBusinessValidator.Object, mockReviewEditor.Object);
 
-                var review = await sut.MakeVisibleReviewAsync(1);
+                var review = await sut.MakeInVisibleReviewAsync(1);
                                 
-                Assert.AreEqual(review.isVisible, true);
+                Assert.AreEqual(review.isVisible, false);
             }
         }
 
@@ -59,7 +59,7 @@ namespace ManagerLogbook.Tests.Services.ReviewServiceTests
 
                 var sut = new ReviewService(assertContext, mockBusinessValidator.Object, mockReviewEditor.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.MakeVisibleReviewAsync(2));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.MakeInVisibleReviewAsync(2));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.ReviewNotFound));
             }

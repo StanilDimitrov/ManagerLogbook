@@ -32,7 +32,7 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
             this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
-                
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(ReviewViewModel model)
@@ -53,7 +53,7 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
                     return BadRequest(string.Format(WebConstants.UnableToEditReview));
                 }
 
-                return Ok(string.Format(WebConstants.ReviewEdited));                
+                return Ok(string.Format(WebConstants.ReviewEdited));
             }
 
             catch (NotFoundException ex)
@@ -63,13 +63,31 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
-            }           
+            }
             catch (Exception ex)
             {
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }
+
+        public async Task<IActionResult> Deactivate(int id)
+        {
+            try
+            {
+               await this.reviewService.MakeInVisibleReviewAsync(id);                       
+               return Ok(string.Format(WebConstants.ReviewDeactivated));
+            }
+            catch (NotFoundException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                log.Error("Unexpected exception occured:", ex);
+                return RedirectToAction("Error", "Home");
+            }
+        }        
 
         public async Task<IActionResult> Index()
         {
@@ -97,7 +115,7 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
                 model.BusinessUnit = businessUnit.MapFrom();
 
                 return View(model);
-            }            
+            }
             catch (Exception ex)
             {
                 log.Error("Unexpected exception occured:", ex);
