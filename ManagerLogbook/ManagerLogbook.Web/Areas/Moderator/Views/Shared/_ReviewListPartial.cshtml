@@ -1,0 +1,135 @@
+﻿@model IndexReviewViewModel
+
+@{
+    ViewData["Title"] = "_ReviewListPartial";
+}
+
+<div class="resultBar barSpaceAdjust">
+    @if (Model.Reviews != null)
+    {
+        <h2>Found <span> @Model.Reviews.Count() </span> Results </h2>
+    }
+    else
+    {
+        <h2>No reviews are available.<span></span></h2>
+    }
+
+</div>
+
+@if (Model.Reviews != null)
+{
+    <table id="ordersTable" class="table table-small-font table-bordered table-striped width-100" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="1%"></th>
+                <th width="40%">Original Description </th>
+                <th width="40%">Edited Description </th>
+                <th width="20%">Created</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody scroll="true">
+
+
+
+            @foreach (var review in Model.Reviews)
+            {
+            <tr>
+                <td></td>
+                <td>@review.OriginalDescription</td>
+                <td>@review.EditedDescription</td>
+                <td> @review.CreatedOn.ToString("dd MMMM yyyy HH:mm:ss")</td>
+                <td> @review.isVisible.ToString()</td>
+                <td>
+                    <div class="profileUserInfo-1 width-100">
+                        <a class="btn btn-primary margin-10" data-toggle="modal" @*data-reviewid="@review.Id" *@ id="edit-review-global-button" data-target="#editModalNote-@review.Id">Edit</a>
+                    </div>
+                </td>
+            </tr>
+
+                <!-- Note Modal -->
+                <div class="modal fade" id="editModalReview-@review.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                @*<a class="close" data-dismiss="modal">x</a>*@
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Edit review</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-danger-custom"></div>
+                                <form id="submit-form-@review.Id" asp-for="@review" enctype="multipart/form-data" asp-area="Moderator" asp-controller="Reviews" asp-action="Update" method="post" class="loginForm submit-edit-form" asp-route-id="@review.Id">
+                                    <div class="form-group">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <input type="hidden" value="@review.Id" />
+                                        <textarea data-val-required="true" asp-for="@review.OriginalDescription" class="form-control" placeholder="Please enter a description">@review.OriginalDescription</textarea>
+                                        <span asp-validation-for="@review.OriginalDescription" class="text-danger-custom"></span>
+                                    </div>
+                                    @*<select id="notes-categories-selector-1" class="form-control" name="CategoryId"></select>*@
+
+                                    @*<label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>*@
+                                    @*<input type="file" name="NoteImage" id="image-input-@note.Id" class="btn btn-primary file" accept="image/*">*@
+
+                                    <div class="margin-5">
+                                        <button type="submit" class="btn btn-primary btn-block submit-edit-form-button" reviewid="@review.Id">Submit</button>
+                                        <div class="margin-5">
+                                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                                            @if (referrer != default(StringValues))
+                                            {
+                                                <a href="@referrer.ToString()">Go Back</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Note Modal -->
+            }
+        </tbody>
+    </table>
+
+    <input id="total-pages-hidden-input" value="@Model.TotalPages" type="hidden" />
+    <input id="current-page-hidden-input" value="@Model.CurrPage" type="hidden" />
+    <div id="addintional-notes-scroll">
+
+
+    </div>
+
+    <div class="paginationCommon blogPagination text-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+
+                @if (Model.PrevPage == null)
+                {
+                    <a class="btn btn-sm btn-lighter btn-auto disabled">Prev</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.PrevPage">Prev</a>
+                    <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.PrevPage">@Model.PrevPage</a>
+                }
+
+                <button class="btn btn-sm btn-primary btn-auto">@Model.CurrPage</button>
+
+                @if (Model.NextPage == null)
+                {
+                    <a class="btn btn-sm btn-lighter btn-auto disabled">Next</a>
+                }
+                else
+                {
+                    <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.NextPage">@Model.NextPage</a>
+                    <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.NextPage">Next</a>
+                }
+            </ul>
+        </nav>
+    </div>
+
+}
+
+
+
+
