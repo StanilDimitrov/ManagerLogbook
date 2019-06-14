@@ -34,9 +34,7 @@ namespace ManagerLogbook.Web.Controllers
             model.Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList();
 
             model.Logbooks = await this.businessUnitService.GetAllLogbooksForBusinessUnitAsync(businessUnit.Id);
-
-            //model.Logbooks = logbookDTOs.Select(x => x.MapFrom()).ToList();
-                                  
+                                         
             return View(model);
         }
 

@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.CustomExeptions;
+using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Areas.Moderator.Models;
 using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Mappers;
@@ -32,18 +32,7 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
             this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
-
-        //public async Task<IActionResult> Details(int id)
-        //{
-        //    var model = new IndexReviewViewModel();
-
-        //    var reviews = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
-
-        //    model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
-
-        //    return View(model);
-        //}
-
+                
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(ReviewViewModel model)
@@ -83,20 +72,37 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
         }
 
         public async Task<IActionResult> Index()
-        {          
-            var model = new IndexReviewViewModel();
+        {
+            try
+            {
+                var model = new IndexReviewViewModel();
 
-            var userId = this.User.GetId();
-            var user = await this.userService.GetUserByIdAsync(userId);
+                var userId = this.User.GetId();
+                var user = await this.userService.GetUserByIdAsync(userId);
 
-            //var businessUnit = await this.businessUnitService.GetBusinessUnitById(user);
+                var businessUnit = new BusinessUnitDTO();
 
-            var reviews = await this.reviewService.GetAllReviewsByModeratorIdAsync(userId);
+                if (user.BusinessUnitId.HasValue)
+                {
+                    businessUnit = await this.businessUnitService.GetBusinessUnitById(user.BusinessUnitId.Value);
+                }
+                else
+                {
+                    return BadRequest(string.Format(WebConstants.BusinessUniNotExist));
+                }
 
-            model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
-            //model.BusinessUnit = 
+                var reviews = await this.reviewService.GetAllReviewsByModeratorIdAsync(userId);
 
-            return View(model);            
+                model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
+                model.BusinessUnit = businessUnit.MapFrom();
+
+                return View(model);
+            }            
+            catch (Exception ex)
+            {
+                log.Error("Unexpected exception occured:", ex);
+                return RedirectToAction("Error", "Home");
+            }
         }
     }
 }

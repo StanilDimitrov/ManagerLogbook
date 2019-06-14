@@ -26,7 +26,7 @@ namespace ManagerLogbook.Web.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                return BadRequest("Please enter valid data");
+                return BadRequest(WebConstants.EnterValidData);
             }
 
             try

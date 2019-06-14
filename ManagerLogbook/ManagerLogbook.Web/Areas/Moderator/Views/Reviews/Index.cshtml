@@ -18,103 +18,72 @@
             <div class="collapse navbar-collapse navbar-dash">
                 <ul class="nav navbar-nav mr0">
                     <li class="active">
-
-                    <li class="active">
-                        <a href="/BusinessUnits/Details/@Model.BusinessUnit.Id"><i class="fa fa-home" aria-hidden="true"></i> @Model.BusinessUnit.Name </a>
-                    </li>
-                    @*<li class="">
-                        <a asp-controller="BusinessUnits" asp-action="Details" asp-route-id="@Model.Reviews.Select(x=>x.BusinessUnitId)"<i class="fa fa-home" aria-hidden="true"></i> @Model.Reviews.Select(x=>x.BusinessUnitName)</a>
-                    </li>*@
-                    <li class="">
-                        <a href="profile.html"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Personal Details</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</section>
-<!-- Dashboard header -->
-<section class="clearfix bg-dark listyPage">
-    <div class="container">
-        <div class="row">
-            <!-- Start Search Menu -->
-            <span id="search-criterias-holder">
-                @*PETER@await Html.PartialAsync("_SearchMenuPartial", Model.SearchModel)*@
-            </span>
-            <!-- End Search Menu -->
-            <div class="col-xs-12">
-                <div class="table-responsive-md font-custom" id="note-partial-holder" @*style="overflow-y:auto; height: 1000px" *@>
-                    @*PETER@await Html.PartialAsync("_NoteListPartial", Model.SearchModel)*@                 
+                        @if (Model.BusinessUnit != null)
+                        {
+                        <li class="active">
+                            <a href="/BusinessUnits/Details/@Model.BusinessUnit.Id"><i class="fa fa-home" aria-hidden="true"></i> @Model.BusinessUnit.Name </a>
+                        </li>                            
+                        }
+                        <li class="">
+                            <a href="/Users/Details/@Model.BusinessUnit.ModeratorId"><i class="fa fa-user icon-dash" aria-hidden="true"></i> Personal Details</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </div>
-
-    @*<div class="paginationCommon blogPagination text-center">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
-                                </a>
-                            </li>
-                            <li class="active"><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+        </nav>
+    </section>
+    <!-- Dashboard header -->
+    <section class="clearfix bg-dark listyPage">
+        <div class="container">
+            <div class="row">
+                <!-- Start Search Menu -->
+                <span id="search-criterias-holder">
+                    @*PETER@await Html.PartialAsync("_SearchMenuPartial", Model.SearchModel)*@
+                </span>
+                <!-- End Search Menu -->
+                <div class="col-xs-12">
+                    <div class="table-responsive-md font-custom" id="review-partial-holder" @*style="overflow-y:auto; height: 1000px" *@>
+                        @*PETER@await Html.PartialAsync("_NoteListPartial", Model.SearchModel)*@
+                        @await Html.PartialAsync("_ReviewListPartial", Model)
+                    </div>
                 </div>
             </div>
-        </div>*@
+        </div>                
 
-</section>
-
-<!-- Start Note Modal -->
-@*@await Html.PartialAsync("_EditModalPartial")*@
-
-<!-- End Note Modal -->
-<!-- Start Login Logbook -->
-@*@await Html.PartialAsync("_LogbookModalPartial", Model)*@
-<!-- End Login Logbook -->
+    </section>
+   
 
 
-@section Scripts{
+    @section Scripts{
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-    @*<script src="/assets/js/note.js"></script>*@
-    <script type="text/javascript"
-            src="https://viralpatel.net/blogs/demo/jquery/jquery.shorten.1.0.js"></script>
-    @*<script type="text/javascript">
-            $(document).ready(function () {
-
-                $(".comment").shorten({
-                    "showChars": 100,
-                    "moreText": "More",
-                    "lessText": "Less",
-                });
-            });
-        </script>*@
-
-    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+        @*<script src="/assets/js/note.js"></script>*@
+        <script type="text/javascript"
+                src="https://viralpatel.net/blogs/demo/jquery/jquery.shorten.1.0.js"></script>
+        @*<script type="text/javascript">
+                $(document).ready(function () {
+
+                    $(".comment").shorten({
+                        "showChars": 100,
+                        "moreText": "More",
+                        "lessText": "Less",
+                    });
+                });
+            </script>*@
+
+        @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 
 
-        <script>
-            $(document).ready(function () {
-                $('.image-link').magnificPopup({ type: 'image' });
-            });
-        </script>*@
+            <script>
+                $(document).ready(function () {
+                    $('.image-link').magnificPopup({ type: 'image' });
+                });
+            </script>*@
 
 
-}
+    }
 
 
 

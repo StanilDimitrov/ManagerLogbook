@@ -35,13 +35,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
-        }
-
-        //[HttpGet]
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -81,17 +75,8 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-        }
-
-        //[HttpGet]
-        //public async Task<IActionResult> Update(int id)
-        //{
-        //    var logbook = await this.logbookService.GetLogbookById(id);
-        //    var logbookViewModel = logbook.MapFrom();
-        //    return View(logbookViewModel);
-        //}
-
-
+        }               
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(LogbookViewModel model)
@@ -144,22 +129,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-        }
-
-        //[HttpGet]
-        //public async Task<IActionResult> AddManagerToLogbook(int logbookId)
-        //{
-        //    var managers = await this.userService.GetAllManagersNotPresentInLogbookAsync(logbookId);
-
-        //    if (managers == null)
-        //    {
-        //        return BadRequest(string.Format(WebConstants.ManagerNotExist));
-        //    }
-
-        //    var managerViewModel = managers.Select(m => m.MapFrom()).ToList();
-
-        //    return View(managerViewModel);
-        //}
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -191,22 +161,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-        }
-
-        //[HttpGet]
-        //public async Task<IActionResult> RemoveManagerFromLogbook(int logbookId)
-        //{
-        //    var managers = await this.userService.GetAllManagersPresentInLogbookAsync(logbookId);
-
-        //    if (managers == null)
-        //    {
-        //        return BadRequest(string.Format(WebConstants.ManagerNotExist));
-        //    }
-
-        //    var managerViewModel = managers.Select(m => m.MapFrom()).ToList();
-
-        //    return View(managerViewModel);
-        //}
+        }        
 
         [HttpPost]
         [ValidateAntiForgeryToken]
