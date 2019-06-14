@@ -34,5 +34,7 @@ namespace ManagerLogbook.Services.Contracts
         Task<IReadOnlyCollection<NoteDTO>> Get15NotesByIdAsync(int currPage, int logbookId);
 
         Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId);
+
+        Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId, string searchPhrase);
     }
 }

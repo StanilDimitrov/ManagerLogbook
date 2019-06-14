@@ -43,7 +43,7 @@
                 <td> @review.isVisible.ToString()</td>
                 <td>
                     <div class="profileUserInfo-1 width-100">
-                        <a class="btn btn-primary margin-10" data-toggle="modal" @*data-reviewid="@review.Id" *@ id="edit-review-global-button" data-target="#editModalNote-@review.Id">Edit</a>
+                        <a class="btn btn-primary margin-10" data-toggle="modal" @*data-reviewid="@review.Id" *@ id="edit-review-global-button" data-target="#editModalReview-@review.Id">Edit</a>
                     </div>
                 </td>
             </tr>
@@ -68,12 +68,13 @@
                                         <span asp-validation-for="@review.OriginalDescription" class="text-danger-custom"></span>
                                     </div>
                                     @*<select id="notes-categories-selector-1" class="form-control" name="CategoryId"></select>*@
-
+                                    <input type="hidden" id="business-unit-review-id" value="@review.BusinessUnitId" />
+                                    <input type="hidden" id="original-description" value="@review.OriginalDescription" />
                                     @*<label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>*@
                                     @*<input type="file" name="NoteImage" id="image-input-@note.Id" class="btn btn-primary file" accept="image/*">*@
 
                                     <div class="margin-5">
-                                        <button type="submit" class="btn btn-primary btn-block submit-edit-form-button" reviewid="@review.Id">Submit</button>
+                                        <button type="submit" class="btn btn-primary btn-block submit-edit-review-form-button" reviewid="@review.Id">Submit</button>
                                         <div class="margin-5">
                                             @{ var referrer = this.Context.Request.Headers["Referer"]; }
                                             @if (referrer != default(StringValues))

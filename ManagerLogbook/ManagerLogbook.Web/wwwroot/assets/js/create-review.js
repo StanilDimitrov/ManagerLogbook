@@ -74,29 +74,29 @@ $(function () {
 });
 
 
-$('.submit-edit-form-button').click(function (eventEdit) {
+$('.submit-edit-review-form-button').click(function (eventEdit) {
 
     eventEdit.preventDefault();
     $thisEditForm = $(this);
-    var id = $thisEditForm.attr('noteid');
-
-    var urlToEdit = "/Manager/Notes/Edit";
-    var concreteFormOfClickedButton = $('#editModalNote-' + id);
+    var id = $thisEditForm.attr('reviewid');
+    
+    var urlToEdit = "/Moderator/Reviews/Update";
+    var concreteFormOfClickedButton = $('#editModalReview-' + id);
     var inputs = concreteFormOfClickedButton.find('input');
     var textarea = concreteFormOfClickedButton.find('textarea');
     var textFromDescription = textarea[0].value;
-    var image = inputs[1];
-    var token = inputs[2];
-    var imageInputIdSelector = "#image-input-" + id;
+    var token = inputs[1];
+   
+    //var imageInputIdSelector = "#image-input-" + id;
 
-    var file = $(imageInputIdSelector)[0];
-    var fileInput = file.files[0];
+    //var file = $(imageInputIdSelector)[0];
+    //var fileInput = file.files[0];
 
     var fdata = new FormData();
     fdata.append("Id", id);
-    fdata.append("Description", textFromDescription);
-    fdata.append("NoteImage", fileInput);
+    fdata.append("EditedDescription", textFromDescription);
     fdata.append(token.name, token.value);
+    debugger;
 
     $.ajax({
         type: 'post',
@@ -118,7 +118,7 @@ $('.submit-edit-form-button').click(function (eventEdit) {
                 "onHidden": function () {
                 }
             }
-        $('#editModalNote -' + id).modal('hide');
+        $('#editModalReview -' + id).modal('hide');
         toastr.success(response);
 
         //window.setTimeout(function () { location.reload() }, 1500);

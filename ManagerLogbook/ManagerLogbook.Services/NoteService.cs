@@ -278,8 +278,8 @@ namespace ManagerLogbook.Services
             DateTime endDate, 
             int? categoryId, 
             string searchCriteria,
-             int? daysBefore,
-            int currPage = 1 )
+            int? daysBefore,
+            int currPage = 1)
 
         {
             var user = await this.context.Users.FindAsync(userId);
@@ -299,22 +299,79 @@ namespace ManagerLogbook.Services
                 endDate = DateTime.Now;
             }
 
+            //IQueryable<Note> searchCollection;
+            //if (searchCriteria != null)
+            //{
+            //    searchCollection = this.context.Notes
+            //        .Include(x => x.NoteCategory)
+            //        .Include(x => x.User)
+            //        .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+            //        .OrderByDescending(x => x.CreatedOn);
+            //}
+            //else
+            //{
+            //    searchCollection = this.context.Notes
+            //         .Include(x => x.NoteCategory)
+            //         .Include(x => x.User)
+            //         .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+            //         .OrderByDescending(x => x.CreatedOn);
+            //}
+
+            //if (categoryId != null)
+            //{
+            //    searchCollection = searchCollection.Where(x => x.NoteCategoryId == categoryId);
+            //}
+
+            //var searchResult = await searchCollection.Select(x => x.ToDTO())
+            //    .Skip((currPage - 1) * 15)
+            //    .Take(15).ToListAsync();
+
+            //return searchResult;
+
+
             IQueryable<Note> searchCollection;
-            if (searchCriteria != null)
+            if (daysBefore != null)
             {
-                searchCollection = this.context.Notes
-                    .Include(x => x.NoteCategory)
-                    .Include(x => x.User)
-                    .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-                    .OrderByDescending(x => x.CreatedOn);
+
+                if (searchCriteria != null)
+                {
+                    searchCollection = this.context.Notes
+                        .Include(x => x.NoteCategory)
+                        .Include(x => x.User)
+                        .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+                        //po dni
+                        .OrderByDescending(x => x.CreatedOn);
+                }
+                else
+                {
+                    searchCollection = this.context.Notes
+                         .Include(x => x.NoteCategory)
+                         .Include(x => x.User)
+                         .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+                         //po dni
+                         .OrderByDescending(x => x.CreatedOn);
+                }
+
             }
             else
             {
-                searchCollection = this.context.Notes
-                     .Include(x => x.NoteCategory)
-                     .Include(x => x.User)
-                     .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-                     .OrderByDescending(x => x.CreatedOn);
+                if (searchCriteria != null)
+                {
+                    searchCollection = this.context.Notes
+                        .Include(x => x.NoteCategory)
+                        .Include(x => x.User)
+                        .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+                        .OrderByDescending(x => x.CreatedOn);
+                }
+                else
+                {
+                    searchCollection = this.context.Notes
+                         .Include(x => x.NoteCategory)
+                         .Include(x => x.User)
+                         .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
+                         .OrderByDescending(x => x.CreatedOn);
+                }
+
             }
 
             if (categoryId != null)
@@ -327,63 +384,6 @@ namespace ManagerLogbook.Services
                 .Take(15).ToListAsync();
 
             return searchResult;
-
-
-            //IQueryable<Note> searchCollection;
-            //if (daysBefore != null)
-            //{
-
-            //    if (searchCriteria != null)
-            //    {
-            //        searchCollection = this.context.Notes
-            //            .Include(x => x.NoteCategory)
-            //            .Include(x => x.User)
-            //            .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-            //            //po dni
-            //            .OrderByDescending(x => x.CreatedOn);
-            //    }
-            //    else
-            //    {
-            //        searchCollection = this.context.Notes
-            //             .Include(x => x.NoteCategory)
-            //             .Include(x => x.User)
-            //             .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-            //             //po dni
-            //             .OrderByDescending(x => x.CreatedOn);
-            //    }
-
-            //}
-            //else
-            //{
-            //    if (searchCriteria != null)
-            //    {
-            //        searchCollection = this.context.Notes
-            //            .Include(x => x.NoteCategory)
-            //            .Include(x => x.User)
-            //            .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-            //            .OrderByDescending(x => x.CreatedOn);
-            //    }
-            //    else
-            //    {
-            //        searchCollection = this.context.Notes
-            //             .Include(x => x.NoteCategory)
-            //             .Include(x => x.User)
-            //             .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-            //             .OrderByDescending(x => x.CreatedOn);
-            //    }
-
-            //}
-
-            //if (categoryId != null)
-            //{
-            //    searchCollection = searchCollection.Where(x => x.NoteCategoryId == categoryId);
-            //}
-
-            //var searchResult = await searchCollection.Select(x => x.ToDTO())
-            //    .Skip((currPage - 1) * 15)
-            //    .Take(15).ToListAsync();
-
-            //return searchResult; 
         }
 
         public async Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync()
@@ -425,6 +425,15 @@ namespace ManagerLogbook.Services
         public async Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId)
         {
             var allNotesCount = await context.Notes.Where(x => x.LogbookId == logbookId).CountAsync();
+
+            int pageCount = (allNotesCount - 1) / notesPerPage + 1;
+
+            return pageCount;
+        }
+
+        public async Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId, string searchPhrase)
+        {
+            var allNotesCount = await context.Notes.Where(x => x.LogbookId == logbookId && x.Description.Contains(searchPhrase)).CountAsync();
 
             int pageCount = (allNotesCount - 1) / notesPerPage + 1;
 
