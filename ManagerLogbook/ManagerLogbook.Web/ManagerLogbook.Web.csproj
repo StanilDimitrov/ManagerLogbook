@@ -21,6 +21,7 @@
     <Folder Include="Areas\Admin\Views\BusinessUnits\" />
     <Folder Include="Areas\Admin\Views\Create\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Moderator\Views\Shared\" />
   </ItemGroup>
 
   <ItemGroup>

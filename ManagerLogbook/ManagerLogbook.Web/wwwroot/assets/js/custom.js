@@ -184,12 +184,17 @@ $('input.myTextInput').on('input', function (e) {
 
 
 var lastKeypress = null;
-$('#search-business-form').on('input submit', function (eventSearchBusiness) {
+$('#search-business-form').on('submit', function (eventSearchBusiness) {
     eventSearchBusiness.preventDefault();
     console.log(eventSearchBusiness);
 
     var currentKeypress = new Date();
     var searchPhrase = $('#search-for-business-phrase').val();
+
+    setTimeout(function () {
+
+
+    }, 500);
 
     var shouldRequest = // check if at least 500 ms have passed
         eventSearchBusiness.type === 'submit' ||
@@ -239,11 +244,37 @@ $('#search-business-form').on('input submit', function (eventSearchBusiness) {
 });
 
 
+function test(id) {
+    debugger
 
+    $.get("/Manager/Notes/Deactivate/" + id)
+        .done(function (dataAll) {
 
+            $('#note-partial-holder').empty();
 
+            $('#note-partial-holder').append(dataAll);
+
+            shortenTextFunction();
+            showImage();
+
+        }).fail(function (dataAll) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(dataAll.responseText);
+        });
+}
 
 $('#search-criterias-holder').on('click', '#deactivate-note', function (eventDeactivateNote) {
+    debugger
+
     eventDeactivateNote.preventDefault();
 
     $this = $(this);
@@ -301,49 +332,20 @@ $("#myModalUpdateBusinessUnit").on('show.bs.modal', function () {
 dataLoading = false;
 var scrollPageCount = 2;
 
-$("#note-partial-holder").on('click', '.note-pagination-button-table', function (someEvent)
-{
-    var $this = $(this)
-    var currPage = parseInt($this.attr('at'));
-
-        var searchFormToGetParams = $('#search-notes-form');
-        var searchPhrase = $('#search-for-note-phrase').val();
-        var inputs = searchFormToGetParams.find('input');
-        var categoryId = $('#category-id-from-selector').val();
-        var urlencodedInputs = inputs.serialize();
-    var daysBefore = $('.search-notes-common-days');
-    var days = parseInt(daysBefore.value);
-        
-    var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&CurrPage=" + currPage + "&DaysBefore=" + days;
-            dataLoading = true;
-            $.post("/Manager/Notes/GetNotesInPage", inputsToSend)
-           .done(function (dataFromScrollSearch)
-           {
-
-               $('#note-partial-holder').empty();
-               $('#note-partial-holder').append(dataFromScrollSearch);
 
 
-           }).fail(function (dataFromScrollSearch)
-           {
 
-       });
+//function shortenTextFunction() {
+//    $(".comment").shorten({
+//        "showChars": 100,
+//        "moreText": "More",
+//        "lessText": "Less",
+//    });
+//};
 
- 
-});
-
-
-function shortenTextFunction() {
-    $(".comment").shorten({
-        "showChars": 100,
-        "moreText": "More",
-        "lessText": "Less",
-    });
-};
-
-function showImage() {
-    $('.image-link').magnificPopup({ type: 'image' });
-};
+//function showImage() {
+//    $('.image-link').magnificPopup({ type: 'image' });
+//};
 
 function centerModal() {
     $(this).css('display', 'block');

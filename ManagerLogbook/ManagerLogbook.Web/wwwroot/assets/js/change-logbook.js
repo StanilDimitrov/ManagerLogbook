@@ -1,5 +1,5 @@
 ﻿$(function () {
-    const $submitForm = $('#submit-form-logbook');
+    const $submitForm = $('#submit-form-logbook-change');
 
     $submitForm.on('submit', function (event) {
         event.preventDefault();
@@ -12,7 +12,7 @@
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
-            //console.log(dataToSend);
+            
 
             toastr.options = {
                 "debug": false,

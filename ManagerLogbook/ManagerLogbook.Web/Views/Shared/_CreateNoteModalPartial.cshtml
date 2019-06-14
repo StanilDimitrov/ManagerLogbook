@@ -14,14 +14,16 @@
                 <form id="create-note" asp-area="Manager" asp-controller="Notes" asp-action="Create" enctype="multipart/form-data" method="post" class="loginForm">
                     <div class="form-group">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <textarea  asp-for="Description" class="form-control" placeholder="Please enter a description"></textarea>
+                        <textarea asp-for="Description" class="form-control" placeholder="Please enter a description"></textarea>
                         <span asp-validation-for="Description" class="text-danger-custom"></span>
                         <span class="text-danger-custom"></span>
                     </div>
                     <select id="notes-categories-selector" class="form-control" asp-for="CategoryId"></select>
 
-                    <label asp-for="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" asp-for="NoteImage" class="btn btn-primary file" accept="image/*">
+
+                    <img style="height: 30%; width:100%; margin-top: 5%" id="blah" alt="your image" />
+                    <label asp-for="Image" @*onclick="previewFile()"*@ class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input id="blur" onchange="readURL(this);"  type="file" asp-for="NoteImage" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>

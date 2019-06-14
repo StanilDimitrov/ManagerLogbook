@@ -24,7 +24,7 @@
                     <input type="file" id="image-input-create-note" name="NoteImage" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <button type="submit" @*id="AddComment"*@ class="btn btn-primary btn-block">Submit</button>
                         <div class="margin-5">
                             @{ var referrer = this.Context.Request.Headers["Referer"]; }
                             @if (referrer != default(StringValues))

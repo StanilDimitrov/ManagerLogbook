@@ -37,7 +37,13 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             this.businessUnitService = businessUnitService ?? throw new System.ArgumentNullException(nameof(businessUnitService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.optimizer = optimizer ?? throw new System.ArgumentNullException(nameof(optimizer));
-        }                
+        }
+
+        //[HttpGet]
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -77,7 +83,16 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-        }        
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> Update(int id)
+        //{
+        //    var businessUnit = await this.businessUnitService.GetBusinessUnitById(id);
+        //    var businessUnitViewModel = businessUnit.MapFrom();
+        //    return View(businessUnitViewModel);
+        //}
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -131,7 +146,22 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-        }       
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> AddModeratorToBusinessUnit(int businessUnitId)
+        //{
+        //    var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(businessUnitId);
+
+        //    if (moderators == null)
+        //    {
+        //        return BadRequest(string.Format(WebConstants.ModeratorNotExist));
+        //    }
+
+        //    var moderatorViewModel = moderators.Select(m => m.MapFrom()).ToList();
+
+        //    return View(moderatorViewModel);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -159,7 +189,22 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-        }                
+        }
+
+        //[HttpGet]
+        //public async Task<IActionResult> RemoveModeratorFromBusinessUnit(int businessUnitId)
+        //{
+        //    var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(businessUnitId);
+
+        //    if (moderators == null)
+        //    {
+        //        return BadRequest(string.Format(WebConstants.ModeratorNotExist));
+        //    }
+
+        //    var moderatorViewModel = moderators.Select(m => m.MapFrom()).ToList();
+
+        //    return View(moderatorViewModel);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]

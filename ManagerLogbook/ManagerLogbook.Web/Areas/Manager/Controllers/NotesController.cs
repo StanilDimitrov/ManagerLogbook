@@ -30,7 +30,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly IUserService userService;
         private readonly ILogbookService logbookService;
         private readonly IMemoryCache cache;
-        private readonly IHubContext<NoteHub> hubContext;
+        //private readonly IHubContext<NoteHub> hubContext;
         private static readonly ILog log =
         LogManager.GetLogger(typeof(NotesController));
 
@@ -38,8 +38,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                               IUserService userService, 
                               INoteService noteService,
                               ILogbookService logbookService, 
-                              IMemoryCache cache,
-                              IHubContext<NoteHub> hubContext)
+                              IMemoryCache cache
+                             /* IHubContext<NoteHub> hubContext*/)
         {
             
 
@@ -48,7 +48,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
             this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
-            this.hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
+            /*this.hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext)*//*);*/
         }
 
         [TempData] public string StatusMessage { get; set; }
@@ -107,13 +107,14 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                    
                     model.SearchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                     model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
-
+                    //await hubContext.Clients.All.SendAsync("Index");
                     return View(model);
                 }
                 model.SearchModel = new SearchViewModel();
                 //model.SearchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                 //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
+                //await hubContext.Clients.All.SendAsync("Index");
                 return View(model);
             }
             
@@ -476,11 +477,11 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             //model.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
             //model.Logbooks = (await CacheLogbooks(userId)).Select(x => x.MapFrom()).ToList();
 
-            var searchModel = new SearchViewModel();
 
-            searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
 
-            return PartialView("_NoteListPartial", searchModel);
+            model.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+
+          return PartialView("_NoteListPartial", model);
         }
 
         [HttpPost]

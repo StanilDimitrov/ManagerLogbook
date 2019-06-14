@@ -21,6 +21,7 @@
     <table id="ordersTable" class="table table-small-font table-bordered table-striped width-100" cellspacing="0">
         <thead>
             <tr>
+                <th> </th>
                 <th width="40%">Description </th>
                 <th width="20%">Created</th>
                 <th>User</th>
@@ -31,12 +32,10 @@
             </tr>
         </thead>
         <tbody scroll="true">
-
-
-
             @foreach (var note in Model.Notes)
             {
                 <tr>
+                    <th> </th>
                     <td class="comment">@note.Description</td>
                     <td> @note.CreatedOn.ToString("MMMM dd, yyyy")</td>
                     <td>@note.UserName</td>
@@ -46,7 +45,7 @@
                         {
                             <div class="profileUserInfo-1 width-100">
                                 <span class="label label-success margin-top-20 margin-20">Active</span><br />
-                                <a id="deactivate-note" value="@note.Id" class="btn btn-primary btn-new width-100 margin-20">Deactivate</a><br />
+                                <a id="deactivate-note-@note.Id" value="@note.Id" onclick="test(@note.Id)" class="btn btn-primary btn-new width-100 margin-20">Deactivate</a><br />
                             </div>
                         }
                         else if (note.CategoryName == "Task" && !note.IsActiveTask)
