@@ -23,7 +23,7 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
 
             using (var assertContext = new ManagerLogbookContext(options))
             {
-                var mockedRapper = new Mock<IUserServiceRapper>();
+                var mockedRapper = new Mock<IUserServiceWrapper>();
                 var sut = new UserService(assertContext, mockedRapper.Object);
                 var moderators = new List<User>() { TestHelpersNote.TestUser1(), TestHelpersNote.TestUser2() };
 

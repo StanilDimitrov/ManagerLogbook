@@ -18,10 +18,10 @@ namespace ManagerLogbook.Services
     public class UserService : IUserService
     {
         private readonly ManagerLogbookContext context;
-        private readonly IUserServiceRapper userRapper;
+        private readonly IUserServiceWrapper userRapper;
 
         public UserService(ManagerLogbookContext context,
-                          IUserServiceRapper userRapper)
+                          IUserServiceWrapper userRapper)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.userRapper = userRapper ?? throw new ArgumentNullException(nameof(userRapper));

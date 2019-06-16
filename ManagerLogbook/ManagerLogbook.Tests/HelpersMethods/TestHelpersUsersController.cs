@@ -1,5 +1,6 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -19,6 +20,18 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 UserName = "Peter"
             };
         }
+
+        public static UserDTO TestUserDTO4()
+        {
+            return new UserDTO
+            {
+                Id = "c2fb4e2d-c6f6-43f2-ac26-b06ef1113981",
+                UserName = "ivan",
+                Email = "dir@bg",
+                CurrentLogbookId = 2
+            };
+        }
+
 
         public static UserManager<User> GetUserManager(ManagerLogbookContext context)
         {

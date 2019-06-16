@@ -181,5 +181,25 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 CategoryName = "Task"
             };
         }
+
+        public static LogbookDTO TestLogbookDTO1()
+        {
+            return new LogbookDTO()
+            {
+                Id = 1,
+                Name = "Restaurant",
+                
+            };
+        }
+
+        public static LogbookDTO TestLogbookDTO2()
+        {
+            return new LogbookDTO()
+            {
+                Id = 1,
+                Name = "Hotel",
+
+            };
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
             using (var assertContext = new ManagerLogbookContext(options))
             {
 
-                var mockedRapper = new Mock<IUserServiceRapper>();
+                var mockedRapper = new Mock<IUserServiceWrapper>();
                 var sut = new UserService(assertContext, mockedRapper.Object);
 
                 var ex = await Assert.ThrowsExceptionAsync<NotAuthorizedException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
@@ -51,7 +51,7 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
 
             using (var assertContext = new ManagerLogbookContext(options))
             {
-                var mockedRapper = new Mock<IUserServiceRapper>();
+                var mockedRapper = new Mock<IUserServiceWrapper>();
                 var sut = new UserService(assertContext, mockedRapper.Object);
 
                 var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
@@ -67,7 +67,7 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
 
             using (var assertContext = new ManagerLogbookContext(options))
             {
-                var mockedRapper = new Mock<IUserServiceRapper>();
+                var mockedRapper = new Mock<IUserServiceWrapper>();
                 var sut = new UserService(assertContext, mockedRapper.Object);
 
                 var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.SwitchLogbookAsync(TestHelpersNote.TestUser1().Id, TestHelpersNote.TestLogbook1().Id));
@@ -91,7 +91,7 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
 
             using (var assertContext = new ManagerLogbookContext(options))
             {
-                var mockedRapper = new Mock<IUserServiceRapper>();
+                var mockedRapper = new Mock<IUserServiceWrapper>();
 
                 var sut = new UserService(assertContext, mockedRapper.Object);
 

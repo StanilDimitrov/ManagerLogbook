@@ -55,7 +55,7 @@ namespace ManagerLogbook.Web
             services.AddScoped<IReviewEditor, ReviewEditor>();
             services.AddScoped<ILogbookService, LogbookService>();
             services.AddScoped<IImageOptimizer, ImageOptimizer>();
-            services.AddScoped<IUserServiceRapper, UserServiceRapper>();
+            services.AddScoped<IUserServiceWrapper, UserServiceWapper>();
             services.AddMemoryCache();
             services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

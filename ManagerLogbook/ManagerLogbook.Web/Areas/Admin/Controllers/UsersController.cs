@@ -6,6 +6,7 @@ using ManagerLogbook.Data.Models;
 using ManagerLogbook.Web.Controllers;
 using ManagerLogbook.Web.Models.AccountViewModels;
 using ManagerLogbook.Web.Services;
+using ManagerLogbook.Web.Services.Contracts;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -22,21 +23,21 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IImageOptimizer optimizer;
 
         public CreateController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
-            ILogger<CreateController> logger)
+            ILogger<CreateController> logger,
+            IImageOptimizer optimizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            this.optimizer = optimizer;
         }
-
-        [TempData]
-        public string StatusMessage { get; set; }
 
 
         [HttpGet]
@@ -54,7 +55,18 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new User {  Email = model.Email, UserName = model.UserName, Picture = model.Image};
+                string imageName = null;
+
+                if (model.UserImage != null)
+                {
+                    imageName = optimizer.OptimizeImage(model.UserImage, 400, 800);
+                }
+
+                if (model.Image != null)
+                {
+                    optimizer.DeleteOldImage(model.Image);
+                }
+                var user = new User {  Email = model.Email, UserName = model.UserName, Picture = imageName };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -83,7 +95,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                     //StatusMessage = $"Successfully created user \"{model.FirstName} {model.LastName}\" with role \"{model.UserRole}\"";
                     //return RedirectToAction("Register");
                 }
-                return BadRequest(string.Format(WebConstants.UserExists, model.UserName));
+                return BadRequest("Invalid attempt.");
                 //AddErrors(result);
             }
 

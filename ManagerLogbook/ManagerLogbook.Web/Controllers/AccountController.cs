@@ -61,6 +61,7 @@ namespace ManagerLogbook.Web.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    
                     return RedirectToLocal(returnUrl);
                 }
                 //if (result.RequiresTwoFactor)

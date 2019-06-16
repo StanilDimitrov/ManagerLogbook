@@ -18,7 +18,7 @@
                     </div>
                     <div class="form-group">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <textarea asp-for="Information" class="form-control" placeholder="Information"></textarea>
+                        <textarea asp-for="Information" id="information-create" class="form-control" placeholder="Information"></textarea>
                         <span asp-validation-for="Information" class="text-danger-custom"></span>
                     </div>
                     <div class="form-group">
@@ -41,9 +41,9 @@
                     <select id="towns-selector" class="form-control" asp-for="TownId"></select>
 
                     <select id="business-unit-categories-selector" class="form-control margin-5" asp-for="CategoryId"></select>
-
-                    <label asp-for="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" asp-for="BusinessUnitPicture" class="btn btn-primary file" accept="image/*">
+                    <img class="image-upload" id="business-image" @*alt="your image"*@ />
+                    <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input type="file" id="business-image-create" onchange="businessURL(this);" name="BusinessUnitPicture" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>

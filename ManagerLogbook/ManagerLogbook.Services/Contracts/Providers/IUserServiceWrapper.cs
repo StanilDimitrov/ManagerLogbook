@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ManagerLogbook.Services.Contracts.Providers
 {
-    public interface IUserServiceRapper
+    public interface IUserServiceWrapper
     {
        Task<IList<User>> GetAllUsersInRoleAsync(string role);
 

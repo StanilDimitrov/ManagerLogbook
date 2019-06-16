@@ -46,7 +46,7 @@ namespace ManagerLogbook.Services
 
             var logbook = new Logbook() { Name = name, Picture = picture, BusinessUnitId = businessUnitId };
 
-            this.context.Logbooks.Add(logbook);
+            await this.context.Logbooks.AddAsync(logbook);
 
             await this.context.SaveChangesAsync();
 

@@ -34,7 +34,7 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+      [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(ReviewViewModel model)
         {
             if (!this.ModelState.IsValid)

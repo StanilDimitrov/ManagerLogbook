@@ -52,7 +52,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 if (model.LogbookPicture != null)
                 {
-                    imageName = optimizer.OptimizeImage(model.LogbookPicture, 268, 182);
+                    imageName = optimizer.OptimizeImage(model.LogbookPicture, 400, 800);
                 }
 
                 var logbook = await this.logbookService.CreateLogbookAsync(model.Name, model.BusinessUnitId, imageName);
@@ -92,9 +92,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 string imageName = null;
 
-                if (model.Picture != null)
+                if (model.LogbookPicture != null)
                 {
-                    imageName = optimizer.OptimizeImage(model.LogbookPicture, 268, 182);
+                    imageName = optimizer.OptimizeImage(model.LogbookPicture, 400, 800);
                 }
 
                 if (model.Picture != null)

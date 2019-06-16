@@ -21,8 +21,8 @@
                     <select id="notes-categories-selector" class="form-control" asp-for="CategoryId"></select>
 
 
-                    <img style="height: 30%; width:100%; margin-top: 5%" id="blah" alt="your image" />
-                    <label asp-for="Image" @*onclick="previewFile()"*@ class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <img class="image-upload" id="blah" alt="your image" />
+                    <label asp-for="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
                     <input id="blur" onchange="readURL(this);"  type="file" asp-for="NoteImage" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">

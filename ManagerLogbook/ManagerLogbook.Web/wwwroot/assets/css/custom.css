@@ -302,3 +302,26 @@ form.example button {
     padding-top: 0% !important;
 }
 
+td.w3-list-img a {
+    text-decoration: none;
+}
+
+    td.w3-list-img a img {
+        width: 16% !important;
+    }
+
+    td.w3-list-img a span {
+        color: #000000;
+        font-size: 1em;
+        font-weight: 600;
+        text-decoration: none;
+        display: block;
+        margin: .5em 0 0 0;
+    }
+
+
+.image-upload {
+    height: 30% !important;
+    width: 100% !important;
+    margin-top: 5% !important;
+}

@@ -18,8 +18,9 @@
                     </div>
                     <select id="business-unit-create-selector" class="form-control" asp-for="BusinessUnitId"></select>
 
-                    <label asp-for="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" asp-for="LogbookPicture" class="btn btn-primary file" accept="image/*">
+                    <img class="image-upload" id="logbook-picture" alt="your image" />
+                    <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input type="file" id="logbook-image-create" onchange="logbookURL(this);" name="LogbookPicture" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>

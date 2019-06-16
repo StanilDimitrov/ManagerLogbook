@@ -11,15 +11,16 @@
             <div class="modal-body">
                 <div class="text-danger-custom"></div>
                 <form id="update-logbook" asp-area="Admin" asp-controller="Logbooks" asp-action="Update" enctype="multipart/form-data" method="post" class="loginForm">
-                    <input type="hidden" asp-for="Id" value="@Model.Id">
+                    <input type="hidden" id="update-logbook-id" value="@Model.Id">
                     <div class="form-group">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         <input asp-for="Name" class="form-control" id="name" placeholder="Name">
                         <span asp-validation-for="Name" class="text-danger-custom"></span>
                     </div>
                     <select id="business-unit-update-selector" class="form-control" asp-for="BusinessUnitId"></select>
-                    <label asp-for="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" asp-for="LogbookPicture" class="btn btn-primary file" accept="image/*">
+                    <img class="image-upload" id="logbook-update-image" alt="your image" />
+                    <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input type="file" onchange="logbookURLUpdate(this);" id="logbook-image-update-file" name="LogbookPicture" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>

@@ -400,7 +400,7 @@ namespace ManagerLogbook.Services
         {
             if (currPage == 1)
             {
-               return await context.Notes
+               return await context.Notes.Include(x => x.NoteCategory)
                                          .Where(x => x.LogbookId == logbookId)
                                          .OrderByDescending(x => x.Id)
                                          .Take(15)
@@ -411,7 +411,7 @@ namespace ManagerLogbook.Services
             else
             {
                 return  await context
-                                    .Notes
+                                    .Notes.Include(x => x.NoteCategory)
                                     .Where(x => x.LogbookId == logbookId)
                                     .OrderByDescending(x => x.Id)
                                     .Skip((currPage - 1) * 15)

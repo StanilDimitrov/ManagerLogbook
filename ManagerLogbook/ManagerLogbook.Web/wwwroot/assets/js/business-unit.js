@@ -1,46 +1,50 @@
 $(function () {
     const $submitForm = $('#create-business-unit');
+        $(this).find('form').trigger('reset');
 
     $submitForm.on('submit', function (event) {
         event.preventDefault();
 
         var $this = $(this);
-        $(this).find('form').trigger('reset');
+        var inputs = $this.find('input');
+        var formData = new FormData(this);
 
-        const dataToSend = $submitForm.serialize();
-
-        var url = $this.attr('action');
-
-        $.post(url, dataToSend, function (response) {
-            $('#business-unit-details-change').empty();
-            $('#business-unit-details-change').append(dataToSend);
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                toastr.options = {
+                    "debug": false,
+                    "positionClass": "toast-top-center",
+                    "onclick": null,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+                    "timeOut": 3000,
+                    "extendedTimeOut": 3000,
+                    "closeButton": true
+                }
+                $('#myModalBusinessUnit').modal('hide');
+                toastr.success(data);
+            },
+            error: function (data) {
+                toastr.options = {
+                    "debug": false,
+                    "positionClass": "toast-top-center",
+                    "onclick": null,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+                    "timeOut": 3000,
+                    "extendedTimeOut": 3000,
+                    "closeButton": true
+                }
+                toastr.error(data.responseText);
             }
-            $('#myModalBusinessUnit').modal('hide');
-            toastr.success(response);
-            
-
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
         });
+       
     });
 });
 
@@ -97,37 +101,80 @@ $(function () {
         event.preventDefault();
 
         var $this = $(this);
+        var btn = $("#update-business-unit-id").attr('value');
+        var $this = $(this);
+        var inputs = $this.find('input');
+        var formData = new FormData(this);
 
-        const dataToSend = $submitForm.serialize();
-        var url = $this.attr('action');
-
-        $.post(url, dataToSend, function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                toastr.options = {
+                    "debug": false,
+                    "positionClass": "toast-top-center",
+                    "onclick": null,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+                    "timeOut": 3000,
+                    "extendedTimeOut": 3000,
+                    "closeButton": true
+                }
+                $('#myModalBusinessUnit').modal('hide');
+                window.location = "/BusinessUnits/Details/" + btn;
+                toastr.success(data);
+            },
+            error: function (data) {
+                toastr.options = {
+                    "debug": false,
+                    "positionClass": "toast-top-center",
+                    "onclick": null,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+                    "timeOut": 3000,
+                    "extendedTimeOut": 3000,
+                    "closeButton": true
+                }
+                toastr.error(data.responseText);
             }
-            $('#myModalUpdateBusinessUnit').modal('hide');
-            toastr.success(response);
-
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
         });
+
+        //const dataToSend = $submitForm.serialize();
+        //var url = $this.attr('action');
+        //debugger;
+
+        //$.post(url, dataToSend, function (response) {
+        //    toastr.options = {
+        //        "debug": false,
+        //        "positionClass": "toast-top-center",
+        //        "onclick": null,
+        //        "fadeIn": 300,
+        //        "fadeOut": 1000,
+        //        "timeOut": 3000,
+        //        "extendedTimeOut": 3000,
+        //        "closeButton": true
+        //    }
+        //    $('#myModalUpdateBusinessUnit').modal('hide');
+        //    window.location = "/BusinessUnits/Details/" + btn;
+        //    toastr.success(response);
+
+        //}).fail(function (response) {
+        //    toastr.options = {
+        //        "debug": false,
+        //        "positionClass": "toast-top-center",
+        //        "onclick": null,
+        //        "fadeIn": 300,
+        //        "fadeOut": 1000,
+        //        "timeOut": 3000,
+        //        "extendedTimeOut": 3000,
+        //        "closeButton": true
+        //    }
+        //    toastr.error(response.responseText);
+        //});
     });
 });
 

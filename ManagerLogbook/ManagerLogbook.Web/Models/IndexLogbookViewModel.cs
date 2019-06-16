@@ -14,6 +14,8 @@ namespace ManagerLogbook.Web.Models
 
         public BusinessUnitViewModel BusinessUnit { get; set; }
 
+        public NoteViewModel Note { get; set; }
+
         public LogbookViewModel Logbook { get; set; }
 
         public IReadOnlyCollection<UserDTO> AssignedManagers { get; set; }

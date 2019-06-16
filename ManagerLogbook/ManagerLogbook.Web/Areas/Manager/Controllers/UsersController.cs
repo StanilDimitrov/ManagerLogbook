@@ -1,8 +1,7 @@
 ﻿using log4net;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
-using ManagerLogbook.Web.Areas.Manager.Models;
-using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -18,22 +17,26 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
     {
         private readonly IUserService userService;
         private readonly ILogbookService logbookService;
+        private readonly IUserServiceWrapper wrapper;
         private static readonly ILog log =
         LogManager.GetLogger(typeof(UsersController));
 
-        public UsersController(IUserService userService, ILogbookService logbookService)
+        public UsersController(IUserService userService,
+                               ILogbookService logbookService,
+                               IUserServiceWrapper wrapper)
         {
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
+            this.userService = userService;
+            this.logbookService = logbookService;
+            this.wrapper = wrapper;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SwitchLogbook(UserViewModel model)
+        public async Task<IActionResult> SwitchLogbook(IndexNoteViewModel model)
         {
             try
             {
-                var userId = this.User.GetId();
+                var userId = this.wrapper.GetLoggedUserId(User);
                 var user = await this.userService.GetUserByIdAsync(userId);
                 if (model.CurrentLogbookId.HasValue)
                 {
@@ -48,7 +51,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 }
 
                 return BadRequest(WebConstants.NoLogbookChoosen);
-               
             }
 
             catch (NotFoundException ex)
@@ -64,7 +66,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
-
         }
     }
 }

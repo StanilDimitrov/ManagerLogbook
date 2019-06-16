@@ -42,8 +42,9 @@
                 "onHidden": function () {
                 }
             }
-        $('#editModalNote -' + id).modal('hide');
         toastr.success(response);
+        $('#editModalNote-' + id).modal('hide');
+        window.location = "/Manager/Notes/Index/";
 
         //window.setTimeout(function () { location.reload() }, 1500);
         //location.reload();
@@ -92,6 +93,7 @@ $(function () {
                 $('#myModalNote').modal('hide');
                 toastr.success(data);
             },
+
             error: function (data) {
                 toastr.options = {
                     "debug": false,
@@ -299,7 +301,6 @@ $(function () {
             });
     });
 
-
     $('#edit-note-global-button').click(function (event) {
         $.get("/Manager/Notes/GetAllNoteCategories")
             .done(function (response) {
@@ -314,7 +315,7 @@ $(function () {
                 }
 
 
-                $("#notes-categories-selector-1").html(s);
+                $("#notes-categories-selector-edit").html(s);
 
             }).fail(function (response) {
                 toastr.options = {
@@ -331,38 +332,6 @@ $(function () {
 
             });
     });
-
-    $('#change-logbook-global-button').click(function (event) {
-        $.get("/Manager/Notes/GetAllLogbooksByUser")
-            .done(function (response) {
-                var s = '<option value="null" selected disabled hidden>Please Select Logbook</option>';
-                if (response.length > 0) {
-                    for (var i = 0; i < response.length; i++) {
-                        s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
-                    }
-                }
-                else {
-                    s += '<option value="null">No logbooks available</option>';
-                }
-
-                $("#logbooks-selector").html(s);
-
-            }).fail(function (response) {
-                toastr.options = {
-                    "debug": false,
-                    "positionClass": "toast-top-center",
-                    "onclick": null,
-                    "fadeIn": 300,
-                    "fadeOut": 1000,
-                    "timeOut": 3000,
-                    "extendedTimeOut": 3000,
-                    "closeButton": true
-                }
-                toastr.error(response.responseText);
-
-            });
-    });
-
 
 
     function shortenTextFunction() {
@@ -375,7 +344,16 @@ $(function () {
 
     function showImage() {
         $('.image-link').magnificPopup({ type: 'image' });
-    };
+};
+
+$(document).ready(function () {
+    $('.image-link').magnificPopup({ type: 'image' });
+});
+
+//$(document).ready(function () {
+//    $('.image-link').magnificPopup({ type: 'image' });
+//});
+
 
     $('#search-criterias-holder').on('click', '#search-notes-all', function (eventSearchNotes) {
         eventSearchNotes.preventDefault();
@@ -558,6 +536,8 @@ $(function () {
                 $('#note-partial-holder').append(dataFromScrollSearch);
                 shortenTextFunction();
                 showImage();
+                var form = document.getElementById("search-notes-form");
+                form.reset();
 
             }).fail(function (dataFromScrollSearch) {
 
@@ -603,6 +583,9 @@ $(function () {
                 $('#note-partial-holder').append(data);
                 shortenTextFunction();
                 showImage();
+                var form = document.getElementById("search-notes-form");
+                form.reset();
+
 
             }).fail(function (data) {
                 toastr.options = {

@@ -23,6 +23,12 @@
                             <a href="/Logbooks/Details/@Model.CurrentLogbookId"><i class="fa fa-tachometer icon-dash" aria-hidden="true"></i> @Model.CurrentLogbook.Name </a>
                         </li>
                     }
+                    else
+                    {
+                        <li class="active">
+                            <a ><i class="fa fa-tachometer icon-dash" aria-hidden="true"></i> No logbook selected. </a>
+                        </li>
+                    }
 
                     <li class="">
                         <a data-toggle="modal" id="change-logbook-global-button" data-target="#myModalLogbook"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i> Logbooks</a>
@@ -93,22 +99,26 @@
 
 @section Scripts{
 
-    <script src="/assets/js/change-logbook.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    @*<script src="/assets/js/change-logbook-note.js"></script>*@
+<script>
+    $(document).ready(function () {
+        $('.image-link').magnificPopup({ type: 'image' });
+    });
+    </script>
+    
 
     <script type="text/javascript"
             src="https://viralpatel.net/blogs/demo/jquery/jquery.shorten.1.0.js"></script>
-    @*<script type="text/javascript">
-            $(document).ready(function () {
+    <script type="text/javascript">
+        $(document).ready(function () {
 
-                $(".comment").shorten({
-                    "showChars": 100,
-                    "moreText": "More",
-                    "lessText": "Less",
-                });
+            $(".comment").shorten({
+                "showChars": 100,
+                "moreText": "More",
+                "lessText": "Less",
             });
-        </script>*@
+        });
+    </script>
 
     @*<script src="/assets/js/note-singalr.js"></script>*@
 

@@ -111,7 +111,9 @@
     </div>
 </section>
 
-
+<!-- Start Note Modal -->
+@await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)
+<!-- End Note Modal -->
 <!-- Start Update To Logbook Modal -->
 @await Html.PartialAsync("_UpdateLogbookModalPartial", Model.Logbook)
 <!-- End Update To Logbook Modal -->

@@ -44,7 +44,7 @@ namespace ManagerLogbook.Services
 
             var businessUnit = new BusinessUnit() { Name = brandName, Address = address, PhoneNumber = phoneNumber, Email = email, Information = information, BusinessUnitCategoryId = businessUnitCategoryId, TownId = townId, Picture = picture };
 
-            this.context.BusinessUnits.Add(businessUnit);
+            await this.context.BusinessUnits.AddAsync(businessUnit);
             await this.context.SaveChangesAsync();
 
             var result = await this.context.BusinessUnits

@@ -46,27 +46,46 @@ $(function () {
 
     $submitForm.on('submit', function (event) {
         event.preventDefault();
-
         var $this = $(this);
+        var inputs = $this.find('input');
+        var formData = new FormData(this);
 
-        const dataToSend = $submitForm.serialize();
-        //var url = "/Admin/Create/Register";
-        var url = $this.attr('action');
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                toastr.options = {
+                    "debug": false,
+                    "positionClass": "toast-top-center",
+                    "onclick": null,
+                    "fadeIn": 300,
+                    "fadeOut": 1000,
+                    "timeOut": 3000,
+                    "extendedTimeOut": 3000,
+                    "closeButton": true
+                }
+                $('#myModalRegister').modal('hide');
+                toastr.success(data);
+            },
 
-        $.post(url, dataToSend, function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
+        //$.post(url, dataToSend, function (response) {
+        //    toastr.options = {
+        //        "debug": false,
+        //        "positionClass": "toast-top-center",
+        //        "onclick": null,
+        //        "fadeIn": 300,
+        //        "fadeOut": 1000,
+        //        "timeOut": 3000,
+        //        "extendedTimeOut": 3000,
+        //        "closeButton": true
+        //    }
 
-            $('#myModalRegister').modal('hide');
-            toastr.success(response);
+        //    $('#myModalRegister').modal('hide');
+        //    toastr.success(response);
 
         }).fail(function (response) {
             toastr.options = {
@@ -188,7 +207,7 @@ $('input.myTextInput').on('input', function (e) {
 var lastKeypress = null;
 $('#search-business-form').on('submit', function (eventSearchBusiness) {
     eventSearchBusiness.preventDefault();
-    console.log(eventSearchBusiness);
+    //console.log(eventSearchBusiness);
 
     var currentKeypress = new Date();
     var searchPhrase = $('#search-for-business-phrase').val();
@@ -247,7 +266,6 @@ $('#search-business-form').on('submit', function (eventSearchBusiness) {
 
 
 function test(id) {
-    debugger
 
     $.get("/Manager/Notes/Deactivate/" + id)
         .done(function (dataAll) {
@@ -257,7 +275,7 @@ function test(id) {
             $('#note-partial-holder').append(dataAll);
 
             shortenTextFunction();
-            showImage();
+            //showImage();
 
         }).fail(function (dataAll) {
             toastr.options = {
@@ -308,22 +326,24 @@ $('#search-criterias-holder').on('click', '#deactivate-note', function (eventDea
 });
 
 
-
-
-
 $("#myModalRegister").on('show.bs.modal', function () {
     $(this).find('.text-danger-custom').empty();
-    console.log($(this).find('.field-validation-error'));
+    //console.log($(this).find('.field-validation-error'));
+});
+
+$("#myModalNote").on('show.bs.modal', function () {
+    $(this).find('.text-danger-custom').empty();
+    //console.log($(this).find('.field-validation-error'));
+});
+
+$("#myEditModalNote").on('show.bs.modal', function () {
+    $(this).find('.text-danger-custom').empty();
+    //console.log($(this).find('.field-validation-error'));
 });
 
 $("#myModalBusinessUnit").on('show.bs.modal', function () {
     $(this).find('.text-danger-custom').empty();
-    console.log($(this).find('.field-validation-error'));
-});
-
-$("#myModalBusinessUnit").on('show.bs.modal', function () {
-    $(this).find('.text-danger-custom').empty();
-    console.log($(this).find('.field-validation-error'));
+    //console.log($(this).find('.field-validation-error'));
 });
 
 $("#myModalUpdateBusinessUnit").on('show.bs.modal', function () {
@@ -337,17 +357,17 @@ var scrollPageCount = 2;
 
 
 
-//function shortenTextFunction() {
-//    $(".comment").shorten({
-//        "showChars": 100,
-//        "moreText": "More",
-//        "lessText": "Less",
-//    });
-//};
+function shortenTextFunction() {
+    $(".comment").shorten({
+        "showChars": 100,
+        "moreText": "More",
+        "lessText": "Less",
+    });
+};
 
-//function showImage() {
-//    $('.image-link').magnificPopup({ type: 'image' });
-//};
+function showImage() {
+    $('.image-link').magnificPopup({ type: 'image' });
+};
 
 function centerModal() {
     $(this).css('display', 'block');
@@ -362,3 +382,104 @@ $(window).on("resize", function () {
     $('.modalModalImage:visible').each(centerModal);
 });
 
+
+
+
+
+
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#blah').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#blur").change(function () {
+    readURL(this);
+});
+
+function businessURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#business-image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#business-image-create").change(function () {
+    readURL(this);
+});
+
+function logbookURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#logbook-image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#logbook-image-create").change(function () {
+    readURL(this);
+});
+
+function businessURLUpdate(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#business-update-image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#business-image-update-file").change(function () {
+    readURL(this);
+});
+
+function logbookURLUpdate(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#logbook-update-image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#logbook-image-update-file").change(function () {
+    readURL(this);
+});
+
+function accountURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#account-image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#account-image-create").change(function () {
+    readURL(this);
+});

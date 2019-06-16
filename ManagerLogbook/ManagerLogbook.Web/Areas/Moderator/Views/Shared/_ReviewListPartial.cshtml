@@ -4,17 +4,7 @@
     ViewData["Title"] = "_ReviewListPartial";
 }
 
-<div class="resultBar barSpaceAdjust">
-    @if (Model.Reviews != null)
-    {
-        <h2>Found <span> @Model.Reviews.Count() </span> Results </h2>
-    }
-    else
-    {
-        <h2>No reviews are available.<span></span></h2>
-    }
 
-</div>
 
 @if (Model.Reviews != null)
 {
@@ -32,7 +22,6 @@
         <tbody scroll="true">
 
 
-
             @foreach (var review in Model.Reviews)
             {
             <tr>
@@ -45,6 +34,13 @@
                     <div class="profileUserInfo-1 width-100">
                         <a class="btn btn-primary margin-10" data-toggle="modal" @*data-reviewid="@review.Id" *@ id="edit-review-global-button" data-target="#editModalReview-@review.Id">Edit</a>
                     </div>
+                    @if (review.isVisible)
+                    {
+                        <div class="profileUserInfo-1 width-100">
+                            <a id="disable-review-@review.Id" value="@review.Id" onclick="test1(@review.Id)" class="btn btn-primary btn-new width-100 margin-20">Disable</a><br />
+                        </div>
+                    }
+
                 </td>
             </tr>
 
@@ -70,6 +66,7 @@
                                     @*<select id="notes-categories-selector-1" class="form-control" name="CategoryId"></select>*@
                                     <input type="hidden" id="business-unit-review-id" value="@review.BusinessUnitId" />
                                     <input type="hidden" id="original-description" value="@review.OriginalDescription" />
+                                  
                                     @*<label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>*@
                                     @*<input type="file" name="NoteImage" id="image-input-@note.Id" class="btn btn-primary file" accept="image/*">*@
 
@@ -100,34 +97,6 @@
 
     </div>
 
-    <div class="paginationCommon blogPagination text-center">
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-
-                @if (Model.PrevPage == null)
-                {
-                    <a class="btn btn-sm btn-lighter btn-auto disabled">Prev</a>
-                }
-                else
-                {
-                    <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.PrevPage">Prev</a>
-                    <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.PrevPage">@Model.PrevPage</a>
-                }
-
-                <button class="btn btn-sm btn-primary btn-auto">@Model.CurrPage</button>
-
-                @if (Model.NextPage == null)
-                {
-                    <a class="btn btn-sm btn-lighter btn-auto disabled">Next</a>
-                }
-                else
-                {
-                    <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.NextPage">@Model.NextPage</a>
-                    <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.NextPage">Next</a>
-                }
-            </ul>
-        </nav>
-    </div>
 
 }
 

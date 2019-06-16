@@ -30,12 +30,12 @@ namespace ManagerLogbook.Web.Controllers
 
         public async Task<IActionResult> Index(HomeViewModel model)
         {
-            //log.Error("Unexpected exception occured:", ex);
+           
             var businessUnitsDTO = await this.businessUnitService.GetAllBusinessUnitsAsync();
             var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
 
-            var businessUnits = (await CacheBusinessUnits()).Select(x => x.MapFrom()).ToList();
+            //var businessUnits = (await CacheBusinessUnits()).Select(x => x.MapFrom()).ToList();
             model.Towns = (await CacheTowns()).Select(x => x.MapFrom()).ToList();
             model.Categories = (await CacheCategories()).Select(x => x.MapFrom()).ToList();
             var businessCategories = await this.businessUnitService.GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
@@ -45,11 +45,12 @@ namespace ManagerLogbook.Web.Controllers
             };
             model.SearchModelBusiness = new BusinessUnitSearchViewModel()
             {
-                BusinessUnits = businessUnits
-            };
+                BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList()
+        };
             return View(model);
         }
 
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 86400)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

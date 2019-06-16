@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace ManagerLogbook.Services
 {
-    public class UserServiceRapper : IUserServiceRapper
+    public class UserServiceWapper : IUserServiceWrapper
     {
         private readonly UserManager<User> userManager;
 
-        public UserServiceRapper(UserManager<User> userManager)
+        public UserServiceWapper(UserManager<User> userManager)
         {
             this.userManager = userManager;
         }

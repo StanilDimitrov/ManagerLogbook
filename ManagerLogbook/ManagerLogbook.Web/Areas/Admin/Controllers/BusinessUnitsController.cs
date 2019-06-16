@@ -34,9 +34,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                                       IUserService userService,
                                       IImageOptimizer optimizer)
         {
-            this.businessUnitService = businessUnitService ?? throw new System.ArgumentNullException(nameof(businessUnitService));
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.optimizer = optimizer ?? throw new System.ArgumentNullException(nameof(optimizer));
+            this.businessUnitService = businessUnitService;
+            this.userService = userService;
+            this.optimizer = optimizer;
         }                
 
         [HttpPost]
@@ -54,7 +54,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 if (model.BusinessUnitPicture != null)
                 {
-                    imageName = optimizer.OptimizeImage(model.BusinessUnitPicture, 268, 182);
+                    imageName = optimizer.OptimizeImage(model.BusinessUnitPicture, 400, 800);
                 }
 
                 var businessUnit = await this.businessUnitService.CreateBusinnesUnitAsync(model.Name, model.Address, model.PhoneNumber, model.Email, model.Information, model.CategoryId, model.TownId, imageName);
@@ -68,6 +68,11 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
 
             catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            catch (AlreadyExistsException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -94,9 +99,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 string imageName = null;
 
-                if (model.Picture != null)
+                if (model.BusinessUnitPicture != null)
                 {
-                    imageName = optimizer.OptimizeImage(model.BusinessUnitPicture, 268, 182);
+                    imageName = optimizer.OptimizeImage(model.BusinessUnitPicture, 400, 800);
                 }
 
                 if (model.Picture != null)
