@@ -69,7 +69,10 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
+            catch (AlreadyExistsException ex)
+            {
+                return BadRequest(ex.Message);
+            }            
             catch (Exception ex)
             {
                 log.Error("Unexpected exception occured:", ex);
