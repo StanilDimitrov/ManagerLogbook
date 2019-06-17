@@ -63,6 +63,8 @@ The following functionalities are available for customers:
  
  - BusinessUnitDetails.jpg ![](BusinessUnitDetails.jpg)
  
+ - LogbookDetails.jpg ![](LogbookDetails.jpg)
+ 
  II. Moderator part (available only for Moderators).
  It supports the following functionalities:
  
@@ -84,8 +86,6 @@ The following functionalities are available for customers:
  - find information for active notes and total notes in given logbook
 
 - CreateNote.jpg ![](CreateNote.jpg)
-
-- LogbookDetails.jpg ![](LogbookDetails.jpg)
 
 - ListNotes.jpg ![](ListNotes.jpg)
 
