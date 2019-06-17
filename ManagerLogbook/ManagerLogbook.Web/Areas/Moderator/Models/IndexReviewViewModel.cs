@@ -9,6 +9,8 @@ namespace ManagerLogbook.Web.Areas.Moderator.Models
 
         public BusinessUnitViewModel BusinessUnit { get; set; }
 
+        public string ModeratorId { get; set; }
+
         public int? PrevPage { get; set; }
 
         public int CurrPage { get; set; }

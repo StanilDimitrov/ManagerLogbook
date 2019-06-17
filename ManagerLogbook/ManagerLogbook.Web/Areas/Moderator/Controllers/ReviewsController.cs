@@ -106,13 +106,14 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
                 }
                 else
                 {
-                    return BadRequest(string.Format(WebConstants.BusinessUniNotExist));
+                    return BadRequest(string.Format(WebConstants.BusinessUniNotAssigned));
                 }
 
                 var reviews = await this.reviewService.GetAllReviewsByModeratorIdAsync(userId);
 
                 model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
                 model.BusinessUnit = businessUnit.MapFrom();
+                model.ModeratorId = userId; 
 
                 return View(model);
             }
