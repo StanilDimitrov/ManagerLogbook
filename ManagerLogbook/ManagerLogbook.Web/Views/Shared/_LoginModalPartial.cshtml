@@ -1,0 +1,47 @@
+﻿@*@model LoginViewModel*@
+
+<!-- Login Modal -->
+<div class="modal fade" id="myModalLogin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        @*@await Html.PartialAsync("_StatusMessage", TempData["StatusMessage"])*@
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                @*<a class="close" data-dismiss="modal">x</a>*@
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Log in to your account</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-danger-custom"></div>
+                <form asp-controller="Account" asp-action="Login" method="post" class="loginForm">
+                    <div class="form-group">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <input name="UserName" class="form-control" id="username" placeholder="Username">
+                        <span name="UserName" class="text-danger-custom"></span>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                        <input name="Password" type="password" class="form-control" id="password" placeholder="Password">
+                        <span name="Password" class="text-danger-custom"></span>
+                    </div>
+                    <div class="form-group">
+                        @*<i class="fa fa-search" aria-hidden="true"></i>*@
+                        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+
+                    </div>
+                    <div class="checkbox">
+                        <label><input name="RememberMe" type="checkbox"> Remember me</label>
+                        <a asp-action="ForgotPassword" class="pull-right link">Fogot Password?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Login Modal -->
+
+
+
+
+
+

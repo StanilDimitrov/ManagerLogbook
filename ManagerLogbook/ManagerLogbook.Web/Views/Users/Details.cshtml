@@ -1,0 +1,30 @@
+﻿<!-- USER PROFILE SECTION -->
+@model IndexUserViewModel
+<section class="user-profile-section bg-light">
+    <div class="container">
+        <div class="user-profile">
+            <div class="row">
+                <div class="col-xs-12 col-sm-4">
+                    <div class="user-img">
+                        <img src="~/images/@(Model.User.Avatar ?? "noimage.jpg")" alt="User Image">
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="user-profile-content">
+                        <h3 class="user-name">@Model.User.UserName</h3>
+                        <span class="designation">@Model.User.UserRole</span>
+                        <ul class="user-contact-details">
+                            @*<li><i class="fa fa-phone" aria-hidden="true"></i>[88] 657 524 332</li>*@
+                            <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="#">@Model.User.Email</a></li>
+                        </ul>
+                        @*<div class="verified-user"><i class="fa fa-user-o" aria-hidden="true"></i> veryfied account</div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Start Note Modal -->
+@await Html.PartialAsync("_CreateNoteModalPartial", new NoteViewModel())
+<!-- End Note Modal -->

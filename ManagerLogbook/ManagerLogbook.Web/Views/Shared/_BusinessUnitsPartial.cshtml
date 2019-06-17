@@ -1,0 +1,52 @@
+﻿@model BusinessUnitSearchViewModel
+
+@{
+    ViewData["Title"] = "_BusinessUnitPartial";
+}
+
+<!-- CATEGORY LIST SECTION -->
+<section class="clerfix" style="padding-top:0%; padding-bottom:0%">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-xs-12">
+                @if (Model.BusinessUnits != null)
+                {
+                    <div class="resultBar barSpaceAdjust">
+                        <h2>We found <span>@Model.BusinessUnits.Count()</span> Results for you</h2>
+                    </div>
+                }
+                else
+                {
+                    <div class="resultBar barSpaceAdjust">
+                        <h2>We found <span>0</span> Results for you</h2>
+                    </div>
+                }
+
+                @foreach (var businessUnit in Model.BusinessUnits)
+                {
+                    <div class="listContent">
+                        <div class="row">
+                            <div class="col-sm-5 col-xs-12">
+                                <div class="categoryImage">
+                                    <a href="/BusinessUnits/Details/@businessUnit.Id"><img src="~/images/@(businessUnit.Picture ?? "noimage.jpg")" href= alt="Image category" class="img-responsive img-rounded"></a>
+                                </div>
+                            </div>
+                            <div class="col-sm-7 col-xs-12">
+                                <div class="categoryDetails">
+                                    <h2><a href="/BusinessUnits/Details/@businessUnit.Id" style="color: #222222">@businessUnit.Name </a></h2>
+                                    <p>@businessUnit.Address <span class="placeName">@businessUnit.TownName </span></p>
+                                    <p>@businessUnit.Information </p>
+                                    <ul class="list-inline list-tag">
+                                        <li>@businessUnit.CategoryName</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+

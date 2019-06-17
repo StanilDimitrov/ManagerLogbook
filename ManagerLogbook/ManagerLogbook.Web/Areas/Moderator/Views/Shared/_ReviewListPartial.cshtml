@@ -1,0 +1,105 @@
+﻿@model IndexReviewViewModel
+
+@{
+    ViewData["Title"] = "_ReviewListPartial";
+}
+
+
+
+@if (Model.Reviews != null)
+{
+    <table id="ordersTable" class="table table-small-font table-bordered table-striped width-100" cellspacing="0">
+        <thead>
+            <tr>
+                <th width="1%"></th>
+                <th width="40%">Original Description </th>
+                <th width="40%">Edited Description </th>
+                <th width="20%">Created</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody scroll="true">
+
+
+            @foreach (var review in Model.Reviews)
+            {
+            <tr>
+                <td></td>
+                <td>@review.OriginalDescription</td>
+                <td>@review.EditedDescription</td>
+                <td> @review.CreatedOn.ToString("dd MMMM yyyy HH:mm:ss")</td>
+                <td> @review.isVisible.ToString()</td>
+                <td>
+                    <div class="profileUserInfo-1 width-100">
+                        <a class="btn btn-primary margin-10" data-toggle="modal" @*data-reviewid="@review.Id" *@ id="edit-review-global-button" data-target="#editModalReview-@review.Id">Edit</a>
+                    </div>
+                    @if (review.isVisible)
+                    {
+                        <div class="profileUserInfo-1 width-100">
+                            <a id="disable-review-@review.Id" value="@review.Id" onclick="test1(@review.Id)" class="btn btn-primary btn-new width-100 margin-20">Disable</a><br />
+                        </div>
+                    }
+
+                </td>
+            </tr>
+
+                <!-- Note Modal -->
+                <div class="modal fade" id="editModalReview-@review.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                @*<a class="close" data-dismiss="modal">x</a>*@
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Edit review</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-danger-custom"></div>
+                                <form id="submit-form-@review.Id" asp-for="@review" enctype="multipart/form-data" asp-area="Moderator" asp-controller="Reviews" asp-action="Update" method="post" class="loginForm submit-edit-form" asp-route-id="@review.Id">
+                                    <div class="form-group">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <input type="hidden" value="@review.Id" />
+                                        <textarea data-val-required="true" asp-for="@review.OriginalDescription" class="form-control" placeholder="Please enter a description">@review.OriginalDescription</textarea>
+                                        <span asp-validation-for="@review.OriginalDescription" class="text-danger-custom"></span>
+                                    </div>
+                                    @*<select id="notes-categories-selector-1" class="form-control" name="CategoryId"></select>*@
+                                    <input type="hidden" id="business-unit-review-id" value="@review.BusinessUnitId" />
+                                    <input type="hidden" id="original-description" value="@review.OriginalDescription" />
+                                  
+                                    @*<label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>*@
+                                    @*<input type="file" name="NoteImage" id="image-input-@note.Id" class="btn btn-primary file" accept="image/*">*@
+
+                                    <div class="margin-5">
+                                        <button type="submit" class="btn btn-primary btn-block submit-edit-review-form-button" reviewid="@review.Id">Submit</button>
+                                        <div class="margin-5">
+                                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                                            @if (referrer != default(StringValues))
+                                            {
+                                                <a href="@referrer.ToString()">Go Back</a>
+                                            }
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Note Modal -->
+            }
+        </tbody>
+    </table>
+
+    <input id="total-pages-hidden-input" value="@Model.TotalPages" type="hidden" />
+    <input id="current-page-hidden-input" value="@Model.CurrPage" type="hidden" />
+    <div id="addintional-notes-scroll">
+
+
+    </div>
+
+
+}
+
+
+
+

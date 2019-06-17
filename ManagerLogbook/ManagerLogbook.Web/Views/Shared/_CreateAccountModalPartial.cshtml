@@ -1,0 +1,63 @@
+﻿@model RegisterViewModel
+
+<!-- Create Account Modal -->
+<div class="modal fade" id="myModalRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create new account</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-danger-custom"></div>
+                <form id="submit-form-account" asp-area="Admin" asp-controller="Create" asp-action="Register" method="post" class="loginForm">
+                    <div class="form-group">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <input asp-for="UserName" class="form-control" placeholder="Username">
+                        <span asp-validation-for="UserName" class="text-danger-custom"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                        <input asp-for="Email" type="email" class="form-control" id="email" placeholder="Email">
+                        <span asp-validation-for="Email" class="text-danger-custom"></span>
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                        <input asp-for="Password" type="password" class="form-control" id="pwd" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Password">
+                        <span asp-validation-for="ConfirmPassword" class="text-danger-custom"></span>
+                    </div>
+                    <div class="padding-bottom-8">
+                        <div class="contactSelect">
+                            <select asp-for="UserRole" class="form-control">
+                                <option value="Moderator">Moderator</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                   
+                    <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input type="file"  name="UserImage" class="btn btn-primary file" accept="image/*">
+
+                    <div class="margin-5">
+                        <button type="submit" asp-area="Admin" asp-controller="Create" asp-action="Register" class="btn btn-primary btn-block">Create Account</button>
+                        <div class="margin-5">
+                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                            @if (referrer != default(StringValues))
+                            {
+                                <a href="@referrer.ToString()">Go Back</a>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Create Account Modal -->

@@ -1,0 +1,30 @@
+﻿@model BusinessUnitViewModel
+<!-- Remove Moderator From Business Unit Modal -->
+<div class="modal fade" id="myModalRemoveModerator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Choose moderator to remove from business unit</h4>
+            </div>
+            <div class="modal-body">
+                <form id="submit-form-remove-moderator" asp-area="Admin" asp-controller="BusinessUnits" asp-action="RemoveModerator" method="post" class="loginForm">
+                    <select id="moderator-selector-remove" class="form-control" asp-for="ModeratorId"></select>
+                    <input type="hidden" id="my-remove-moderator-value" value="@Model.Id">
+                    <div class="margin-5">
+                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        <div class="margin-5">
+                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                            @if (referrer != default(StringValues))
+                            {
+                                <a href="@referrer.ToString()">Go Back</a>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Remove Moderator From Business Unit Modal -->

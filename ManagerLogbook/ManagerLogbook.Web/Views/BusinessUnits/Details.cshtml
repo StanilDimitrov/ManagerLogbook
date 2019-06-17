@@ -1,0 +1,148 @@
+﻿@model IndexBusinessUnitViewModel
+<!-- Dashboard header -->
+@if (this.User.IsInRole("Admin"))
+{
+    <section class="navbar-dashboard-area">
+        <nav class="navbar navbar-default lightHeader navbar-dashboard" role="navigation">
+            <div class="container">
+
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-dash">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse navbar-dash">
+                    <ul class="nav navbar-nav mr0">
+                        <li class="">
+                            <a data-toggle="modal" id="update-global-button" data-target="#myModalUpdateBusinessUnit"><i class="fa fa-wrench icon-dash" aria-hidden="true"></i> Update</a>
+                        </li>
+                        <li class="dropdown singleDro ">
+                            <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list-ul icon-dash" aria-hidden="true"></i>Logbooks<i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                            @if (Model.Logbooks.Count != 0)
+                            {
+                                <ul class="dropdown-menu">
+                                    @foreach (var logbook in Model.Logbooks)
+                                    {
+                                        <li><a asp-controller="Logbooks" asp-action="Details" asp-route-id="@logbook.Id">@logbook.Name</a></li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <ul class="dropdown-menu">
+                                    There are no logbooks available
+                                </ul>
+                            }
+                        </li>
+                        <li class="">
+                            <a data-toggle="modal" id="add-moderator-global-button" data-target="#myModalAddModerator"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Moderator</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="modal" id="remove-moderator-global-button" data-target="#myModalRemoveModerator"><i class="fa fa-user-times" aria-hidden="true"></i> Remove Moderator</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </section>
+}
+<!-- Dashboard header -->
+<!-- BLOG DETAILS -->
+<section class="clearfix blogDetials">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 col-xs-12">
+                <div class="thumbnail blogContent" id="business-unit-details-change">
+                    <div class="caption">
+                        <h4>Business unit name:</h4>
+                        <h3>@Model.BusinessUnit.Name</h3>
+                        <img src="~/images/@(Model.BusinessUnit.Picture ?? "noimage.jpg")" alt="Image blog" class="img-responsive">
+                        <p>@Model.BusinessUnit.Information</p>
+                    </div>
+                </div>
+                <div class="commentArea">                   
+                    <div id="reviews-list">
+                        @await Html.PartialAsync("_ReviewsPartial", Model)
+                    </div>                    
+                    <h3 class="mt20">Write a review</h3>
+                    <form id="submit-review" asp-controller="Reviews" asp-action="Create" method="post">
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <label for="messageBox" class="constrol-label">Message</label>
+                                <textarea id="reviewDescription" asp-for="@Model.BusinessUnit.Review.OriginalDescription" class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="form-group col-xs-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                    <input type="hidden" class="form-control" id="business-unit-id-input" value="@Model.BusinessUnit.Id" />
+
+
+                </div>
+            </div>
+            <div class="col-sm-4 col-xs-12">
+                <div class="listSidebar">
+                    <h3>Location</h3>
+                    <div class="contactInfo" id="business-unit-contacts-change">
+                        <ul class="list-unstyled list-address">
+                            <li>
+                                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                @Model.BusinessUnit.Address <br> @Model.BusinessUnit.TownName
+                            </li>
+                            <li>
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                                @Model.BusinessUnit.PhoneNumber
+                            </li>
+                            <li>
+                                <i class="fa fa-envelope" aria-hidden="true"></i>
+                                <a href="#">@Model.BusinessUnit.Email</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Start Note Modal -->
+@await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)
+<!-- End Note Modal -->
+<!-- Start BusinessUnit Modal -->
+@await Html.PartialAsync("_CreateBusinessUnitModalPartial", new BusinessUnitViewModel())
+<!-- End BusinessUnit Modal -->
+<!-- Start Update To BusinessUnit Modal -->
+@await Html.PartialAsync("_UpdateBusinessUnitModalPartial", Model.BusinessUnit)
+<!-- End Update To BusinessUnit Modal -->
+<!-- Start Add Moderator To BusinessUnit Modal -->
+@await Html.PartialAsync("_AddModeratorModalPartial", Model.BusinessUnit)
+<!-- End Add Moderator To BusinessUnit Modal -->
+<!-- Start Remove Moderator From BusinessUnit Modal -->
+@await Html.PartialAsync("_RemoveModeratorModalPartial", Model.BusinessUnit)
+<!-- End Remove Moderator Modal -->
+<!-- Start Logbook Modal -->
+@await Html.PartialAsync("_CreateLogbookModalPartial", Model.Logbook)
+<!-- End Logbook Modal -->
+<!-- Start Login Modal -->
+@await Html.PartialAsync("_LoginModalPartial", Model.Login)
+<!-- End Login Modal -->
+<!-- Start Account Modal -->
+@await Html.PartialAsync("_CreateAccountModalPartial", Model.Register)
+<!-- End Account Modal -->
+
+
+@section Scripts{
+
+    <script src="~/assets/js/create-review.js"></script>
+    @*<script src="~/assets/js/custom.js"></script>
+        <script src="~/assets/js/logbook.js"></script>*@
+}
+

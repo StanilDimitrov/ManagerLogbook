@@ -1,0 +1,39 @@
+﻿@model LogbookViewModel
+<!--  Start Modal Update Logbook-->
+<div class="modal fade" id="myModalUpdateLogbook" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Update a logbook</h4>
+            </div>
+            <div class="modal-body">
+                <div class="text-danger-custom"></div>
+                <form id="update-logbook" asp-area="Admin" asp-controller="Logbooks" asp-action="Update" enctype="multipart/form-data" method="post" class="loginForm">
+                    <input type="hidden" id="update-logbook-id" value="@Model.Id">
+                    <div class="form-group">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                        <input asp-for="Name" class="form-control" id="name" placeholder="Name">
+                        <span asp-validation-for="Name" class="text-danger-custom"></span>
+                    </div>
+                    <select id="business-unit-update-selector" class="form-control" asp-for="BusinessUnitId"></select>
+                    <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input type="file"  name="LogbookPicture" class="btn btn-primary file" accept="image/*">
+
+                    <div class="margin-5">
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        <div class="margin-5">
+                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                            @if (referrer != default(StringValues))
+                            {
+                                <a href="@referrer.ToString()">Go Back</a>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Update Logbook Modal -->

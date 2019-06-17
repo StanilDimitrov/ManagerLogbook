@@ -1,0 +1,76 @@
+﻿@model SearchViewModel
+
+@if(Model.Categories != null)
+{ 
+<div class="col-xs-12">
+    <div class="dashboardBoxBg mb30">
+        <div class="profileIntro">
+            <div class="row font-custom">
+                <div class="row">
+                    <form class="example" id="search-notes-form" asp-area="Manager" asp-controller="Notes" asp-action="Search" asp-for="@Model" method="get">
+                        <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                            <label for="dateAdded">Start Date</label>
+                            <div class="dateSelect">
+                                <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
+                                    <input name="StartDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                                    <div class="input-group-addon">
+                                        <i class="icon-listy icon-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                            <label for="dateModified">End Date</label>
+                            <div class="dateSelect">
+                                <div class="input-group date ed-datepicker filterDate" data-provide="datepicker">
+                                    <input name="EndDate" type="text" class="form-control" placeholder="mm/dd/yyyy">
+                                    <div class="input-group-addon">
+                                        <i class="icon-listy icon-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                            <label for="dateModified">Category</label>
+                            <div class="contactSelect">
+                                <select name="CategoryId" id="category-id-from-selector" class="select-drop">
+                                    <option value="null" selected @*disabled*@ hidden>Select Category</option>
+                                    @foreach (var category in Model.Categories)
+                                    {
+                                        {
+                                            <option value="@category.CategoryId">@category.CategoryName</option>
+                                        }
+                                    })
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group col-md-3 col-sm-6 col-xs-12">
+                            <label for="amount">Search</label>
+                            <div class="input-group">
+                                <input type="hidden"  id="current-page-id"  value="@Model.CurrPage" />
+                                <input type="text" asp-for="SearchCriteria" class="form-control width-100" id="search-for-note-phrase" placeholder="Search">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default width-100" type="submit"><i class="icon-listy icon-search-2"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        @*<div class="form-group">
+                                <button type="submit" class="btn btn-primary">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+                            </div>*@
+
+                        <span id="anti-forgery-for-note-search">@Html.AntiForgeryToken()</span>
+                    </form>
+                </div>
+            </div>
+            <div  class="btn-group btn-panel">
+                <a id="search-notes-today" value="0" class="btn btn-primary active search-notes-common-days">Daily</a>
+                <a id="search-notes-7-days" value="7" class="btn btn-primary search-notes-common-days">7 Days</a>
+                <a id="search-notes-30-days" value="30" class="btn btn-primary search-notes-common-days">30 Days</a>
+                <a id="search-notes-active" class="btn btn-primary search-notes-common-days">Active</a>
+                <a id="search-notes-all" value="3650" class="btn btn-primary search-notes-common-days">All</a>
+            </div>
+        </div>
+    </div>
+</div>
+}

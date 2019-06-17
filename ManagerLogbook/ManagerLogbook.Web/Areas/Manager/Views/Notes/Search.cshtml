@@ -1,0 +1,29 @@
+﻿@model IndexNoteViewModel
+
+@{
+    ViewData["Title"] = "Search";
+}
+
+<section class="clearfix bg-dark listyPage">
+    <div class="container">
+        <div class="row">
+            <!-- Start Search Menu -->
+            @await Html.PartialAsync("_SearchMenuPartial", Model)
+            <!-- End Search Menu -->
+            <div class="col-xs-12">
+                <div class="table-responsive-md font-custom">
+                    @await Html.PartialAsync("_NoteListPartial", Model)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Start Note Modal -->
+@await Html.PartialAsync("_EditModalPartial")
+<!-- End Note Modal -->
+
+
+
+
+

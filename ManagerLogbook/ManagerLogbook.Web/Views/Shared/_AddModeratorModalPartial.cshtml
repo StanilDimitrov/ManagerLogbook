@@ -1,0 +1,31 @@
+﻿@model BusinessUnitViewModel
+<!-- Add Moderator To Business Unit Modal -->
+<div class="modal fade" id="myModalAddModerator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Choose moderator to add to business unit</h4>
+            </div>
+            <div class="modal-body">
+                <div asp-validation-summary="All" class="text-danger-custom"></div>
+                <form id="submit-form-add-moderator" asp-area="Admin" asp-controller="BusinessUnits" asp-action="AddModeratorToBusinessUnit" method="post" class="loginForm">
+                    <input type="hidden" id="my-add-moderator-value" value="@Model.Id">
+                    <select id="moderator-selector" class="form-control" asp-for="ModeratorId"></select>
+                    <div class="margin-5">
+                        <button type="submit" class="btn btn-primary btn-block">Save</button>
+                        <div class="margin-5">
+                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                            @if (referrer != default(StringValues))
+                            {
+                                <a href="@referrer.ToString()">Go Back</a>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Add Moderator To Business Unit Modal -->

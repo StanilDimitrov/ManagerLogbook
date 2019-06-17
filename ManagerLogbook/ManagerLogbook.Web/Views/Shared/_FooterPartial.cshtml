@@ -1,0 +1,24 @@
+﻿@model HomeViewModel
+
+<section class="clearfix countUpSection">
+    <div class="container text-block-center">
+        <div class="row">
+            <div class="col-sm-3 col-xs-12">
+                <div class="text-center countItem">
+                    <div class="counter">@Model.Towns.Count()</div>
+                    <div class="counterInfo bg-color-1">Cities</div>
+                </div>
+            </div>
+            @foreach (var category in Model.Footer.BusinessUnitsCategories)
+            {
+                <div class="col-sm-3 col-xs-12">
+                    <div class="text-center countItem">
+                        <div class="counter">@category.Value</div>
+                        <div class="counterInfo bg-color-3">@category.Key</div>
+                    </div>
+                </div>
+            }
+          
+        </div>
+    </div>
+</section>
