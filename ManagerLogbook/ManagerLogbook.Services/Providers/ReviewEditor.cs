@@ -36,7 +36,7 @@ namespace ManagerLogbook.Services.Providers
         {
             bool isVisible = true; 
 
-            int countReplaceChars = editDescription.TakeWhile(c => c == '*').Count();
+            int countReplaceChars = editDescription.Replace(" ",string.Empty).TakeWhile(c => c == '*').Count();
 
             double isVisibleRatio = countReplaceChars * 1.00 / editDescription.Length; 
 

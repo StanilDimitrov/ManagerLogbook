@@ -1,6 +1,4 @@
-﻿using log4net;
-using log4net.Repository.Hierarchy;
-using ManagerLogbook.Data;
+﻿using ManagerLogbook.Data;
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts;
@@ -16,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging.Log4Net.AspNetCore;
 
 namespace ManagerLogbook.Web
 {

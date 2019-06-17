@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Services
@@ -115,9 +114,7 @@ namespace ManagerLogbook.Services
             {
                 logbook.Picture = picture;
             }
-
-            logbook.Picture = picture;
-
+            
             await this.context.SaveChangesAsync();
 
             var result = await this.context.Logbooks
@@ -161,7 +158,7 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task RemoveManagerFromLogbookAsync(string managerId, int logbookId)
+        public async Task<LogbookDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId)
         {
             var logbook = await this.context.Logbooks.FindAsync(logbookId);
 
@@ -181,23 +178,17 @@ namespace ManagerLogbook.Services
             if(entityToRemove == null)
             {
                 throw new ArgumentException(string.Format(ServicesConstants.ManagerIsNotPresentInLogbook, manager.UserName, logbook.Name));
-            }
+            }            
 
-            ///var relationToRemove = new UsersLogbooks() { UserId = manager.Id, LogbookId = logbook.Id };
-
-            //marked to be deleted
-            //this.context.Entry(relationToRemove).State = EntityState.Deleted;
-
-            //this.context.UsersLogbooks.Attach(relationToRemove);
             this.context.UsersLogbooks.Remove(entityToRemove);
             await this.context.SaveChangesAsync();
 
-            //var result = await this.context.Logbooks
-            //                  .Include(bu => bu.BusinessUnit)
-            //                  .Include(n => n.Notes)
-            //                  .FirstOrDefaultAsync(x => x.Id == logbook.Id);
+            var result = await this.context.Logbooks
+                              .Include(bu => bu.BusinessUnit)
+                              .Include(n => n.Notes)
+                              .FirstOrDefaultAsync(x => x.Id == logbook.Id);
 
-            //return result.ToDTO();
+            return result.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksByUserAsync(string userId)
