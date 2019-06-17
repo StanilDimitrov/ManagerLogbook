@@ -45,7 +45,9 @@ The following functionalities are available for customers:
  - to add and view comments (log entries) with positive/negative service feedback. 
  
  - Search.jpg ![](Search.jpg)
+ 
  - Statistics.jpg ![](Statistics.jpg)
+ 
  - BusinessUnitDetails.jpg ![](BusinessUnitDetails.jpg)
  
  The private part of application is visible with authentication.
@@ -82,8 +84,11 @@ The following functionalities are available for customers:
 Managers are working with all notes, added from managers responsible for given logbook. 
 
 - CreateNote.jpg ![](CreateNote.jpg)
+
 - LogbookDetails.jpg ![](LogbookDetails.jpg)
+
 - ListNotes.jpg ![](ListNotes.jpg)
+
 
 #### Database Diagram
 
