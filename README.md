@@ -17,17 +17,26 @@ Managers of Restaurant / Hotel can take notes (logs) about things happening on s
 System administrators can manage the accounts of managers and feedback moderators. 
 They are able to initialize new Logbooks and Categories/Tags for them.
 
-#### Technologies
+#### Technologies and other important information
 
-The General technologies used in the developing the SmartDormitoryApp are these:
-  - ASP.NET Core 
-  - ASP.NET Identity System 
-  - Entity Framework Core
+The General technologies used in the developing the ManagerLogbook are these:
+  - ASP.NET Core 2.2
+  - ASP.NET Identity System with admin, manager and moderator area 
+  - Entity Framework Core 2.2 to access database (used Code First approach)
+  - Microsoft SQL Server for data storage and Entity 
   - Razor for all of the apps pages
   - AJAX for dynamic representation
   - Bootstrap 4
-  - Framework Code First approach for data access. Microsoft SQL Server for data storage and Entity 
+  - Used caching for XX data 
+  - Created server-side paging and sorting for Notes of Managers??? 
+  - Integration of application with a Continuous Integration server of Azure
+  - Used GitHub advantages to work with branches durring development ot features
   - XX % Unit test code coverage of the business logic
+  
+#### Features
+ManagerLogbook has following functionalities:
+  - Login/Register functionalities 
+
 
 #### Database Diagram
 
