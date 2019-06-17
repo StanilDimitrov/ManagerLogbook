@@ -48,7 +48,7 @@ The following functionalities are available for customers:
  
  - Statistics.jpg ![](Statistics.jpg)
  
- - BusinessUnitDetails.jpg ![](BusinessUnitDetails.jpg)
+ 
  
  The private part of the application is visible with authentication.
  Three areas are available: 
@@ -60,6 +60,8 @@ The following functionalities are available for customers:
  - update business unit and/or logbook.
  - specify the access for each manager to certain logbook.
  - specify the access for each moderator to certain business unit.
+ 
+ - BusinessUnitDetails.jpg ![](BusinessUnitDetails.jpg)
  
  II. Moderator part (available only for Moderators).
  It supports the following functionalities:
