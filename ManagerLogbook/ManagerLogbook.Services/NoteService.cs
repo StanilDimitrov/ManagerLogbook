@@ -304,7 +304,6 @@ namespace ManagerLogbook.Services
                         .Include(x => x.NoteCategory)
                         .Include(x => x.User)
                         .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-                        //po dni
                         .OrderByDescending(x => x.CreatedOn);
                 }
                 else
@@ -313,7 +312,6 @@ namespace ManagerLogbook.Services
                          .Include(x => x.NoteCategory)
                          .Include(x => x.User)
                          .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-                         //po dni
                          .OrderByDescending(x => x.CreatedOn);
                 }
 
@@ -366,7 +364,7 @@ namespace ManagerLogbook.Services
             {
                return await context.Notes.Include(x => x.NoteCategory)
                                          .Where(x => x.LogbookId == logbookId)
-                                         .OrderByDescending(x => x.Id)
+                                         .OrderByDescending(x => x.CreatedOn)
                                          .Take(15)
                                          .Select(x => x.ToDTO())
                                          .ToListAsync();
@@ -376,7 +374,7 @@ namespace ManagerLogbook.Services
                 return  await context
                                     .Notes.Include(x => x.NoteCategory)
                                     .Where(x => x.LogbookId == logbookId)
-                                    .OrderByDescending(x => x.Id)
+                                    .OrderByDescending(x => x.CreatedOn)
                                     .Skip((currPage - 1) * 15)
                                     .Take(15)
                                     .Select(x => x.ToDTO())

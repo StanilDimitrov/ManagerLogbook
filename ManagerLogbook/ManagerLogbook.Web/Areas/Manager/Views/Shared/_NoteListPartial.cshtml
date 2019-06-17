@@ -13,7 +13,7 @@
                 <th> </th>
                 <th width="40%">Description </th>
                 <th width="20%">Created</th>
-                <th>User</th>
+                <th>Manager</th>
                 <th>Category</th>
                 <th>Status</th>
                 <th>Actions</th>
@@ -27,7 +27,7 @@
                 <tr>
                     <th> </th>
                     <td class="comment">@note.Description</td>
-                    <td> @note.CreatedOn.ToString("MMMM dd, yyyy")</td>
+                    <td> @note.CreatedOn.ToString("dd MMMM yyyy, hh:mm tt")</td>
                     <td>@note.UserName</td>
                     <td>@note.CategoryName</td>
                     <td>
@@ -58,12 +58,7 @@
                             }
                         </div>
                     </td>
-                    @*@if (note.Image != null)
-                {
-                    <td class="w3-list-img" ><a asp-controller="Movies" asp-action="Details" asp-route-id="@note.Id"><img src="~/images/@(note.Image)"><span></span></a></td>
-                }
-                else
-                {*@
+               
                     <td></td>
                     @*}*@
 
@@ -129,17 +124,12 @@
                     </div>
                 </div>
                 <!-- End Image Modal -->
-
             }
         </tbody>
     </table>
 
     <input id="total-pages-hidden-input" value="@Model.TotalPages" type="hidden" />
     <input id="current-page-hidden-input" value="@Model.CurrPage" type="hidden" />
-    <div id="addintional-notes-scroll">
-
-
-    </div>
 
     <div class="paginationCommon blogPagination text-center">
         <nav aria-label="Page navigation">
@@ -168,29 +158,8 @@
                     <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.NextPage">@Model.NextPage</a>
                     <a class="btn btn-sm btn-lighter btn-auto note-pagination-button-table" at="@Model.NextPage">Next</a>
                 }
-
-
-                @*<li>
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
-                    </a>
-                </li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li>
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true"><i class="fa fa-angle-right" aria-hidden="true"></i></span>
-                    </a>
-                </li>
-            </ul>*@
         </nav>
     </div>
-
 }
 
-
-
-
+    

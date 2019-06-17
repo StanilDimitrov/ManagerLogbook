@@ -96,11 +96,11 @@ $(function () {
         var $this = $(this);
 
         const dataToSend = $submitForm.serialize();
-       
+
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
-         
+
             toastr.options = {
                 "debug": false,
                 "positionClass": "toast-top-center",
@@ -131,26 +131,6 @@ $(function () {
 
 });
 
-//document.getElementById("#create-note")[0].reset();
-
-//$("a").click(function () {
-//    //get data from link
-//    var noteId = $(this).data('noteid');
-//    var modalFormAction = $('#editModalNote').find('form').attr('action');
-
-//    // update modal with new data
-//    var actionWithId = (modalFormAction + '/' + noteId).replace(/[0-9]/g, '');
-//        actionWithId = modalFormAction + '/' + noteId;
-//    // find textarea in modal
-//    // todo by stanil
-
-//    // update textarea with description
-//    // todo by stanil
-//    $('#editModalNote').find('form').attr('action', actionWithId);
-
-
-//    var modalSelected = '#editModalNote';
-//});
 
 // Resets modal
 $('#myModalRegister').on('hidden.bs.modal', function () {
@@ -185,26 +165,18 @@ $('input.myTextInput').on('input', function (e) {
 });
 
 
-
-var lastKeypress = null;
 $('#search-business-form').on('submit', function (eventSearchBusiness) {
     eventSearchBusiness.preventDefault();
-    //console.log(eventSearchBusiness);
 
-    var currentKeypress = new Date();
+    //var currentKeypress = new Date();
     var searchPhrase = $('#search-for-business-phrase').val();
 
-    setTimeout(function () {
+    //var shouldRequest = // check if at least 500 ms have passed
+    //    eventSearchBusiness.type === 'submit' ||
+    //    (eventSearchBusiness.type === 'input' && searchPhrase.length > 2);
 
-
-    }, 500);
-
-    var shouldRequest = // check if at least 500 ms have passed
-        eventSearchBusiness.type === 'submit' ||
-        (eventSearchBusiness.type === 'input' && searchPhrase.length > 2);
-
-    lastKeypress = currentKeypress;
-    if (shouldRequest) {
+    //lastKeypress = currentKeypress;
+   
         $this = $(this);
 
         var inputs = $this.find('input');
@@ -215,19 +187,14 @@ $('#search-business-form').on('submit', function (eventSearchBusiness) {
         var urlencodedInputs = inputs.serialize();
 
         var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&TownId=" + townId;
-        //console.log(inputs);
-        //debugger;
 
         $.get("/Home/Search", inputsToSend)
             .done(function (data) {
 
-                //console.log(data);
-                //debugger;
-
                 $('#business-partial-holder').empty();
                 $('#business-partial-holder').append(data);
-
-                //shortenTextFunction();
+                var form = document.getElementById("search-business-form");
+                form.reset();
 
             }).fail(function (data) {
                 toastr.options = {
@@ -243,7 +210,6 @@ $('#search-business-form').on('submit', function (eventSearchBusiness) {
                 toastr.error(data.responseText);
 
             });
-    }
 });
 
 function test(id) {
@@ -358,7 +324,6 @@ $('.modalModalImage').on('show.bs.modal', centerModal);
 $(window).on("resize", function () {
     $('.modalModalImage:visible').each(centerModal);
 });
-
 
 
 
