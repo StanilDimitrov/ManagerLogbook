@@ -23,10 +23,10 @@ namespace ManagerLogbook.Web.Controllers
                                   INoteService noteService,
                                   IUserServiceWrapper wrapper)
         {
-            this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.noteService = noteService ?? throw new ArgumentNullException(nameof(noteService));
-            this.wrapper = wrapper ?? throw new ArgumentNullException(nameof(wrapper));
+            this.logbookService = logbookService;
+            this.userService = userService;
+            this.noteService = noteService;
+            this.wrapper = wrapper;
         }
 
         public async Task<IActionResult> Details(int id)

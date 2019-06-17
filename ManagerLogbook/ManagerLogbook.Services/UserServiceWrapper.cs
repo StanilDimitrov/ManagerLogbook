@@ -3,10 +3,8 @@ using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.Utils;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Services
@@ -35,7 +33,5 @@ namespace ManagerLogbook.Services
             }
             return userId;
         }
-
-
     }
 }

@@ -3,8 +3,6 @@
     eventEdit.preventDefault();
     $thisEditForm = $(this);
 
-
-
     var id = $thisEditForm.attr('noteid');
     var selectedElementId = "#notes-categories-selector-edit-"+id+" option:selected";
     var selectedElementCategoryId = parseInt($(selectedElementId).val());
@@ -103,9 +101,6 @@ $(function () {
                     "closeButton": true
                 }
                 $('#myModalNote').modal('hide');
-                //$("#create-note")[0].reset();
-                //$(this).find('form')[0].reset();
-                //$(this).find('#blah').empty();
                
                 toastr.success(data);
                 $(this).find('#clear-image').empty();
@@ -127,160 +122,6 @@ $(function () {
         });
     });
 });
-
-//$(function () {
-//    const $submitForm = $('#create-note');
-
-//    //if ($submitForm.valid()) {
-
-//    $submitForm.on('submit', function (event) {
-//        event.preventDefault();
-
-//        var $this = $(this);
-//        var inputs = $this.find('input');
-
-
-//        var formData = new FormData(this);
-
-//        $.ajax({
-//            type: 'POST',
-//            url: $(this).attr('action'),
-//            data: formData,
-//            cache: false,
-//            contentType: false,
-//            processData: false,
-//            success: function (data) {
-//                toastr.options = {
-//                    "debug": false,
-//                    "positionClass": "toast-top-center",
-//                    "onclick": null,
-//                    "fadeIn": 300,
-//                    "fadeOut": 1000,
-//                    "timeOut": 3000,
-//                    "extendedTimeOut": 3000,
-//                    "closeButton": true
-//                }
-//                $('#myModalNote').modal('hide');
-//                toastr.success(data);
-//            },
-//            error: function (data) {
-//                toastr.options = {
-//                    "debug": false,
-//                    "positionClass": "toast-top-center",
-//                    "onclick": null,
-//                    "fadeIn": 300,
-//                    "fadeOut": 1000,
-//                    "timeOut": 3000,
-//                    "extendedTimeOut": 3000,
-//                    "closeButton": true
-//                }
-//                toastr.error(data.responseText);
-//            }
-//        });
-
-//    });
-
-
-    //var image = $('#image-input-create-note').val();
-    //var file = $(image)[0];
-    //var fileInput = file.files[0];
-
-    // var urlencodedInputs = inputs.serialize();
-
-    //var inputsToSend = urlencodedInputs + "&NoteImage=" + image;
-
-    //var $this = $(this);
-
-    //const dataToSend = $submitForm.serialize();
-
-    //var url = "/Admin/Create/Register";
-    //var url = $this.attr('action');
-
-    //    var $this = $(this);
-
-    //    const dataToSend = $submitForm.serialize();
-
-    //    var url = $this.attr('action');
-
-    //    $.post(url, formData, function (response) {
-
-    //        toastr.options = {
-    //            "debug": false,
-    //            "positionClass": "toast-top-center",
-    //            "onclick": null,
-    //            "fadeIn": 300,
-    //            "fadeOut": 1000,
-    //            "timeOut": 3000,
-    //            "extendedTimeOut": 3000,
-    //            "closeButton": true
-    //        }
-    //        $('#myModalNote').modal('hide');
-    //        toastr.success(response);
-
-    //    }).fail(function (response) {
-    //        toastr.options = {
-    //            "debug": false,
-    //            "positionClass": "toast-top-center",
-    //            "onclick": null,
-    //            "fadeIn": 300,
-    //            "fadeOut": 1000,
-    //            "timeOut": 3000,
-    //            "extendedTimeOut": 3000,
-    //            "closeButton": true
-    //        }
-    //        toastr.error(response.responseText);
-    //    });
-    //});
-
-
-
-
-    //$(function () {
-    //    const $submitForm = $('#submit-form-logbook');
-
-    //    $submitForm.on('submit', function (event) {
-    //        event.preventDefault();
-
-    //        var $this = $(this);
-
-    //        const dataToSend = $submitForm.serialize();
-
-    //        //var url = "/Manager/Users/SwitchLogbook/";
-    //        var url = $this.attr('action');
-
-    //        $.post(url, dataToSend, function (response) {
-    //            //console.log(dataToSend);
-
-    //            toastr.options = {
-    //                "debug": false,
-    //                "positionClass": "toast-top-center",
-    //                "onclick": null,
-    //                "fadeIn": 300,
-    //                "fadeOut": 1000,
-    //                "timeOut": 3000,
-    //                "extendedTimeOut": 3000,
-    //                "closeButton": true
-    //            }
-
-    //            toastr.success(response);
-    //            $('#myModalLogbook').modal('hide');
-
-    //        }).fail(function (response) {
-    //            toastr.options = {
-    //                "debug": false,
-    //                "positionClass": "toast-top-center",
-    //                "onclick": null,
-    //                "fadeIn": 300,
-    //                "fadeOut": 1000,
-    //                "timeOut": 3000,
-    //                "extendedTimeOut": 3000,
-    //                "closeButton": true
-    //            }
-    //            toastr.error(response.responseText);
-    //        });
-    //    });
-    //});
-
 
     $('#add-note-global-button').click(function (event) {
         $.get("/Manager/Notes/GetAllNoteCategories")
@@ -313,14 +154,10 @@ $(function () {
             });
     });
 
- 
-
 $('#ordersTable').on('click', '#edit-note-global-button', function (event) {
 
     var $this = $(this);
     var idForNote = parseInt($this.attr('data-noteid'));    
-
-
         $.get("/Manager/Notes/GetAllNoteCategories")
             .done(function (response) {
                 var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
@@ -332,15 +169,9 @@ $('#ordersTable').on('click', '#edit-note-global-button', function (event) {
                 else {
                     s += '<option value="null">No categories available</option>';
                 }
-                
-    
-              
+                  
                 var finalSelector = "#notes-categories-selector-edit-" + idForNote;
                 var element = $(finalSelector + " option:selected");
-
-                console.log(element);
-                debugger;
-
 
                 $(finalSelector).html(s);
 
@@ -360,7 +191,6 @@ $('#ordersTable').on('click', '#edit-note-global-button', function (event) {
             });
     });
 
-
     function shortenTextFunction() {
         $(".comment").shorten({
             "showChars": 100,
@@ -376,11 +206,6 @@ $('#ordersTable').on('click', '#edit-note-global-button', function (event) {
 $(document).ready(function () {
     $('.image-link').magnificPopup({ type: 'image' });
 });
-
-//$(document).ready(function () {
-//    $('.image-link').magnificPopup({ type: 'image' });
-//});
-
 
     $('#search-criterias-holder').on('click', '#search-notes-all', function (eventSearchNotes) {
         eventSearchNotes.preventDefault();
@@ -541,9 +366,7 @@ $(document).ready(function () {
 
 
     $("#note-partial-holder").on('click', '.note-pagination-button-table', function (someEvent) {
-
         var $this = $(this)
-
         var currPage = parseInt($this.attr('at'));
 
         var searchFormToGetParams = $('#search-notes-form');
@@ -572,24 +395,16 @@ $(document).ready(function () {
 
     });
 
-    var lastKeypress = null;
+    
     $('#search-notes-form').on('submit', function (eventSearchNote) {
         eventSearchNote.preventDefault();
         var searchPhrase = $('#search-for-note-phrase').val();
-        debugger
         //var currentKeypress = new Date();
 
+        //var shouldRequest = // check if at least 500 ms have passed
+        //    eventSearchNote.type === 'submit' ||
+        //    (eventSearchNote.type === 'input' && searchPhrase.length > 2);
 
-        var shouldRequest = // check if at least 500 ms have passed
-            eventSearchNote.type === 'submit' ||
-            (eventSearchNote.type === 'input' && searchPhrase.length > 2);
-
-        //lastKeypress = currentKeypress;
-
-
-        //if (searchPhrase.length > 2) {
-
-        //if (shouldRequest) {
         $this = $(this);
 
         var inputs = $this.find('input');
@@ -602,7 +417,6 @@ $(document).ready(function () {
 
         var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&CurrPage=" + currentPage + "&TotalPages=" + totalPages;
 
-
         $.post("/Manager/Notes/Search", inputsToSend)
             .done(function (data) {
 
@@ -612,7 +426,6 @@ $(document).ready(function () {
                 showImage();
                 var form = document.getElementById("search-notes-form");
                 form.reset();
-
 
             }).fail(function (data) {
                 toastr.options = {
@@ -627,7 +440,6 @@ $(document).ready(function () {
                 }
                 toastr.error(data.responseText);
             });
-        //}
     });
 
 

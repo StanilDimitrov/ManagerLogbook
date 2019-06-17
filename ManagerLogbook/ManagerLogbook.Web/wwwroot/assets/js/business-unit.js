@@ -48,52 +48,6 @@ $(function () {
     });
 });
 
-//$(function () {
-//    const $submitForm = $('#create-business-unit');
-
-//    //if ($submitForm.valid()) {
-
-//    $submitForm.on('submit', function (event) {
-//        event.preventDefault();
-
-//        var $this = $(this);
-
-//        const dataToSend = $submitForm.serialize();
-//        //var url = "/Admin/Create/Register";
-//        var url = $this.attr('action');
-
-//        $.post(url, dataToSend, function (response) {
-//            console.log(response.firstName);
-//            toastr.options = {
-//                "debug": false,
-//                "positionClass": "toast-top-center",
-//                "onclick": null,
-//                "fadeIn": 300,
-//                "fadeOut": 1000,
-//                "timeOut": 3000,
-//                "extendedTimeOut": 3000,
-//                "closeButton": true
-//            }
-//            $('#myModalBusinessUnit').modal('hide');
-//            toastr.success(response);
-
-//        }).fail(function (response) {
-//            toastr.options = {
-//                "debug": false,
-//                "positionClass": "toast-top-center",
-//                "onclick": null,
-//                "fadeIn": 300,
-//                "fadeOut": 1000,
-//                "timeOut": 3000,
-//                "extendedTimeOut": 3000,
-//                "closeButton": true
-//            }
-//            toastr.error(response.responseText);
-//        });
-
-//    });
-//});
-
 $(function () {
     const $submitForm = $('#update-business-unit');
 
@@ -143,41 +97,8 @@ $(function () {
             }
         });
 
-        //const dataToSend = $submitForm.serialize();
-        //var url = $this.attr('action');
-        //debugger;
-
-        //$.post(url, dataToSend, function (response) {
-        //    toastr.options = {
-        //        "debug": false,
-        //        "positionClass": "toast-top-center",
-        //        "onclick": null,
-        //        "fadeIn": 300,
-        //        "fadeOut": 1000,
-        //        "timeOut": 3000,
-        //        "extendedTimeOut": 3000,
-        //        "closeButton": true
-        //    }
-        //    $('#myModalUpdateBusinessUnit').modal('hide');
-        //    window.location = "/BusinessUnits/Details/" + btn;
-        //    toastr.success(response);
-
-        //}).fail(function (response) {
-        //    toastr.options = {
-        //        "debug": false,
-        //        "positionClass": "toast-top-center",
-        //        "onclick": null,
-        //        "fadeIn": 300,
-        //        "fadeOut": 1000,
-        //        "timeOut": 3000,
-        //        "extendedTimeOut": 3000,
-        //        "closeButton": true
-        //    }
-        //    toastr.error(response.responseText);
-        //});
     });
 });
-
 
 $('#add-moderator-global-button').click(function (event) {
 
@@ -410,11 +331,6 @@ $(function () {
 
     $submitForm.on('submit', function (event) {
         event.preventDefault();
-
-        //var $this = $(this);
-
-        //const dataToSend = $submitForm.serialize();
-        //var url = $this.attr('action');
 
         var $this = $(this);
         var inputs = $this.find('input');

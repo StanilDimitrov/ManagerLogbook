@@ -274,8 +274,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
             try
             {
-                //var noteDTO = await this.noteService.GetNoteByIdAsync(model.Id);
-
                 string imageName = null;
 
                 if (model.NoteImage != null)

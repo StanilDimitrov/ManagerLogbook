@@ -1,8 +1,6 @@
 $(function () {
     const $submitForm = $('#submit-review');
 
-    //if ($submitForm.valid()) {
-
     $submitForm.on('submit', function (event2) {
         event2.preventDefault();
 
@@ -16,13 +14,7 @@ $(function () {
 
         finalDataToSend = dataToSend + "&BusinessUnitId=" + businessId + "&OriginalDescription=" + reviewDescription;
 
-        //console.log(reviewDescription);
-        //debugger;
-
         var url = "/Reviews/Create/";
-
-        //console.log();
-        //debugger;
 
         $.post(url, finalDataToSend).done(function (response) {
 
@@ -44,8 +36,6 @@ $(function () {
             $.get(getReviewsUrl).done(function (reviewData) {
                 $('#reviews-list').empty();
 
-                //console.log(reviewData);
-                //debugger;
 
                 $('#reviews-list').append(reviewData);
 
@@ -73,7 +63,6 @@ $(function () {
 
 });
 
-
 $('.submit-edit-review-form-button').click(function (eventEdit) {
 
     eventEdit.preventDefault();
@@ -91,31 +80,13 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
     var formInputs2 = formInputs[0];
     var token = formInputs2[5];
 
-    //var token = inputs.serialize();
-    
-    //var inputsToSend = urlencodedInputs + "&CategoryId=" + categoryId + "&TownId=" + townId;
-    
     var urlToEdit = "/Moderator/Reviews/Update";
     var concreteFormOfClickedButton = $('#editModalReview-' + id);
-    //var inputs = concreteFormOfClickedButton.find('input');
+   
     var textarea = concreteFormOfClickedButton.find('textarea');
     var textFromDescription = textarea[0].value;
-   
-    //var token = inputs[3];
-   
-    //var originalDescription = $('#original-description').val();
-    //var businessUnitId = $('#business-unit-review-id').val();
-    
-    //var imageInputIdSelector = "#image-input-" + id;
-
-    //var file = $(imageInputIdSelector)[0];
-    //var fileInput = file.files[0];
-
+ 
     var inputs = "Id=" + id + "&EditedDescription=" + textFromDescription + "&OriginalDescription=" + originalDescription + "&BusinessUnitId=" + businessUnitId + "&" + token.name + "=" + token.value;
-
-
-    console.log(inputs);
-    debugger;
 
     $.post(urlToEdit, inputs, function (response) {
         toastr.options = {

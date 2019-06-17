@@ -1,17 +1,15 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
-using System.Threading.Tasks;
-using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using ManagerLogbook.Services.Utils;
-using ManagerLogbook.Services.CustomExeptions;
-using ManagerLogbook.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using ManagerLogbook.Services.Contracts.Providers;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Services
 {
@@ -23,8 +21,8 @@ namespace ManagerLogbook.Services
         public UserService(ManagerLogbookContext context,
                           IUserServiceWrapper userRapper)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.userRapper = userRapper ?? throw new ArgumentNullException(nameof(userRapper));
+            this.context = context;
+            this.userRapper = userRapper;
         }
 
         public async Task<UserDTO> GetUserByIdAsync(string userId)
@@ -65,7 +63,6 @@ namespace ManagerLogbook.Services
             user.CurrentLogbookId = logbookId;
 
             await this.context.SaveChangesAsync();
-
             return user.ToDTO();
 
         }
@@ -89,7 +86,6 @@ namespace ManagerLogbook.Services
             var moderators = usersOfRoleModerator.Where(x => x.BusinessUnitId == businessUnitId)
                                                   .Select(x => x.ToDTO())
                                                   .ToList();
-
             return moderators;
         }
 

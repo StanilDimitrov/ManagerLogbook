@@ -23,8 +23,8 @@ namespace ManagerLogbook.Services
                             IBusinessValidator validator)
 
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.validator = validator ?? throw new ArgumentNullException(nameof(validator));
+            this.context = context;
+            this.validator = validator;
         }
 
         public async Task<NoteDTO> GetNoteByIdAsync(int id)
@@ -33,12 +33,10 @@ namespace ManagerLogbook.Services
                                          .Include(x => x.User)
                                          .Include(x => x.NoteCategory)
                                          .FirstOrDefaultAsync(x => x.Id == id);
-
             if (note == null)
             {
                 throw new NotFoundException(ServicesConstants.NotNotFound);
             }
-
             return note.ToDTO();
         }
 
@@ -100,7 +98,6 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        
         public async Task<NoteDTO> DeactivateNoteActiveStatus(int noteId, string userId)
 
         {
@@ -185,7 +182,6 @@ namespace ManagerLogbook.Services
             }
            
             await this.context.SaveChangesAsync();
-
             return note.ToDTO();
         }
 
@@ -299,40 +295,9 @@ namespace ManagerLogbook.Services
                 endDate = DateTime.Now;
             }
 
-            //IQueryable<Note> searchCollection;
-            //if (searchCriteria != null)
-            //{
-            //    searchCollection = this.context.Notes
-            //        .Include(x => x.NoteCategory)
-            //        .Include(x => x.User)
-            //        .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-            //        .OrderByDescending(x => x.CreatedOn);
-            //}
-            //else
-            //{
-            //    searchCollection = this.context.Notes
-            //         .Include(x => x.NoteCategory)
-            //         .Include(x => x.User)
-            //         .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
-            //         .OrderByDescending(x => x.CreatedOn);
-            //}
-
-            //if (categoryId != null)
-            //{
-            //    searchCollection = searchCollection.Where(x => x.NoteCategoryId == categoryId);
-            //}
-
-            //var searchResult = await searchCollection.Select(x => x.ToDTO())
-            //    .Skip((currPage - 1) * 15)
-            //    .Take(15).ToListAsync();
-
-            //return searchResult;
-
-
             IQueryable<Note> searchCollection;
             if (daysBefore != null)
             {
-
                 if (searchCriteria != null)
                 {
                     searchCollection = this.context.Notes
@@ -389,7 +354,6 @@ namespace ManagerLogbook.Services
         public async Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync()
 
         {
-
            var result = await this.context.NoteCategories
                                           .Select(x => x.ToDTO())
                                           .ToListAsync();
@@ -406,7 +370,6 @@ namespace ManagerLogbook.Services
                                          .Take(15)
                                          .Select(x => x.ToDTO())
                                          .ToListAsync();
-
             }
             else
             {
@@ -418,7 +381,6 @@ namespace ManagerLogbook.Services
                                     .Take(15)
                                     .Select(x => x.ToDTO())
                                     .ToListAsync();
-
             }
         }
 

@@ -7,7 +7,6 @@ $(function () {
         var $this = $(this);
 
         const dataToSend = $submitForm.serialize();
-        //var url = "/Admin/Create/Register";
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
@@ -72,21 +71,6 @@ $(function () {
                 toastr.success(data);
             },
 
-        //$.post(url, dataToSend, function (response) {
-        //    toastr.options = {
-        //        "debug": false,
-        //        "positionClass": "toast-top-center",
-        //        "onclick": null,
-        //        "fadeIn": 300,
-        //        "fadeOut": 1000,
-        //        "timeOut": 3000,
-        //        "extendedTimeOut": 3000,
-        //        "closeButton": true
-        //    }
-
-        //    $('#myModalRegister').modal('hide');
-        //    toastr.success(response);
-
         }).fail(function (response) {
             toastr.options = {
                 "debug": false,
@@ -103,7 +87,6 @@ $(function () {
     });
 });
 
-
 $(function () {
     const $submitForm = $('#deactivate-status');
 
@@ -113,11 +96,11 @@ $(function () {
         var $this = $(this);
 
         const dataToSend = $submitForm.serialize();
-        //var url = "/Admin/Create/Register";
+       
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
-            //console.log(response.firstName);
+         
             toastr.options = {
                 "debug": false,
                 "positionClass": "toast-top-center",
@@ -263,7 +246,6 @@ $('#search-business-form').on('submit', function (eventSearchBusiness) {
     }
 });
 
-
 function test(id) {
 
     $.get("/Manager/Notes/Deactivate/" + id)
@@ -292,7 +274,6 @@ function test(id) {
 }
 
 $('#search-criterias-holder').on('click', '#deactivate-note', function (eventDeactivateNote) {
-    debugger
 
     eventDeactivateNote.preventDefault();
 
@@ -324,7 +305,6 @@ $('#search-criterias-holder').on('click', '#deactivate-note', function (eventDea
         });
 });
 
-
 $("#myModalRegister").on('show.bs.modal', function () {
     $(this).find('.text-danger-custom').empty();
     //console.log($(this).find('.field-validation-error'));
@@ -353,9 +333,6 @@ $("#myModalUpdateBusinessUnit").on('show.bs.modal', function () {
 
 dataLoading = false;
 var scrollPageCount = 2;
-
-
-
 
 function shortenTextFunction() {
     $(".comment").shorten({

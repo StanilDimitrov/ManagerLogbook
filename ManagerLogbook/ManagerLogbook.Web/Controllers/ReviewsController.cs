@@ -15,7 +15,7 @@ namespace ManagerLogbook.Web.Controllers
 
         public ReviewsController(IReviewService reviewService)
         {
-            this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
+            this.reviewService = reviewService;
         }
         
         [HttpPost]
