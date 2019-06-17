@@ -114,9 +114,7 @@ namespace ManagerLogbook.Services
             {
                 logbook.Picture = picture;
             }
-
-            logbook.Picture = picture;
-
+            
             await this.context.SaveChangesAsync();
 
             var result = await this.context.Logbooks
