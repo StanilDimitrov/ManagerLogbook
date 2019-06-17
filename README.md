@@ -44,6 +44,10 @@ The following functionalities are available for customers:
  - to read information about business unit (hotel, restaurant,etc.) - short description, address, telephone, email, etc.
  - to add and view comments (log entries) with positive/negative service feedback. 
  
+ - Search.jpg ![](Search.jpg)
+ - Statistics.jpg ![](Statistics.jpg)
+ - BusinessUnitDetails.jpg ![](BusinessUnitDetails.jpg)
+ 
  The private part of application is visible with authentication.
  There are 3 parts: 
  
@@ -77,6 +81,9 @@ The following functionalities are available for customers:
  
 Managers are working with all notes, added from managers responsible for given logbook. 
 
+- CreateNote.jpg ![](CreateNote.jpg)
+- LogbookDetails.jpg ![](LogbookDetails.jpg)
+- ListNotes.jpg ![](ListNotes.jpg)
 
 #### Database Diagram
 
@@ -89,4 +96,5 @@ Managers are working with all notes, added from managers responsible for given l
 [azure]: https://managerlogbookweb20190615103454223.azurewebsites.net/?fbclid=IwAR2NK81wGZhW-qtoO74LpaSn7eoIISDMKlaWv_QXPqL_mXIdng6zEK6tvlI
 
 #### Manager Logbook
-[![Build status](https://dev.azure.com/stanildimitrov/Manager%20Logbook/_apis/build/status/ManagerLogbook%20CI)](https://dev.azure.com/stanildimitrov/Manager%20Logbook/_build/latest?definitionId=2)
+[![Build status](https://dev.azure.com/stanildimitrov/Manager%20Logbook/_apis/build/status/ManagerLogbook%20CI)](https://dev.azure.com/stanildimitrov/Manager%20Logbook/_build/results?buildId=46)
+
