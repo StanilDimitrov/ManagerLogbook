@@ -58,7 +58,6 @@ namespace ManagerLogbook.Web.Controllers
 
 
         [HttpGet]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Search(HomeViewModel model)
         {
             var businessUnitsDTO = await this.businessUnitService
@@ -83,15 +82,6 @@ namespace ManagerLogbook.Web.Controllers
             searchModel.BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList();
 
             return PartialView("_BusinessUnitsPartial", searchModel);
-
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Complete(string currentInput)
-        {
-            var businessUnits = await this.businessUnitService.SearchBusinessUnitsAsync(currentInput, null, null);
-
-            return Json(businessUnits);
 
         }
 

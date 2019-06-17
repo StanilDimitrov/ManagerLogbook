@@ -91,7 +91,12 @@ $(function () {
                     "closeButton": true
                 }
                 $('#myModalNote').modal('hide');
+                //$("#create-note")[0].reset();
+                //$(this).find('form')[0].reset();
+                //$(this).find('#blah').empty();
+               
                 toastr.success(data);
+                $(this).find('#clear-image').empty();
             },
 
             error: function (data) {
@@ -108,13 +113,8 @@ $(function () {
                 toastr.error(data.responseText);
             }
         });
-
-
     });
 });
-
-
-
 
 //$(function () {
 //    const $submitForm = $('#create-note');
@@ -301,21 +301,43 @@ $(function () {
             });
     });
 
-    $('#edit-note-global-button').click(function (event) {
+    
+
+$('#ordersTable').on('click', '#edit-note-global-button', function (event) {
+
+    var $this = $(this);
+    var idForNote = parseInt($this.attr('data-noteid'));
+    
+
+
         $.get("/Manager/Notes/GetAllNoteCategories")
             .done(function (response) {
                 var s = '<option value="null" selected disabled hidden>Please Select Category</option>';
                 if (response.length > 0) {
                     for (var i = 0; i < response.length; i++) {
                         s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+
+
+
                     }
                 }
                 else {
                     s += '<option value="null">No categories available</option>';
                 }
+                
+           
+
+                
+
+              
+                var finalSelector = "#notes-categories-selector-edit-" + idForNote;
 
 
-                $("#notes-categories-selector-edit").html(s);
+                console.log(finalSelector);
+                debugger;
+
+
+                $(finalSelector).html(s);
 
             }).fail(function (response) {
                 toastr.options = {

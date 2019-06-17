@@ -71,7 +71,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
                                            memoryCacheMock.Object,
                                            rapperMock.Object);
 
-            var userId = TestHelpersNoteController.TestUserDTO2().Id;
+            var userId = TestHelpersNoteController.TestUserDTO3().Id;
             var logbooks = new List<LogbookDTO>() { TestHelpersNoteController.TestLogbookDTO1(), TestHelpersNoteController.TestLogbookDTO2() };
             var notes = new List<NoteDTO>() { TestHelpersNoteController.TestNoteDTO5(), TestHelpersNoteController.TestNoteDTO4() };
             var categories = new List<NoteGategoryDTO>() { TestHelpersNoteController.TestNoteCategoryDTO1() };
@@ -79,7 +79,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
+            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO3());
             logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
             logbookServiceMock.Setup(x => x.GetAllLogbooksByUserAsync(userId)).ReturnsAsync(logbooks);
             noteServiceMock.Setup(x => x.Get15NotesByIdAsync(1, 1)).ReturnsAsync(notes);

@@ -134,6 +134,34 @@ namespace ManagerLogbook.Tests.Controllers.Users.LoggedUsers
         }
 
         [TestMethod]
+        public async Task ReturnsBadRequst_NotFoundFromUserServiceException()
+        {
+            var userServiceMock = new Mock<IUserService>();
+            var wrapperMock = new Mock<IUserServiceWrapper>();
+            var logbookServiceMock = new Mock<ILogbookService>();
+
+
+            var sut = new UsersController(userServiceMock.Object,
+                                           logbookServiceMock.Object,
+                                           wrapperMock.Object);
+
+
+            var model = new IndexNoteViewModel()
+            {
+                CurrentLogbookId = 3
+
+            };
+            var userId = TestHelpersNoteController.TestUserDTO1().Id;
+
+            wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
+            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersUsersController.TestUserDTO4());
+            logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
+            userServiceMock.Setup(x => x.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value)).ThrowsAsync(new NotFoundException());
+            var actionResult = await sut.SwitchLogbook(model);
+            Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
+        }
+
+        [TestMethod]
         public async Task ReturnsBadRequst_Exception()
         {
             var userServiceMock = new Mock<IUserService>();

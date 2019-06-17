@@ -82,14 +82,14 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
     var concreteFormOfClickedButton = $('#editModalReview-' + id);
     var inputs = concreteFormOfClickedButton.find('input');
     var originalDescription = $('#original-description').val();
+  
+    
     var businessUnitId = $('#business-unit-review-id').val();
     var antiForgery = $('#token-review-id').find('input');
     var idOfForm = "#submit-form-" + id;
     var formInputs = $(idOfForm);
     var formInputs2 = formInputs[0];
     var token = formInputs2[5];
-
-
 
     //var token = inputs.serialize();
     
@@ -100,6 +100,7 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
     //var inputs = concreteFormOfClickedButton.find('input');
     var textarea = concreteFormOfClickedButton.find('textarea');
     var textFromDescription = textarea[0].value;
+   
     //var token = inputs[3];
    
     //var originalDescription = $('#original-description').val();
@@ -110,11 +111,43 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
     //var file = $(imageInputIdSelector)[0];
     //var fileInput = file.files[0];
 
-    var inputs = "Id=" + id + "&EditedDescription=" + textFromDescription + "&OriginalDescription" + originalDescription + "&BusinessUnitId=" + businessUnitId + "&" + token.name + "=" + token.value;
+    var inputs = "Id=" + id + "&EditedDescription=" + textFromDescription + "&OriginalDescription=" + originalDescription + "&BusinessUnitId=" + businessUnitId + "&" + token.name + "=" + token.value;
+
+
+    console.log(inputs);
+    debugger;
+
+    $.post(urlToEdit, inputs, function (response) {
+        toastr.options = {
+            "debug": false,
+            "positionClass": "toast-top-center",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 3000,
+            "extendedTimeOut": 3000,
+            "closeButton": true
+        }
+
+        toastr.success(response);
+
+    }).fail(function (response) {
+        toastr.options = {
+            "debug": false,
+            "positionClass": "toast-top-center",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 3000,
+            "extendedTimeOut": 3000,
+            "closeButton": true
+        }
+        toastr.error(response.responseText);
+    });
+});
 
 
     //console.log(inputs);
-
 
     //var fdata = new FormData();
     //fdata.append("Id", id);
@@ -123,15 +156,8 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
     //fdata.append("BusinessUnitId", businessUnitId);
     //fdata.append(token.name, token.value);
 
-        $.post(urlToEdit, inputs)
-        .done(function (eventResponse) {
-
-            //console.log(eventResponse);
-            debugger;
-
-
-
-    });
+    
+      
 
     //$.ajax({
     //    type: 'post',
@@ -172,7 +198,7 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
     //        }
     //    toastr.error(response.responseText);
     //});
-});
+//});
 
 function test1(id) {
 

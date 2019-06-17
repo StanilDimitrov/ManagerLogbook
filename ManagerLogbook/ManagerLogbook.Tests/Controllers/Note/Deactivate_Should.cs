@@ -5,7 +5,6 @@ using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Web.Areas.Manager.Controllers;
-using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
@@ -14,7 +13,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Controllers.Note

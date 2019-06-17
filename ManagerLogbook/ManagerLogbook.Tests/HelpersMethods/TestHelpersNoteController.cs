@@ -101,6 +101,17 @@ namespace ManagerLogbook.Tests.HelpersMethods
                 Id = "c2fb4e2d-c6f6-43f2-ac26-b06ef1113981",
                 UserName = "ivan",
                 Email = "dir@bg",
+                CurrentLogbookId = 1
+            };
+        }
+
+        public static UserDTO TestUserDTO3()
+        {
+            return new UserDTO
+            {
+                Id = "c2fb4e2d-c6f6-43f2-ac26-b06ef1113981",
+                UserName = "ivan",
+                Email = "dir@bg",
             };
         }
 

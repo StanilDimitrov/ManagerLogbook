@@ -90,7 +90,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     int notesPerPage = 15;
                     var totalPages = await noteService.GetPageCountForNotesAsync(notesPerPage, (int)logbookId);
 
-
                     model.SearchModel = new SearchViewModel()
                     {
                         CurrPage = 1,
@@ -109,7 +108,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 }
                 model.SearchModel = new SearchViewModel();
                 model.Manager = user.MapFrom();
-                
                 
                 return View(model);
             }
@@ -172,20 +170,23 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         {
             try
             {
-                var userId = this.User.GetId();
+                var userId = this.wrapper.GetLoggedUserId(User);
                 var user = await this.userService.GetUserByIdAsync(userId);
                 var logbookId = user.CurrentLogbookId;
+                var searchModel = new SearchViewModel();
+
                 if (user.CurrentLogbookId.HasValue)
                 {
                     var notesDTO = await this.noteService.ShowLogbookNotesWithActiveStatusAsync(userId, user.CurrentLogbookId.Value);
-                    var notes = notesDTO.Select(x => x.MapFrom()).ToList();
-                    foreach (var note in notes)
+                    if (notesDTO != null)
                     {
-                        note.CanUserEdit = note.UserId == userId;
+                        var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+                        foreach (var note in notes)
+                        {
+                            note.CanUserEdit = note.UserId == userId;
+                        }
+                        searchModel.Notes = notes;
                     }
-                    var searchModel = new SearchViewModel();
-                    searchModel.Notes = notes;
-
                     searchModel.Categories = (await CacheNoteCategories()).Select(x => x.MapFrom()).ToList();
                     return PartialView("_NoteListPartial", searchModel);
                 }
@@ -403,13 +404,15 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 int.MaxValue,
                 model.CurrPage);
 
-            var notes = notesDTO.Select(x => x.MapFrom()).ToList();
-
-            foreach (var note in notes)
+            if (notesDTO != null)
             {
-                note.CanUserEdit = note.UserId == userId;
+                var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+                foreach (var note in notes)
+                {
+                    note.CanUserEdit = note.UserId == userId;
+                }
             }
-
+           
             var totalPages = await noteService.GetPageCountForNotesAsync(15, (int)logbookId, model.SearchCriteria);
 
             var searchModel = new SearchViewModel()
@@ -427,9 +430,11 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 searchModel.PrevPage = currPage - 1;
             }
-
-            searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
-
+            if (notesDTO != null)
+            {
+                searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+            }
+           
             return PartialView("_NoteListPartial", searchModel);
         }
 
@@ -465,13 +470,16 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 int.MaxValue,
                 model.CurrPage);
 
-            var notes = notesDTO.Select(x => x.MapFrom()).ToList();
-
-            foreach (var note in notes)
+            if (notesDTO != null)
             {
-                note.CanUserEdit = note.UserId == userId;
-            }
+                var notes = notesDTO.Select(x => x.MapFrom()).ToList();
 
+                foreach (var note in notes)
+                {
+                    note.CanUserEdit = note.UserId == userId;
+                }
+            }
+           
             var totalPages = 1;
 
             if (string.IsNullOrEmpty(model.SearchCriteria))
@@ -481,7 +489,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             else
             {
                 totalPages = await noteService.GetPageCountForNotesAsync(15, (int)logbookId, model.SearchCriteria);
-
             }
 
             var searchModel = new SearchViewModel()
@@ -490,6 +497,11 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 TotalPages = totalPages
             };
 
+            if (notesDTO != null)
+            {
+                searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
+            }
+            
             if (totalPages > currPage)
             {
                 searchModel.NextPage = currPage + 1;
@@ -499,8 +511,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             {
                 searchModel.PrevPage = currPage - 1;
             }
-
-            searchModel.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
 
             return PartialView("_NoteListPartial", searchModel);
         }
@@ -530,13 +540,17 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                                      .SearchNotesAsync(userId, user.CurrentLogbookId.Value,
                                                       model.StartDate, model.EndDate, model.CategoryId,
                                                       model.SearchCriteria, model.DaysBefore, model.CurrPage);
-            var notes = notesDTO.Select(x => x.MapFrom()).ToList();
-            foreach (var note in notes)
+            if (notesDTO != null)
             {
-                note.CanUserEdit = note.UserId == userId;
+                var notes = notesDTO.Select(x => x.MapFrom()).ToList();
+                foreach (var note in notes)
+                {
+                    note.CanUserEdit = note.UserId == userId;
+                }
+
+                model.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
             }
-
-
+            
             if (totalPages > model.CurrPage)
             {
                 model.NextPage = model.CurrPage + 1;
@@ -547,8 +561,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 model.PrevPage = model.CurrPage - 1;
                 model.TotalPages = totalPages;
             }
-
-            model.Notes = notesDTO.Select(x => x.MapFrom()).ToList();
 
           return PartialView("_NoteListPartial", model);
         }
@@ -562,18 +574,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
                 return Json(cacheCategories);
             }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (NotAuthorizedException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+           
             catch (Exception ex)
             {
                 log.Error("Unexpected exception occured:", ex);
@@ -586,7 +587,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         {
             try
             {
-                var userId = this.User.GetId();
+                var userId = this.wrapper.GetLoggedUserId(User);
                 var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
 
                 return Json(logbooks);

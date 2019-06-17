@@ -148,6 +148,7 @@ $(function () {
 
 });
 
+//document.getElementById("#create-note")[0].reset();
 
 //$("a").click(function () {
 //    //get data from link
@@ -187,8 +188,6 @@ $('#editModalNote').on('hidden.bs.modal', function () {
 
 $('#logbookModalNote').on('hidden.bs.modal', function () {
 })
-
-
 
 $('#myModalBusinessUnit').on('hidden.bs.modal', function () {
     $(this).find('form').trigger('reset');
@@ -333,6 +332,7 @@ $("#myModalRegister").on('show.bs.modal', function () {
 
 $("#myModalNote").on('show.bs.modal', function () {
     $(this).find('.text-danger-custom').empty();
+    $(this).find('#image-upload').empty();
     //console.log($(this).find('.field-validation-error'));
 });
 
@@ -482,4 +482,22 @@ function accountURL(input) {
 
 $("#account-image-create").change(function () {
     readURL(this);
+});
+
+$(".special-clas-for-image-data-uploaded").change(function (e) {
+
+    for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+
+        var file = e.originalEvent.srcElement.files[i];
+
+        var img = document.createElement("img");
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            img.src = reader.result;
+        }
+        reader.readAsDataURL(file);
+
+        $("#image-preview-box").empty();
+        $("#image-preview-box").append(img);
+    }
 });
