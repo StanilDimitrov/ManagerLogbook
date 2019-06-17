@@ -66,22 +66,10 @@
                         <p>@Model.BusinessUnit.Information</p>
                     </div>
                 </div>
-                <div class="commentArea">
-                    @*<h3>Reviews (@Model.Reviews.Count()) </h3>*@
+                <div class="commentArea">                   
                     <div id="reviews-list">
                         @await Html.PartialAsync("_ReviewsPartial", Model)
-                    </div>
-                    @*@foreach (var review in Model.Reviews)
-                        {
-                            <div class="media media-comment">
-                                <div class="media-body">
-                                    <span class="date" style="color: black">@review.CreatedOn.ToString(("dd MMMM yyyy"))</span>
-                                    <p>
-                                        @review.EditedDescription
-                                    </p>
-                                </div>
-                            </div>
-                        }*@
+                    </div>                    
                     <h3 class="mt20">Write a review</h3>
                     <form id="submit-review" asp-controller="Reviews" asp-action="Create" method="post">
                         <div class="row">

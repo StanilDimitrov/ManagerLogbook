@@ -88,7 +88,7 @@ namespace ManagerLogbook.Services
             var checkBrandNameIfExists = await this.context.BusinessUnits
                                            .FirstOrDefaultAsync(n => n.Name == brandName);
 
-            if (checkBrandNameIfExists != null && businessUnit.Name !=brandName)
+            if (checkBrandNameIfExists != null && businessUnit.Name != brandName)
             {
                 throw new AlreadyExistsException(ServicesConstants.BusinessUnitNameAlreadyExists);
             }
@@ -314,8 +314,8 @@ namespace ManagerLogbook.Services
             return businessUnit.ToDTO();
         }
 
-        public async Task RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
-           // public async Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        //public async Task RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        public async Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
 
@@ -334,30 +334,13 @@ namespace ManagerLogbook.Services
             moderatorUser.BusinessUnitId = null;
             await this.context.SaveChangesAsync();
 
-            //businessUnit = await this.context.BusinessUnits
-            //             .Include(bc => bc.BusinessUnitCategory)
-            //             .Include(t => t.Town)
-            //             .FirstOrDefaultAsync(x => x.Id == businessUnitId);
+            businessUnit = await this.context.BusinessUnits
+                         .Include(bc => bc.BusinessUnitCategory)
+                         .Include(t => t.Town)
+                         .FirstOrDefaultAsync(x => x.Id == businessUnitId);
 
-            //return businessUnit.ToDTO();
-        }
-
-        //public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
-        //{
-        //    IQueryable<BusinessUnit> searchCollection = this.context.BusinessUnits.Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
-
-        //    //IQueryable<BusinessUnit> searchCategoryCollection = this.context.BusinessUnits.Where(buc => buc.BusinessUnitCategoryId == businessUnitCategoryId);
-
-        //    //IQueryable<BusinessUnit> searchTownCollection = this.context.BusinessUnits.Where(t => t.TownId == townId);
-
-        //    //var search = searchTownCollection.Intersect(searchCollection.Intersect(searchCategoryCollection));
-
-        //    var businessUnitsDTO = await searchCollection.Include(t => t.Town)
-        //                      .Include(buc => buc.BusinessUnitCategory)
-        //                      .Select(x => x.ToDTO())
-        //                      .ToListAsync();
-        //    return businessUnitsDTO;
-        //}
+            return businessUnit.ToDTO();
+        }        
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
         {
