@@ -7,8 +7,6 @@ using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Services.LogbookServiceTests

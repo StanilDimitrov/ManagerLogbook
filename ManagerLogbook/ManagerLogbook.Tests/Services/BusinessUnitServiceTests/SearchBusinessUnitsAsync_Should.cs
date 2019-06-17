@@ -2,12 +2,10 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services;
 using ManagerLogbook.Services.Contracts.Providers;
-using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

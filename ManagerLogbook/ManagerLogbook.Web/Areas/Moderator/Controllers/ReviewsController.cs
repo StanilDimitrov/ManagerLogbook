@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using log4net;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Areas.Moderator.Models;
@@ -22,15 +23,18 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
         private readonly IReviewService reviewService;
         private readonly IBusinessUnitService businessUnitService;
         private readonly IUserService userService;
+        private readonly IUserServiceWrapper wrapper;
         private static readonly ILog log = LogManager.GetLogger(typeof(ReviewsController));
 
         public ReviewsController(IReviewService reviewService,
                                  IBusinessUnitService businessUnitService,
-                                 IUserService userService)
+                                 IUserService userService,
+                                 IUserServiceWrapper wrapper)
         {
             this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
             this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            this.wrapper = wrapper ?? throw new ArgumentNullException(nameof(wrapper));
         }
 
         [HttpPost]
@@ -95,7 +99,8 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
             {
                 var model = new IndexReviewViewModel();
 
-                var userId = this.User.GetId();
+                var userId = this.wrapper.GetLoggedUserId(User);
+                
                 var user = await this.userService.GetUserByIdAsync(userId);
 
                 var businessUnit = new BusinessUnitDTO();

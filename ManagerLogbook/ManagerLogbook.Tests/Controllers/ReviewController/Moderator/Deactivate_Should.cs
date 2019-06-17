@@ -1,18 +1,14 @@
 ﻿using ManagerLogbook.Services.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using ManagerLogbook.Web.Models;
-using ManagerLogbook.Web.Services.Contracts;
-using Microsoft.Extensions.Caching.Memory;
 using ManagerLogbook.Tests.HelpersMethods;
 using ManagerLogbook.Web.Areas.Moderator.Controllers;
-using Microsoft.AspNetCore.Rewrite.Internal.UrlActions;
 using ManagerLogbook.Services.CustomExeptions;
+using ManagerLogbook.Services.Contracts.Providers;
 
 namespace ManagerLogbook.Tests.Controllers.ReviewController.Moderator
 {
@@ -23,10 +19,11 @@ namespace ManagerLogbook.Tests.Controllers.ReviewController.Moderator
         public async Task Succeed()
         {
             var reviewServiceMock = new Mock<IReviewService>();
-            var businessUnitService = new Mock<IBusinessUnitService>();
-            var userService = new Mock<IUserService>();
+            var businessUnitServiceMock = new Mock<IBusinessUnitService>();
+            var userServiceMock = new Mock<IUserService>();
+            var wrapperMock = new Mock<IUserServiceWrapper>();
 
-            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitService.Object, userService.Object);
+            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitServiceMock.Object, userServiceMock.Object, wrapperMock.Object);
 
             var reviewViewModel = new ReviewViewModel()
             {
@@ -49,10 +46,11 @@ namespace ManagerLogbook.Tests.Controllers.ReviewController.Moderator
         public async Task ThrowsBadRequestWhenReviewWasNotFound()
         {
             var reviewServiceMock = new Mock<IReviewService>();
-            var businessUnitService = new Mock<IBusinessUnitService>();
-            var userService = new Mock<IUserService>();
+            var businessUnitServiceMock = new Mock<IBusinessUnitService>();
+            var userServiceMock = new Mock<IUserService>();
+            var wrapperMock = new Mock<IUserServiceWrapper>();
 
-            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitService.Object, userService.Object);
+            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitServiceMock.Object, userServiceMock.Object, wrapperMock.Object);
 
             var reviewViewModel = new ReviewViewModel()
             {
@@ -75,10 +73,11 @@ namespace ManagerLogbook.Tests.Controllers.ReviewController.Moderator
         public async Task ThrowsBadRequestWhenReviewThrowException()
         {
             var reviewServiceMock = new Mock<IReviewService>();
-            var businessUnitService = new Mock<IBusinessUnitService>();
-            var userService = new Mock<IUserService>();
+            var businessUnitServiceMock = new Mock<IBusinessUnitService>();
+            var userServiceMock = new Mock<IUserService>();
+            var wrapperMock = new Mock<IUserServiceWrapper>();
 
-            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitService.Object, userService.Object);
+            var sut = new ReviewsController(reviewServiceMock.Object, businessUnitServiceMock.Object, userServiceMock.Object, wrapperMock.Object);
 
             var reviewViewModel = new ReviewViewModel()
             {

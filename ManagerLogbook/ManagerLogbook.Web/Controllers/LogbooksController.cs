@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
@@ -15,14 +16,17 @@ namespace ManagerLogbook.Web.Controllers
         private readonly ILogbookService logbookService;
         private readonly IUserService userService;
         private readonly INoteService noteService;
+        private readonly IUserServiceWrapper wrapper;
 
         public LogbooksController(ILogbookService logbookService,
                                   IUserService userService,
-                                  INoteService noteService)
+                                  INoteService noteService,
+                                  IUserServiceWrapper wrapper)
         {
             this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
             this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
             this.noteService = noteService ?? throw new ArgumentNullException(nameof(noteService));
+            this.wrapper = wrapper ?? throw new ArgumentNullException(nameof(wrapper));
         }
 
         public async Task<IActionResult> Details(int id)
@@ -35,8 +39,8 @@ namespace ManagerLogbook.Web.Controllers
 
             model.AssignedManagers = await this.userService.GetAllManagersPresentInLogbookAsync(logbook.Id);
 
-            var userId = this.User.GetId();
-
+            var userId = this.wrapper.GetLoggedUserId(User);
+            
             if (User.IsInRole("Manager"))
             {
                 model.ActiveNotes = await this.noteService.ShowLogbookNotesWithActiveStatusAsync(userId, logbook.Id);
