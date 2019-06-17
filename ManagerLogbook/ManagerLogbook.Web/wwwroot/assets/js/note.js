@@ -2,11 +2,21 @@
 
     eventEdit.preventDefault();
     $thisEditForm = $(this);
+
+
+
     var id = $thisEditForm.attr('noteid');
+    var selectedElementId = "#notes-categories-selector-edit-"+id+" option:selected";
+    var selectedElementCategoryId = parseInt($(selectedElementId).val());
+
+    console.log(selectedElementCategoryId);
+    debugger;
 
     var urlToEdit = "/Manager/Notes/Edit";
     var concreteFormOfClickedButton = $('#editModalNote-' + id);
     var inputs = concreteFormOfClickedButton.find('input');
+    console.log(inputs);
+    debugger;
     var textarea = concreteFormOfClickedButton.find('textarea');
     var textFromDescription = textarea[0].value;
     var image = inputs[1];
@@ -20,6 +30,8 @@
     fdata.append("Id", id);
     fdata.append("Description", textFromDescription);
     fdata.append("NoteImage", fileInput);
+    fdata.append("CategoryId", selectedElementCategoryId);
+    //fdata.append("CategoryId", fileInput);
     fdata.append(token.name, token.value);
 
     $.ajax({
@@ -301,13 +313,12 @@ $(function () {
             });
     });
 
-    
+ 
 
 $('#ordersTable').on('click', '#edit-note-global-button', function (event) {
 
     var $this = $(this);
-    var idForNote = parseInt($this.attr('data-noteid'));
-    
+    var idForNote = parseInt($this.attr('data-noteid'));    
 
 
         $.get("/Manager/Notes/GetAllNoteCategories")
@@ -316,24 +327,18 @@ $('#ordersTable').on('click', '#edit-note-global-button', function (event) {
                 if (response.length > 0) {
                     for (var i = 0; i < response.length; i++) {
                         s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
-
-
-
                     }
                 }
                 else {
                     s += '<option value="null">No categories available</option>';
                 }
                 
-           
-
-                
-
+    
               
                 var finalSelector = "#notes-categories-selector-edit-" + idForNote;
+                var element = $(finalSelector + " option:selected");
 
-
-                console.log(finalSelector);
+                console.log(element);
                 debugger;
 
 

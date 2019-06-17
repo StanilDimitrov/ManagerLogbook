@@ -19,7 +19,7 @@ namespace ManagerLogbook.Services.Mappers
                 IsActiveTask = entity.IsActiveTask,
                 Image = entity.Image,
                 CreatedOn = entity.CreatedOn,
-                UserName = entity.User.UserName,
+                UserName = entity.User?.UserName,
                 UserId = entity.UserId,
                 CategoryId = entity.NoteCategoryId,
                 CategoryName = entity.NoteCategory?.Name

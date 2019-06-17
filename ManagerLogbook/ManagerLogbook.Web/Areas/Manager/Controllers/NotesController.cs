@@ -129,7 +129,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         {
             try
             {
-                var userId = this.User.GetId();
+                var userId = this.wrapper.GetLoggedUserId(User);
                 var user = await this.userService.GetUserByIdAsync(userId);
                 var model = new IndexNoteViewModel();
                 var logbookId = user.CurrentLogbookId;

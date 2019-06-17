@@ -89,7 +89,9 @@
                                         <textarea data-val-required="true" asp-for="@note.Description" class="form-control" placeholder="Please enter a description">@note.Description</textarea>
                                         <span asp-validation-for="@note.Description" class="text-danger-custom"></span>
                                     </div>
-                                    <select id="notes-categories-selector-edit-@note.Id" noteIdForSelector="@note.Id" class="form-control" name="CategoryId"></select>
+                                    <select id="notes-categories-selector-edit-@note.Id" noteIdForSelector="@note.Id" class="form-control" name="CategoryId">
+
+                                    </select>
 
                                     <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
                                     <input type="file" name="NoteImage" id="image-input-@note.Id" class="btn btn-primary file" accept="image/*">
