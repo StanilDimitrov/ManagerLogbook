@@ -7,14 +7,10 @@
     var selectedElementId = "#notes-categories-selector-edit-"+id+" option:selected";
     var selectedElementCategoryId = parseInt($(selectedElementId).val());
 
-    console.log(selectedElementCategoryId);
-    debugger;
-
     var urlToEdit = "/Manager/Notes/Edit";
     var concreteFormOfClickedButton = $('#editModalNote-' + id);
     var inputs = concreteFormOfClickedButton.find('input');
-    console.log(inputs);
-    debugger;
+   
     var textarea = concreteFormOfClickedButton.find('textarea');
     var textFromDescription = textarea[0].value;
     var image = inputs[1];
@@ -297,7 +293,6 @@ $(document).ready(function () {
                     "closeButton": true
                 }
                 toastr.error(dataFrom7Days.responseText);
-
             });
     });
 
@@ -306,9 +301,6 @@ $(document).ready(function () {
 
         $this = $(this);
         var btn = $(this).attr('value');
-        //var clickedBtnID = $(this).attr('id');
-
-        //console.log(btn);
 
         $.post("/Manager/Notes/NotesForDaysBefore/" + btn)
             .done(function (dataFrom30Days) {
@@ -364,7 +356,6 @@ $(document).ready(function () {
             });
     });
 
-
     $("#note-partial-holder").on('click', '.note-pagination-button-table', function (someEvent) {
         var $this = $(this)
         var currPage = parseInt($this.attr('at'));
@@ -392,18 +383,11 @@ $(document).ready(function () {
             }).fail(function (dataFromScrollSearch) {
 
             });
-
     });
-
     
     $('#search-notes-form').on('submit', function (eventSearchNote) {
         eventSearchNote.preventDefault();
         var searchPhrase = $('#search-for-note-phrase').val();
-        //var currentKeypress = new Date();
-
-        //var shouldRequest = // check if at least 500 ms have passed
-        //    eventSearchNote.type === 'submit' ||
-        //    (eventSearchNote.type === 'input' && searchPhrase.length > 2);
 
         $this = $(this);
 
@@ -422,8 +406,7 @@ $(document).ready(function () {
 
                 $('#note-partial-holder').empty();
                 $('#note-partial-holder').append(data);
-                shortenTextFunction();
-                showImage();
+               
                 var form = document.getElementById("search-notes-form");
                 form.reset();
 

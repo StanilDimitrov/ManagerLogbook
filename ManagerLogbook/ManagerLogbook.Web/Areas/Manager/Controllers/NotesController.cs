@@ -319,8 +319,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Deactivate(int id)
         {
             try
@@ -336,7 +334,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                               .DeactivateNoteActiveStatus(noteDTO.Id, userId);
                     if (noteDTO.IsActiveTask)
                     {
-                        //return RedirectToAction("Index");
                         return BadRequest(string.Format(WebConstants.UnableToDisableStatusNote));
                     }
 
@@ -352,7 +349,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 }
 
                 return BadRequest(WebConstants.UnableToDisableStatusNote);
-                //return RedirectToAction("Index");
             }
 
             catch (NotFoundException ex)
@@ -675,7 +671,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
 
             model.Logbooks = selectLogbooks;
-
             return model;
         }
 

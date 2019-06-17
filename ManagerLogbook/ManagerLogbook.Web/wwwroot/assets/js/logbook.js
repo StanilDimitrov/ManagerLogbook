@@ -406,9 +406,7 @@ $(function () {
 
         $.post(url, dataToSend, function (response) {
             
-            //toastr.success(response);
             window.location = "/Manager/Notes/Index"
-            //$('#myModalLogbook').modal('hide');
 
         }).fail(function (response) {
             toastr.options = {
