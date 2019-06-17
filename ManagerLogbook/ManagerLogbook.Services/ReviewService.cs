@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Services
@@ -25,9 +24,9 @@ namespace ManagerLogbook.Services
                              IBusinessValidator businessValidator,
                              IReviewEditor reviewEditor)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.businessValidator = businessValidator ?? throw new ArgumentNullException(nameof(businessValidator));
-            this.reviewEditor = reviewEditor ?? throw new ArgumentNullException(nameof(reviewEditor));
+            this.context = context;
+            this.businessValidator = businessValidator;
+            this.reviewEditor = reviewEditor;
         }
 
         public async Task<ReviewDTO> CreateReviewAsync(string originalDescription, int businessUnitId, int rating)

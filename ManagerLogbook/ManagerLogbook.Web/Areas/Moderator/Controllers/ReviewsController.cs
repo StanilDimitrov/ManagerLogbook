@@ -31,10 +31,10 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
                                  IUserService userService,
                                  IUserServiceWrapper wrapper)
         {
-            this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));
-            this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.wrapper = wrapper ?? throw new ArgumentNullException(nameof(wrapper));
+            this.reviewService = reviewService;
+            this.businessUnitService = businessUnitService;
+            this.userService = userService ;
+            this.wrapper = wrapper;
         }
 
         [HttpPost]

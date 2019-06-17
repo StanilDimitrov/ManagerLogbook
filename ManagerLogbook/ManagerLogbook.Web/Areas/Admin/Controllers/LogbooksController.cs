@@ -24,9 +24,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                                   IUserService userService,
                                   IImageOptimizer optimizer)
         {
-            this.logbookService = logbookService ?? throw new ArgumentNullException(nameof(logbookService));
-            this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            this.optimizer = optimizer ?? throw new ArgumentNullException(nameof(optimizer));
+            this.logbookService = logbookService;
+            this.userService = userService;
+            this.optimizer = optimizer;
         }        
 
         [HttpPost]

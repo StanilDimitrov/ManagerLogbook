@@ -22,8 +22,8 @@ namespace ManagerLogbook.Services
         public LogbookService(ManagerLogbookContext context,
                               IBusinessValidator businessValidator)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.businessValidator = businessValidator ?? throw new ArgumentNullException(nameof(businessValidator));
+            this.context = context;
+            this.businessValidator = businessValidator;
         }
 
         public async Task<LogbookDTO> CreateLogbookAsync(string name, int businessUnitId, string picture)

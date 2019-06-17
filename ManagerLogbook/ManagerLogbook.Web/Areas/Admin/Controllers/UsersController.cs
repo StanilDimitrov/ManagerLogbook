@@ -72,7 +72,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // Add a user to the default role, or any role you prefer here
                     if (model.UserRole == "Manager")
                     {
                         await _userManager.AddToRoleAsync(user, "Manager");
@@ -89,17 +88,12 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
                     return Ok(string.Format(WebConstants.UserCreated, model.UserName));
-                    //StatusMessage = $"Successfully created user \"{model.FirstName} {model.LastName}\" with role \"{model.UserRole}\"";
-                    //return RedirectToAction("Register");
                 }
                 return BadRequest("Invalid attempt.");
-                //AddErrors(result);
             }
 
-            // If we got this far, something failed, redisplay form
             return BadRequest(WebConstants.EnterValidData);
         }
 

@@ -1,20 +1,16 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Authentication;
+﻿using ManagerLogbook.Data;
+using ManagerLogbook.Data.Models;
+using ManagerLogbook.Web.Models.ManageViewModels;
+using ManagerLogbook.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using ManagerLogbook.Data.Models;
-//using ManagerLogbook.Extensions;
+using System;
+using System.Linq;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using ManagerLogbook.Web.Services;
-using ManagerLogbook.Web.Models.ManageViewModels;
-using ManagerLogbook.Data;
-using ManagerLogbook.Web.Extensions;
 
 namespace ManagerLogbook.Web.Controllers
 {

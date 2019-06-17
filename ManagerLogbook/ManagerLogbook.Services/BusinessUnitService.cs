@@ -2,15 +2,14 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
-using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
 using ManagerLogbook.Services.Utils;
-using ManagerLogbook.Services.CustomExeptions;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Services
 {
@@ -22,8 +21,8 @@ namespace ManagerLogbook.Services
         public BusinessUnitService(ManagerLogbookContext context,
                                    IBusinessValidator businessValidator)
         {
-            this.context = context ?? throw new ArgumentNullException(nameof(context));
-            this.businessValidator = businessValidator ?? throw new ArgumentNullException(nameof(businessValidator));
+            this.context = context;
+            this.businessValidator = businessValidator;
         }
 
         public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string information, int businessUnitCategoryId, int townId, string picture)
@@ -51,7 +50,6 @@ namespace ManagerLogbook.Services
                                            .Include(buc => buc.BusinessUnitCategory)
                                            .Include(t => t.Town)
                                            .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
-
             return result.ToDTO();
         }
 
@@ -61,14 +59,12 @@ namespace ManagerLogbook.Services
                                            .Include(buc => buc.BusinessUnitCategory)
                                            .Include(t => t.Town)
                                            .FirstOrDefaultAsync(x => x.Id == businessUnitId);
-
             if (result == null)
             {
                 throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
             }
 
             return result.ToDTO();
-
         }
 
         public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, int businessUnitCategoryId, int townId, string picture)
@@ -136,7 +132,6 @@ namespace ManagerLogbook.Services
                                            .Include(buc => buc.BusinessUnitCategory)
                                            .Include(t => t.Town)
                                            .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
-
             return result.ToDTO();
         }
 
@@ -176,7 +171,6 @@ namespace ManagerLogbook.Services
             var businessUnitCategory = new BusinessUnitCategory() { Name = businessUnitCategoryName };
 
             await this.context.SaveChangesAsync();
-
             return businessUnitCategory.ToDTO();
         }
 
@@ -202,7 +196,6 @@ namespace ManagerLogbook.Services
             businessUnitCategory.Name = newBusinessUnitCategoryName;
 
             await this.context.SaveChangesAsync();
-
             return businessUnitCategory.ToDTO();
         }
 
@@ -230,7 +223,6 @@ namespace ManagerLogbook.Services
                                            .Include(buc => buc.BusinessUnitCategory)
                                            .Include(t => t.Town)
                                            .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
-
             return result.ToDTO();
         }
 
@@ -242,7 +234,6 @@ namespace ManagerLogbook.Services
             {
                 throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
             }
-
             return businessUnitCategory.ToDTO();
         }
 
@@ -254,7 +245,6 @@ namespace ManagerLogbook.Services
             {
                 throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
             }
-
             var businessUnits = await this.context.BusinessUnits
                          .Include(buc => buc.BusinessUnitCategory)
                          .Include(t => t.Town)
@@ -284,7 +274,6 @@ namespace ManagerLogbook.Services
                                           .OrderBy(n => n.Name)
                                           .Select(x => x.ToDTO())
                                           .ToListAsync();
-
             return townsDTO;
         }
 
@@ -314,7 +303,6 @@ namespace ManagerLogbook.Services
             return businessUnit.ToDTO();
         }
 
-        //public async Task RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
         public async Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
             var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
@@ -370,7 +358,6 @@ namespace ManagerLogbook.Services
             }
 
             var searchResult = await searchCollection.Select(x => x.ToDTO()).ToListAsync();
-
             return searchResult;
         }
 
@@ -396,7 +383,6 @@ namespace ManagerLogbook.Services
                          })
                          .OrderBy(c => c.categoryName)
                          .ToDictionaryAsync(x => x.categoryName, x => x.count);
-
 
             return categoriesCountUnits;
         }

@@ -24,8 +24,8 @@ namespace ManagerLogbook.Web.Controllers
 
         public HomeController(IBusinessUnitService businessUnitService, IMemoryCache cache)
         {
-            this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
-            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
+            this.businessUnitService = businessUnitService;
+            this.cache = cache;
         }
 
         public async Task<IActionResult> Index(HomeViewModel model)
@@ -35,7 +35,6 @@ namespace ManagerLogbook.Web.Controllers
             var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
 
-            //var businessUnits = (await CacheBusinessUnits()).Select(x => x.MapFrom()).ToList();
             model.Towns = (await CacheTowns()).Select(x => x.MapFrom()).ToList();
             model.Categories = (await CacheCategories()).Select(x => x.MapFrom()).ToList();
             var businessCategories = await this.businessUnitService.GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();

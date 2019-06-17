@@ -16,8 +16,8 @@ namespace ManagerLogbook.Web.Controllers
         public BusinessUnitsController(IBusinessUnitService businessUnitService,
                                        IReviewService reviewService)
         {
-            this.businessUnitService = businessUnitService ?? throw new ArgumentNullException(nameof(businessUnitService));
-            this.reviewService = reviewService ?? throw new ArgumentNullException(nameof(reviewService));            
+            this.businessUnitService = businessUnitService;
+            this.reviewService = reviewService;            
         }
 
         public async Task<IActionResult> Details(int id)

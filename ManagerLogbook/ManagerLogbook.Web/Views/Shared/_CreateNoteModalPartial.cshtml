@@ -18,8 +18,9 @@
                         <span asp-validation-for="Description" class="text-danger-custom"></span>
                         <span class="text-danger-custom"></span>
                     </div>
-                        <label asp-for="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                        <input type="file" asp-for="NoteImage" class="btn btn-primary file special-clas-for-image-data-uploaded" accept="image/*">
+                    <select id="notes-categories-selector" class="form-control" asp-for="CategoryId"></select>
+                    <label asp-for="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                    <input type="file" asp-for="NoteImage" class="btn btn-primary file special-clas-for-image-data-uploaded" accept="image/*">
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         <div class="margin-5">

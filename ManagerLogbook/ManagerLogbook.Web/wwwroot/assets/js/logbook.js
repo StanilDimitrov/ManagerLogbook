@@ -59,9 +59,7 @@ $(function () {
         var logbookId = $('#logbook-id').val();
        
         var urlencodedInputs = inputs.serialize();
-
         var inputsToSend = urlencodedInputs + "&ManagerId=" + managerId + "&Id=" + logbookId;
-       
         var url = $this.attr('action');
 
         $.post(url, inputsToSend, function (response) {
@@ -258,7 +256,6 @@ $(function () {
     });
 });
 
-
 $(function () {
     const $submitForm = $('#update-logbook');
 
@@ -270,9 +267,7 @@ $(function () {
         var formData = new FormData(this);
         var id = $("#update-logbook-id").attr('value');
         
-       
         formData.append("Id", id);
-
 
         $.ajax({
             type: 'POST',
@@ -314,8 +309,6 @@ $(function () {
 
     });
 });
-
-
 
 $(function () {
     const $submitForm = $('#submit-form-logbook-change');
@@ -368,7 +361,6 @@ $(function () {
     });
 });
 
-
 $('#change-logbook-global-button').click(function (event) {
     $.get("/Manager/Notes/GetAllLogbooksByUser")
         .done(function (response) {
@@ -400,7 +392,6 @@ $('#change-logbook-global-button').click(function (event) {
         });
 });
 
-
 $(function () {
     const $submitForm = $('#submit-form-logbook');
 
@@ -411,23 +402,10 @@ $(function () {
 
         const dataToSend = $submitForm.serialize();
 
-        //var url = "/Manager/Users/SwitchLogbook/";
         var url = $this.attr('action');
 
         $.post(url, dataToSend, function (response) {
-            //console.log(dataToSend);
-
-            //toastr.options = {
-            //    "debug": false,
-            //    "positionClass": "toast-top-center",
-            //    "onclick": null,
-            //    "fadeIn": 300,
-            //    "fadeOut": 1000,
-            //    "timeOut": 3000,
-            //    "extendedTimeOut": 3000,
-            //    "closeButton": true
-            //}
-
+            
             //toastr.success(response);
             window.location = "/Manager/Notes/Index"
             //$('#myModalLogbook').modal('hide');
