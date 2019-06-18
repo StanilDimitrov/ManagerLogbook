@@ -23,7 +23,7 @@ The General technologies used in the development of ManagerLogbook are the follo
   - ASP.NET Core 
   - ASP.NET Identity System with admin, manager and moderator area 
   - Entity Framework Core to access database (used Code First approach)
-  - Microsoft SQL Server for data storage and Entity 
+  - Microsoft SQL Server for data storage and Use Log4Net to handle unexpected exceptions in the application 
   - Razor for all of the apps pages
   - AJAX for dynamic representation
   - Bootstrap
@@ -33,6 +33,7 @@ The General technologies used in the development of ManagerLogbook are the follo
   - Integration of application with a Continuous Integration server of Azure DevOps
   - Used GitHub advantages to work with branches durring development ot features
   - Used Azure DevOps to manage personal development tasks
+  - Use Log4Net to handle unexpected exceptions in the application
   - 73 % Unit test code coverage of the business logic
   
 #### Features
