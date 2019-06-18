@@ -89,6 +89,12 @@ The following functionalities are available for customers:
 
 - ListNotes.jpg ![](ListNotes.jpg)
 
+#### Credentials:
+
+Manager (username)/ 123456 (password)
+
+PeterModerator (username)/ 123456 (password)
+
 #### Database Diagram
 
 - DbDiagram20190617.jpg ![](DbDiagram20190617.jpg)
