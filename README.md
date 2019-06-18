@@ -33,7 +33,7 @@ The General technologies used in the development of ManagerLogbook are the follo
   - Integration of application with a Continuous Integration server of Azure DevOps
   - Used GitHub advantages to work with branches durring development ot features
   - Used Azure DevOps to manage personal development tasks
-  - Use Log4Net to handle unexpected exceptions in the application
+  - Used Log4Net to handle unexpected exceptions in the application
   - 73 % Unit test code coverage of the business logic
   
 #### Features
