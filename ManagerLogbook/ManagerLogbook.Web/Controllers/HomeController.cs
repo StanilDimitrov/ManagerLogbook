@@ -28,9 +28,9 @@ namespace ManagerLogbook.Web.Controllers
             this.cache = cache;
         }
 
-        public async Task<IActionResult> Index(HomeViewModel model)
+        public async Task<IActionResult> Index()
         {
-           
+            var model = new HomeViewModel();
             var businessUnitsDTO = await this.businessUnitService.GetAllBusinessUnitsAsync();
             var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
@@ -47,6 +47,17 @@ namespace ManagerLogbook.Web.Controllers
                 BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList()
         };
             return View(model);
+        }
+
+        public  IActionResult Redirect()
+        {
+            if (User.IsInRole("Manager"))
+            {
+                return RedirectToAction("Index", "Notes", new { area = "Manager" });
+            }
+            return RedirectToAction("Index", "Home");
+
+
         }
 
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 86400)]
