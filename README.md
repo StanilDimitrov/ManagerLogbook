@@ -1,4 +1,4 @@
-## Manager Logbook
+﻿## Manager Logbook
 
 ----
 
@@ -23,7 +23,7 @@ The General technologies used in the development of ManagerLogbook are the follo
   - ASP.NET Core 
   - ASP.NET Identity System with admin, manager and moderator area 
   - Entity Framework Core to access database (used Code First approach)
-  - Microsoft SQL Server for data storage and Entity 
+  - Microsoft SQL Server for data storage and Use Log4Net to handle unexpected exceptions in the application 
   - Razor for all of the apps pages
   - AJAX for dynamic representation
   - Bootstrap
@@ -89,6 +89,12 @@ The following functionalities are available for customers:
 - CreateNote.jpg ![](CreateNote.jpg)
 
 - ListNotes.jpg ![](ListNotes.jpg)
+
+#### Credentials:
+
+Manager (username)/ 123456 (password)
+
+PeterModerator (username)/ 123456 (password)
 
 #### Database Diagram
 

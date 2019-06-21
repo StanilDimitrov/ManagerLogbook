@@ -30,7 +30,7 @@
                                 <ul class="dropdown-menu">
                                     @foreach (var manager in Model.AssignedManagers)
                                     {
-                                        <li><a asp-controller="Account" asp-action="Details" asp-route-id="@manager.Id">@manager.UserName</a></li>
+                                        <li><a asp-controller="Users" asp-action="Details" asp-route-id="@manager.Id">@manager.UserName</a></li>
                                     }
                                 </ul>
                             }

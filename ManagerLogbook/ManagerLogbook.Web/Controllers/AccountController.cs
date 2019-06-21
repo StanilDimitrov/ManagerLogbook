@@ -9,6 +9,8 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ManagerLogbook.Web.Services;
+using ManagerLogbook.Services.Contracts.Providers;
+using ManagerLogbook.Services.Contracts;
 
 namespace ManagerLogbook.Web.Controllers
 {
@@ -20,17 +22,23 @@ namespace ManagerLogbook.Web.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IUserServiceWrapper wrapper;
+        private readonly IUserService userService;
 
         public AccountController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IUserServiceWrapper wrapper,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            this.wrapper = wrapper;
+            this.userService = userService;
         }
 
         [TempData]
@@ -59,7 +67,7 @@ namespace ManagerLogbook.Web.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    
+
                     return RedirectToLocal(returnUrl);
                 }
                 
@@ -275,7 +283,7 @@ namespace ManagerLogbook.Web.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction("Redirect", "Home");
             }
         }
 
