@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ManagerLogbook.Data.Models
 {
@@ -8,9 +6,8 @@ namespace ManagerLogbook.Data.Models
     {
         public int Id { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string Word { get; set; }
-
-        public int BusinessUnitId { get; set; }
-        public BusinessUnit BusinessUnit { get; set; }
     }
 }

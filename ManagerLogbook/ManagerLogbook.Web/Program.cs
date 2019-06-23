@@ -13,7 +13,7 @@ namespace ManagerLogbook.Web
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             // Log4Net Configuration
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -21,7 +21,6 @@ namespace ManagerLogbook.Web
             XmlConfigurator.Configure(logRepository, fileInfo);
 
             var host = BuildWebHost(args);
-            await SeedData.SeedDatabase(host);
             host.Run();
         }
 

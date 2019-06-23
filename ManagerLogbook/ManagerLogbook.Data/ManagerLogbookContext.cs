@@ -1,5 +1,6 @@
 ﻿using ManagerLogbook.Data.EntityConfiguration;
 using ManagerLogbook.Data.Models;
+using ManagerLogbook.Data.SeedData;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,7 @@ namespace ManagerLogbook.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UsersLogbooksConfig());
+            modelBuilder.Seed();
             base.OnModelCreating(modelBuilder);
         }
     }

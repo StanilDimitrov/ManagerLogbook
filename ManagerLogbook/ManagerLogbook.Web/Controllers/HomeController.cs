@@ -55,9 +55,11 @@ namespace ManagerLogbook.Web.Controllers
             {
                 return RedirectToAction("Index", "Notes", new { area = "Manager" });
             }
+            if (User.IsInRole("Moderator"))
+            {
+                return RedirectToAction("Index", "Reviews", new { area = "Moderator" });
+            }
             return RedirectToAction("Index", "Home");
-
-
         }
 
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 86400)]

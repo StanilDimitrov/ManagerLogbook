@@ -120,12 +120,20 @@ namespace ManagerLogbook.Services
             businessUnit.Information = information;
 
 
-
             if (picture != null)
             {
                 businessUnit.Picture = picture;
             }
 
+            if (townId != 0)
+            {
+                businessUnit.TownId = townId;
+            }
+
+            if (businessUnitCategoryId != 0)
+            {
+                businessUnit.BusinessUnitCategoryId = businessUnitCategoryId;
+            }
             await this.context.SaveChangesAsync();
 
             var result = await this.context.BusinessUnits

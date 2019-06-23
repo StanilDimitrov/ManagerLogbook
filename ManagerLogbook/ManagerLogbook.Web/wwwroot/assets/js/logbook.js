@@ -141,38 +141,7 @@ $(function () {
     });
 });
 
-$('#update-logbook-global-button').click(function (event) {
 
-    $this = $(this);
-
-    $.get("/Admin/BusinessUnits/GetAllBusinessUnits/")
-        .done(function (response) {
-            var s = '<option value="null" selected disabled hidden>Please Select Business unit</option>';
-            if (response.length > 0) {
-                for (var i = 0; i < response.length; i++) {
-                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
-                }
-            }
-            else {
-                s += '<option value="null">No business units available</option>';
-            }
-            
-            $("#business-unit-update-selector").html(s);
-
-        }).fail(function (response) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(response.responseText);
-        });
-});
 
 $('#create-logbook-global-button').click(function (event) {
 
@@ -262,12 +231,21 @@ $(function () {
     $submitForm.on('submit', function (event) {
         event.preventDefault();
 
+        //var $this = $(this);
+        //var inputs = $this.find('input');
+        //console.log(inputs);
+        //debugger;
+        //var formData = new FormData(this);
+        //var id = $("#update-logbook-id").attr('value');
+
+
+        var $this = $(this);
+        var id = $("#update-logbook-id").attr('value');
         var $this = $(this);
         var inputs = $this.find('input');
         var formData = new FormData(this);
-        var id = $("#update-logbook-id").attr('value');
-        
         formData.append("Id", id);
+   
 
         $.ajax({
             type: 'POST',
@@ -308,6 +286,39 @@ $(function () {
         });
 
     });
+});
+
+$('#update-logbook-global-button').click(function (event) {
+
+    $this = $(this);
+
+    $.get("/Admin/BusinessUnits/GetAllBusinessUnits/")
+        .done(function (response) {
+            var s = '<option value="null" selected disabled hidden>Please Select Business unit</option>';
+            if (response.length > 0) {
+                for (var i = 0; i < response.length; i++) {
+                    s += '<option value="' + response[i].id + '">' + response[i].name + '</option>';
+                }
+            }
+            else {
+                s += '<option value="null">No business units available</option>';
+            }
+
+            $("#business-unit-update-selector").html(s);
+
+        }).fail(function (response) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(response.responseText);
+        });
 });
 
 $(function () {
