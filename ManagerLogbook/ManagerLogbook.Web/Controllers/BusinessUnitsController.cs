@@ -47,5 +47,18 @@ namespace ManagerLogbook.Web.Controllers
 
             return PartialView("_ReviewsPartial", model);
         }
+
+        public async Task<IActionResult> GiveLikeToBusinessUnit(int businessUnitId)
+        {
+            var model = new IndexBusinessUnitViewModel();
+
+            await this.businessUnitService.GiveLikeBusinessUnitAsync(businessUnitId);
+
+            var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);                       
+
+            model.BusinessUnit = businessUnit.MapFrom();
+
+            return View(model);
+        }
     }
 }

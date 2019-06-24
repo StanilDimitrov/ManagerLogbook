@@ -394,5 +394,25 @@ namespace ManagerLogbook.Services
 
             return categoriesCountUnits;
         }
+
+        public async Task<BusinessUnitDTO> GiveLikeBusinessUnitAsync(int businessUnitId)
+        {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
+            businessUnit.Likes++;
+
+            await this.context.SaveChangesAsync();
+
+            var result = await this.context.BusinessUnits
+                                           .Include(buc => buc.BusinessUnitCategory)
+                                           .Include(t => t.Town)
+                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
+            return result.ToDTO();
+        }
     }
 }
