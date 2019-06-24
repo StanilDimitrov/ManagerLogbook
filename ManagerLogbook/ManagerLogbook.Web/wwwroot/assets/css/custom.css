@@ -69,12 +69,12 @@ button.logout-btn:hover {
 }
 
 .padding-bottom-9 {
-    padding-bottom:9% !important;
+    padding-bottom: 9% !important;
 }
 
-.padding-custom{
-    padding-bottom:9% !important;
-    padding-top:4% !important;
+.padding-custom {
+    padding-bottom: 9% !important;
+    padding-top: 4% !important;
 }
 
 .footer-bg-image {
@@ -293,7 +293,7 @@ form.example button {
     padding-bottom: 0% !important;
 }
 
-.margin-bottom-0{
+.margin-bottom-0 {
     margin-bottom: 0% !important;
 }
 
@@ -323,5 +323,73 @@ td.w3-list-img a {
 .image-upload {
     height: 30% !important;
     width: 100% !important;
-    margin-top: 5% !important;
+    margin-top: 2% !important;
+}
+
+.btn_upload {
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    color: #fff;
+    background-color: #2196f3;
+    /*border: 1px solid #166b8a;*/
+    padding: 5px 10px;
+}
+
+    .btn_upload:hover,
+    .btn_upload:focus {
+        background-color: #7ca9e6;
+    }
+
+.yes {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px !important;
+}
+
+.btn_upload input {
+    cursor: pointer;
+    height: 100%;
+    position: absolute;
+    filter: alpha(opacity=1);
+    -moz-opacity: 0;
+    opacity: 0;
+}
+
+.it {
+    height: 100px;
+    margin-left: 10px;
+}
+
+.btn-rmv1,
+.btn-rmv2,
+.btn-rmv3,
+.btn-rmv4,
+.btn-rmv5 {
+    display: none;
+}
+
+.rmv {
+    cursor: pointer;
+    color: #fff;
+    border-radius: 30px;
+    border: 1px solid #fff;
+    display: inline-block;
+    background: rgba(255, 0, 0, 1);
+    margin: -5px -10px;
+}
+
+    .rmv:hover {
+        background: rgba(255, 0, 0, 0.5);
+    }
+
+  
+.button-round {
+    border-radius: 3px;
+}
+
+.text-centered {
+    text-align: center !important;
+    margin-top:2%;
 }

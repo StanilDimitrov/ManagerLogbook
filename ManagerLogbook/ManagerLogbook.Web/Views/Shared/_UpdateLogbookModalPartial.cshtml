@@ -18,9 +18,12 @@
                         <span asp-validation-for="Name" class="text-danger-custom"></span>
                     </div>
                     <select id="business-unit-update-selector" class="form-control" asp-for="BusinessUnitId"></select>
+                    <div class="text-centered">
+                        <img id="ImgPreview-update-logbook" class="preview1" src="" />
+                        <input type="button" id="removeImage1-update-logbook" value="x" class="btn-rmv1" />
+                    </div>
                     <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file"  name="LogbookPicture" class="btn btn-primary file" accept="image/*">
-
+                    <input type="file" id="imag-update-logbook" name="LogbookPicture" class="btn btn-primary file" accept="image/*">
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         <div class="margin-5">
