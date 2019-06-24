@@ -22,6 +22,7 @@ namespace ManagerLogbook.Services.Mappers
                 Email = entity.Email,
                 Picture = entity.Picture,
                 Information = entity.Information,
+                Likes = entity.Likes,
                 CategoryName = entity.BusinessUnitCategory.Name,
                 BusinessUnitTownName = entity.Town.Name
             };

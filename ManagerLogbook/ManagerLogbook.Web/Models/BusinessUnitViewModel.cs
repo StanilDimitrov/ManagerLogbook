@@ -33,6 +33,8 @@ namespace ManagerLogbook.Web.Models
 
         public IFormFile BusinessUnitPicture { get; set; }
 
+        public int Likes { get; set; }
+
         public string ModeratorId { get; set; }
         public IEnumerable<SelectListItem> Moderators { get; set; }
         public string ModeratorName { get; set; }
