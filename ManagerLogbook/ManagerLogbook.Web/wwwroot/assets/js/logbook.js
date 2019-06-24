@@ -434,3 +434,57 @@ $(function () {
         });
     });
 });
+
+function readURL(input, imgControlName) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(imgControlName).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#imag-create-logbook").change(function () {
+    var imgControlName = "#ImgPreview-create-logbook";
+    readURL(this, imgControlName);
+    $('.preview1').addClass('it');
+    $('.btn-rmv1').addClass('rmv');
+});
+
+$("#removeImage1-create-logbook").click(function (e) {
+    e.preventDefault();
+    $("#imag-create-logbook").val("");
+    $("#ImgPreview-create-logbook").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+$('#myModalCreateLogbook').on('hidden.bs.modal', function () {
+    $("#imag-create-logbook").val("");
+    $("#ImgPreview-create-logbook").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+$("#imag-update-logbook").change(function () {
+    var imgControlName = "#ImgPreview-update-logbook";
+    readURL(this, imgControlName);
+    $('.preview1').addClass('it');
+    $('.btn-rmv1').addClass('rmv');
+});
+
+$("#removeImage1-update-logbook").click(function (e) {
+    e.preventDefault();
+    $("#imag-update-logbook").val("");
+    $("#ImgPreview-update-logbook").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+$('#myModalUpdateLogbook').on('hidden.bs.modal', function () {
+    $("#imag-update-logbook").val("");
+    $("#ImgPreview-update-logbook").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});

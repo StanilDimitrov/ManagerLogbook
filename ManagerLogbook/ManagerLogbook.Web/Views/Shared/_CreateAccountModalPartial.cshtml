@@ -41,10 +41,12 @@
                             </select>
                         </div>
                     </div>
-                   
+                    <div class="text-centered">
+                        <img id="ImgPreview-create-account" class="preview1" src="" />
+                        <input type="button" id="removeImage1-create-account" value="x" class="btn-rmv1" />
+                    </div>
                     <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file"  name="UserImage" class="btn btn-primary file" accept="image/*">
-
+                    <input type="file" id="imag-create-account" name="UserImage" class="btn btn-primary file" accept="image/*">
                     <div class="margin-5">
                         <button type="submit" asp-area="Admin" asp-controller="Create" asp-action="Register" class="btn btn-primary btn-block">Create Account</button>
                         <div class="margin-5">

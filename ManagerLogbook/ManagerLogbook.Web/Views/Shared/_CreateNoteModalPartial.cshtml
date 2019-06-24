@@ -19,8 +19,12 @@
                         <span class="text-danger-custom"></span>
                     </div>
                     <select id="notes-categories-selector" class="form-control" asp-for="CategoryId"></select>
+                    <div class="text-centered">
+                        <img id="ImgPreview" class="preview1" src="" />
+                        <input type="button" id="removeImage1" value="x" class="btn-rmv1" />
+                    </div>
                     <label asp-for="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" asp-for="NoteImage" class="btn btn-primary file special-clas-for-image-data-uploaded" accept="image/*">
+                    <input type="file" id="imag" asp-for="NoteImage" class="btn btn-primary file input-img" accept="image/*">
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>
                         <div class="margin-5">
@@ -32,7 +36,7 @@
                         </div>
                     </div>
                 </form>
-            </div>
+        </div>
         </div>
     </div>
 </div>

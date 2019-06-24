@@ -222,7 +222,7 @@ function test(id) {
             $('#note-partial-holder').append(dataAll);
 
             shortenTextFunction();
-            //showImage();
+            showImage();
 
         }).fail(function (dataAll) {
             toastr.options = {
@@ -239,37 +239,37 @@ function test(id) {
         });
 }
 
-$('#search-criterias-holder').on('click', '#deactivate-note', function (eventDeactivateNote) {
+//$('#search-criterias-holder').on('click', '#deactivate-note', function (eventDeactivateNote) {
 
-    eventDeactivateNote.preventDefault();
+//    eventDeactivateNote.preventDefault();
 
-    $this = $(this);
-    var btn = $(this).attr('value');
+//    $this = $(this);
+//    var btn = $(this).attr('value');
 
-    $.get("/Manager/Notes/Deactivate/" + btn)
-        .done(function (dataAll) {
+//    $.get("/Manager/Notes/Deactivate/" + btn)
+//        .done(function (dataAll) {
 
-            $('#note-partial-holder').empty();
+//            $('#note-partial-holder').empty();
 
-            $('#note-partial-holder').append(dataAll);
+//            $('#note-partial-holder').append(dataAll);
 
-            shortenTextFunction();
-            showImage();
+//            shortenTextFunction();
+//            showImage();
 
-        }).fail(function (dataAll) {
-            toastr.options = {
-                "debug": false,
-                "positionClass": "toast-top-center",
-                "onclick": null,
-                "fadeIn": 300,
-                "fadeOut": 1000,
-                "timeOut": 3000,
-                "extendedTimeOut": 3000,
-                "closeButton": true
-            }
-            toastr.error(dataAll.responseText);
-        });
-});
+//        }).fail(function (dataAll) {
+//            toastr.options = {
+//                "debug": false,
+//                "positionClass": "toast-top-center",
+//                "onclick": null,
+//                "fadeIn": 300,
+//                "fadeOut": 1000,
+//                "timeOut": 3000,
+//                "extendedTimeOut": 3000,
+//                "closeButton": true
+//            }
+//            toastr.error(dataAll.responseText);
+//        });
+//});
 
 $("#myModalRegister").on('show.bs.modal', function () {
     $(this).find('.text-danger-custom').empty();
@@ -296,6 +296,12 @@ $("#myModalUpdateBusinessUnit").on('show.bs.modal', function () {
     $(this).find('.text-danger-custom').empty();
     console.log($(this).find('.field-validation-error'));
 });
+
+$("#myModalNote").on('show.bs.modal', function () {
+    $(this).find('.preview1').empty();
+});
+
+
 
 dataLoading = false;
 var scrollPageCount = 2;
@@ -326,4 +332,59 @@ $(window).on("resize", function () {
 });
 
 
+
+function readURL(input, imgControlName) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(imgControlName).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#imag").change(function () {
+    var imgControlName = "#ImgPreview";
+    readURL(this, imgControlName);
+    $('.preview1').addClass('it');
+    $('.btn-rmv1').addClass('rmv');
+});
+
+$("#removeImage1").click(function (e) {
+    e.preventDefault();
+    $("#imag").val("");
+    $("#ImgPreview").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+$('#myModalNote').on('hidden.bs.modal', function () {
+    $("#imag").val("");
+    $("#ImgPreview").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+
+$("#imag-create-account").change(function () {
+    var imgControlName = "#ImgPreview-create-account";
+    readURL(this, imgControlName);
+    $('.preview1').addClass('it');
+    $('.btn-rmv1').addClass('rmv');
+});
+
+$("#removeImage1-create-account").click(function (e) {
+    e.preventDefault();
+    $("#imag-create-account").val("");
+    $("#ImgPreview-create-account").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+$('#myModalRegister').on('hidden.bs.modal', function () {
+    $("#imag-create-account").val("");
+    $("#ImgPreview-create-account").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
 
