@@ -83,12 +83,12 @@ namespace ManagerLogbook.Services
                 throw new NotFoundException(ServicesConstants.LogbookNotFound);
             }
 
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+            //var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
 
-            if (businessUnit == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
+            //if (businessUnit == null)
+            //{
+            //    throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            //}
 
             if (string.IsNullOrEmpty(name))
             {
@@ -113,6 +113,16 @@ namespace ManagerLogbook.Services
             if (picture != null)
             {
                 logbook.Picture = picture;
+            }
+
+            if (businessUnitId != 0)
+            {
+                var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+                if (businessUnit == null)
+                {
+                    throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+                }
+                logbook.BusinessUnitId = businessUnitId;
             }
             
             await this.context.SaveChangesAsync();

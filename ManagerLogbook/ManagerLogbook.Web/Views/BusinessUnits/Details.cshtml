@@ -66,11 +66,16 @@
                         <p>@Model.BusinessUnit.Information</p>
                     </div>
                 </div>
-                <div class="commentArea">                   
+                <div class="commentArea">
                     <div id="reviews-list">
                         @await Html.PartialAsync("_ReviewsPartial", Model)
-                    </div>                    
-                    <h3 class="mt20">Write a review</h3>
+                    </div>
+                    <h3 class="mt20">Leave a comment</h3>
+                    @*<i onclick="myFunction(this)" style="font-size:40px" class="fa fa-thumbs-up"></i>*@
+                    <div class="profileUserInfo-1" id="counter-likes" style="text-align:right">
+                        <span style="margin-right:1%" id="likes-span-container">@Model.BusinessUnit.Likes</span>  <a id="like-review-btn" businessUnitId="@Model.BusinessUnit.Id" class="btn btn-primary btn-new"><i class="fa fa-heart-o" aria-hidden="true"></i>Like</a><br />
+                        @*<a id="like-review" class="btn btn-primary btn-new" style="margin-top:2%">Dislike</a><br />*@
+                    </div>
                     <form id="submit-review" asp-controller="Reviews" asp-action="Create" method="post">
                         <div class="row">
                             <div class="form-group col-xs-12">
@@ -84,7 +89,14 @@
                     </form>
                     <input type="hidden" class="form-control" id="business-unit-id-input" value="@Model.BusinessUnit.Id" />
 
-
+                    @*<div id="demo">
+            <button class="like">
+                <span class="likes">0</span>
+            </button>
+            <button class="dislike">
+                <span class="dislikes">0</span>
+            </button>
+        </div>*@
                 </div>
             </div>
             <div class="col-sm-4 col-xs-12">
@@ -141,8 +153,12 @@
 
 @section Scripts{
 
+    <script src="~/assets/js/like-dislike.js"></script>
     <script src="~/assets/js/create-review.js"></script>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>*@
+
     @*<script src="~/assets/js/custom.js"></script>
         <script src="~/assets/js/logbook.js"></script>*@
+    @*<script>(function (d, e, s) { if (d.getElementById("likebtn_wjs")) return; a = d.createElement(e); m = d.getElementsByTagName(e)[0]; a.async = 1; a.id = "likebtn_wjs"; a.src = s; m.parentNode.insertBefore(a, m) })(document, "script", "//w.likebtn.com/js/w/widget.js");</script>*@
 }
 

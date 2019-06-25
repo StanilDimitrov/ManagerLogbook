@@ -41,8 +41,12 @@
                     <select id="towns-selector" class="form-control" asp-for="TownId"></select>
 
                     <select id="business-unit-categories-selector" class="form-control margin-5" asp-for="CategoryId"></select>
+                    <div class="text-centered">
+                        <img id="ImgPreview-create-business-unit" class="preview1" src="" />
+                        <input type="button" id="removeImage1-create-business-unit" value="x" class="btn-rmv1" />
+                    </div>
                     <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" name="BusinessUnitPicture" class="btn btn-primary file" accept="image/*">
+                    <input type="file" id="imag-create-business-unit" name="BusinessUnitPicture" class="btn btn-primary file" accept="image/*">
 
                     <div class="margin-5">
                         <button type="submit" class="btn btn-primary btn-block">Submit</button>

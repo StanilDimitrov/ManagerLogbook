@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Text.RegularExpressions;
 
 namespace ManagerLogbook.Services.Providers
 {
@@ -34,13 +34,13 @@ namespace ManagerLogbook.Services.Providers
 
         public bool CheckReviewVisibility(string editDescription)
         {
-            bool isVisible = true; 
+            bool isVisible = true;
 
-            int countReplaceChars = editDescription.Replace(" ",string.Empty).TakeWhile(c => c == '*').Count();
+            int countReplaceChars = editDescription.Count(x => x == '*');
 
-            double isVisibleRatio = countReplaceChars * 1.00 / editDescription.Length; 
+            double isVisibleRatio = countReplaceChars * 1.00 / editDescription.Length;
 
-            if(isVisibleRatio>0.25)
+            if (isVisibleRatio > 0.25)
             {
                 isVisible = false;
             }

@@ -14,7 +14,7 @@
     var textarea = concreteFormOfClickedButton.find('textarea');
     var textFromDescription = textarea[0].value;
     var image = inputs[1];
-    var token = inputs[2];
+    var token = inputs[3];
     var imageInputIdSelector = "#image-input-" + id;
 
     var file = $(imageInputIdSelector)[0];
@@ -27,6 +27,9 @@
     fdata.append("CategoryId", selectedElementCategoryId);
     //fdata.append("CategoryId", fileInput);
     fdata.append(token.name, token.value);
+
+    console.log(inputs);
+    debugger;
 
     $.ajax({
         type: 'post',
@@ -424,5 +427,4 @@ $(document).ready(function () {
                 toastr.error(data.responseText);
             });
     });
-
 

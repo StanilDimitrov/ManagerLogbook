@@ -30,7 +30,6 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId);
 
-        //Task RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId);
         Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId);
 
         Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId);
@@ -38,5 +37,7 @@ namespace ManagerLogbook.Services.Contracts
         Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetAllBusinessUnitsCategoriesAsync();
 
         Task<IReadOnlyDictionary<string, int>> GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
+
+        Task<BusinessUnitDTO> GiveLikeBusinessUnitAsync(int businessUnitId);
     }
 }

@@ -120,12 +120,20 @@ namespace ManagerLogbook.Services
             businessUnit.Information = information;
 
 
-
             if (picture != null)
             {
                 businessUnit.Picture = picture;
             }
 
+            if (townId != 0)
+            {
+                businessUnit.TownId = townId;
+            }
+
+            if (businessUnitCategoryId != 0)
+            {
+                businessUnit.BusinessUnitCategoryId = businessUnitCategoryId;
+            }
             await this.context.SaveChangesAsync();
 
             var result = await this.context.BusinessUnits
@@ -385,6 +393,26 @@ namespace ManagerLogbook.Services
                          .ToDictionaryAsync(x => x.categoryName, x => x.count);
 
             return categoriesCountUnits;
+        }
+
+        public async Task<BusinessUnitDTO> GiveLikeBusinessUnitAsync(int businessUnitId)
+        {
+            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+            }
+
+            businessUnit.Likes++;
+
+            await this.context.SaveChangesAsync();
+
+            var result = await this.context.BusinessUnits
+                                           .Include(buc => buc.BusinessUnitCategory)
+                                           .Include(t => t.Town)
+                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
+            return result.ToDTO();
         }
     }
 }

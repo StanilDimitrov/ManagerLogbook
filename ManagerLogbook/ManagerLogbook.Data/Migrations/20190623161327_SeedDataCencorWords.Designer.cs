@@ -4,14 +4,16 @@ using ManagerLogbook.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ManagerLogbook.Data.Migrations
 {
     [DbContext(typeof(ManagerLogbookContext))]
-    partial class ManagerLogbookContextModelSnapshot : ModelSnapshot
+    [Migration("20190623161327_SeedDataCencorWords")]
+    partial class SeedDataCencorWords
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +38,6 @@ namespace ManagerLogbook.Data.Migrations
 
                     b.Property<string>("Information")
                         .HasMaxLength(500);
-
-                    b.Property<int>("Likes");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -65,7 +65,6 @@ namespace ManagerLogbook.Data.Migrations
                             Address = "bul. Maria Luiza 42",
                             BusinessUnitCategoryId = 1,
                             Email = "grandhotel@abv.bg",
-                            Likes = 0,
                             Name = "Grand Hotel Sofia",
                             PhoneNumber = "0897654321",
                             TownId = 1
@@ -76,7 +75,6 @@ namespace ManagerLogbook.Data.Migrations
                             Address = "bul. Vasil Levski 42",
                             BusinessUnitCategoryId = 1,
                             Email = "mariot@abv.bg",
-                            Likes = 0,
                             Name = "Mariot",
                             PhoneNumber = "0897354213",
                             TownId = 2
@@ -87,7 +85,6 @@ namespace ManagerLogbook.Data.Migrations
                             Address = "bul. Hristo Botev 32",
                             BusinessUnitCategoryId = 1,
                             Email = "imperial@mail.bg",
-                            Likes = 0,
                             Name = "Imperial Hotel",
                             PhoneNumber = "0897454324",
                             TownId = 3
@@ -98,7 +95,6 @@ namespace ManagerLogbook.Data.Migrations
                             Address = "bul. G. Dimitrov 46",
                             BusinessUnitCategoryId = 1,
                             Email = "0897656361",
-                            Likes = 0,
                             Name = "Hotel Palermo",
                             PhoneNumber = "0897454324",
                             TownId = 1
@@ -109,7 +105,6 @@ namespace ManagerLogbook.Data.Migrations
                             Address = "bul. Marica 43",
                             BusinessUnitCategoryId = 1,
                             Email = "grandhotel@abv.bg",
-                            Likes = 0,
                             Name = "Grand Hotel Plovdiv",
                             PhoneNumber = "0896654621",
                             TownId = 2
@@ -120,7 +115,6 @@ namespace ManagerLogbook.Data.Migrations
                             Address = "Student City",
                             BusinessUnitCategoryId = 2,
                             Email = "sweet@dir.bg",
-                            Likes = 0,
                             Name = "Sweet Sofia",
                             PhoneNumber = "0897554325",
                             TownId = 1
@@ -491,13 +485,13 @@ namespace ManagerLogbook.Data.Migrations
                         {
                             Id = "9c328abd-e9c0-4271-85fb-c7bb7b8adaaf",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7e911f11-9213-4f2a-8a6e-3bf971927630",
+                            ConcurrencyStamp = "3b8866b3-8436-4712-a5df-c68e40d987e1",
                             Email = "admin@admin.bg",
                             EmailConfirmed = false,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@ADMIN.BG",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEAULcJ+8WV0H0BMYxXxFJpo585T4duoBin6pUB2BnZx8qAmHottXGBTILED7WyvpZQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEObBDoBe8yePbKg7DFaJMf3EdcySgW9m1XFv3o7p5BO5JfZdtUhltTEQeGyqs4EdBg==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "QSV7IPN3NQOB7US3NWWJQV2BOPWLAWQC",
                             TwoFactorEnabled = false,
@@ -545,21 +539,21 @@ namespace ManagerLogbook.Data.Migrations
                         new
                         {
                             Id = "93ad4deb-b9f7-4a98-9585-8b79963aee55",
-                            ConcurrencyStamp = "2bb66bb6-a478-4bbf-81bf-e5c7a0430ad3",
+                            ConcurrencyStamp = "ba8654c2-1117-489c-99b4-957b9f8d9048",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "6b32cc6d-2fc9-4808-a0a6-b3877bf9a381",
-                            ConcurrencyStamp = "669ce113-10df-45fa-a41e-93ccc62231a4",
+                            ConcurrencyStamp = "ca0b3fa4-b04f-4fca-9861-b4c6b9369984",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
                             Id = "d525385f-0b2d-4db4-a874-a2bf1b27ae3f",
-                            ConcurrencyStamp = "4abb4cae-c931-4812-99ab-368f06a5f6b9",
+                            ConcurrencyStamp = "99d4b90d-4058-49a2-979f-66773991fd40",
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         });

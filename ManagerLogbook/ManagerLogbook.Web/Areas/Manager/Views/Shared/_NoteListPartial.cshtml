@@ -54,7 +54,7 @@
                             }
                             @if (note.Image != null)
                             {
-                                <a class="image-link btn btn-primary btn-new width-100 margin-10" @*data-toggle="modal" data-target="#imageModalNote-@note.Id"*@  href="/images/@note.Image">Show Image</a>
+                                <a class="image-link btn btn-primary btn-new width-100 margin-10" href="/images/@note.Image">Show Image</a>
                             }
                         </div>
                     </td>
@@ -84,11 +84,15 @@
                                         <textarea data-val-required="true" asp-for="@note.Description" class="form-control" placeholder="Please enter a description">@note.Description</textarea>
                                         <span asp-validation-for="@note.Description" class="text-danger-custom"></span>
                                     </div>
-                                    <select id="notes-categories-selector-edit-@note.Id" noteIdForSelector="@note.Id" class="form-control" name="CategoryId">
+                                    <select id="notes-categories-selector-edit-@note.Id" noteIdForSelector="@note.Id" class="form-control" name="CategoryId"></select>
+                                    <div class="text-centered">
+                                        <img id="ImgPreview-@note.Id" class="preview1" src="" />
+                                        <input type="button" id="removeImage1-@note.Id" value="x" class="btn-rmv1" />
+                                    </div>
+                                    @*<label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                                    <input type="file" id="imag" name="NoteImage" class="btn btn-primary file input-img" accept="image/*">*@
 
-                                    </select>
-
-                                    <label name="Image" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                                    <label name="Image" note-id="@note.Id" class="blabla btn btn-primary-custom browse margin-5">Upload Image</label>
                                     <input type="file" name="NoteImage" id="image-input-@note.Id" class="btn btn-primary file" accept="image/*">
 
                                     <div class="margin-5">
@@ -108,22 +112,7 @@
                 </div>
                 <!-- End Note Modal -->
 
-                <!-- Image Modal -->
-                <div class="modal fade" id="imageModalNote-@note.Id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog">
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                @*<a class="close" data-dismiss="modal">x</a>*@
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <a href="/images/@note.Image"></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Image Modal -->
+               
             }
         </tbody>
     </table>

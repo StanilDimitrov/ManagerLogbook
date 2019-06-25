@@ -36,7 +36,6 @@ $(function () {
             $.get(getReviewsUrl).done(function (reviewData) {
                 $('#reviews-list').empty();
 
-
                 $('#reviews-list').append(reviewData);
 
                 $("#submit-review")[0].reset();
@@ -71,8 +70,8 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
     var concreteFormOfClickedButton = $('#editModalReview-' + id);
     var inputs = concreteFormOfClickedButton.find('input');
     var originalDescription = $('#original-description').val();
-  
-    
+
+
     var businessUnitId = $('#business-unit-review-id').val();
     var antiForgery = $('#token-review-id').find('input');
     var idOfForm = "#submit-form-" + id;
@@ -82,10 +81,10 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
 
     var urlToEdit = "/Moderator/Reviews/Update";
     var concreteFormOfClickedButton = $('#editModalReview-' + id);
-   
+
     var textarea = concreteFormOfClickedButton.find('textarea');
     var textFromDescription = textarea[0].value;
- 
+
     var inputs = "Id=" + id + "&EditedDescription=" + textFromDescription + "&OriginalDescription=" + originalDescription + "&BusinessUnitId=" + businessUnitId + "&" + token.name + "=" + token.value;
 
     $.post(urlToEdit, inputs, function (response) {
@@ -118,57 +117,57 @@ $('.submit-edit-review-form-button').click(function (eventEdit) {
 });
 
 
-    //console.log(inputs);
+//console.log(inputs);
 
-    //var fdata = new FormData();
-    //fdata.append("Id", id);
-    //fdata.append("EditedDescription", textFromDescription);
-    //fdata.append("OriginalDescription", originalDescription);
-    //fdata.append("BusinessUnitId", businessUnitId);
-    //fdata.append(token.name, token.value);
+//var fdata = new FormData();
+//fdata.append("Id", id);
+//fdata.append("EditedDescription", textFromDescription);
+//fdata.append("OriginalDescription", originalDescription);
+//fdata.append("BusinessUnitId", businessUnitId);
+//fdata.append(token.name, token.value);
 
-    
-      
 
-    //$.ajax({
-    //    type: 'post',
-    //    url: urlToEdit,
-    //    data: fdata,
-    //    processData: false,
-    //    contentType: false,
-    //}).done(function (response) {
 
-    //    toastr.options =
-    //        {
-    //            "debug": false,
-    //            "positionClass": "toast-top-center",
-    //            "onclick": null,
-    //            "fadeIn": 300,
-    //            "fadeOut": 1000,
-    //            "timeOut": 3000,
-    //            "extendedTimeOut": 3000,
-    //            "onHidden": function () {
-    //            }
-    //        }
-    //    $('#editModalReview-' + id).modal('hide');
-    //    window.location = "/Moderator/Reviews/Index/";
-    //    toastr.success(response);
 
-    //    //window.setTimeout(function () { location.reload() }, 1500);
-    //    //location.reload();
-    //}).fail(function (response) {
-    //    toastr.options =
-    //        {
-    //            "debug": false,
-    //            "positionClass": "toast-top-center",
-    //            "onclick": null,
-    //            "fadeIn": 300,
-    //            "fadeOut": 1000,
-    //            "timeOut": 3000,
-    //            "extendedTimeOut": 3000
-    //        }
-    //    toastr.error(response.responseText);
-    //});
+//$.ajax({
+//    type: 'post',
+//    url: urlToEdit,
+//    data: fdata,
+//    processData: false,
+//    contentType: false,
+//}).done(function (response) {
+
+//    toastr.options =
+//        {
+//            "debug": false,
+//            "positionClass": "toast-top-center",
+//            "onclick": null,
+//            "fadeIn": 300,
+//            "fadeOut": 1000,
+//            "timeOut": 3000,
+//            "extendedTimeOut": 3000,
+//            "onHidden": function () {
+//            }
+//        }
+//    $('#editModalReview-' + id).modal('hide');
+//    window.location = "/Moderator/Reviews/Index/";
+//    toastr.success(response);
+
+//    //window.setTimeout(function () { location.reload() }, 1500);
+//    //location.reload();
+//}).fail(function (response) {
+//    toastr.options =
+//        {
+//            "debug": false,
+//            "positionClass": "toast-top-center",
+//            "onclick": null,
+//            "fadeIn": 300,
+//            "fadeOut": 1000,
+//            "timeOut": 3000,
+//            "extendedTimeOut": 3000
+//        }
+//    toastr.error(response.responseText);
+//});
 //});
 
 function test1(id) {
@@ -240,4 +239,63 @@ $(function () {
         });
     });
 
+});
+
+
+$('#demo').likeDislike({
+    reverseMode: true,
+    activeBtn: localStorage['key'] ? localStorage['key'] : '',
+    click: function (btnType, likes, dislikes, event) {
+        var self = this;
+        // lock the buttons
+        self.readOnly(true);
+
+        // send data to the server
+        $.ajax({
+            url: '/action',
+            type: 'GET',
+            data: 'id=1' + '&likes=' + likes + '&dislikes=' + dislikes,
+            success: function (data) {
+                // show new values
+                $(self).find('.likes').text(data.likes);
+                $(self).find('.dislikes').text(data.dislikes);
+                localStorage['key'] = btnType;
+                // unlock the buttons
+                self.readOnly(false);
+            }
+        });
+    }
+
+});
+
+$('#counter-likes').on('click', '#like-review', function (eventDeactivateNote) {
+
+    eventDeactivateNote.preventDefault();
+
+    $this = $(this);
+    var btn = $(this).attr('value');
+
+    $.get("/Reviews/Like/" + btn)
+        .done(function (dataAll) {
+
+            $('#note-partial-holder').empty();
+
+            $('#note-partial-holder').append(dataAll);
+
+            shortenTextFunction();
+            showImage();
+
+        }).fail(function (dataAll) {
+            toastr.options = {
+                "debug": false,
+                "positionClass": "toast-top-center",
+                "onclick": null,
+                "fadeIn": 300,
+                "fadeOut": 1000,
+                "timeOut": 3000,
+                "extendedTimeOut": 3000,
+                "closeButton": true
+            }
+            toastr.error(dataAll.responseText);
+        });
 });

@@ -373,3 +373,86 @@ $(function () {
         });
     });
 });
+
+function readURL(input, imgControlName) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $(imgControlName).attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$("#imag-create-business-unit").change(function () {
+    var imgControlName = "#ImgPreview-create-business-unit";
+    readURL(this, imgControlName);
+    $('.preview1').addClass('it');
+    $('.btn-rmv1').addClass('rmv');
+});
+
+$("#removeImage1-create-business-unit").click(function (e) {
+    e.preventDefault();
+    $("#imag-create-business-unit").val("");
+    $("#ImgPreview-create-business-unit").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+$('#myModalBusinessUnit').on('hidden.bs.modal', function () {
+    $("#imag-create-business-unit").val("");
+    $("#ImgPreview-create-business-unit").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+$('#myModalUpdateBusinessUnit').on('hidden.bs.modal', function () {
+    $("#imag-update-business-unit").val("");
+    $("#ImgPreview-update-business-unit").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+$("#imag-update-business-unit").change(function () {
+    var imgControlName = "#ImgPreview-update-business-unit";
+    readURL(this, imgControlName);
+    $('.preview1').addClass('it');
+    $('.btn-rmv1').addClass('rmv');
+});
+
+$("#removeImage1-update-business-unit").click(function (e) {
+    e.preventDefault();
+    $("#imag-update-business-unit").val("");
+    $("#ImgPreview-update-business-unit").attr("src", "");
+    $('.preview1').removeClass('it');
+    $('.btn-rmv1').removeClass('rmv');
+});
+
+
+
+$("#like-review-btn").click(function (likeEvent) {
+    likeEvent.preventDefault();
+
+    var $this = $(this);
+
+    var unitId = parseInt($this.attr('businessUnitId'));
+
+    console.log(unitId);
+    debugger;
+
+    $.get("/BusinessUnits/GiveLikeToBusinessUnit?businessUnitId=" + unitId)
+        .done(function (response)
+        {
+            console.log($('#likes-span-container'));
+            debugger;
+
+            $('#likes-span-container').html(response);
+
+
+        })
+        .fail(function (response)
+        {
+            toastr.fail(response);
+
+        });
+});

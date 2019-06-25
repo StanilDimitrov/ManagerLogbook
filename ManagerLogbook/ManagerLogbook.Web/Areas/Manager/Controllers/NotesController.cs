@@ -266,12 +266,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(NoteViewModel model)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return BadRequest(string.Format(WebConstants.UnableToEditNote));
-              
-            }
-
+            
             try
             {
                 string imageName = null;
