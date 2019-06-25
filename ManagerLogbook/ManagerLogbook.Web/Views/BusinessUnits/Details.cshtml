@@ -73,7 +73,7 @@
                     <h3 class="mt20">Leave a comment</h3>
                     @*<i onclick="myFunction(this)" style="font-size:40px" class="fa fa-thumbs-up"></i>*@
                     <div class="profileUserInfo-1" id="counter-likes" style="text-align:right">
-                        <span style="margin-right:1%">@Model.BusinessUnit.Likes</span>  <a id="like-review" class="btn btn-primary btn-new"><i class="fa fa-heart-o" aria-hidden="true"></i>Like</a><br />
+                        <span style="margin-right:1%" id="likes-span-container">@Model.BusinessUnit.Likes</span>  <a id="like-review-btn" businessUnitId="@Model.BusinessUnit.Id" class="btn btn-primary btn-new"><i class="fa fa-heart-o" aria-hidden="true"></i>Like</a><br />
                         @*<a id="like-review" class="btn btn-primary btn-new" style="margin-top:2%">Dislike</a><br />*@
                     </div>
                     <form id="submit-review" asp-controller="Reviews" asp-action="Create" method="post">

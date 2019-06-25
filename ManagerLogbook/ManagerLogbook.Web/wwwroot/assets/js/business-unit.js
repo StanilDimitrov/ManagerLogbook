@@ -430,3 +430,29 @@ $("#removeImage1-update-business-unit").click(function (e) {
 
 
 
+$("#like-review-btn").click(function (likeEvent) {
+    likeEvent.preventDefault();
+
+    var $this = $(this);
+
+    var unitId = parseInt($this.attr('businessUnitId'));
+
+    console.log(unitId);
+    debugger;
+
+    $.get("/BusinessUnits/GiveLikeToBusinessUnit?businessUnitId=" + unitId)
+        .done(function (response)
+        {
+            console.log($('#likes-span-container'));
+            debugger;
+
+            $('#likes-span-container').html(response);
+
+
+        })
+        .fail(function (response)
+        {
+            toastr.fail(response);
+
+        });
+});

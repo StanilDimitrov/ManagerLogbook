@@ -48,6 +48,7 @@ namespace ManagerLogbook.Web.Controllers
             return PartialView("_ReviewsPartial", model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> GiveLikeToBusinessUnit(int businessUnitId)
         {
             var model = new IndexBusinessUnitViewModel();
@@ -56,9 +57,7 @@ namespace ManagerLogbook.Web.Controllers
 
             var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);                       
 
-            model.BusinessUnit = businessUnit.MapFrom();
-
-            return View(model);
+            return Json(businessUnit.Likes);
         }
     }
 }

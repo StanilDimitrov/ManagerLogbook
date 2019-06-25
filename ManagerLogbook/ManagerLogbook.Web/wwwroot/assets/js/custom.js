@@ -343,6 +343,53 @@ function readURL(input, imgControlName) {
     }
 }
 
+
+$('.blabla').click(function (eventForPicUpload)
+{
+    eventForPicUpload.preventDefault();
+
+    $this = $(this);
+
+    var idForNotePic = $this.attr('note-id');
+
+    $("#image-input-" + idForNotePic).change(function () {
+        var imgControlName = "#ImgPreview-" + idForNotePic;
+        readURL(this, imgControlName);
+        $('.preview1').addClass('it');
+        $('.btn-rmv1').addClass('rmv').attr('note-id', idForNotePic);
+
+        $('.rmv').click(function (rmv) {
+            rmv.preventDefault();
+            $("#image-input-" + idForNotePic).val("");
+            $("#ImgPreview-" + idForNotePic).attr("src", "");
+            $('.preview1').removeClass('it');
+            $('.btn-rmv1').removeClass('rmv');
+        });        
+    });
+
+    $('#editModalNote-' + idForNotePic).on('hidden.bs.modal', function () {
+        $("#image-input-" + idForNotePic).val("");
+        $("#ImgPreview-" + idForNotePic).attr("src", "");
+        $('.preview1').removeClass('it');
+        $('.btn-rmv1').removeClass('rmv');
+    });   
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $("#imag").change(function () {
     var imgControlName = "#ImgPreview";
     readURL(this, imgControlName);
