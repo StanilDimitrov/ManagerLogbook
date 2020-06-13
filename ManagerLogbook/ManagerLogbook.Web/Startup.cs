@@ -1,12 +1,7 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Data.Models;
-using ManagerLogbook.Services;
-using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.Contracts.Providers;
-using ManagerLogbook.Services.Providers;
+using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Hubs;
-using ManagerLogbook.Web.Services;
-using ManagerLogbook.Web.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -43,16 +38,7 @@ namespace ManagerLogbook.Web
                 .AddDefaultTokenProviders();
 
             // Add application services.
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.AddScoped<IReviewService, ReviewService>();
-            services.AddScoped<INoteService, NoteService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IBusinessUnitService, BusinessUnitService>();
-            services.AddScoped<IBusinessValidator, BusinessValidator>();
-            services.AddScoped<IReviewEditor, ReviewEditor>();
-            services.AddScoped<ILogbookService, LogbookService>();
-            services.AddScoped<IImageOptimizer, ImageOptimizer>();
-            services.AddScoped<IUserServiceWrapper, UserServiceWapper>();
+            services.AddCustomServices();
             services.AddMemoryCache();
             services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -78,14 +64,11 @@ namespace ManagerLogbook.Web
             app.UseSignalR(routes =>
             {
                 routes.MapHub<CommentHub>("/noteHub");
-                    
             });
           
 
             app.UseMvc(routes =>
             {
-                
-
                 routes.MapRoute(
                     name: "areas",
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
