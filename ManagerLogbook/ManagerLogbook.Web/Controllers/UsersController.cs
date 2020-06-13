@@ -1,11 +1,9 @@
 ﻿using log4net;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Controllers
@@ -22,25 +20,17 @@ namespace ManagerLogbook.Web.Controllers
             this.userService = userService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            try
-            {
-                var user = await this.userService.GetUserByIdAsync(id);
-                var model = new IndexUserViewModel();
-                model.User = user.MapFrom();
+            var user = await this.userService.GetUserByIdAsync(id);
 
-                return View(model);
-            }
-            catch (NotFoundException ex)
+            var viewModel = new IndexUserViewModel
             {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
+                User = user.MapFrom()
+            };
+
+            return View(viewModel);
         }
     }
 }

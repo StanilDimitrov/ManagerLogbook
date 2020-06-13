@@ -55,7 +55,7 @@ namespace ManagerLogbook.Web.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var model = new IndexViewModel
+            var viewModel = new IndexViewModel
             {
                 Username = user.UserName,
                 Email = user.Email,
@@ -64,7 +64,7 @@ namespace ManagerLogbook.Web.Controllers
                 StatusMessage = StatusMessage
             };
 
-            return View(model);
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -82,7 +82,6 @@ namespace ManagerLogbook.Web.Controllers
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
            
-
             var email = user.Email;
             
             if (model.Email != email)

@@ -1,10 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using log4net;
+﻿using log4net;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Controllers
 {
@@ -17,7 +16,7 @@ namespace ManagerLogbook.Web.Controllers
         {
             this.reviewService = reviewService;
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ReviewViewModel model)
@@ -27,28 +26,14 @@ namespace ManagerLogbook.Web.Controllers
                 return BadRequest(WebConstants.EnterValidData);
             }
 
-            try
+            var review = await this.reviewService.CreateReviewAsync(model.OriginalDescription, model.BusinessUnitId, model.Rating);
+
+            if (review.OriginalDescription == model.OriginalDescription)
             {
-                var review = await this.reviewService.CreateReviewAsync(model.OriginalDescription, model.BusinessUnitId,model.Rating);
-
-                if (review.OriginalDescription == model.OriginalDescription)
-                {
-                    return Ok(string.Format(WebConstants.ReviewCreated));
-                }
-
-                return BadRequest(string.Format(WebConstants.ReviewNotCreated));
+                return Ok(string.Format(WebConstants.ReviewCreated));
             }
 
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
-        }               
+            return BadRequest(string.Format(WebConstants.ReviewNotCreated));
+        }
     }
 }
