@@ -113,16 +113,5 @@ namespace ManagerLogbook.Web.Controllers
 
             return cashedTowns;
         }
-
-        private async Task<IReadOnlyCollection<BusinessUnitDTO>> CacheBusinessUnits()
-        {
-            var cashedBusinessUnits = await cache.GetOrCreateAsync<IReadOnlyCollection<BusinessUnitDTO>>("BusinessUnits", async (cacheEntry) =>
-            {
-                cacheEntry.SlidingExpiration = TimeSpan.FromDays(1);
-                return await this.businessUnitService.GetAllBusinessUnitsAsync();
-            });
-
-            return cashedBusinessUnits;
-        }
     }
 }

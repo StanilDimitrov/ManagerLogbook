@@ -24,5 +24,7 @@ namespace ManagerLogbook.Web.Models
         public LogbookViewModel Logbook { get; set; }
 
         public BusinessUnitSearchViewModel SearchModelBusiness { get; set; }
+
+        public string SearchCriteria { get; set; }
     }
 }
