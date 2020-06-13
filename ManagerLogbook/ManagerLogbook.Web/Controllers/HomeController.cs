@@ -3,6 +3,7 @@ using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
+using ManagerLogbook.Web.Models.BindingModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
@@ -28,7 +29,7 @@ namespace ManagerLogbook.Web.Controllers
             this.cache = cache;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index()
         {
             var model = new HomeViewModel();
             var businessUnitsDTO = await this.businessUnitService.GetAllBusinessUnitsAsync();
@@ -45,11 +46,11 @@ namespace ManagerLogbook.Web.Controllers
             model.SearchModelBusiness = new BusinessUnitSearchViewModel()
             {
                 BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList()
-        };
+            };
             return View(model);
         }
 
-        public  IActionResult Redirect()
+        public ActionResult Redirect()
         {
             if (User.IsInRole("Manager"))
             {
@@ -68,55 +69,44 @@ namespace ManagerLogbook.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-
         [HttpGet]
-        public async Task<IActionResult> Search(HomeViewModel model)
+        public async Task<IActionResult> Search(SearchBusinessUnitBindngModel bindngModel)
         {
-            var businessUnitsDTO = await this.businessUnitService
-                                             .SearchBusinessUnitsAsync(model.SearchCriteria, model.CategoryId,
-                                             model.TownId);
+            var businessUnitsDTO = await this.businessUnitService.SearchBusinessUnitsAsync(
+                bindngModel.SearchCriteria,
+                bindngModel.CategoryId,
+                bindngModel.TownId);
 
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
             var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
-
-            model.BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList();
-            model.Towns = townsDTO.Select(x => x.MapFrom()).ToList();
-            model.Categories = categoriesDTO.Select(x => x.MapFrom()).ToList();
-
             var businessCategories = await this.businessUnitService.GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
-            var footer = new FooterViewModel()
-            {
-                BusinessUnitsCategories = businessCategories
-            };
 
-            var searchModel = new BusinessUnitSearchViewModel();
+            var viewModel = new BusinessUnitSearchViewModel();
+            viewModel.BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList();
 
-            searchModel.BusinessUnits = businessUnitsDTO.Select(x => x.MapFrom()).ToList();
-
-            return PartialView("_BusinessUnitsPartial", searchModel);
-
+            return PartialView("_BusinessUnitsPartial", viewModel);
         }
 
-
-        private async Task<BusinessUnitViewModel> CreateDropdownNoteCategories(BusinessUnitViewModel model)
+        private async Task<ActionResult<BusinessUnitViewModel>> CreateDropdownNoteCategories()
         {
             var cashedCategories = await CacheCategories();
 
+            var model = new BusinessUnitViewModel();
             model.Categories = cashedCategories.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
             return model;
         }
 
-        private async Task<BusinessUnitViewModel> EditDropdownNoteCategories(BusinessUnitViewModel model)
+        private async Task<ActionResult<BusinessUnitViewModel>> EditDropdownNoteCategories(string categoryName)
         {
 
             var cashedCategories = await CacheCategories();
 
             List<SelectListItem> selectCategories = new List<SelectListItem>();
-
+            
             foreach (var category in cashedCategories)
             {
-                if (category.Name == model.CategoryName)
+                if (category.Name == categoryName)
                 {
                     selectCategories.Add(new SelectListItem(category.Name, category.Id.ToString(), true));
                 }
@@ -126,6 +116,7 @@ namespace ManagerLogbook.Web.Controllers
                 }
             }
 
+            var model = new BusinessUnitViewModel();
             model.Categories = selectCategories;
 
             return model;

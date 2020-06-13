@@ -1,8 +1,5 @@
 ﻿using ManagerLogbook.Web.Models.AccountViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Models
 {
@@ -27,14 +24,5 @@ namespace ManagerLogbook.Web.Models
         public LogbookViewModel Logbook { get; set; }
 
         public BusinessUnitSearchViewModel SearchModelBusiness { get; set; }
-
-        public string SearchCriteria { get; set; }
-
-        public int? CategoryId { get; set; }
-        public string CategoryName { get; set; }
-
-        public int? TownId { get; set; }
-        public string TownName { get; set; }
-
     }
 }

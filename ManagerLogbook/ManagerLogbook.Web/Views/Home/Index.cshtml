@@ -25,13 +25,13 @@
                     <form class="form-inline" id="search-business-form" asp-action="Search" asp-controller="Home" method="get">
                         <div class="form-group">
                             @*<label>Search</label>*@
-                            <input type="text" class="form-control" id="search-for-business-phrase" asp-for="SearchCriteria" placeholder="Enter your keywords">
+                            <input type="text" class="form-control" id="search-for-business-phrase" name="SearchCriteria" placeholder="Enter your keywords">
                         </div>
                         <div class="form-group">
                             <div class="searchSelectbox">
                                 @*<label for="dateModified">City</label>*@
                                 <select name="TownId" id="town-id-from-selector" class="select-drop">
-                                    <option value="null" selected @*disabled*@ hidden>Select Location</option>
+                                    <option value="null" selected  hidden>Select Location</option>
                                     @foreach (var town in Model.Towns)
                                     {
                                         <option value="@town.Id">@town.Name</option>
@@ -43,7 +43,7 @@
                             <div class="searchSelectbox">
                                 @*<label for="dateModified">Category</label>*@
                                 <select name="CategoryId" id="category-id-from-selector" class="select-drop">
-                                    <option value="null" placeholder="Category" selected @*disabled*@ hidden>Select Category</option>
+                                    <option value="null" placeholder="Category" selected hidden>Select Category</option>
                                     @foreach (var category in Model.Categories)
                                     {
                                         <option value="@category.Id">@category.Name</option>
@@ -67,7 +67,6 @@
     <div id="business-partial-holder">
         @await Html.PartialAsync("_BusinessUnitsPartial", Model.SearchModelBusiness)
     </div>
-
 
     <!-- Start Note Modal -->
     @await Html.PartialAsync("_CreateNoteModalPartial", Model.Note)
