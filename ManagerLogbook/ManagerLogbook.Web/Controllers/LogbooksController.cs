@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
-using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Controllers
 {
@@ -29,25 +28,26 @@ namespace ManagerLogbook.Web.Controllers
             this.wrapper = wrapper;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var model = new IndexLogbookViewModel();
-
             var logbook = await this.logbookService.GetLogbookById(id);
+            var managers = await this.userService.GetAllManagersPresentInLogbookAsync(logbook.Id);
 
-            model.Logbook = logbook.MapFrom();
-
-            model.AssignedManagers = await this.userService.GetAllManagersPresentInLogbookAsync(logbook.Id);
+            var viewModel = new IndexLogbookViewModel
+            {
+                Logbook = logbook.MapFrom(),
+                AssignedManagers = managers.Select(x => x.MapFrom()).ToList()
+            };
 
             var userId = this.wrapper.GetLoggedUserId(User);
-            
             if (User.IsInRole("Manager"))
             {
-                model.ActiveNotes = await this.noteService.ShowLogbookNotesWithActiveStatusAsync(userId, logbook.Id);
-                model.TotalNotes = await this.noteService.ShowLogbookNotesAsync(userId, logbook.Id);
+                viewModel.ActiveNotes = (await this.noteService.ShowLogbookNotesWithActiveStatusAsync(userId, logbook.Id)).Select(x => x.MapFrom()).ToList();
+                viewModel.TotalNotes = (await this.noteService.ShowLogbookNotesAsync(userId, logbook.Id)).Select(x => x.MapFrom()).ToList();
             }
 
-            return View(model);
-        }        
+            return View(viewModel);
+        }
     }
 }

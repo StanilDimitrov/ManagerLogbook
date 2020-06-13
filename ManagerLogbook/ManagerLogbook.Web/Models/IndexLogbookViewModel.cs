@@ -1,5 +1,4 @@
-﻿using ManagerLogbook.Services.DTOs;
-using ManagerLogbook.Web.Models.AccountViewModels;
+﻿using ManagerLogbook.Web.Models.AccountViewModels;
 using System.Collections.Generic;
 
 namespace ManagerLogbook.Web.Models
@@ -18,10 +17,10 @@ namespace ManagerLogbook.Web.Models
 
         public LogbookViewModel Logbook { get; set; }
 
-        public IReadOnlyCollection<UserDTO> AssignedManagers { get; set; }
+        public IReadOnlyCollection<UserViewModel> AssignedManagers { get; set; }
 
-        public IReadOnlyCollection<NoteDTO> ActiveNotes { get; set; }
+        public IReadOnlyCollection<NoteViewModel> ActiveNotes { get; set; }
 
-        public IReadOnlyCollection<NoteDTO> TotalNotes { get; set; }
+        public IReadOnlyCollection<NoteViewModel> TotalNotes { get; set; }
     }
 }

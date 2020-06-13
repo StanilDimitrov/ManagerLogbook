@@ -20,6 +20,7 @@ namespace ManagerLogbook.Web.Controllers
             this.reviewService = reviewService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
             var businessUnit = await this.businessUnitService.GetBusinessUnitById(id);
@@ -35,16 +36,17 @@ namespace ManagerLogbook.Web.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetReviewsList(int id)
         {
             var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
 
-            var model = new IndexBusinessUnitViewModel
+            var viewModel = new IndexBusinessUnitViewModel
             {
                 Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList()
             };
 
-            return PartialView("_ReviewsPartial", model);
+            return PartialView("_ReviewsPartial", viewModel);
         }
 
         [HttpGet]

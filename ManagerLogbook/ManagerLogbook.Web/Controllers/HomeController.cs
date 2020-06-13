@@ -5,7 +5,6 @@ using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Models.BindingModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -29,6 +28,7 @@ namespace ManagerLogbook.Web.Controllers
             this.cache = cache;
         }
 
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
             var businessUnitsDTO = await this.businessUnitService.GetAllBusinessUnitsAsync();
@@ -92,43 +92,6 @@ namespace ManagerLogbook.Web.Controllers
             return PartialView("_BusinessUnitsPartial", viewModel);
         }
 
-        private async Task<ActionResult<BusinessUnitViewModel>> CreateDropdownNoteCategories()
-        {
-            var cashedCategories = await CacheCategories();
-
-            var viewModel = new BusinessUnitViewModel
-            {
-                Categories = cashedCategories.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
-            };
-
-            return viewModel;
-        }
-
-        private async Task<ActionResult<BusinessUnitViewModel>> EditDropdownNoteCategories(string categoryName)
-        {
-
-            var cashedCategories = await CacheCategories();
-
-            List<SelectListItem> selectCategories = new List<SelectListItem>();
-
-            foreach (var category in cashedCategories)
-            {
-                if (category.Name == categoryName)
-                {
-                    selectCategories.Add(new SelectListItem(category.Name, category.Id.ToString(), true));
-                }
-                else
-                {
-                    selectCategories.Add(new SelectListItem(category.Name, category.Id.ToString()));
-                }
-            }
-
-            var model = new BusinessUnitViewModel();
-            model.Categories = selectCategories;
-
-            return model;
-        }
-
         private async Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> CacheCategories()
         {
             var cashedCategories = await cache.GetOrCreateAsync<IReadOnlyCollection<BusinessUnitCategoryDTO>>("Categories", async (cacheEntry) =>
@@ -138,40 +101,6 @@ namespace ManagerLogbook.Web.Controllers
             });
 
             return cashedCategories;
-        }
-
-
-        private async Task<BusinessUnitViewModel> CreateDropdownTowns(BusinessUnitViewModel model)
-        {
-            var cashedTowns = await CacheTowns();
-
-            model.Categories = cashedTowns.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
-
-            return model;
-        }
-
-        private async Task<BusinessUnitViewModel> EditDropdownTowns(BusinessUnitViewModel model)
-        {
-
-            var cashedTowns = await CacheTowns();
-
-            List<SelectListItem> selectTowns = new List<SelectListItem>();
-
-            foreach (var category in cashedTowns)
-            {
-                if (category.Name == model.CategoryName)
-                {
-                    selectTowns.Add(new SelectListItem(category.Name, category.Id.ToString(), true));
-                }
-                else
-                {
-                    selectTowns.Add(new SelectListItem(category.Name, category.Id.ToString()));
-                }
-            }
-
-            model.Categories = selectTowns;
-
-            return model;
         }
 
         private async Task<IReadOnlyCollection<TownDTO>> CacheTowns()
