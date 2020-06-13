@@ -1,0 +1,5 @@
+2020-06-02 15:00:52,063 ERROR ManagerLogbook.Web.Areas.Admin.Controllers.BusinessUnitsController - Unexpected exception occured:
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at ManagerLogbook.Services.Providers.BusinessValidator.IsDescriptionInRange(String description) in E:\TelerikAlpha\AlphaProgram2019\Repositories\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\Providers\BusinessValidator.cs:line 38
+   at ManagerLogbook.Services.BusinessUnitService.CreateBusinnesUnitAsync(String brandName, String address, String phoneNumber, String email, String information, Int32 businessUnitCategoryId, Int32 townId, String picture) in E:\TelerikAlpha\AlphaProgram2019\Repositories\ManagerLogbook\ManagerLogbook\ManagerLogbook.Services\BusinessUnitService.cs:line 42
+   at ManagerLogbook.Web.Areas.Admin.Controllers.BusinessUnitsController.Create(BusinessUnitViewModel model) in E:\TelerikAlpha\AlphaProgram2019\Repositories\ManagerLogbook\ManagerLogbook\ManagerLogbook.Web\Areas\Admin\Controllers\BusinessUnitsController.cs:line 50

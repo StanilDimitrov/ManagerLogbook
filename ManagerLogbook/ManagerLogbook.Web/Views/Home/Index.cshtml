@@ -24,12 +24,10 @@
                 <div class="bg-search-white">
                     <form class="form-inline" id="search-business-form" asp-action="Search" asp-controller="Home" method="get">
                         <div class="form-group">
-                            @*<label>Search</label>*@
                             <input type="text" class="form-control" id="search-for-business-phrase" name="SearchCriteria" placeholder="Enter your keywords">
                         </div>
                         <div class="form-group">
                             <div class="searchSelectbox">
-                                @*<label for="dateModified">City</label>*@
                                 <select name="TownId" id="town-id-from-selector" class="select-drop">
                                     <option value="null" selected  hidden>Select Location</option>
                                     @foreach (var town in Model.Towns)
@@ -41,7 +39,6 @@
                         </div>
                         <div class="form-group">
                             <div class="searchSelectbox">
-                                @*<label for="dateModified">Category</label>*@
                                 <select name="CategoryId" id="category-id-from-selector" class="select-drop">
                                     <option value="null" placeholder="Category" selected hidden>Select Category</option>
                                     @foreach (var category in Model.Categories)
@@ -52,10 +49,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            @*<label for="dateModified"></label>*@
                             <button type="submit" class="btn btn-primary">Search </button>
                         </div>
-                        @*<input type="hidden" id="anti-forgery-for-business-search">@Html.AntiForgeryToken()</input>*@
                     </form>
                 </div>
             </div>
