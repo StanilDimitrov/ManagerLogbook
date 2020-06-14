@@ -137,7 +137,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 var logbook = await this.logbookService.GetLogbookById(logbookId);
 
-                var manager = await this.userService.GetUserByIdAsync(managerId);
+                var manager = await this.userService.GetUserDtoByIdAsync(managerId);
 
                 await this.logbookService.AddManagerToLogbookAsync(managerId, logbookId);
 
@@ -170,7 +170,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
                 var logbook = await this.logbookService.GetLogbookById(logbookId);
 
-                var manager = await this.userService.GetUserByIdAsync(managerId);
+                var manager = await this.userService.GetUserDtoByIdAsync(managerId);
 
                 await this.logbookService.RemoveManagerFromLogbookAsync(managerId, logbookId);
 

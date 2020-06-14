@@ -52,9 +52,7 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GiveLikeToBusinessUnit(int businessUnitId)
         {
-            await this.businessUnitService.GiveLikeBusinessUnitAsync(businessUnitId);
-
-            var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);
+            var businessUnit = await this.businessUnitService.GiveLikeBusinessUnitAsync(businessUnitId);
             return Json(businessUnit.Likes);
         }
     }

@@ -8,7 +8,6 @@
     <UserSecretsId>aspnet-ManagerLogbook-871B3473-FCC2-4D90-B71F-3532F3D0AE36</UserSecretsId>
   </PropertyGroup>
 
-
   <ItemGroup>
     <Compile Remove="Areas\Admin\Views\BusinessUnits\**" />
     <Compile Remove="Areas\Admin\Views\Create\**" />

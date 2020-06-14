@@ -23,7 +23,7 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
-            var user = await this.userService.GetUserByIdAsync(id);
+            var user = await this.userService.GetUserDtoByIdAsync(id);
 
             var viewModel = new IndexUserViewModel
             {

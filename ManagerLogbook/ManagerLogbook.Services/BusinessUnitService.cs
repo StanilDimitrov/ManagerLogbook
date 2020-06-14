@@ -5,6 +5,7 @@ using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
+using ManagerLogbook.Services.Models;
 using ManagerLogbook.Services.Utils;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -16,41 +17,32 @@ namespace ManagerLogbook.Services
     public class BusinessUnitService : IBusinessUnitService
     {
         private readonly ManagerLogbookContext context;
-        private readonly IBusinessValidator businessValidator;
+        private readonly IUserService userService;
 
-        public BusinessUnitService(ManagerLogbookContext context,
-                                   IBusinessValidator businessValidator)
+        public BusinessUnitService(ManagerLogbookContext context, IUserService userService)
         {
             this.context = context;
-            this.businessValidator = businessValidator;
+            this.userService = userService;
         }
 
-        public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string information, int businessUnitCategoryId, int townId, string picture)
+        public async Task CreateBusinnesUnitAsync(BusinessUnitModel model)
         {
-            var checkBrandNameIfExists = await this.context.BusinessUnits
-                                           .FirstOrDefaultAsync(n => n.Name == brandName);
+            await CheckIfBrandNameExist(model.Name);
 
-            if (checkBrandNameIfExists != null)
+            var businessUnit = new BusinessUnit
             {
-                throw new AlreadyExistsException(ServicesConstants.BusinessUnitNameAlreadyExists);
-            }
+                Name = model.Name,
+                Address = model.Address,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                Information = model.Information,
+                BusinessUnitCategoryId = model.CategoryId,
+                TownId = model.TownId,
+                Picture = model.Picture
+            };
 
-            businessValidator.IsNameInRange(brandName);
-            businessValidator.IsAddressInRange(address);
-            businessValidator.IsEmailValid(email);
-            businessValidator.IsPhoneNumberValid(phoneNumber);
-            businessValidator.IsDescriptionInRange(information);
-
-            var businessUnit = new BusinessUnit() { Name = brandName, Address = address, PhoneNumber = phoneNumber, Email = email, Information = information, BusinessUnitCategoryId = businessUnitCategoryId, TownId = townId, Picture = picture };
-
-            await this.context.BusinessUnits.AddAsync(businessUnit);
+            this.context.BusinessUnits.Add(businessUnit);
             await this.context.SaveChangesAsync();
-
-            var result = await this.context.BusinessUnits
-                                           .Include(buc => buc.BusinessUnitCategory)
-                                           .Include(t => t.Town)
-                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
-            return result.ToDTO();
         }
 
         public async Task<BusinessUnitDTO> GetBusinessUnitById(int businessUnitId)
@@ -67,90 +59,17 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, int businessUnitCategoryId, int townId, string picture)
+        public async Task UpdateBusinessUnitAsync(BusinessUnitModel model)
         {
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
-
-            if (businessUnit == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
-
-            if (brandName != null)
-            {
-                businessValidator.IsNameInRange(brandName);
-            }
-
-            var checkBrandNameIfExists = await this.context.BusinessUnits
-                                           .FirstOrDefaultAsync(n => n.Name == brandName);
-
-            if (checkBrandNameIfExists != null && businessUnit.Name != brandName)
-            {
-                throw new AlreadyExistsException(ServicesConstants.BusinessUnitNameAlreadyExists);
-            }
-
-            businessUnit.Name = brandName;
-
-            if (address != null)
-            {
-                businessValidator.IsAddressInRange(address);
-            }
-
-            businessUnit.Address = address;
-
-            if (phoneNumber != null)
-            {
-                businessValidator.IsPhoneNumberValid(phoneNumber);
-            }
-
-            businessUnit.PhoneNumber = phoneNumber;
-
-            if (email != null)
-            {
-                businessValidator.IsEmailValid(email);
-            }
-
-            businessUnit.Email = email;
-
-            if (information != null)
-            {
-                businessValidator.IsDescriptionInRange(information);
-            }
-
-            businessUnit.Information = information;
-
-
-            if (picture != null)
-            {
-                businessUnit.Picture = picture;
-            }
-
-            if (townId != 0)
-            {
-                businessUnit.TownId = townId;
-            }
-
-            if (businessUnitCategoryId != 0)
-            {
-                businessUnit.BusinessUnitCategoryId = businessUnitCategoryId;
-            }
+            var businessUnit = await GetBusinessUnitAsync(model.Id);
+            await CheckIfBrandNameExist(model.Name);
+            SetBusinessUnitProperties(model, businessUnit);
             await this.context.SaveChangesAsync();
-
-            var result = await this.context.BusinessUnits
-                                           .Include(buc => buc.BusinessUnitCategory)
-                                           .Include(t => t.Town)
-                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
-            return result.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId)
         {
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
-
-            if (businessUnit == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
+            var businessUnit = await GetBusinessUnitAsync(businessUnitId);
 
             var logbooksDTO = await this.context.Logbooks
                          .Include(n => n.Notes)
@@ -162,87 +81,6 @@ namespace ManagerLogbook.Services
                          .ToListAsync();
 
             return logbooksDTO;
-        }
-
-        public async Task<BusinessUnitCategoryDTO> CreateBusinessUnitCategoryAsync(string businessUnitCategoryName)
-        {
-            businessValidator.IsNameInRange(businessUnitCategoryName);
-
-            var checkBusinessUnitCategoryNameIfExists = await this.context.BusinessUnitCategories
-                                           .FirstOrDefaultAsync(n => n.Name == businessUnitCategoryName);
-
-            if (checkBusinessUnitCategoryNameIfExists != null)
-            {
-                throw new AlreadyExistsException(ServicesConstants.BusinessUnitCategoryNameAlreadyExists);
-            }
-
-            var businessUnitCategory = new BusinessUnitCategory() { Name = businessUnitCategoryName };
-
-            await this.context.SaveChangesAsync();
-            return businessUnitCategory.ToDTO();
-        }
-
-        public async Task<BusinessUnitCategoryDTO> UpdateBusinessUnitCategoryAsync(int businessUnitCategoryId, string newBusinessUnitCategoryName)
-        {
-            businessValidator.IsNameInRange(newBusinessUnitCategoryName);
-
-            var checkBusinessUnitCategoryNameIfExists = await this.context.BusinessUnitCategories
-                                           .FirstOrDefaultAsync(n => n.Name == newBusinessUnitCategoryName);
-
-            if (checkBusinessUnitCategoryNameIfExists != null)
-            {
-                throw new AlreadyExistsException(ServicesConstants.BusinessUnitCategoryNameAlreadyExists);
-            }
-
-            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
-
-            if (businessUnitCategory == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
-            }
-
-            businessUnitCategory.Name = newBusinessUnitCategoryName;
-
-            await this.context.SaveChangesAsync();
-            return businessUnitCategory.ToDTO();
-        }
-
-        public async Task<BusinessUnitDTO> AddBusinessUnitCategoryToBusinessUnitAsync(int businessUnitCategoryId, int businessUnitId)
-        {
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
-
-            if (businessUnit == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
-
-            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
-
-            if (businessUnitCategory == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
-            }
-
-            businessUnit.BusinessUnitCategoryId = businessUnitCategoryId;
-
-            await this.context.SaveChangesAsync();
-
-            var result = await this.context.BusinessUnits
-                                           .Include(buc => buc.BusinessUnitCategory)
-                                           .Include(t => t.Town)
-                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
-            return result.ToDTO();
-        }
-
-        public async Task<BusinessUnitCategoryDTO> GetBusinessUnitCategoryByIdAsync(int businessUnitCategoryId)
-        {
-            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
-
-            if (businessUnitCategory == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
-            }
-            return businessUnitCategory.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
@@ -285,58 +123,23 @@ namespace ManagerLogbook.Services
             return townsDTO;
         }
 
-        public async Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        public async Task AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+            await GetBusinessUnitAsync(businessUnitId);
 
-            if (businessUnit == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
-
-            var moderatorUser = await this.context.Users.FindAsync(moderatorId);
-
-            if (moderatorUser == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
+            var moderatorUser = await this.userService.GetUserAsync(moderatorId);
             moderatorUser.BusinessUnitId = businessUnitId;
             await this.context.SaveChangesAsync();
-            businessUnit = await this.context.BusinessUnits
-                         .Include(bc => bc.BusinessUnitCategory)
-                         .Include(t => t.Town)
-                         .FirstOrDefaultAsync(x => x.Id == businessUnitId);
-
-            return businessUnit.ToDTO();
         }
 
-        public async Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        public async Task RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+            await GetBusinessUnitAsync(businessUnitId);
 
-            if (businessUnit == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
-
-            var moderatorUser = await this.context.Users.FindAsync(moderatorId);
-
-            if (moderatorUser == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
+            var moderatorUser = await this.userService.GetUserAsync(moderatorId);
             moderatorUser.BusinessUnitId = null;
             await this.context.SaveChangesAsync();
-
-            businessUnit = await this.context.BusinessUnits
-                         .Include(bc => bc.BusinessUnitCategory)
-                         .Include(t => t.Town)
-                         .FirstOrDefaultAsync(x => x.Id == businessUnitId);
-
-            return businessUnit.ToDTO();
-        }        
+        }
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
         {
@@ -414,5 +217,53 @@ namespace ManagerLogbook.Services
                                            .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
             return result.ToDTO();
         }
+
+        private async Task<BusinessUnit> GetBusinessUnitAsync(int businessUnitId)
+        {
+            var businessUnit = await this.context.BusinessUnits.SingleOrDefaultAsync(bu => bu.Id == businessUnitId);
+
+            if (businessUnit == null)
+            {
+                throw new NotFoundException($"Business unit with id: {businessUnitId} does not exist.");
+            }
+
+            return businessUnit;
+        }
+
+        private async Task CheckIfBrandNameExist(string brandName)
+        {
+            var businessUnit = await this.context.BusinessUnits.SingleOrDefaultAsync(bu => bu.Name == brandName);
+
+            if (businessUnit != null)
+            {
+                throw new AlreadyExistsException($"Business unit with name: {brandName} already exists.");
+            }
+
+        }
+
+        private void SetBusinessUnitProperties(BusinessUnitModel model, BusinessUnit entity)
+        {
+            entity.Name = model.Name;
+            entity.Address = model.Address;
+            entity.PhoneNumber = model.PhoneNumber;
+            entity.Email = model.Email;
+            entity.Information = model.Information;
+           
+            if (model.Picture != null)
+            {
+                entity.Picture = model.Picture;
+            }
+
+            if (model.TownId != 0)
+            {
+                entity.TownId = model.TownId;
+            }
+
+            if (model.CategoryId != 0)
+            {
+                entity.BusinessUnitCategoryId = model.CategoryId;
+            }
+        }
+        
     }
 }

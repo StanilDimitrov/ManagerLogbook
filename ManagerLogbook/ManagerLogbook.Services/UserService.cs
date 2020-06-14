@@ -1,4 +1,5 @@
 ﻿using ManagerLogbook.Data;
+using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
@@ -25,7 +26,7 @@ namespace ManagerLogbook.Services
             this.userRapper = userRapper;
         }
 
-        public async Task<UserDTO> GetUserByIdAsync(string userId)
+        public async Task<UserDTO> GetUserDtoByIdAsync(string userId)
         {
             var user = await this.context.Users.Include(x => x.BusinessUnit)
                                                .FirstOrDefaultAsync(x => x.Id == userId);
@@ -36,6 +37,18 @@ namespace ManagerLogbook.Services
             }
 
             return user.ToDTO();
+        }
+
+        public async Task<User> GetUserAsync(string userId)
+        {
+            var user = await this.context.Users.SingleOrDefaultAsync(x => x.Id == userId);
+
+            if (user == null)
+            {
+                throw new NotFoundException(ServicesConstants.UserNotFound);
+            }
+
+            return user;
         }
 
         public async Task<UserDTO> SwitchLogbookAsync(string userId, int logbookId)

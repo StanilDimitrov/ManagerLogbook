@@ -39,8 +39,9 @@
                     </div>
 
                     <select id="towns-selector" class="form-control" asp-for="TownId"></select>
-
+                    <span asp-validation-for="TownId" class="text-danger-custom"></span>
                     <select id="business-unit-categories-selector" class="form-control margin-5" asp-for="CategoryId"></select>
+                    <span asp-validation-for="CategoryId" class="text-danger-custom"></span>
                     <div class="text-centered">
                         <img id="ImgPreview-create-business-unit" class="preview1" src="" />
                         <input type="button" id="removeImage1-create-business-unit" value="x" class="btn-rmv1" />

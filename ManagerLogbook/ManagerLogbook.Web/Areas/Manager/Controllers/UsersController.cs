@@ -37,7 +37,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.wrapper.GetLoggedUserId(User);
-                var user = await this.userService.GetUserByIdAsync(userId);
+                var user = await this.userService.GetUserDtoByIdAsync(userId);
                 if (model.CurrentLogbookId.HasValue)
                 {
                     var logbook = await this.logbookService.GetLogbookById(model.CurrentLogbookId.Value);

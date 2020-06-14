@@ -17,7 +17,7 @@ namespace ManagerLogbook.Web.Models
         [MaxLength(500)]
         public string Information { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Name must be between 2 and 100 characters long.")]
         [MaxLength(200)]
         public string Address { get; set; }
 
@@ -39,11 +39,13 @@ namespace ManagerLogbook.Web.Models
         public IEnumerable<SelectListItem> Moderators { get; set; }
         public string ModeratorName { get; set; }
 
-        public int CategoryId { get; set; }
+        [Required]
+        public int? CategoryId { get; set; }
         public IEnumerable<SelectListItem> Categories { get; set; }
-        public string CategoryName { get; set; }              
+        public string CategoryName { get; set; }
 
-        public int TownId { get; set; }
+        [Required]
+        public int? TownId { get; set; }
         public IEnumerable<SelectListItem> Towns { get; set; }
         public string TownName { get; set; }        
 

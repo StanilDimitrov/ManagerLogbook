@@ -40,28 +40,28 @@
                         <span asp-validation-for="Email" class="text-danger-custom"></span>
                     </div>
 
-                    <select id="towns-selector-update" class="form-control" asp-for="TownId"></select>
+                        <select id="towns-selector-update" class="form-control" asp-for="TownId"></select>
 
-                    <select id="business-unit-categories-selector-update" class="form-control margin-5" asp-for="CategoryId"></select>
-                    <div class="text-centered">
-                        <img id="ImgPreview-update-business-unit" class="preview1" src="" />
-                        <input type="button" id="removeImage1-update-business-unit" value="x" class="btn-rmv1" />
-                    </div>
-                    <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
-                    <input type="file" id="imag-update-business-unit" name="BusinessUnitPicture" class="btn btn-primary file" accept="image/*">
-                    <div class="margin-5">
-                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                        <div class="margin-5">
-                            @{ var referrer = this.Context.Request.Headers["Referer"]; }
-                            @if (referrer != default(StringValues))
-                            {
-                                <a href="@referrer.ToString()">Go Back</a>
-                            }
+                        <select id="business-unit-categories-selector-update" class="form-control margin-5" asp-for="CategoryId"></select>
+                        <div class="text-centered">
+                            <img id="ImgPreview-update-business-unit" class="preview1" src="" />
+                            <input type="button" id="removeImage1-update-business-unit" value="x" class="btn-rmv1" />
                         </div>
-                    </div>
-                </form>
+                        <label name="Picture" class="btn btn-primary-custom browse margin-5">Upload Image</label>
+                        <input type="file" id="imag-update-business-unit" name="BusinessUnitPicture" class="btn btn-primary file" accept="image/*">
+                        <div class="margin-5">
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                            <div class="margin-5">
+                                @{ var referrer = this.Context.Request.Headers["Referer"]; }
+                                @if (referrer != default(StringValues))
+                                {
+                                    <a href="@referrer.ToString()">Go Back</a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- End Update Business Unit Modal -->
+    <!-- End Update Business Unit Modal -->

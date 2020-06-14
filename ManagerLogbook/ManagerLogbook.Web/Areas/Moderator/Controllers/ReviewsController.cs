@@ -101,7 +101,7 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
 
                 var userId = this.wrapper.GetLoggedUserId(User);
                 
-                var user = await this.userService.GetUserByIdAsync(userId);
+                var user = await this.userService.GetUserDtoByIdAsync(userId);
 
                 var businessUnit = new BusinessUnitDTO();
 

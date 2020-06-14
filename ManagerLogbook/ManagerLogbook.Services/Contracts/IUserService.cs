@@ -7,7 +7,9 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface IUserService
     {
-        Task<UserDTO> GetUserByIdAsync(string userId);
+        Task<UserDTO> GetUserDtoByIdAsync(string userId);
+
+        Task<User> GetUserAsync(string userId);
 
         Task<UserDTO> SwitchLogbookAsync(string userId, int logbookId);
 

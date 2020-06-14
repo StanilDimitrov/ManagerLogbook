@@ -57,7 +57,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 var model = new IndexNoteViewModel();
 
                 var userId = this.wrapper.GetLoggedUserId(User);
-                var user = await this.userService.GetUserByIdAsync(userId);
+                var user = await this.userService.GetUserDtoByIdAsync(userId);
                 var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
                 var logbookId = user.CurrentLogbookId;
                 
@@ -130,7 +130,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.wrapper.GetLoggedUserId(User);
-                var user = await this.userService.GetUserByIdAsync(userId);
+                var user = await this.userService.GetUserDtoByIdAsync(userId);
                 var model = new IndexNoteViewModel();
                 var logbookId = user.CurrentLogbookId;
                 if (user.CurrentLogbookId.HasValue)
@@ -171,7 +171,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.wrapper.GetLoggedUserId(User);
-                var user = await this.userService.GetUserByIdAsync(userId);
+                var user = await this.userService.GetUserDtoByIdAsync(userId);
                 var logbookId = user.CurrentLogbookId;
                 var searchModel = new SearchViewModel();
 
@@ -227,7 +227,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 }
                 var userId = this.wrapper.GetLoggedUserId(User);
                 
-                var user = await this.userService.GetUserByIdAsync(userId);
+                var user = await this.userService.GetUserDtoByIdAsync(userId);
 
                 if (!user.CurrentLogbookId.HasValue)
                 {
@@ -321,7 +321,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 var noteDTO = await this.noteService.GetNoteByIdAsync(id);
 
                 var userId = this.wrapper.GetLoggedUserId(User);
-                var user = await this.userService.GetUserByIdAsync(userId);
+                var user = await this.userService.GetUserDtoByIdAsync(userId);
                 var logbookId = user.CurrentLogbookId;
                 if (user.CurrentLogbookId.HasValue)
                 {
@@ -366,7 +366,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         public async Task<IActionResult> SearchNotesInPage(SearchViewModel model)
         {
             var userId = this.wrapper.GetLoggedUserId(User);
-            var user = await this.userService.GetUserByIdAsync(userId);
+            var user = await this.userService.GetUserDtoByIdAsync(userId);
 
             var currPage = 1;
 
@@ -432,7 +432,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         public async Task<IActionResult> GetNotesInPage(SearchViewModel model)
         {
             var userId = this.wrapper.GetLoggedUserId(User);
-            var user = await this.userService.GetUserByIdAsync(userId);
+            var user = await this.userService.GetUserDtoByIdAsync(userId);
 
             var currPage = 1;
 
@@ -509,7 +509,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         public async Task<IActionResult> Search(SearchViewModel model)
         {
             var userId = this.wrapper.GetLoggedUserId(User);
-            var user = await this.userService.GetUserByIdAsync(userId);
+            var user = await this.userService.GetUserDtoByIdAsync(userId);
             
             var logbookId = user.CurrentLogbookId;
             if (!user.CurrentLogbookId.HasValue)

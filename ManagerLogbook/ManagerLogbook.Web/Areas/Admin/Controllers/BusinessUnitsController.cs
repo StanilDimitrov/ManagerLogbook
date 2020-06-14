@@ -1,13 +1,15 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using log4net;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Services.CustomExeptions;
+using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Services.Contracts;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using log4net;
-using ManagerLogbook.Services.CustomExeptions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Areas.Admin.Controllers
 {
@@ -27,162 +29,75 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             this.businessUnitService = businessUnitService;
             this.userService = userService;
             this.optimizer = optimizer;
-        }                
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(BusinessUnitViewModel model)
+        public async Task<IActionResult> Create(BusinessUnitViewModel viewModel)
         {
             if (!this.ModelState.IsValid)
             {
                 return BadRequest(WebConstants.EnterValidData);
             }
 
-            try
+            string imageName = null;
+
+            if (viewModel.BusinessUnitPicture != null)
             {
-                string imageName = null;
-
-                if (model.BusinessUnitPicture != null)
-                {
-                    imageName = optimizer.OptimizeImage(model.BusinessUnitPicture, 400, 800);
-                }
-
-                var businessUnit = await this.businessUnitService.CreateBusinnesUnitAsync(model.Name, model.Address, model.PhoneNumber, model.Email, model.Information, model.CategoryId, model.TownId, imageName);
-
-                if (businessUnit.Name == model.Name)
-                {
-                    return Ok(string.Format(WebConstants.BusinessUnitCreated, model.Name));
-                }
-
-                return BadRequest(string.Format(WebConstants.BusinessUnitNotCreated,model.Name));
+                imageName = optimizer.OptimizeImage(viewModel.BusinessUnitPicture, 400, 800);
             }
 
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var model = viewModel.MapFrom();
+            model.Picture = imageName;
+            await this.businessUnitService.CreateBusinnesUnitAsync(model);
 
-            catch (AlreadyExistsException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
-        }        
+            return Ok(string.Format(WebConstants.BusinessUnitCreated, viewModel.Name));
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(BusinessUnitViewModel model)
+        public async Task<IActionResult> Update(BusinessUnitViewModel viewModel)
         {
             if (!this.ModelState.IsValid)
             {
-                return BadRequest(string.Format(WebConstants.UnableToUpdateBusinessUnit, model.Name));
+                return BadRequest(WebConstants.EnterValidData);
             }
 
-            try
+            string imageName = null;
+
+            if (viewModel.BusinessUnitPicture != null)
             {
-                var businessUnitDTO = await this.businessUnitService.GetBusinessUnitById(model.Id);
-
-                string imageName = null;
-
-                if (model.BusinessUnitPicture != null)
-                {
-                    imageName = optimizer.OptimizeImage(model.BusinessUnitPicture, 400, 800);
-                }
-
-                if (model.Picture != null)
-                {
-                    optimizer.DeleteOldImage(model.Picture);
-                }
-
-                businessUnitDTO = await this.businessUnitService.UpdateBusinessUnitAsync(model.Id, model.Name, model.Address, model.PhoneNumber, model.Information, model.Email, model.CategoryId, model.TownId, imageName);
-
-                if (businessUnitDTO.Name != model.Name)
-                {
-                    return BadRequest(string.Format(WebConstants.UnableToUpdateBusinessUnit,model.Name));
-                }
-
-                return Ok(string.Format(WebConstants.BusinessUnitUpdated, model.Name));
+                imageName = optimizer.OptimizeImage(viewModel.BusinessUnitPicture, 400, 800);
             }
 
-            catch (NotFoundException ex)
+            if (viewModel.Picture != null)
             {
-                return BadRequest(ex.Message);
+                optimizer.DeleteOldImage(viewModel.Picture);
             }
-            catch (AlreadyExistsException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
-        }       
+
+            var model = viewModel.MapFrom();
+            model.Picture = imageName;
+            await this.businessUnitService.UpdateBusinessUnitAsync(model);
+
+            return Ok(string.Format(WebConstants.BusinessUnitUpdated, viewModel.Name));
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddModeratorToBusinessUnit(BusinessUnitViewModel model)
+        public async Task<IActionResult> AddModeratorToBusinessUnit(BusinessUnitViewModel viewModel)
         {
-            try
-            {
-                var businessUnitId = model.Id;
-                var moderatorId = model.ModeratorId;
+            await this.businessUnitService.AddModeratorToBusinessUnitsAsync(viewModel.ModeratorId, viewModel.Id);
 
-                var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);
-
-                var moderator = await this.userService.GetUserByIdAsync(moderatorId);
-
-                await this.businessUnitService.AddModeratorToBusinessUnitsAsync(moderatorId, businessUnitId);
-
-                return Ok(string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, moderator.UserName, businessUnit.Name));
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
-        }                
+            return Ok(string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, viewModel.ModeratorId, viewModel.Id));
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveModerator(BusinessUnitViewModel model)
         {
-            try
-            {
-                var businessUnitId = model.Id;
-                var moderatorId = model.ModeratorId;
-                
+            await this.businessUnitService.RemoveModeratorFromBusinessUnitsAsync(model.ModeratorId, model.Id);
 
-                var businessUnit = await this.businessUnitService.GetBusinessUnitById(businessUnitId);
-
-                var moderator = await this.userService.GetUserByIdAsync(moderatorId);
-
-                await this.businessUnitService.RemoveModeratorFromBusinessUnitsAsync(moderatorId, businessUnitId);
-
-                return Ok(string.Format(WebConstants.SuccessfullyRemovedModeratorFromBusinessUnit, moderator.UserName, businessUnit.Name));
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
+            return Ok(string.Format(WebConstants.SuccessfullyRemovedModeratorFromBusinessUnit, model.ModeratorId, model.Id));
         }
 
         [HttpGet]
