@@ -42,7 +42,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var model = new SearchViewModel() { StartDate = DateTime.MinValue, EndDate = DateTime.MaxValue };
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
 
             noteServiceMock.Setup(x => x.GetPageCountForNotesAsync(15, 1, null)).ReturnsAsync(1);
             var notes = new List<NoteDTO>() { TestHelpersNoteController.TestNoteDTO5() };

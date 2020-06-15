@@ -1,7 +1,6 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
@@ -25,7 +24,7 @@ namespace ManagerLogbook.Services
             this.userService = userService;
         }
 
-        public async Task CreateBusinnesUnitAsync(BusinessUnitModel model)
+        public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(BusinessUnitModel model)
         {
             await CheckIfBrandNameExist(model.Name);
 
@@ -43,31 +42,28 @@ namespace ManagerLogbook.Services
 
             this.context.BusinessUnits.Add(businessUnit);
             await this.context.SaveChangesAsync();
+            return businessUnit.ToDTO();
         }
-
-        public async Task<BusinessUnitDTO> GetBusinessUnitById(int businessUnitId)
-        {
-            var result = await this.context.BusinessUnits
-                                           .Include(buc => buc.BusinessUnitCategory)
-                                           .Include(t => t.Town)
-                                           .FirstOrDefaultAsync(x => x.Id == businessUnitId);
-            if (result == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
-
-            return result.ToDTO();
-        }
-
-        public async Task UpdateBusinessUnitAsync(BusinessUnitModel model)
+        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(BusinessUnitModel model)
         {
             var businessUnit = await GetBusinessUnitAsync(model.Id);
-            await CheckIfBrandNameExist(model.Name);
+            if (businessUnit.Name != model.Name)
+            {
+                await CheckIfBrandNameExist(model.Name);
+            }
+
             SetBusinessUnitProperties(model, businessUnit);
             await this.context.SaveChangesAsync();
+            return businessUnit.ToDTO();
         }
 
-        public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId)
+        public async Task<BusinessUnitDTO> GetBusinessUnitDtoAsync(int businessUnitId)
+        {
+            var businessUnit = await GetBusinessUnitAsync(businessUnitId);
+            return businessUnit.ToDTO();
+        }
+
+        public async Task<IReadOnlyCollection<LogbookDTO>> GetLogbooksForBusinessUnitAsync(int businessUnitId)
         {
             var businessUnit = await GetBusinessUnitAsync(businessUnitId);
 
@@ -83,14 +79,8 @@ namespace ManagerLogbook.Services
             return logbooksDTO;
         }
 
-        public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
+        public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
         {
-            var businessUnitCategory = await this.context.BusinessUnitCategories.FindAsync(businessUnitCategoryId);
-
-            if (businessUnitCategory == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitCategoryNotFound);
-            }
             var businessUnits = await this.context.BusinessUnits
                          .Include(buc => buc.BusinessUnitCategory)
                          .Include(t => t.Town)
@@ -101,7 +91,7 @@ namespace ManagerLogbook.Services
             return businessUnits;
         }
 
-        public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsAsync()
+        public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetBusinessUnitsAsync()
         {
             var businessUnitsDTO = await this.context.BusinessUnits
                          .Include(buc => buc.BusinessUnitCategory)
@@ -116,29 +106,30 @@ namespace ManagerLogbook.Services
         public async Task<IReadOnlyCollection<TownDTO>> GetAllTownsAsync()
         {
             var townsDTO = await this.context.Towns
-                                          .Include(x => x.BusinessUnits)
                                           .OrderBy(n => n.Name)
                                           .Select(x => x.ToDTO())
                                           .ToListAsync();
             return townsDTO;
         }
 
-        public async Task AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        public async Task<UserDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
             await GetBusinessUnitAsync(businessUnitId);
-
             var moderatorUser = await this.userService.GetUserAsync(moderatorId);
+
             moderatorUser.BusinessUnitId = businessUnitId;
             await this.context.SaveChangesAsync();
+            return moderatorUser.ToDTO();
         }
 
-        public async Task RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        public async Task<UserDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
             await GetBusinessUnitAsync(businessUnitId);
-
             var moderatorUser = await this.userService.GetUserAsync(moderatorId);
+
             moderatorUser.BusinessUnitId = null;
             await this.context.SaveChangesAsync();
+            return moderatorUser.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
@@ -172,7 +163,7 @@ namespace ManagerLogbook.Services
             return searchResult;
         }
 
-        public async Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetAllBusinessUnitsCategoriesAsync()
+        public async Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetBusinessUnitsCategoriesAsync()
         {
             var businessUnitsCategoriesDTO = await this.context.BusinessUnitCategories
                          .OrderBy(n => n.Name)
@@ -182,7 +173,7 @@ namespace ManagerLogbook.Services
             return businessUnitsCategoriesDTO;
         }
 
-        public async Task<IReadOnlyDictionary<string, int>> GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync()
+        public async Task<IReadOnlyDictionary<string, int>> GetBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync()
         {
             var categoriesCountUnits = await this.context.BusinessUnits
                          .Include(bu => bu.BusinessUnitCategory)
@@ -198,24 +189,13 @@ namespace ManagerLogbook.Services
             return categoriesCountUnits;
         }
 
-        public async Task<BusinessUnitDTO> GiveLikeBusinessUnitAsync(int businessUnitId)
+        public async Task<BusinessUnitDTO> AddLikeToBusinessUnitAsync(int businessUnitId)
         {
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
-
-            if (businessUnit == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
+            var businessUnit = await GetBusinessUnitAsync(businessUnitId);
 
             businessUnit.Likes++;
-
             await this.context.SaveChangesAsync();
-
-            var result = await this.context.BusinessUnits
-                                           .Include(buc => buc.BusinessUnitCategory)
-                                           .Include(t => t.Town)
-                                           .FirstOrDefaultAsync(x => x.Id == businessUnit.Id);
-            return result.ToDTO();
+            return businessUnit.ToDTO();
         }
 
         private async Task<BusinessUnit> GetBusinessUnitAsync(int businessUnitId)
@@ -224,7 +204,7 @@ namespace ManagerLogbook.Services
 
             if (businessUnit == null)
             {
-                throw new NotFoundException($"Business unit with id: {businessUnitId} does not exist.");
+                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
             }
 
             return businessUnit;
@@ -236,9 +216,8 @@ namespace ManagerLogbook.Services
 
             if (businessUnit != null)
             {
-                throw new AlreadyExistsException($"Business unit with name: {brandName} already exists.");
+                throw new AlreadyExistsException(string.Format(ServicesConstants.BusinessUnitNameAlreadyExists, brandName));
             }
-
         }
 
         private void SetBusinessUnitProperties(BusinessUnitModel model, BusinessUnit entity)
@@ -264,6 +243,5 @@ namespace ManagerLogbook.Services
                 entity.BusinessUnitCategoryId = model.CategoryId;
             }
         }
-        
     }
 }

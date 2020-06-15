@@ -40,7 +40,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var userId = TestHelpersNoteController.TestUserDTO3().Id;
            
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO3());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO3());
 
             var actionResult = await sut.ActiveNotes();
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -66,7 +66,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var userId = TestHelpersNoteController.TestUserDTO2().Id;
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
             noteServiceMock.Setup(x => x.ShowLogbookNotesWithActiveStatusAsync(userId,1)).ThrowsAsync(new NotAuthorizedException());
 
             var actionResult = await sut.ActiveNotes();
@@ -93,7 +93,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var userId = TestHelpersNoteController.TestUserDTO2().Id;
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
             noteServiceMock.Setup(x => x.ShowLogbookNotesWithActiveStatusAsync(userId, 1)).ThrowsAsync(new NotFoundException());
 
             var actionResult = await sut.ActiveNotes();
@@ -120,7 +120,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var userId = TestHelpersNoteController.TestUserDTO2().Id;
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ThrowsAsync(new NotFoundException());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ThrowsAsync(new NotFoundException());
             //noteServiceMock.Setup(x => x.ShowLogbookNotesWithActiveStatusAsync(userId, 1)).ThrowsAsync(new NotFoundException());
 
             var actionResult = await sut.ActiveNotes();
@@ -147,7 +147,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var userId = TestHelpersNoteController.TestUserDTO2().Id;
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO2());
             noteServiceMock.Setup(x => x.ShowLogbookNotesWithActiveStatusAsync(userId, 1)).ThrowsAsync(new Exception());
 
             var actionResult = await sut.ActiveNotes();

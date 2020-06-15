@@ -107,7 +107,7 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
 
                 if (user.BusinessUnitId.HasValue)
                 {
-                    businessUnit = await this.businessUnitService.GetBusinessUnitById(user.BusinessUnitId.Value);
+                    businessUnit = await this.businessUnitService.GetBusinessUnitDtoAsync(user.BusinessUnitId.Value);
                 }
                 else
                 {

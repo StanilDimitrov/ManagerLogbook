@@ -23,14 +23,14 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var businessUnit = await this.businessUnitService.GetBusinessUnitById(id);
+            var businessUnit = await this.businessUnitService.GetBusinessUnitDtoAsync(id);
             var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
 
             var viewModel = new IndexBusinessUnitViewModel
             {
                 BusinessUnit = businessUnit.MapFrom(),
                 Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList(),
-                Logbooks = await this.businessUnitService.GetAllLogbooksForBusinessUnitAsync(businessUnit.Id)
+                Logbooks = await this.businessUnitService.GetLogbooksForBusinessUnitAsync(businessUnit.Id)
             };
        
             return View(viewModel);
@@ -52,7 +52,7 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GiveLikeToBusinessUnit(int businessUnitId)
         {
-            var businessUnit = await this.businessUnitService.GiveLikeBusinessUnitAsync(businessUnitId);
+            var businessUnit = await this.businessUnitService.AddLikeToBusinessUnitAsync(businessUnitId);
             return Json(businessUnit.Likes);
         }
     }

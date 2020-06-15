@@ -1,4 +1,5 @@
 ﻿using ManagerLogbook.Services.DTOs;
+using ManagerLogbook.Services.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,38 +7,30 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface IBusinessUnitService
     {
-        Task<BusinessUnitDTO> CreateBusinnesUnitAsync(string brandName, string address, string phoneNumber, string email, string infomration, int businessUnitCategoryId, int townId, string picture);
+        Task<BusinessUnitDTO> CreateBusinnesUnitAsync(BusinessUnitModel model);
 
-        Task<BusinessUnitDTO> GetBusinessUnitById(int businessUnitId);
+        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(BusinessUnitModel model);
 
-        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(int businessUnitId, string brandName, string address, string phoneNumber, string information, string email, int businessUnitCategoryId, int townId, string picture);
+        Task<BusinessUnitDTO> GetBusinessUnitDtoAsync(int businessUnitId);
 
-        Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksForBusinessUnitAsync(int businessUnitId);
+        Task<IReadOnlyCollection<LogbookDTO>> GetLogbooksForBusinessUnitAsync(int businessUnitId);
 
-        Task<BusinessUnitCategoryDTO> CreateBusinessUnitCategoryAsync(string businessUnitCategoryName);
+        Task<IReadOnlyCollection<BusinessUnitDTO>> GetBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId);
 
-        Task<BusinessUnitCategoryDTO> UpdateBusinessUnitCategoryAsync(int businessUnitCategoryId, string newBusinessUnitCategoryName);
-
-        Task<BusinessUnitDTO> AddBusinessUnitCategoryToBusinessUnitAsync(int businessUnitCategoryId, int businessUnitId);
-
-        Task<BusinessUnitCategoryDTO> GetBusinessUnitCategoryByIdAsync(int businessUnitCategoryId);
-
-        Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId);
-
-        Task<IReadOnlyCollection<BusinessUnitDTO>> GetAllBusinessUnitsAsync();
+        Task<IReadOnlyCollection<BusinessUnitDTO>> GetBusinessUnitsAsync();
 
         Task<IReadOnlyCollection<TownDTO>> GetAllTownsAsync();
 
-        Task<BusinessUnitDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId);
+        Task<UserDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId);
 
-        Task<BusinessUnitDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId);
+        Task<UserDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId);
 
         Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId);
 
-        Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetAllBusinessUnitsCategoriesAsync();
+        Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetBusinessUnitsCategoriesAsync();
 
-        Task<IReadOnlyDictionary<string, int>> GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
+        Task<IReadOnlyDictionary<string, int>> GetBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
 
-        Task<BusinessUnitDTO> GiveLikeBusinessUnitAsync(int businessUnitId);
+        Task<BusinessUnitDTO> AddLikeToBusinessUnitAsync(int businessUnitId);
     }
 }

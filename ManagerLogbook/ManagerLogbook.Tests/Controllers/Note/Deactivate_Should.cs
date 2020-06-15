@@ -41,7 +41,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO4().Id, id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
             var actionResult = await sut.Deactivate(4);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -70,7 +70,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO5().Id, userId)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             noteServiceMock.Setup(x => x.ShowLogbookNotesAsync(userId, 1)).ReturnsAsync(notes);
             var actionResult = await sut.Deactivate(5);
@@ -100,7 +100,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO5().Id, userId)).ThrowsAsync(new NotFoundException());
             noteServiceMock.Setup(x => x.ShowLogbookNotesAsync(userId, 1)).ReturnsAsync(notes);
             var actionResult = await sut.Deactivate(5);
@@ -130,7 +130,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO5().Id, userId)).ThrowsAsync(new NotAuthorizedException());
             noteServiceMock.Setup(x => x.ShowLogbookNotesAsync(userId, 1)).ReturnsAsync(notes);
             var actionResult = await sut.Deactivate(5);
@@ -160,7 +160,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO5().Id, userId)).ThrowsAsync(new Exception());
             noteServiceMock.Setup(x => x.ShowLogbookNotesAsync(userId, 1)).ReturnsAsync(notes);
             var actionResult = await sut.Deactivate(5);

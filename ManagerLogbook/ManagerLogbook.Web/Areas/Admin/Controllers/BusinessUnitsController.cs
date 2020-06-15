@@ -77,27 +77,27 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             var model = viewModel.MapFrom();
             model.Picture = imageName;
-            await this.businessUnitService.UpdateBusinessUnitAsync(model);
 
-            return Ok(string.Format(WebConstants.BusinessUnitUpdated, viewModel.Name));
+            var businessUnitDto = await this.businessUnitService.UpdateBusinessUnitAsync(model);
+            return Ok(string.Format(WebConstants.BusinessUnitUpdated, businessUnitDto.Name));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddModeratorToBusinessUnit(BusinessUnitViewModel viewModel)
         {
-            await this.businessUnitService.AddModeratorToBusinessUnitsAsync(viewModel.ModeratorId, viewModel.Id);
+            var userDto = await this.businessUnitService.AddModeratorToBusinessUnitsAsync(viewModel.ModeratorId, viewModel.Id);
 
-            return Ok(string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, viewModel.ModeratorId, viewModel.Id));
+            return Ok(string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, userDto.Id, userDto.BusinessUnitId));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveModerator(BusinessUnitViewModel model)
         {
-            await this.businessUnitService.RemoveModeratorFromBusinessUnitsAsync(model.ModeratorId, model.Id);
+            var userDto = await this.businessUnitService.RemoveModeratorFromBusinessUnitsAsync(model.ModeratorId, model.Id);
 
-            return Ok(string.Format(WebConstants.SuccessfullyRemovedModeratorFromBusinessUnit, model.ModeratorId, model.Id));
+            return Ok(string.Format(WebConstants.SuccessfullyRemovedModeratorFromBusinessUnit, userDto.Id, userDto.BusinessUnitId));
         }
 
         [HttpGet]
@@ -105,7 +105,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         {
             try
             {
-                var categories = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
+                var categories = await this.businessUnitService.GetBusinessUnitsCategoriesAsync();
 
                 return Json(categories);
             }
@@ -121,7 +121,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         {
             try
             {
-                var businessUnits = await this.businessUnitService.GetAllBusinessUnitsAsync();
+                var businessUnits = await this.businessUnitService.GetBusinessUnitsAsync();
 
                 return Json(businessUnits);
             }

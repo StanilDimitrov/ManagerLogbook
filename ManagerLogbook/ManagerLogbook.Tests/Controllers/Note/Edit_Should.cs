@@ -48,7 +48,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             var actionResult = await sut.Edit(model);
             Assert.IsInstanceOfType(actionResult, typeof(OkObjectResult));
@@ -83,7 +83,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO3());
             var actionResult = await sut.Edit(model);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -118,7 +118,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ThrowsAsync(new NotFoundException());
             var actionResult = await sut.Edit(model);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -153,7 +153,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ThrowsAsync(new NotAuthorizedException());
             var actionResult = await sut.Edit(model);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -188,7 +188,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ThrowsAsync(new ArgumentException());
             var actionResult = await sut.Edit(model);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -224,7 +224,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ThrowsAsync(new Exception());
             var actionResult = await sut.Edit(model);
             var result = (RedirectToActionResult)actionResult;

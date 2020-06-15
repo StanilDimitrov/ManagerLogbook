@@ -31,10 +31,10 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var businessUnitsDTO = await this.businessUnitService.GetAllBusinessUnitsAsync();
-            var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
+            var businessUnitsDTO = await this.businessUnitService.GetBusinessUnitsAsync();
+            var categoriesDTO = await this.businessUnitService.GetBusinessUnitsCategoriesAsync();
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
-            var businessCategories = await this.businessUnitService.GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
+            var businessCategories = await this.businessUnitService.GetBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
 
             var viewModel = new HomeViewModel
             {
@@ -81,8 +81,8 @@ namespace ManagerLogbook.Web.Controllers
                 bindngModel.TownId);
 
             var townsDTO = await this.businessUnitService.GetAllTownsAsync();
-            var categoriesDTO = await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
-            var businessCategories = await this.businessUnitService.GetAllBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
+            var categoriesDTO = await this.businessUnitService.GetBusinessUnitsCategoriesAsync();
+            var businessCategories = await this.businessUnitService.GetBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
 
             var viewModel = new BusinessUnitSearchViewModel
             {
@@ -97,7 +97,7 @@ namespace ManagerLogbook.Web.Controllers
             var cashedCategories = await cache.GetOrCreateAsync<IReadOnlyCollection<BusinessUnitCategoryDTO>>("Categories", async (cacheEntry) =>
             {
                 cacheEntry.SlidingExpiration = TimeSpan.FromDays(1);
-                return await this.businessUnitService.GetAllBusinessUnitsCategoriesAsync();
+                return await this.businessUnitService.GetBusinessUnitsCategoriesAsync();
             });
 
             return cashedCategories;

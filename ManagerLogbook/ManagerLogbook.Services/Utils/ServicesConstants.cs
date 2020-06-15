@@ -29,7 +29,7 @@
         public const string LogbookAlreadyExists = "Logbook name already exists.";
         public const string BusinessUnitNotFound = "BusinessUnit does not exists.";
         public const string BusinessUnitCategoryNotFound = "BusinessUnit Category does not exists.";
-        public const string BusinessUnitNameAlreadyExists = "BusinessUnit name already exists.";
+        public const string BusinessUnitNameAlreadyExists = "Business unit with name: {0} already exists.";
         public const string BusinessUnitCategoryNameAlreadyExists = "BusinessUnitCategory name already exists.";
         public const string ReviewNotFound = "Review does not exists.";
         //public const string UserNotFound = "User was not found.";

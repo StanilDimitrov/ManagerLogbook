@@ -32,7 +32,7 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
                 var mockedRapper = new Mock<IUserServiceWrapper>();
                 var sut = new UserService(assertContext, mockedRapper.Object);
 
-                var userDTO = await sut.GetUserByIdAsync(TestHelpersNote.TestUser1().Id);
+                var userDTO = await sut.GetUserDtoByIdAsync(TestHelpersNote.TestUser1().Id);
 
                 Assert.AreEqual(userDTO.Id, TestHelpersNote.TestUser1().Id);
             }
@@ -52,7 +52,7 @@ namespace ManagerLogbook.Tests.Services.UserServiceTest
                 var mockedRapper = new Mock<IUserServiceWrapper>();
                 var sut = new UserService(assertContext, mockedRapper.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.GetUserByIdAsync(TestHelpersNote.TestUser1().Id));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.GetUserDtoByIdAsync(TestHelpersNote.TestUser1().Id));
 
                 Assert.AreEqual(ex.Message, ServicesConstants.UserNotFound);
             }

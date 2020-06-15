@@ -21,7 +21,7 @@ namespace ManagerLogbook.Tests.Controllers.LoggedUsers
             var userServiceMock = new Mock<IUserService>();
 
             var sut = new UsersController(userServiceMock.Object);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(TestHelpersNoteController.TestUserDTO1().Id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(TestHelpersNoteController.TestUserDTO1().Id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             var model = new IndexUserViewModel();
             //model.User = TestHelpersUsersController.TestUserViewModel1();
             var actionResult = await sut.Details(TestHelpersNoteController.TestUserDTO1().Id);
@@ -34,7 +34,7 @@ namespace ManagerLogbook.Tests.Controllers.LoggedUsers
             var userServiceMock = new Mock<IUserService>();
 
             var sut = new UsersController(userServiceMock.Object);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(TestHelpersNoteController.TestUserDTO1().Id)).ThrowsAsync(new NotFoundException());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(TestHelpersNoteController.TestUserDTO1().Id)).ThrowsAsync(new NotFoundException());
             var model = new IndexUserViewModel();
             //model.User = TestHelpersUsersController.TestUserViewModel1();
             var actionResult = await sut.Details(TestHelpersNoteController.TestUserDTO1().Id);
@@ -47,7 +47,7 @@ namespace ManagerLogbook.Tests.Controllers.LoggedUsers
             var userServiceMock = new Mock<IUserService>();
 
             var sut = new UsersController(userServiceMock.Object);
-            userServiceMock.Setup(x => x.GetUserByIdAsync(TestHelpersNoteController.TestUserDTO1().Id)).ThrowsAsync(new Exception());
+            userServiceMock.Setup(x => x.GetUserDtoByIdAsync(TestHelpersNoteController.TestUserDTO1().Id)).ThrowsAsync(new Exception());
             var model = new IndexUserViewModel();
             var actionResult = await sut.Details(TestHelpersNoteController.TestUserDTO1().Id);
             var result = (RedirectToActionResult)actionResult;
