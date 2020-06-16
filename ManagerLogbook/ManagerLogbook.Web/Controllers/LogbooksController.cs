@@ -31,7 +31,7 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var logbook = await this.logbookService.GetLogbookById(id);
+            var logbook = await this.logbookService.GetLogbookDetailsAsync(id);
             var managers = await this.userService.GetAllManagersPresentInLogbookAsync(logbook.Id);
 
             var viewModel = new IndexLogbookViewModel

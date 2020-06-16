@@ -27,8 +27,8 @@ namespace ManagerLogbook.Web.Utils
         public const string BusinessUniNotExist = "Business unit does not exists.";
         public const string ModeratorNotExist = "Moderator does not exists.";
         public const string ManagerNotExist = "Manager does not exists.";
-        public const string SuccessfullyAddedModeratorToBusinessUnit = "Moderator with Id\"{0}\" was successfully added to business unit business unit with Id: \"{1}\".";
-        public const string SuccessfullyRemovedModeratorFromBusinessUnit = "Moderator with Id: \"{0}\" was successfully removed from business unit with Id: \"{1}\".";
+        public const string SuccessfullyAddedModeratorToBusinessUnit = "Moderator \"{0}\" was successfully added to business unit.";
+        public const string SuccessfullyRemovedModeratorFromBusinessUnit = "Moderator \"{0}\" was successfully removed from business unit.";
         public const string SuccessfullyAddedManagerToLogbook = "Manager \"{0}\" was successfully added to logbook.";
         public const string SuccessfullyRemovedManagerFromLogbook = "Manager \"{0}\" was successfully removed from logbook.";
         public const string ReviewCreated = "Review was successfully created.";
@@ -36,7 +36,7 @@ namespace ManagerLogbook.Web.Utils
         public const string EnterValidData = "Please enter a valid data.";
         public const string SwitchLogbook = "Successfully switch to logbook \"{0}\".";
         public const string AlreadyInLogbook = "User \"{0}\" is  already logged in logbook \"{1}\".";
-        public const string UserCreated = "User \"{0}\"  addedd succesfully!";
+        public const string UserCreated = "User \"{0}\"  added succesfully!";
         public const string UserExists = "User \"{0}\" already exists.";
         public const string UnableToEditReview = "Unable to edit review.";
         public const string ReviewEdited = "Review was successfully edited.";

@@ -14,7 +14,8 @@ namespace ManagerLogbook.Web.Models
                 
         [MaxLength(500)]
         public string EditedDescription { get; set; }
-                
+          
+        [Range(1, 5)]
         public int Rating { get; set; }
 
         public DateTime CreatedOn { get; set; }

@@ -1,14 +1,11 @@
 ﻿using log4net;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Services.Contracts;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Areas.Admin.Controllers
@@ -17,25 +14,25 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class BusinessUnitsController : Controller
     {
-        private readonly IBusinessUnitService businessUnitService;
-        private readonly IUserService userService;
-        private readonly IImageOptimizer optimizer;
+        private readonly IBusinessUnitService _businessUnitService;
+        private readonly IUserService _userService;
+        private readonly IImageOptimizer _optimizer;
         private static readonly ILog log = LogManager.GetLogger(typeof(BusinessUnitsController));
 
         public BusinessUnitsController(IBusinessUnitService businessUnitService,
                                       IUserService userService,
                                       IImageOptimizer optimizer)
         {
-            this.businessUnitService = businessUnitService;
-            this.userService = userService;
-            this.optimizer = optimizer;
+            _businessUnitService = businessUnitService;
+            _userService = userService;
+            _optimizer = optimizer;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BusinessUnitViewModel viewModel)
         {
-            if (!this.ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 return BadRequest(WebConstants.EnterValidData);
             }
@@ -44,12 +41,12 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             if (viewModel.BusinessUnitPicture != null)
             {
-                imageName = optimizer.OptimizeImage(viewModel.BusinessUnitPicture, 400, 800);
+                imageName = _optimizer.OptimizeImage(viewModel.BusinessUnitPicture, 400, 800);
             }
 
             var model = viewModel.MapFrom();
             model.Picture = imageName;
-            await this.businessUnitService.CreateBusinnesUnitAsync(model);
+            await _businessUnitService.CreateBusinnesUnitAsync(model);
 
             return Ok(string.Format(WebConstants.BusinessUnitCreated, viewModel.Name));
         }
@@ -58,7 +55,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(BusinessUnitViewModel viewModel)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(WebConstants.EnterValidData);
             }
@@ -67,18 +64,18 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             if (viewModel.BusinessUnitPicture != null)
             {
-                imageName = optimizer.OptimizeImage(viewModel.BusinessUnitPicture, 400, 800);
+                imageName = _optimizer.OptimizeImage(viewModel.BusinessUnitPicture, 400, 800);
             }
 
             if (viewModel.Picture != null)
             {
-                optimizer.DeleteOldImage(viewModel.Picture);
+                _optimizer.DeleteOldImage(viewModel.Picture);
             }
 
             var model = viewModel.MapFrom();
             model.Picture = imageName;
 
-            var businessUnitDto = await this.businessUnitService.UpdateBusinessUnitAsync(model);
+            var businessUnitDto = await _businessUnitService.UpdateBusinessUnitAsync(model);
             return Ok(string.Format(WebConstants.BusinessUnitUpdated, businessUnitDto.Name));
         }
 
@@ -86,71 +83,45 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddModeratorToBusinessUnit(BusinessUnitViewModel viewModel)
         {
-            var userDto = await this.businessUnitService.AddModeratorToBusinessUnitsAsync(viewModel.ModeratorId, viewModel.Id);
-
-            return Ok(string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, userDto.Id, userDto.BusinessUnitId));
+            var userDto = await _businessUnitService.AddModeratorToBusinessUnitsAsync(viewModel.ModeratorId, viewModel.Id);
+            return Ok(string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, userDto.UserName));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveModerator(BusinessUnitViewModel model)
         {
-            var userDto = await this.businessUnitService.RemoveModeratorFromBusinessUnitsAsync(model.ModeratorId, model.Id);
-
-            return Ok(string.Format(WebConstants.SuccessfullyRemovedModeratorFromBusinessUnit, userDto.Id, userDto.BusinessUnitId));
+            var userDto = await _businessUnitService.RemoveModeratorFromBusinessUnitsAsync(model.ModeratorId, model.Id);
+            return Ok(string.Format(WebConstants.SuccessfullyRemovedModeratorFromBusinessUnit, userDto.UserName));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllBusinessUnitCategories()
         {
-            try
-            {
-                var categories = await this.businessUnitService.GetBusinessUnitsCategoriesAsync();
 
-                return Json(categories);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
+            var categories = await _businessUnitService.GetBusinessUnitsCategoriesAsync();
+            return Json(categories);
+
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllBusinessUnits()
         {
-            try
-            {
-                var businessUnits = await this.businessUnitService.GetBusinessUnitsAsync();
+            var businessUnits = await _businessUnitService.GetBusinessUnitsAsync();
+            return Json(businessUnits);
 
-                return Json(businessUnits);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllTowns()
         {
-            try
-            {
-                var towns = await this.businessUnitService.GetAllTownsAsync();
-
-                return Json(towns);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
+            var towns = await _businessUnitService.GetAllTownsAsync();
+            return Json(towns);
         }
 
         public async Task<IActionResult> GetAllModeratorsNotPresent(int id)
         {
-            var moderators = await this.userService.GetAllModeratorsNotPresentInBusinessUnitAsync(id);
+            var moderators = await _userService.GetAllModeratorsNotPresentInBusinessUnitAsync(id);
 
             if (moderators == null)
             {
@@ -162,7 +133,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> GetAllModeratorsPresent(int id)
         {
-            var moderators = await this.userService.GetAllModeratorsPresentInBusinessUnitAsync(id);
+            var moderators = await _userService.GetAllModeratorsPresentInBusinessUnitAsync(id);
 
             if (moderators == null)
             {

@@ -1,5 +1,6 @@
 ﻿using log4net;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -19,16 +20,18 @@ namespace ManagerLogbook.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ReviewViewModel model)
+        public async Task<IActionResult> Create(ReviewViewModel viewModel)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(WebConstants.EnterValidData);
             }
 
-            var review = await this.reviewService.CreateReviewAsync(model.OriginalDescription, model.BusinessUnitId, model.Rating);
+            var model = viewModel.MapFrom();
 
-            if (review.OriginalDescription == model.OriginalDescription)
+            var review = await this.reviewService.CreateReviewAsync(model);
+
+            if (review.OriginalDescription == viewModel.OriginalDescription)
             {
                 return Ok(string.Format(WebConstants.ReviewCreated));
             }

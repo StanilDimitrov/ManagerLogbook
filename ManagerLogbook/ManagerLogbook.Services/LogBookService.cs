@@ -46,7 +46,7 @@ namespace ManagerLogbook.Services
             return logbook.ToDTO();
         }
 
-        public async Task<LogbookDTO> GetLogbookById(int logbookId)
+        public async Task<LogbookDTO> GetLogbookDetailsAsync(int logbookId)
         {
             var logbook = await GetLogbookAsync(logbookId);
 
@@ -151,6 +151,7 @@ namespace ManagerLogbook.Services
 
             return logbook;
         }
+
         private async Task CheckIfLogbookExist(string logbookName)
         {
             var logbook = await _context.Logbooks.SingleOrDefaultAsync(lb => lb.Name == logbookName);

@@ -24,7 +24,7 @@ namespace ManagerLogbook.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var businessUnit = await this.businessUnitService.GetBusinessUnitDtoAsync(id);
-            var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
+            var reviewDTOs = await this.reviewService.GetReviewsByBusinessUnitAsync(id);
 
             var viewModel = new IndexBusinessUnitViewModel
             {
@@ -39,7 +39,7 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReviewsList(int id)
         {
-            var reviewDTOs = await this.reviewService.GetAllReviewsByBusinessUnitIdAsync(id);
+            var reviewDTOs = await this.reviewService.GetReviewsByBusinessUnitAsync(id);
 
             var viewModel = new IndexBusinessUnitViewModel
             {

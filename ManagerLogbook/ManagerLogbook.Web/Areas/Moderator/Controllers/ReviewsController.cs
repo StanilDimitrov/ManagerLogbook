@@ -1,18 +1,14 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using log4net;
+﻿using log4net;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
-using ManagerLogbook.Services.CustomExeptions;
-using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Areas.Moderator.Models;
-using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Areas.Moderator.Controllers
 {
@@ -20,10 +16,10 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
     [Authorize(Roles = "Moderator")]
     public class ReviewsController : Controller
     {
-        private readonly IReviewService reviewService;
-        private readonly IBusinessUnitService businessUnitService;
-        private readonly IUserService userService;
-        private readonly IUserServiceWrapper wrapper;
+        private readonly IReviewService _reviewService;
+        private readonly IBusinessUnitService _businessUnitService;
+        private readonly IUserService _userService;
+        private readonly IUserServiceWrapper _wrapper;
         private static readonly ILog log = LogManager.GetLogger(typeof(ReviewsController));
 
         public ReviewsController(IReviewService reviewService,
@@ -31,102 +27,61 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
                                  IUserService userService,
                                  IUserServiceWrapper wrapper)
         {
-            this.reviewService = reviewService;
-            this.businessUnitService = businessUnitService;
-            this.userService = userService ;
-            this.wrapper = wrapper;
+            _reviewService = reviewService;
+            _businessUnitService = businessUnitService;
+            _userService = userService;
+            _wrapper = wrapper;
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(ReviewViewModel model)
+        public async Task<IActionResult> Update(ReviewViewModel viewModel)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(string.Format(WebConstants.UnableToEditReview));
             }
 
-            try
+            var model = viewModel.MapFrom();
+            var reviewDTO = await _reviewService.UpdateReviewAsync(model);
+
+            if (reviewDTO.EditedDescription != model.EditedDescription)
             {
-                var reviewDTO = await this.reviewService.GetReviewByIdAsync(model.Id);
-
-                reviewDTO = await this.reviewService.UpdateReviewAsync(model.Id, model.EditedDescription);
-
-                if (reviewDTO.EditedDescription != model.EditedDescription)
-                {
-                    return BadRequest(string.Format(WebConstants.UnableToEditReview));
-                }
-
-                return Ok(string.Format(WebConstants.ReviewEdited));
+                return BadRequest(string.Format(WebConstants.UnableToEditReview));
             }
 
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
+            return Ok(string.Format(WebConstants.ReviewEdited));
         }
 
         public async Task<IActionResult> Deactivate(int id)
         {
-            try
-            {
-               await this.reviewService.MakeInVisibleReviewAsync(id);                       
-               return Ok(string.Format(WebConstants.ReviewDeactivated));
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
-        }        
+            await _reviewService.MakeReviewInvisibleAsync(id);
+            return Ok(string.Format(WebConstants.ReviewDeactivated));
+        }
 
         public async Task<IActionResult> Index()
         {
-            try
+            var model = new IndexReviewViewModel();
+
+            var userId = _wrapper.GetLoggedUserId(User);
+            var user = await _userService.GetUserDtoByIdAsync(userId);
+
+            if (user.BusinessUnitId.HasValue)
             {
-                var model = new IndexReviewViewModel();
-
-                var userId = this.wrapper.GetLoggedUserId(User);
-                
-                var user = await this.userService.GetUserDtoByIdAsync(userId);
-
-                var businessUnit = new BusinessUnitDTO();
-
-                if (user.BusinessUnitId.HasValue)
-                {
-                    businessUnit = await this.businessUnitService.GetBusinessUnitDtoAsync(user.BusinessUnitId.Value);
-                }
-                else
-                {
-                    return BadRequest(string.Format(WebConstants.BusinessUniNotAssigned));
-                }
-
-                var reviews = await this.reviewService.GetAllReviewsByModeratorIdAsync(userId);
-
-                model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
+                var businessUnit = await _businessUnitService.GetBusinessUnitDtoAsync(user.BusinessUnitId.Value);
                 model.BusinessUnit = businessUnit.MapFrom();
-                model.ModeratorId = userId; 
-
-                return View(model);
             }
-            catch (Exception ex)
+            else
             {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
+                return BadRequest(string.Format(WebConstants.BusinessUniNotAssigned));
             }
+
+            var reviews = await _reviewService.GetReviewsByModeratorAsync(userId);
+
+            model.Reviews = reviews.Select(x => x.MapFrom()).ToList();
+            model.ModeratorId = userId;
+
+            return View(model);
         }
     }
 }

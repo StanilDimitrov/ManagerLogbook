@@ -40,7 +40,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 var user = await this.userService.GetUserDtoByIdAsync(userId);
                 if (model.CurrentLogbookId.HasValue)
                 {
-                    var logbook = await this.logbookService.GetLogbookById(model.CurrentLogbookId.Value);
+                    var logbook = await this.logbookService.GetLogbookDetailsAsync(model.CurrentLogbookId.Value);
                     if (user.CurrentLogbookId ==  model.CurrentLogbookId)
                     {
                         return BadRequest((string.Format(WebConstants.AlreadyInLogbook,  user.UserName, logbook.Name)));

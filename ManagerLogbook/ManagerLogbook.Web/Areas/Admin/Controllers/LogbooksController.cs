@@ -1,14 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using log4net;
 using ManagerLogbook.Services.Contracts;
+using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Services.Contracts;
 using ManagerLogbook.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using log4net;
-using ManagerLogbook.Services.CustomExeptions;
-using ManagerLogbook.Web.Mappers;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Areas.Admin.Controllers
 {
@@ -90,7 +88,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             }
 
             return Ok(string.Format(WebConstants.LogbookUpdated, viewModel.Name));
-
         }
 
         [HttpPost]

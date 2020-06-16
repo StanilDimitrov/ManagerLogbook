@@ -15,13 +15,13 @@ namespace ManagerLogbook.Services
 {
     public class BusinessUnitService : IBusinessUnitService
     {
-        private readonly ManagerLogbookContext context;
-        private readonly IUserService userService;
+        private readonly ManagerLogbookContext _context;
+        private readonly IUserService _userService;
 
         public BusinessUnitService(ManagerLogbookContext context, IUserService userService)
         {
-            this.context = context;
-            this.userService = userService;
+            _context = context;
+            _userService = userService;
         }
 
         public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(BusinessUnitModel model)
@@ -40,8 +40,8 @@ namespace ManagerLogbook.Services
                 Picture = model.Picture
             };
 
-            this.context.BusinessUnits.Add(businessUnit);
-            await this.context.SaveChangesAsync();
+            _context.BusinessUnits.Add(businessUnit);
+            await _context.SaveChangesAsync();
             return businessUnit.ToDTO();
         }
         public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(BusinessUnitModel model)
@@ -53,7 +53,7 @@ namespace ManagerLogbook.Services
             }
 
             SetBusinessUnitProperties(model, businessUnit);
-            await this.context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return businessUnit.ToDTO();
         }
 
@@ -67,7 +67,7 @@ namespace ManagerLogbook.Services
         {
             var businessUnit = await GetBusinessUnitAsync(businessUnitId);
 
-            var logbooksDTO = await this.context.Logbooks
+            var logbooksDTO = await this._context.Logbooks
                          .Include(n => n.Notes)
                          .ThenInclude(u => u.User)
                          .Include(bu => bu.BusinessUnit)
@@ -81,7 +81,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
         {
-            var businessUnits = await this.context.BusinessUnits
+            var businessUnits = await _context.BusinessUnits
                          .Include(buc => buc.BusinessUnitCategory)
                          .Include(t => t.Town)
                          .Where(bc => bc.BusinessUnitCategoryId == businessUnitCategoryId)
@@ -93,7 +93,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetBusinessUnitsAsync()
         {
-            var businessUnitsDTO = await this.context.BusinessUnits
+            var businessUnitsDTO = await _context.BusinessUnits
                          .Include(buc => buc.BusinessUnitCategory)
                          .Include(t => t.Town)
                          .OrderByDescending(id => id.Id)
@@ -105,7 +105,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<TownDTO>> GetAllTownsAsync()
         {
-            var townsDTO = await this.context.Towns
+            var townsDTO = await _context.Towns
                                           .OrderBy(n => n.Name)
                                           .Select(x => x.ToDTO())
                                           .ToListAsync();
@@ -115,20 +115,20 @@ namespace ManagerLogbook.Services
         public async Task<UserDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
             await GetBusinessUnitAsync(businessUnitId);
-            var moderatorUser = await this.userService.GetUserAsync(moderatorId);
+            var moderatorUser = await _userService.GetUserAsync(moderatorId);
 
             moderatorUser.BusinessUnitId = businessUnitId;
-            await this.context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return moderatorUser.ToDTO();
         }
 
         public async Task<UserDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
         {
             await GetBusinessUnitAsync(businessUnitId);
-            var moderatorUser = await this.userService.GetUserAsync(moderatorId);
+            var moderatorUser = await _userService.GetUserAsync(moderatorId);
 
             moderatorUser.BusinessUnitId = null;
-            await this.context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return moderatorUser.ToDTO();
         }
 
@@ -137,14 +137,14 @@ namespace ManagerLogbook.Services
             IQueryable<BusinessUnit> searchCollection;
             if (searchCriteria != null)
             {
-                searchCollection = this.context.BusinessUnits
+                searchCollection = this._context.BusinessUnits
                     .Include(x => x.BusinessUnitCategory)
                     .Include(x => x.Town)
                     .Where(n => n.Name.ToLower().Contains(searchCriteria.ToLower()));
             }
             else
             {
-                searchCollection = this.context.BusinessUnits
+                searchCollection = this._context.BusinessUnits
                     .Include(x => x.BusinessUnitCategory)
                     .Include(x => x.Town);
             }
@@ -165,7 +165,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<BusinessUnitCategoryDTO>> GetBusinessUnitsCategoriesAsync()
         {
-            var businessUnitsCategoriesDTO = await this.context.BusinessUnitCategories
+            var businessUnitsCategoriesDTO = await _context.BusinessUnitCategories
                          .OrderBy(n => n.Name)
                          .Select(x => x.ToDTO())
                          .ToListAsync();
@@ -175,7 +175,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyDictionary<string, int>> GetBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync()
         {
-            var categoriesCountUnits = await this.context.BusinessUnits
+            var categoriesCountUnits = await _context.BusinessUnits
                          .Include(bu => bu.BusinessUnitCategory)
                          .GroupBy(c => c.BusinessUnitCategory.Name)
                          .Select(group => new
@@ -194,13 +194,13 @@ namespace ManagerLogbook.Services
             var businessUnit = await GetBusinessUnitAsync(businessUnitId);
 
             businessUnit.Likes++;
-            await this.context.SaveChangesAsync();
+            await this._context.SaveChangesAsync();
             return businessUnit.ToDTO();
         }
 
         public async Task<BusinessUnit> GetBusinessUnitAsync(int businessUnitId)
         {
-            var businessUnit = await this.context.BusinessUnits.SingleOrDefaultAsync(bu => bu.Id == businessUnitId);
+            var businessUnit = await _context.BusinessUnits.SingleOrDefaultAsync(bu => bu.Id == businessUnitId);
 
             if (businessUnit == null)
             {
@@ -212,7 +212,7 @@ namespace ManagerLogbook.Services
 
         private async Task CheckIfBrandNameExist(string brandName)
         {
-            var businessUnit = await this.context.BusinessUnits.SingleOrDefaultAsync(bu => bu.Name == brandName);
+            var businessUnit = await _context.BusinessUnits.SingleOrDefaultAsync(bu => bu.Name == brandName);
 
             if (businessUnit != null)
             {

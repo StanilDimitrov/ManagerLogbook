@@ -10,7 +10,7 @@ namespace ManagerLogbook.Services.Contracts
     {
         Task<LogbookDTO> CreateLogbookAsync(LogbookModel model);
 
-        Task<LogbookDTO> GetLogbookById(int logbookId);
+        Task<LogbookDTO> GetLogbookDetailsAsync(int logbookId);
 
         Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model);
 

@@ -67,7 +67,7 @@ namespace ManagerLogbook.Tests.Services
             _mockBusinessUnitService.Setup(x => x.GetBusinessUnitAsync(businessUnit.Id)).ReturnsAsync(businessUnit).Verifiable();
             var result = await _logbookService.CreateLogbookAsync(model);
             Assert.IsInstanceOfType(result, typeof(LogbookDTO));
-            Assert.AreEqual(_context.Logbooks.Count(), 1);
+            Assert.AreEqual(1, _context.Logbooks.Count());
             Assert.AreEqual(1, result.Id);
             Assert.AreEqual(model.Name, result.Name);
 

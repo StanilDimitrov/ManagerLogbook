@@ -132,15 +132,15 @@ namespace ManagerLogbook.Tests.Controllers.LogbookController.Admin
                 LogbookPicture = null
             };
 
-            ////logbookServiceMock.Setup(x => x.CreateLogbookAsync(logbookViewModel.Name, logbookViewModel.BusinessUnitId, logbookViewModel.Picture)).ThrowsAsync(new Exception());
+            //logbookServiceMock.Setup(x => x.CreateLogbookAsync(logbookViewModel.Name, logbookViewModel.BusinessUnitId, logbookViewModel.Picture)).ThrowsAsync(new Exception());
 
-            ////var actionResult = await sut.Create(logbookViewModel);
+            //var actionResult = await sut.Create(logbookViewModel);
 
-            ////var result = (RedirectToActionResult)actionResult;
+            //var result = (RedirectToActionResult)actionResult;
 
-            ////Assert.AreEqual("Error", result.ActionName);
-            ////Assert.AreEqual("Home", result.ControllerName);
-            ////Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+            //Assert.AreEqual("Error", result.ActionName);
+            //Assert.AreEqual("Home", result.ControllerName);
+            //Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
         }
     }
 }

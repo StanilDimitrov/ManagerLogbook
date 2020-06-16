@@ -63,7 +63,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                 
                 if (user.CurrentLogbookId.HasValue)
                 {
-                    var currentLogbook = await this.logbookService.GetLogbookById(user.CurrentLogbookId.Value);
+                    var currentLogbook = await this.logbookService.GetLogbookDetailsAsync(user.CurrentLogbookId.Value);
                     model.CurrentLogbook = new LogbookViewModel()
                     {
                         CurrentLogbookId = logbookId,

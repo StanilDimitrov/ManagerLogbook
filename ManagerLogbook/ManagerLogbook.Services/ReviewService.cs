@@ -5,6 +5,7 @@ using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
+using ManagerLogbook.Services.Models;
 using ManagerLogbook.Services.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,171 +17,108 @@ namespace ManagerLogbook.Services
 {
     public class ReviewService : IReviewService
     {
-        private readonly ManagerLogbookContext context;
-        private readonly IBusinessValidator businessValidator;
-        private readonly IReviewEditor reviewEditor;
+        private readonly ManagerLogbookContext _context;
+        private readonly IBusinessValidator _businessValidator;
+        private readonly IBusinessUnitService _businessUnitService;
+        private readonly IUserService _userService;
+        private readonly IReviewEditor _reviewEditor;
 
         public ReviewService(ManagerLogbookContext context,
                              IBusinessValidator businessValidator,
+                             IBusinessUnitService businessUnitService,
+                             IUserService userService,
                              IReviewEditor reviewEditor)
         {
-            this.context = context;
-            this.businessValidator = businessValidator;
-            this.reviewEditor = reviewEditor;
+            _context = context;
+            _businessValidator = businessValidator;
+            _businessUnitService = businessUnitService;
+            _userService = userService;
+            _reviewEditor = reviewEditor;
         }
 
-        public async Task<ReviewDTO> CreateReviewAsync(string originalDescription, int businessUnitId, int rating)
+        public async Task<ReviewDTO> CreateReviewAsync(ReviewModel model)
         {
             //automatic edit 
-            var editedDescription = reviewEditor.AutomaticReviewEditor(originalDescription);
+            var editedDescription = _reviewEditor.AutomaticReviewEditor(model.OriginalDescription);
 
             //check visibility
-            var checkVisibility = reviewEditor.CheckReviewVisibility(editedDescription);
+            var checkVisibility = _reviewEditor.CheckReviewVisibility(editedDescription);
+
+            var businessUnit = await _businessUnitService.GetBusinessUnitAsync(model.BusinessUnitId);
 
             var review = new Review()
             {
-                OriginalDescription = originalDescription,
+                OriginalDescription = model.OriginalDescription,
                 EditedDescription = editedDescription,
-                Rating = rating,
+                Rating = model.Rating,
                 CreatedOn = DateTime.Now,
                 isVisible = checkVisibility,
-                BusinessUnitId = businessUnitId
+                BusinessUnitId = businessUnit.Id
             };
 
-            this.context.Reviews.Add(review);
-            await this.context.SaveChangesAsync();
+            _context.Reviews.Add(review);
+            await _context.SaveChangesAsync();
 
             return review.ToDTO();
         }
 
-        public async Task<ReviewDTO> UpdateReviewAsync(int reviewId, string editedDescription)
+        public async Task<ReviewDTO> UpdateReviewAsync(ReviewModel model)
         {
-            var review = await this.context.Reviews.FindAsync(reviewId);
+            var review = await GetReviewAsync(model.Id);
 
-            if (review == null)
-            {
-                throw new NotFoundException(ServicesConstants.ReviewNotFound);
-            }
+            review.EditedDescription = model.EditedDescription;
+            await _context.SaveChangesAsync();
 
-            businessValidator.IsDescriptionInRange(editedDescription);
-
-            review.EditedDescription = editedDescription;
-
-            await this.context.SaveChangesAsync();
-
-            var result = await this.context.Reviews
-                                           .Include(bu => bu.BusinessUnit)
-                                           .FirstOrDefaultAsync(x => x.Id == review.Id);
-
-            return result.ToDTO();
+            return review.ToDTO();
         }
 
-        public async Task<ReviewDTO> MakeInVisibleReviewAsync(int reviewId)
+        public async Task<ReviewDTO> MakeReviewInvisibleAsync(int reviewId)
         {
-            var review = await this.context.Reviews.FindAsync(reviewId);
-
-            if (review == null)
-            {
-                throw new NotFoundException(ServicesConstants.ReviewNotFound);
-            }
+            var review = await GetReviewAsync(reviewId);
 
             review.isVisible = false;
+            await _context.SaveChangesAsync();
 
-            await this.context.SaveChangesAsync();
-
-            var result = await this.context.Reviews
-                                           .Include(bu => bu.BusinessUnit)
-                                           .FirstOrDefaultAsync(x => x.Id == review.Id);
-
-            return result.ToDTO();
+            return review.ToDTO();
         }
 
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsByBusinessUnitIdAsync(int businessUnitId)
+        public async Task<IReadOnlyCollection<ReviewDTO>> GetReviewsByBusinessUnitAsync(int businessUnitId)
         {
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+            var businessUnit = await _businessUnitService.GetBusinessUnitAsync(businessUnitId);
 
-            if (businessUnit == null)
-            {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            }
+            var result = await _context.Reviews
+                                .Where(bu => bu.BusinessUnitId == businessUnit.Id)
+                                .Where(co => co.isVisible)
+                                .OrderByDescending(co => co.CreatedOn)
+                                .Select(r => r.ToDTO())
+                                .ToListAsync();
 
-            var result = await this.context.Reviews
-                                    .Where(bu => bu.BusinessUnitId == businessUnitId)
-                                    .Where(co => co.isVisible == true)
-                                    .Include(bu => bu.BusinessUnit)
+            return result;
+        }
+
+        public async Task<IReadOnlyCollection<ReviewDTO>> GetReviewsByModeratorAsync(string moderatorId)
+        {
+            var moderator = await _userService.GetUserAsync(moderatorId);
+
+            var result = await this._context.Reviews
+                                    .Where(bu => bu.BusinessUnitId == moderator.BusinessUnitId)
                                     .OrderByDescending(co => co.CreatedOn)
                                     .Select(r => r.ToDTO())
                                     .ToListAsync();
-
             return result;
         }
 
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsByModeratorIdAsync(string moderatorId)
+        private async Task<Review> GetReviewAsync(int reviewId)
         {
-            var userModerator = await this.context.Users.FindAsync(moderatorId);
+            var review = await this._context.Reviews
+                                    .SingleOrDefaultAsync(r => r.Id == reviewId);
 
-            if (userModerator == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            var result = await this.context.Reviews
-                                    .Where(bu => bu.BusinessUnitId == userModerator.BusinessUnitId)
-                                    .Include(bu => bu.BusinessUnit)
-                                    .OrderByDescending(co => co.CreatedOn)
-                                    .Select(r => r.ToDTO())
-                                    .ToListAsync();
-
-            return result;
-        }
-
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsByDateAsync(DateTime date)
-        {
-            businessValidator.IsDateValid(date);
-
-            var result = await this.context.Reviews
-                                     .Where(bu => bu.CreatedOn == date)
-                                     .Where(co => co.isVisible == true)
-                                     .Include(bu => bu.BusinessUnit)
-                                     .OrderByDescending(co => co.CreatedOn)
-                                     .Select(r => r.ToDTO())
-                                     .ToListAsync();
-
-            return result;
-        }
-
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsInDateRangeAsync(DateTime startDate, DateTime endDate)
-        {
-            businessValidator.IsDateValid(startDate);
-            businessValidator.IsDateValid(endDate);
-
-            startDate = startDate < endDate ? startDate : endDate;
-            endDate = endDate > startDate ? endDate : startDate;
-
-            var result = await this.context.Reviews
-                                     .Where(bu => bu.CreatedOn >= startDate && bu.CreatedOn <= endDate)
-                                     .Where(co => co.isVisible == true)
-                                     .Include(bu => bu.BusinessUnit)
-                                     .OrderByDescending(co => co.CreatedOn)
-                                     .Select(r => r.ToDTO())
-                                     .ToListAsync();
-
-            return result;
-        }
-
-        public async Task<ReviewDTO> GetReviewByIdAsync(int reviewId)
-        {
-            var result = await this.context.Reviews
-                                    .Include(bu => bu.BusinessUnit)
-                                    .FirstOrDefaultAsync(r => r.Id == reviewId);
-                                    
-            if (result == null)
+            if (review == null)
             {
                 throw new NotFoundException(ServicesConstants.ReviewNotFound);
             }
 
-            return result.ToDTO();
-
+            return review;
         }
     }
 }

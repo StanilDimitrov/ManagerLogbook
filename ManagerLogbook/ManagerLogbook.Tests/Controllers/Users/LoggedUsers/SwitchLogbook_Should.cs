@@ -40,7 +40,7 @@ namespace ManagerLogbook.Tests.Controllers.Users.LoggedUsers
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
-            logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
+            logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
             var actionResult = await sut.SwitchLogbook(model);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
         }
@@ -67,7 +67,7 @@ namespace ManagerLogbook.Tests.Controllers.Users.LoggedUsers
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
-            logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
+            logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
             userServiceMock.Setup(x => x.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value)).ReturnsAsync(TestHelpersUsersController.TestUserDTO4());
             var actionResult = await sut.SwitchLogbook(model);
             var result = (RedirectToActionResult)actionResult;
@@ -99,7 +99,7 @@ namespace ManagerLogbook.Tests.Controllers.Users.LoggedUsers
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ThrowsAsync(new NotFoundException());
-            logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
+            logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
             userServiceMock.Setup(x => x.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value)).ReturnsAsync(TestHelpersUsersController.TestUserDTO4());
             var actionResult = await sut.SwitchLogbook(model);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -127,7 +127,7 @@ namespace ManagerLogbook.Tests.Controllers.Users.LoggedUsers
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersUsersController.TestUserDTO4());
-            logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
+            logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
             userServiceMock.Setup(x => x.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value)).ThrowsAsync(new NotAuthorizedException());
             var actionResult = await sut.SwitchLogbook(model);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -155,7 +155,7 @@ namespace ManagerLogbook.Tests.Controllers.Users.LoggedUsers
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersUsersController.TestUserDTO4());
-            logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
+            logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
             userServiceMock.Setup(x => x.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value)).ThrowsAsync(new NotFoundException());
             var actionResult = await sut.SwitchLogbook(model);
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -183,7 +183,7 @@ namespace ManagerLogbook.Tests.Controllers.Users.LoggedUsers
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersUsersController.TestUserDTO4());
-            logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
+            logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
             userServiceMock.Setup(x => x.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value)).ThrowsAsync(new Exception());
             var actionResult = await sut.SwitchLogbook(model);
             var result = (RedirectToActionResult)actionResult;
