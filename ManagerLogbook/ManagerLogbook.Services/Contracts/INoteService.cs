@@ -1,4 +1,5 @@
 ﻿using ManagerLogbook.Services.DTOs;
+using ManagerLogbook.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,19 +8,13 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface INoteService
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<NoteDTO> GetNoteByIdAsync(int id);
+        Task<NoteDTO> GetNoteDtoAsync(int id);
             
-        Task<NoteDTO> CreateNoteAsync(string userId, int logbookId, string description, string image, int? categoryId);
+        Task<NoteDTO> CreateNoteAsync(NoteModel model, int logbookId, string userId);
 
         Task<NoteDTO> DeactivateNoteActiveStatus(int noteId, string userId);
 
-        Task<NoteDTO> EditNoteAsync(int noteId, string userId,
-                                 string description, string image, int? categoryId);
+        Task<NoteDTO> EditNoteAsync(NoteModel model, string userId);
 
         Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesWithActiveStatusAsync(string userId, int logbookId);
 

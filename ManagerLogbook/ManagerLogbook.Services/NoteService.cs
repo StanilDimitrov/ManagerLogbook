@@ -1,10 +1,10 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
+using ManagerLogbook.Services.Models;
 using ManagerLogbook.Services.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,71 +16,47 @@ namespace ManagerLogbook.Services
 {
     public class NoteService : INoteService
     {
-        private readonly ManagerLogbookContext context;
-        private readonly IBusinessValidator validator;
+        private readonly ManagerLogbookContext _context;
+        private readonly IUserService _userService;
 
-        public NoteService(ManagerLogbookContext context,
-                            IBusinessValidator validator)
-
+        public NoteService(ManagerLogbookContext context, IUserService userService)
         {
-            this.context = context;
-            this.validator = validator;
+            _context = context;
+            _userService = userService;
         }
 
-        public async Task<NoteDTO> GetNoteByIdAsync(int id)
+        public async Task<NoteDTO> GetNoteDtoAsync(int id)
         {
-            var note = await this.context.Notes
-                                         .Include(x => x.User)
-                                         .Include(x => x.NoteCategory)
-                                         .FirstOrDefaultAsync(x => x.Id == id);
+            var note = await _context.Notes
+                             .Include(x => x.User)
+                             .Include(x => x.NoteCategory)
+                             .FirstOrDefaultAsync(x => x.Id == id);
+
             if (note == null)
             {
                 throw new NotFoundException(ServicesConstants.NotNotFound);
             }
+
             return note.ToDTO();
         }
 
-        public async Task<NoteDTO> CreateNoteAsync(string userId, int logbookId, string description, 
-                                             string image, int? categoryId)
+        public async Task<NoteDTO> CreateNoteAsync(NoteModel model, int logbookId, string userId)
         {
-            validator.IsDescriptionIsNullOrEmpty(description);
-            validator.IsDescriptionInRange(description);
-
-            var user = await this.context.Users.FindAsync(userId);
-
-            if (user == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            var logbook = await this.context.Logbooks.FindAsync(logbookId);
-            if (logbook == null)
-            {
-                throw new NotFoundException(ServicesConstants.LogbookNotFound);
-            }
-
-            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
-            {
-                throw new NotAuthorizedException(string.Format(ServicesConstants.UserNotManagerOfLogbook, user.UserName, logbook.Name));
-            }
+            CheckIfUserIsAuthorized(userId, logbookId);
 
             var note = new Note()
             {
-                Description = description,
-                Image = image,
+                Description = model.Description,
+                Image = model.Image,
                 CreatedOn = DateTime.Now,
-                NoteCategoryId = categoryId,
-                UserId = userId,
+                NoteCategoryId = model.CategoryId,
+                UserId = model.UserId,
                 LogbookId = logbookId
             };
 
-            if (categoryId != null)
+            if (model.CategoryId.HasValue)
             {
-                var noteCategory = await this.context.NoteCategories.FindAsync(categoryId);
-                if (noteCategory == null)
-                {
-                    throw new NotFoundException(ServicesConstants.NoteCategoryDoesNotExists);
-                }
+                var noteCategory = await GetNoteCategoryAsync(model.CategoryId.Value);
 
                 if (noteCategory.Name == "Task")
                 {
@@ -88,147 +64,62 @@ namespace ManagerLogbook.Services
                 }
             }
 
-            await this.context.Notes.AddAsync(note);
-            await this.context.SaveChangesAsync();
-
-            var result = await this.context.Notes
-                                           .Include(x => x.User)
-                                           .Include(x => x.NoteCategory)
-                                           .FirstOrDefaultAsync(x => x.Id == note.Id);
-            return result.ToDTO();
-        }
-
-        public async Task<NoteDTO> DeactivateNoteActiveStatus(int noteId, string userId)
-
-        {
-            var note = await this.context.Notes
-                                         .Include(x => x.User)
-                                         .Include(x => x.NoteCategory)
-                                         .FirstOrDefaultAsync(x => x.Id == noteId);
-            if (note == null)
-            {
-                throw new NotFoundException(ServicesConstants.NotNotFound);
-            }
-            var user = await this.context.Users.FindAsync(userId);
-            if (user == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-            var logbookId = note.LogbookId;
-            
-
-            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
-            {
-                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToEditNote, user.UserName));
-            }
-            note.IsActiveTask = false;
-            this.context.Notes.Update(note);
-            await this.context.SaveChangesAsync();
+            _context.Notes.Add(note);
+            await _context.SaveChangesAsync();
 
             return note.ToDTO();
         }
 
-        public async Task<NoteDTO> EditNoteAsync(int noteId, string userId, string description,
-                                              string image, int? categoryId)
+        public async Task<NoteDTO> DeactivateNoteActiveStatus(int noteId, string userId)
         {
-            validator.IsDescriptionIsNullOrEmpty(description);
-            validator.IsDescriptionInRange(description);
+            var note = await GetNoteAsync(noteId);
+            var user = await _userService.GetUserAsync(userId);
 
-            var note = await this.context.Notes
-                                           .Include(x => x.User)
-                                           .Include(x => x.NoteCategory)
-                                           .FirstOrDefaultAsync(x => x.Id == noteId);
-            if (note == null)
+            var logbookId = note.LogbookId;
+            CheckIfUserIsAuthorized(user.Id, logbookId);
+
+            note.IsActiveTask = false;
+            await _context.SaveChangesAsync();
+
+            return note.ToDTO();
+        }
+
+        public async Task<NoteDTO> EditNoteAsync(NoteModel model, string userId)
+        {
+            var note = await GetNoteAsync(model.Id);
+            var user = await _userService.GetUserAsync(model.UserId);
+
+            if (note.UserId != model.UserId)
             {
-                throw new NotFoundException(ServicesConstants.NotNotFound);
+                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToEditNote, user.UserName));
             }
 
-            var user = await this.context.Users.FindAsync(userId);
-            if (user == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
+            await SetNoteProperties(model, note);
+            await _context.SaveChangesAsync();
 
-            if (note.UserId != userId)
-            {
-                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToEditNote,user.UserName));
-            }
-
-            if (description != null)
-            {
-                validator.IsDescriptionInRange(description);
-                note.Description = description;
-            }
-
-            if (image != null)
-            {
-                note.Image = image;
-            }
-
-            if (categoryId != null)
-            {
-               
-                note.NoteCategoryId = categoryId;
-                var noteCategory = await this.context.NoteCategories.FindAsync(categoryId);
-
-                if (noteCategory == null)
-                {
-                    throw new NotFoundException(ServicesConstants.NoteCategoryDoesNotExists);
-                }
-                if (noteCategory.Name == "Task")
-                {
-                    note.IsActiveTask = true;
-                }
-            }
-           
-            await this.context.SaveChangesAsync();
             return note.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days)
-
         {
-            var user = await this.context.Users.FindAsync(userId);
+            CheckIfUserIsAuthorized(userId, logbookId);
 
-            if (user == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
-            {
-                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, user.UserName));
-            }
-
-            var result = await this.context.Notes
+            return await this._context.Notes
                            .Include(mt => mt.Logbook)
                            .Include(mt => mt.NoteCategory)
                            .Include(mt => mt.User)
                                .ThenInclude(lb => lb.UsersLogbooks)
                            .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn.Date >= DateTime.Now.Date.AddDays(-days))
-                           .OrderByDescending(x => x.CreatedOn)                           
+                           .OrderByDescending(x => x.CreatedOn)
                            .Select(x => x.ToDTO())
                            .ToListAsync();
-
-            return result;
         }
 
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesWithActiveStatusAsync(string userId, int logbookId)
-                                                                                        
         {
-            var user = await this.context.Users.FindAsync(userId);
+            CheckIfUserIsAuthorized(userId, logbookId);
 
-            if (user == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
-            {
-                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, user.UserName));
-            }
-
-            return await this.context.Notes
+            return await _context.Notes
                .Include(mt => mt.Logbook)
                .Include(mt => mt.NoteCategory)
                .Include(mt => mt.User)
@@ -237,25 +128,13 @@ namespace ManagerLogbook.Services
                .OrderByDescending(x => x.CreatedOn)
                .Select(x => x.ToDTO())
                .ToListAsync();
-
         }
 
         public async Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesAsync(string userId, int logbookId)
-
         {
-            var user = await this.context.Users.FindAsync(userId);
+            CheckIfUserIsAuthorized(userId, logbookId);
 
-            if (user == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
-            {
-                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, user.UserName));
-            }
-
-            return await this.context.Notes
+            return await _context.Notes
                .Include(mt => mt.Logbook)
                .Include(mt => mt.NoteCategory)
                .Include(mt => mt.User)
@@ -266,29 +145,17 @@ namespace ManagerLogbook.Services
                .ToListAsync();
 
         }
-
-        public async Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync
-            (string userId, 
-            int logbookId, 
-            DateTime startDate, 
-            DateTime endDate, 
-            int? categoryId, 
+        public async Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync(
+            string userId,
+            int logbookId,
+            DateTime startDate,
+            DateTime endDate,
+            int? categoryId,
             string searchCriteria,
             int? daysBefore,
             int currPage = 1)
-
         {
-            var user = await this.context.Users.FindAsync(userId);
-
-            if (user == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            if (!this.context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
-            {
-                throw new NotAuthorizedException(string.Format(ServicesConstants.UserIsNotAuthorizedToViewNotes, user.UserName));
-            }
+            CheckIfUserIsAuthorized(userId, logbookId);
 
             if (endDate == DateTime.MinValue)
             {
@@ -300,7 +167,7 @@ namespace ManagerLogbook.Services
             {
                 if (searchCriteria != null)
                 {
-                    searchCollection = this.context.Notes
+                    searchCollection = _context.Notes
                         .Include(x => x.NoteCategory)
                         .Include(x => x.User)
                         .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
@@ -308,7 +175,7 @@ namespace ManagerLogbook.Services
                 }
                 else
                 {
-                    searchCollection = this.context.Notes
+                    searchCollection = _context.Notes
                          .Include(x => x.NoteCategory)
                          .Include(x => x.User)
                          .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
@@ -320,7 +187,7 @@ namespace ManagerLogbook.Services
             {
                 if (searchCriteria != null)
                 {
-                    searchCollection = this.context.Notes
+                    searchCollection = _context.Notes
                         .Include(x => x.NoteCategory)
                         .Include(x => x.User)
                         .Where(mt => mt.LogbookId == logbookId && mt.Description.ToLower().Replace(" ", string.Empty).Contains(searchCriteria.ToLower().Replace(" ", string.Empty)) && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
@@ -328,16 +195,15 @@ namespace ManagerLogbook.Services
                 }
                 else
                 {
-                    searchCollection = this.context.Notes
+                    searchCollection = _context.Notes
                          .Include(x => x.NoteCategory)
                          .Include(x => x.User)
                          .Where(mt => mt.LogbookId == logbookId && mt.CreatedOn >= startDate && mt.CreatedOn <= endDate)
                          .OrderByDescending(x => x.CreatedOn);
                 }
-
             }
 
-            if (categoryId != null)
+            if (categoryId.HasValue)
             {
                 searchCollection = searchCollection.Where(x => x.NoteCategoryId == categoryId);
             }
@@ -350,28 +216,26 @@ namespace ManagerLogbook.Services
         }
 
         public async Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync()
-
         {
-           var result = await this.context.NoteCategories
-                                          .Select(x => x.ToDTO())
-                                          .ToListAsync();
-           return result;
+            return await _context.NoteCategories
+                         .Select(x => x.ToDTO())
+                          .ToListAsync();
         }
 
         public async Task<IReadOnlyCollection<NoteDTO>> Get15NotesByIdAsync(int currPage, int logbookId)
         {
             if (currPage == 1)
             {
-               return await context.Notes.Include(x => x.NoteCategory)
-                                         .Where(x => x.LogbookId == logbookId)
-                                         .OrderByDescending(x => x.CreatedOn)
-                                         .Take(15)
-                                         .Select(x => x.ToDTO())
-                                         .ToListAsync();
+                return await _context.Notes.Include(x => x.NoteCategory)
+                                          .Where(x => x.LogbookId == logbookId)
+                                          .OrderByDescending(x => x.CreatedOn)
+                                          .Take(15)
+                                          .Select(x => x.ToDTO())
+                                          .ToListAsync();
             }
             else
             {
-                return  await context
+                return await _context
                                     .Notes.Include(x => x.NoteCategory)
                                     .Where(x => x.LogbookId == logbookId)
                                     .OrderByDescending(x => x.CreatedOn)
@@ -381,10 +245,9 @@ namespace ManagerLogbook.Services
                                     .ToListAsync();
             }
         }
-
         public async Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId)
         {
-            var allNotesCount = await context.Notes.Where(x => x.LogbookId == logbookId).CountAsync();
+            var allNotesCount = await _context.Notes.Where(x => x.LogbookId == logbookId).CountAsync();
 
             int pageCount = (allNotesCount - 1) / notesPerPage + 1;
 
@@ -393,11 +256,63 @@ namespace ManagerLogbook.Services
 
         public async Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId, string searchPhrase)
         {
-            var allNotesCount = await context.Notes.Where(x => x.LogbookId == logbookId && x.Description.Contains(searchPhrase)).CountAsync();
+            var allNotesCount = await _context.Notes.Where(x => x.LogbookId == logbookId && x.Description.Contains(searchPhrase)).CountAsync();
 
             int pageCount = (allNotesCount - 1) / notesPerPage + 1;
 
             return pageCount;
+        }
+
+        private async Task<Note> GetNoteAsync(int id)
+        {
+            var note = await _context.Notes.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (note == null)
+            {
+                throw new NotFoundException(ServicesConstants.NotNotFound);
+            }
+
+            return note;
+        }
+
+        private async Task<NoteCategory> GetNoteCategoryAsync(int id)
+        {
+            var noteCategory = await this._context.NoteCategories.SingleOrDefaultAsync(x => x.Id == id);
+
+            if (noteCategory == null)
+            {
+                throw new NotFoundException(ServicesConstants.NoteCategoryDoesNotExists);
+            }
+
+            return noteCategory;
+        }
+
+        private void CheckIfUserIsAuthorized(string userId, int logbookId)
+        {
+            if (!_context.UsersLogbooks.Any(x => x.UserId == userId && x.LogbookId == logbookId))
+            {
+                throw new NotAuthorizedException(ServicesConstants.UserIsNotAuthorizedToViewNotes);
+            }
+        }
+
+        private async Task SetNoteProperties(NoteModel model, Note note)
+        {
+            note.Description = model.Description;
+            if (model.Image != null)
+            {
+                note.Image = model.Image;
+            }
+
+            if (model.CategoryId.HasValue)
+            {
+                note.NoteCategoryId = model.CategoryId;
+                var noteCategory = await GetNoteCategoryAsync(model.CategoryId.Value);
+
+                if (noteCategory.Name == "Task")
+                {
+                    note.IsActiveTask = true;
+                }
+            }
         }
     }
 }

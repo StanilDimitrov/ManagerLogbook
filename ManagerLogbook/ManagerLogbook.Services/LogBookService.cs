@@ -56,11 +56,11 @@ namespace ManagerLogbook.Services
             }
 
             var result = await _context.Logbooks
-                                           .Include(bu => bu.BusinessUnit)
-                                           .Include(n => n.Notes)
-                                           .Include(n => n.UsersLogbooks)
-                                               .ThenInclude( n => n.User)
-                                           .FirstOrDefaultAsync(x => x.Id == logbook.Id);
+                               .Include(bu => bu.BusinessUnit)
+                               .Include(n => n.Notes)
+                               .Include(n => n.UsersLogbooks)
+                               .ThenInclude(n => n.User)
+                               .FirstOrDefaultAsync(x => x.Id == logbook.Id);
             return result.ToDTO();
         }
 
@@ -140,7 +140,7 @@ namespace ManagerLogbook.Services
             return logbook.ToDTO();
         }
 
-        private async Task<Logbook> GetLogbookAsync(int logbookId)
+        public async Task<Logbook> GetLogbookAsync(int logbookId)
         {
             var logbook = await _context.Logbooks.SingleOrDefaultAsync(lb => lb.Id == logbookId);
 

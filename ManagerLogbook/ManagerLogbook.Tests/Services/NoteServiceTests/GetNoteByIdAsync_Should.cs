@@ -30,7 +30,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 
                 var sut = new NoteService(assertContext, mockedValidator.Object);
                                          
-                var noteDTO = await sut.GetNoteByIdAsync(TestHelpersNote.TestNote1().Id);
+                var noteDTO = await sut.GetNoteDtoAsync(TestHelpersNote.TestNote1().Id);
 
                 Assert.AreEqual(noteDTO.Id, TestHelpersNote.TestNoteDTO1().Id);
             }
@@ -46,7 +46,7 @@ namespace ManagerLogbook.Tests.Services.NoteServiceTests
                 var mockedValidator = new Mock<IBusinessValidator>();
                 var sut = new NoteService(assertContext, mockedValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.GetNoteByIdAsync(TestHelpersNote.TestNote1().Id));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.GetNoteDtoAsync(TestHelpersNote.TestNote1().Id));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.NotNotFound));
             }

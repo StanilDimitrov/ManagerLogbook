@@ -46,7 +46,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             };
             var id = TestHelpersNoteController.TestUserDTO1().Id;
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
@@ -81,7 +81,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             };
             var id = TestHelpersNoteController.TestUserDTO1().Id;
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO3());
@@ -116,7 +116,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             };
             var id = TestHelpersNoteController.TestUserDTO1().Id;
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ThrowsAsync(new NotFoundException());
@@ -151,7 +151,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             };
             var id = TestHelpersNoteController.TestUserDTO1().Id;
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ThrowsAsync(new NotAuthorizedException());
@@ -186,7 +186,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             };
             var id = TestHelpersNoteController.TestUserDTO1().Id;
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ThrowsAsync(new ArgumentException());
@@ -222,7 +222,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             };
             var id = TestHelpersNoteController.TestUserDTO1().Id;
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(model.Id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO2());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.EditNoteAsync(model.Id, id, model.Description, null, null)).ThrowsAsync(new Exception());

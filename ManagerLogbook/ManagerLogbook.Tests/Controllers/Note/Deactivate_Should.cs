@@ -39,7 +39,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             var id = TestHelpersNoteController.TestUserDTO1().Id;
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(id);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(id)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO4().Id, id)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
@@ -68,7 +68,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             var notes = new List<NoteDTO>() { TestHelpersNoteController.TestNoteDTO5(), TestHelpersNoteController.TestNoteDTO4() };
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO5().Id, userId)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
@@ -98,7 +98,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             var notes = new List<NoteDTO>() { TestHelpersNoteController.TestNoteDTO5(), TestHelpersNoteController.TestNoteDTO4() };
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO5().Id, userId)).ThrowsAsync(new NotFoundException());
@@ -128,7 +128,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             var notes = new List<NoteDTO>() { TestHelpersNoteController.TestNoteDTO5(), TestHelpersNoteController.TestNoteDTO4() };
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO5().Id, userId)).ThrowsAsync(new NotAuthorizedException());
@@ -158,7 +158,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
 
             var notes = new List<NoteDTO>() { TestHelpersNoteController.TestNoteDTO5(), TestHelpersNoteController.TestNoteDTO4() };
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(5)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO5());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO1());
             noteServiceMock.Setup(x => x.DeactivateNoteActiveStatus(TestHelpersNoteController.TestNoteDTO5().Id, userId)).ThrowsAsync(new Exception());

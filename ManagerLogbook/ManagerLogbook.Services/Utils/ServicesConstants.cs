@@ -9,7 +9,7 @@
         public const string UserNotFound = "User does not exist!";
         public const string UserNotManagerOfLogbook = "User \"{0}\" is not manager of logbook \"{1}\".";
         public const string UserIsNotAuthorizedToEditNote = "User \"{0}\" is not authorized to edit this note!";
-        public const string UserIsNotAuthorizedToViewNotes = "User \"{0}\" is not authorized to view notes from this logbook!";
+        public const string UserIsNotAuthorizedToViewNotes = "User is not authorized to view notes from this logbook!";
         public const string DescriptionCanNotBeNull = "Description can not be null or empty string!";
         public const string EmailIsNotValid = "Email {0} is not valid!";
         public const string NoSuchUserExists = "No such user exists!";

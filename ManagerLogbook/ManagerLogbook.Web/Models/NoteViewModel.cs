@@ -31,6 +31,5 @@ namespace ManagerLogbook.Web.Models
         public bool CanUserEdit { get; set; }
 
         public string UserId { get; set; }
-
     }
 }

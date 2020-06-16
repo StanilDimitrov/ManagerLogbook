@@ -8,6 +8,8 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface ILogbookService
     {
+        Task<Logbook> GetLogbookAsync(int logbookId);
+
         Task<LogbookDTO> CreateLogbookAsync(LogbookModel model);
 
         Task<LogbookDTO> GetLogbookDetailsAsync(int logbookId);

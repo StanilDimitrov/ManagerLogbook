@@ -77,7 +77,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var categories = new List<NoteGategoryDTO>() { TestHelpersNoteController.TestNoteCategoryDTO1() };
 
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO3());
             logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
@@ -112,7 +112,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var categories = new List<NoteGategoryDTO>() { TestHelpersNoteController.TestNoteCategoryDTO1() };
 
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ThrowsAsync(new NotFoundException());
             logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
@@ -147,7 +147,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var categories = new List<NoteGategoryDTO>() { TestHelpersNoteController.TestNoteCategoryDTO1() };
 
 
-            noteServiceMock.Setup(x => x.GetNoteByIdAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
+            noteServiceMock.Setup(x => x.GetNoteDtoAsync(4)).ReturnsAsync(TestHelpersNoteController.TestNoteDTO4());
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ThrowsAsync(new Exception());
             logbookServiceMock.Setup(x => x.GetLogbookDetailsAsync(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
