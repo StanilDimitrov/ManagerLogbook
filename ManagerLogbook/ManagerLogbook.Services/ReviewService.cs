@@ -31,9 +31,6 @@ namespace ManagerLogbook.Services
 
         public async Task<ReviewDTO> CreateReviewAsync(string originalDescription, int businessUnitId, int rating)
         {
-            businessValidator.IsDescriptionInRange(originalDescription);
-            businessValidator.IsRatingInRange(rating);
-
             //automatic edit 
             var editedDescription = reviewEditor.AutomaticReviewEditor(originalDescription);
 
@@ -51,14 +48,9 @@ namespace ManagerLogbook.Services
             };
 
             this.context.Reviews.Add(review);
-
             await this.context.SaveChangesAsync();
 
-            var result = await this.context.Reviews
-                                           .Include(bu => bu.BusinessUnit)
-                                           .FirstOrDefaultAsync(x => x.Id == review.Id);
-
-            return result.ToDTO();
+            return review.ToDTO();
         }
 
         public async Task<ReviewDTO> UpdateReviewAsync(int reviewId, string editedDescription)

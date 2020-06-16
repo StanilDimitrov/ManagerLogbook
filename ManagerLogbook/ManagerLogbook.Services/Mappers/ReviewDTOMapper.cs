@@ -15,7 +15,7 @@ namespace ManagerLogbook.Services.Mappers
             return new ReviewDTO()
             {
                Id = entity.Id,
-               BusinessUnitName = entity.BusinessUnit.Name,
+               BusinessUnitName = entity.BusinessUnit?.Name,
                OriginalDescription = entity.OriginalDescription,
                EditedDescription = entity.EditedDescription,
                CreatedOn = entity.CreatedOn,

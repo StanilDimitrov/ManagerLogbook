@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.DTOs;
+﻿using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -32,5 +33,7 @@ namespace ManagerLogbook.Services.Contracts
         Task<IReadOnlyDictionary<string, int>> GetBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
 
         Task<BusinessUnitDTO> AddLikeToBusinessUnitAsync(int businessUnitId);
+
+        Task<BusinessUnit> GetBusinessUnitAsync(int businessUnitId);
     }
 }

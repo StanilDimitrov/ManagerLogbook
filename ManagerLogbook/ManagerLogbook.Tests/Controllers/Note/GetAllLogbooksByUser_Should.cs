@@ -42,7 +42,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var logbooksDTO = new List<LogbookDTO>() { TestHelpersNoteController.TestLogbookDTO1() };
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            logbookServiceMock.Setup(x => x.GetAllLogbooksByUserAsync(userId)).ReturnsAsync(logbooksDTO);
+            logbookServiceMock.Setup(x => x.GetLogbooksByUserAsync(userId)).ReturnsAsync(logbooksDTO);
             
             var actionResult = await sut.GetAllLogbooksByUser();
             Assert.IsInstanceOfType(actionResult, typeof(JsonResult));
@@ -69,7 +69,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var logbooksDTO = new List<LogbookDTO>() { TestHelpersNoteController.TestLogbookDTO1() };
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            logbookServiceMock.Setup(x => x.GetAllLogbooksByUserAsync(userId)).ThrowsAsync(new NotFoundException());
+            logbookServiceMock.Setup(x => x.GetLogbooksByUserAsync(userId)).ThrowsAsync(new NotFoundException());
 
             var actionResult = await sut.GetAllLogbooksByUser();
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
@@ -96,7 +96,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             var logbooksDTO = new List<LogbookDTO>() { TestHelpersNoteController.TestLogbookDTO1() };
 
             wrapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
-            logbookServiceMock.Setup(x => x.GetAllLogbooksByUserAsync(userId)).ThrowsAsync(new Exception());
+            logbookServiceMock.Setup(x => x.GetLogbooksByUserAsync(userId)).ThrowsAsync(new Exception());
 
             var actionResult = await sut.GetAllLogbooksByUser();
             var result = (RedirectToActionResult)actionResult;

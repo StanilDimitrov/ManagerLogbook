@@ -26,7 +26,7 @@
         public const string UserNotFromLogbook = "User is not manager of logbook.";
         public const string NoteCategoryDoesNotExists = "Note category does not exists.";
         public const string LogbookNotFound = "Logbook does not exists.";
-        public const string LogbookAlreadyExists = "Logbook name already exists.";
+        public const string LogbookAlreadyExists = "Logbook with name: {0} already exists.";
         public const string BusinessUnitNotFound = "BusinessUnit does not exists.";
         public const string BusinessUnitCategoryNotFound = "BusinessUnit Category does not exists.";
         public const string BusinessUnitNameAlreadyExists = "Business unit with name: {0} already exists.";

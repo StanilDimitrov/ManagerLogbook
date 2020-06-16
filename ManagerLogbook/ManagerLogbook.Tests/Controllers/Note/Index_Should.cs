@@ -81,7 +81,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ReturnsAsync(TestHelpersNoteController.TestUserDTO3());
             logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
-            logbookServiceMock.Setup(x => x.GetAllLogbooksByUserAsync(userId)).ReturnsAsync(logbooks);
+            logbookServiceMock.Setup(x => x.GetLogbooksByUserAsync(userId)).ReturnsAsync(logbooks);
             noteServiceMock.Setup(x => x.Get15NotesByIdAsync(1, 1)).ReturnsAsync(notes);
             noteServiceMock.Setup(x => x.GetPageCountForNotesAsync(15, 1)).ReturnsAsync(1);
             noteServiceMock.Setup(x => x.GetNoteCategoriesAsync()).ReturnsAsync(categories);
@@ -116,7 +116,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ThrowsAsync(new NotFoundException());
             logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
-            logbookServiceMock.Setup(x => x.GetAllLogbooksByUserAsync(userId)).ReturnsAsync(logbooks);
+            logbookServiceMock.Setup(x => x.GetLogbooksByUserAsync(userId)).ReturnsAsync(logbooks);
             noteServiceMock.Setup(x => x.Get15NotesByIdAsync(1, 1)).ReturnsAsync(notes);
             noteServiceMock.Setup(x => x.GetPageCountForNotesAsync(15, 1)).ReturnsAsync(1);
             noteServiceMock.Setup(x => x.GetNoteCategoriesAsync()).ReturnsAsync(categories);
@@ -151,7 +151,7 @@ namespace ManagerLogbook.Tests.Controllers.Note
             rapperMock.Setup(x => x.GetLoggedUserId(It.IsAny<ClaimsPrincipal>())).Returns(userId);
             userServiceMock.Setup(x => x.GetUserDtoByIdAsync(userId)).ThrowsAsync(new Exception());
             logbookServiceMock.Setup(x => x.GetLogbookById(1)).ReturnsAsync(TestHelpersNoteController.TestLogbookDTO1());
-            logbookServiceMock.Setup(x => x.GetAllLogbooksByUserAsync(userId)).ReturnsAsync(logbooks);
+            logbookServiceMock.Setup(x => x.GetLogbooksByUserAsync(userId)).ReturnsAsync(logbooks);
             noteServiceMock.Setup(x => x.Get15NotesByIdAsync(1, 1)).ReturnsAsync(notes);
             noteServiceMock.Setup(x => x.GetPageCountForNotesAsync(15, 1)).ReturnsAsync(1);
             noteServiceMock.Setup(x => x.GetNoteCategoriesAsync()).ReturnsAsync(categories);

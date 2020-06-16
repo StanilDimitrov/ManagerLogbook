@@ -1,17 +1,11 @@
 ﻿using ManagerLogbook.Services.Contracts;
-using Microsoft.AspNetCore.Http;
+using ManagerLogbook.Tests.HelpersMethods;
+using ManagerLogbook.Web.Controllers;
+using ManagerLogbook.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using ManagerLogbook.Web.Models;
-using ManagerLogbook.Web.Services.Contracts;
-using Microsoft.Extensions.Caching.Memory;
-using ManagerLogbook.Tests.HelpersMethods;
-using ManagerLogbook.Web.Controllers;
-using Microsoft.AspNetCore.Rewrite.Internal.UrlActions;
 
 namespace ManagerLogbook.Tests.Controllers.ReviewController.Public
 {
@@ -105,53 +99,5 @@ namespace ManagerLogbook.Tests.Controllers.ReviewController.Public
 
             Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
         }
-
-        [TestMethod]
-        public async Task ThrowsBadRequestWhenReviewCreateReturnsArgumentException()
-        {
-            var reviewServiceMock = new Mock<IReviewService>();
-
-            var sut = new ReviewsController(reviewServiceMock.Object);
-
-            var reviewViewModel = new ReviewViewModel()
-            {
-                Id = 1,
-                OriginalDescription = new string('a',1000),
-                BusinessUnitId = 1,
-                Rating = 1
-            };
-
-            reviewServiceMock.Setup(x => x.CreateReviewAsync(reviewViewModel.OriginalDescription, reviewViewModel.BusinessUnitId, reviewViewModel.Rating)).ThrowsAsync(new ArgumentException());
-
-            var actionResult = await sut.Create(reviewViewModel);
-
-            Assert.IsInstanceOfType(actionResult, typeof(BadRequestObjectResult));
-        }
-
-        [TestMethod]
-        public async Task ThrowsBadRequestWhenReviewCreateReturnsException()
-        {
-            var reviewServiceMock = new Mock<IReviewService>();
-
-            var sut = new ReviewsController(reviewServiceMock.Object);
-
-            var reviewViewModel = new ReviewViewModel()
-            {
-                Id = 1,
-                OriginalDescription = new string('a', 1000),
-                BusinessUnitId = 1,
-                Rating = 1
-            };
-
-            reviewServiceMock.Setup(x => x.CreateReviewAsync(reviewViewModel.OriginalDescription, reviewViewModel.BusinessUnitId, reviewViewModel.Rating)).ThrowsAsync(new Exception());
-
-            var actionResult = await sut.Create(reviewViewModel);
-
-            var result = (RedirectToActionResult)actionResult;
-                       
-            Assert.AreEqual("Error", result.ActionName);
-            Assert.AreEqual("Home", result.ControllerName);
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
-        }       
     }
 }

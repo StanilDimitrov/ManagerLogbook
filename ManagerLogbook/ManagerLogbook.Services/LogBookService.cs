@@ -1,13 +1,12 @@
 ﻿using ManagerLogbook.Data;
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Mappers;
+using ManagerLogbook.Services.Models;
 using ManagerLogbook.Services.Utils;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,56 +15,46 @@ namespace ManagerLogbook.Services
 {
     public class LogbookService : ILogbookService
     {
-        private readonly ManagerLogbookContext context;
-        private readonly IBusinessValidator businessValidator;
+        private readonly ManagerLogbookContext _context;
+        private readonly IBusinessUnitService _businessUnitService;
+        private readonly IUserService _userService;
 
         public LogbookService(ManagerLogbookContext context,
-                              IBusinessValidator businessValidator)
+                              IBusinessUnitService businessUnitService,
+                              IUserService userService)
         {
-            this.context = context;
-            this.businessValidator = businessValidator;
+            _context = context;
+            _businessUnitService = businessUnitService;
+            _userService = userService;
         }
 
-        public async Task<LogbookDTO> CreateLogbookAsync(string name, int businessUnitId, string picture)
+        public async Task<LogbookDTO> CreateLogbookAsync(LogbookModel model)
         {
-            if (string.IsNullOrEmpty(name))
+            await CheckIfLogbookExist(model.Name);
+
+            var logbook = new Logbook
             {
-                throw new ArgumentException(ServicesConstants.NameCanNotBeNullOrEmpty);
-            }
+                Name = model.Name,
+                Picture = model.Picture,
+                BusinessUnitId = model.BusinessUnitId
+            };
 
-            businessValidator.IsNameInRange(name);
+            _context.Logbooks.Add(logbook);
+            await _context.SaveChangesAsync();
 
-            var checkLogbookIfExists = await this.context.Logbooks
-                                           .FirstOrDefaultAsync(n => n.Name == name);
-
-            if (checkLogbookIfExists != null)
-            {
-                throw new AlreadyExistsException(ServicesConstants.LogbookAlreadyExists);
-            }
-
-            var logbook = new Logbook() { Name = name, Picture = picture, BusinessUnitId = businessUnitId };
-
-            await this.context.Logbooks.AddAsync(logbook);
-
-            await this.context.SaveChangesAsync();
-
-            var result = await this.context.Logbooks
-                                           .Include(bu => bu.BusinessUnit)
-                                           .Include(n => n.Notes)
-                                           .FirstOrDefaultAsync(x => x.Id == logbook.Id);
-            return result.ToDTO();
+            return logbook.ToDTO();
         }
 
         public async Task<LogbookDTO> GetLogbookById(int logbookId)
         {
-            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+            var logbook = await GetLogbookAsync(logbookId);
 
             if (logbook == null)
             {
                 throw new NotFoundException(ServicesConstants.LogbookNotFound);
             }
 
-            var result = await this.context.Logbooks
+            var result = await _context.Logbooks
                                            .Include(bu => bu.BusinessUnit)
                                            .Include(n => n.Notes)
                                            .Include(n => n.UsersLogbooks)
@@ -74,143 +63,58 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<LogbookDTO> UpdateLogbookAsync(int logbookId, string name, int businessUnitId, string picture)
+        public async Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model)
         {
-            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+            var logbook = await GetLogbookAsync(model.Id);
 
-            if (logbook == null)
+            if (model.Name != logbook.Name)
             {
-                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+                await CheckIfLogbookExist(model.Name);
             }
 
-            //var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+            await SetLogbookProperties(model, logbook);
+            await _context.SaveChangesAsync();
 
-            //if (businessUnit == null)
-            //{
-            //    throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-            //}
-
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new ArgumentException(ServicesConstants.NameCanNotBeNullOrEmpty);
-            }
-
-            if (name != null)
-            {
-                businessValidator.IsNameInRange(name);
-            }
-
-            var checkLogbookIfExists = await this.context.Logbooks
-                                           .FirstOrDefaultAsync(n => n.Name == name);
-
-            if (checkLogbookIfExists != null && logbook.Name != name)
-            {
-                throw new AlreadyExistsException(ServicesConstants.LogbookAlreadyExists);
-            }
-
-            logbook.Name = name;
-
-            if (picture != null)
-            {
-                logbook.Picture = picture;
-            }
-
-            if (businessUnitId != 0)
-            {
-                var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
-                if (businessUnit == null)
-                {
-                    throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
-                }
-                logbook.BusinessUnitId = businessUnitId;
-            }
-            
-            await this.context.SaveChangesAsync();
-
-            var result = await this.context.Logbooks
-                               .Include(bu => bu.BusinessUnit)
-                               .Include(n => n.Notes)
-                               .FirstOrDefaultAsync(x => x.Id == logbook.Id);
-
-            return result.ToDTO();
+            return logbook.ToDTO();
         }
 
         public async Task<LogbookDTO> AddManagerToLogbookAsync(string managerId, int logbookId)
         {
-            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+            var logbook = await GetLogbookAsync(logbookId);
+            var manager = await _userService.GetUserAsync(managerId);
 
-            if (logbook == null)
+            if (_context.UsersLogbooks.Any(u => u.UserId == managerId && u.LogbookId==logbook.Id))
             {
-                throw new NotFoundException(ServicesConstants.LogbookNotFound);
+                throw new AlreadyExistsException(string.Format(ServicesConstants.ManagerIsAlreadyInLogbook, manager.UserName, logbook.Name));
             }
 
-            var manager = await this.context.Users.FindAsync(managerId);
+            _context.UsersLogbooks.Add(new UsersLogbooks() { UserId = manager.Id, LogbookId = logbook.Id });
+            await _context.SaveChangesAsync();
 
-            if (manager == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            if (this.context.UsersLogbooks.Any(u => u.UserId == managerId && u.LogbookId==logbook.Id))
-            {
-                throw new ArgumentException(string.Format(ServicesConstants.ManagerIsAlreadyInLogbook, manager.UserName, logbook.Name));
-            }
-
-            await this.context.UsersLogbooks.AddAsync(new UsersLogbooks() { UserId = manager.Id, LogbookId = logbook.Id });
-
-            await this.context.SaveChangesAsync();
-
-            var result = await this.context.Logbooks
-                              .Include(bu => bu.BusinessUnit)
-                              .Include(n => n.Notes)
-                              .FirstOrDefaultAsync(x => x.Id == logbook.Id);
-
-            return result.ToDTO();
+            return logbook.ToDTO();
         }
 
         public async Task<LogbookDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId)
         {
-            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+            var logbook = await GetLogbookAsync(logbookId);
+            var manager = await _userService.GetUserAsync(managerId);
 
-            if (logbook == null)
-            {
-                throw new NotFoundException(ServicesConstants.LogbookNotFound);
-            }
+            var entityToRemove = await _context.UsersLogbooks.FindAsync(manager.Id, logbookId);
 
-            var manager = await this.context.Users.FindAsync(managerId);
-
-            if (manager == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            var entityToRemove = await this.context.UsersLogbooks.FindAsync(manager.Id, logbookId);
             if(entityToRemove == null)
             {
-                throw new ArgumentException(string.Format(ServicesConstants.ManagerIsNotPresentInLogbook, manager.UserName, logbook.Name));
+                throw new NotFoundException(string.Format(ServicesConstants.ManagerIsNotPresentInLogbook, manager.UserName, logbook.Name));
             }            
 
-            this.context.UsersLogbooks.Remove(entityToRemove);
-            await this.context.SaveChangesAsync();
+            _context.UsersLogbooks.Remove(entityToRemove);
+            await _context.SaveChangesAsync();
 
-            var result = await this.context.Logbooks
-                              .Include(bu => bu.BusinessUnit)
-                              .Include(n => n.Notes)
-                              .FirstOrDefaultAsync(x => x.Id == logbook.Id);
-
-            return result.ToDTO();
+            return logbook.ToDTO();
         }
 
-        public async Task<IReadOnlyCollection<LogbookDTO>> GetAllLogbooksByUserAsync(string userId)
+        public async Task<IReadOnlyCollection<LogbookDTO>> GetLogbooksByUserAsync(string userId)
         {
-            var user = await this.context.Users.FindAsync(userId);
-
-            if (user == null)
-            {
-                throw new NotFoundException(ServicesConstants.UserNotFound);
-            }
-
-            var logbooksDTO = await this.context.Logbooks
+            var logbooksDTO = await _context.Logbooks
                                        .Where(ul => ul.UsersLogbooks.Any(u => u.UserId == userId))
                                        .Include(bu => bu.BusinessUnit)
                                        .Include(n => n.Notes)
@@ -221,31 +125,50 @@ namespace ManagerLogbook.Services
 
         public async Task<LogbookDTO> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId)
         {
-            var logbook = await this.context.Logbooks.FindAsync(logbookId);
+            var logbook = await GetLogbookAsync(logbookId);
+            var businessUnit = await _businessUnitService.GetBusinessUnitAsync(businessUnitId);
+
+            logbook.BusinessUnitId = businessUnit.Id;
+            await _context.SaveChangesAsync();
+
+            return logbook.ToDTO();
+        }
+
+        private async Task<Logbook> GetLogbookAsync(int logbookId)
+        {
+            var logbook = await _context.Logbooks.SingleOrDefaultAsync(lb => lb.Id == logbookId);
 
             if (logbook == null)
             {
                 throw new NotFoundException(ServicesConstants.LogbookNotFound);
             }
 
-            var businessUnit = await this.context.BusinessUnits.FindAsync(businessUnitId);
+            return logbook;
+        }
+        private async Task CheckIfLogbookExist(string logbookName)
+        {
+            var logbook = await _context.Logbooks.SingleOrDefaultAsync(lb => lb.Name == logbookName);
 
-            if (businessUnit == null)
+            if (logbook != null)
             {
-                throw new NotFoundException(ServicesConstants.BusinessUnitNotFound);
+                throw new AlreadyExistsException(string.Format(ServicesConstants.LogbookAlreadyExists, logbookName));
+            }
+        }
+
+        private async Task SetLogbookProperties(LogbookModel model, Logbook entity)
+        {
+            entity.Name = model.Name;
+
+            if (model.Picture != null)
+            {
+                entity.Picture = model.Picture;
             }
 
-            logbook = await this.context.Logbooks
-                   .Include(bu => bu.BusinessUnit)
-                   .Include(n => n.Notes)
-                   .FirstOrDefaultAsync(x => x.Id == logbookId);
-
-
-            logbook.BusinessUnitId = businessUnitId;
-
-            await this.context.SaveChangesAsync();
-
-            return logbook.ToDTO();
+            if (model.BusinessUnitId != 0)
+            {
+                await _businessUnitService.GetBusinessUnitAsync(model.BusinessUnitId);
+                entity.BusinessUnitId = model.BusinessUnitId;
+            }
         }
     }
 }

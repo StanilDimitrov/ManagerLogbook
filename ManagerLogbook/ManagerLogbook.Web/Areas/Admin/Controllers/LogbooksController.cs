@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using log4net;
 using ManagerLogbook.Services.CustomExeptions;
+using ManagerLogbook.Web.Mappers;
 
 namespace ManagerLogbook.Web.Areas.Admin.Controllers
 {
@@ -15,185 +16,105 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class LogbooksController : Controller
     {
-        private readonly ILogbookService logbookService;
-        private readonly IUserService userService;
-        private readonly IImageOptimizer optimizer;
+        private readonly ILogbookService _logbookService;
+        private readonly IUserService _userService;
+        private readonly IImageOptimizer _optimizer;
         private static readonly ILog log = LogManager.GetLogger(typeof(LogbooksController));
 
         public LogbooksController(ILogbookService logbookService,
                                   IUserService userService,
                                   IImageOptimizer optimizer)
         {
-            this.logbookService = logbookService;
-            this.userService = userService;
-            this.optimizer = optimizer;
-        }        
+            _logbookService = logbookService;
+            _userService = userService;
+            _optimizer = optimizer;
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LogbookViewModel model)
+        public async Task<IActionResult> Create(LogbookViewModel viewModel)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(WebConstants.EnterValidData);
             }
 
-            try
+            string imageName = null;
+
+            if (viewModel.LogbookPicture != null)
             {
-                string imageName = null;
-
-                if (model.LogbookPicture != null)
-                {
-                    imageName = optimizer.OptimizeImage(model.LogbookPicture, 400, 800);
-                }
-
-                var logbook = await this.logbookService.CreateLogbookAsync(model.Name, model.BusinessUnitId, imageName);
-
-                if (logbook.Name == model.Name)
-                {
-                    return Ok(string.Format(WebConstants.LogbookCreated, model.Name));
-                }
-
-                return BadRequest(string.Format(WebConstants.LogbookNotCreated, model.Name));
+                imageName = _optimizer.OptimizeImage(viewModel.LogbookPicture, 400, 800);
             }
 
-            catch (ArgumentException ex)
+            var model = viewModel.MapFrom();
+            model.Picture = imageName;
+
+            var logbookDto = await _logbookService.CreateLogbookAsync(model);
+
+            if (logbookDto.Name == viewModel.Name)
             {
-                return BadRequest(ex.Message);
+                return Ok(string.Format(WebConstants.LogbookCreated, logbookDto.Name));
             }
-            catch (AlreadyExistsException ex)
-            {
-                return BadRequest(ex.Message);
-            }            
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
-        }               
-        
+
+            return BadRequest(string.Format(WebConstants.LogbookNotCreated, logbookDto.Name));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(LogbookViewModel model)
+        public async Task<IActionResult> Update(LogbookViewModel viewModel)
         {
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(string.Format(WebConstants.UnableToUpdateLogbook, model.Name));
+                return BadRequest(string.Format(WebConstants.UnableToUpdateLogbook, viewModel.Name));
             }
 
-            try
+            string imageName = null;
+
+            if (viewModel.LogbookPicture != null)
             {
-                var logbookDTO = await this.logbookService.GetLogbookById(model.Id);
-
-                string imageName = null;
-
-                if (model.LogbookPicture != null)
-                {
-                    imageName = optimizer.OptimizeImage(model.LogbookPicture, 400, 800);
-                }
-
-                if (model.Picture != null)
-                {
-                    optimizer.DeleteOldImage(model.Picture);
-                }
-
-                logbookDTO = await this.logbookService.UpdateLogbookAsync(model.Id, model.Name, model.BusinessUnitId, imageName);
-
-                if (logbookDTO.Name != model.Name)
-                {
-                    return BadRequest(string.Format(WebConstants.UnableToUpdateLogbook, model.Name));
-                }
-
-                return Ok(string.Format(WebConstants.LogbookUpdated, model.Name));
+                imageName = _optimizer.OptimizeImage(viewModel.LogbookPicture, 400, 800);
             }
 
-            catch (NotFoundException ex)
+            if (viewModel.Picture != null)
             {
-                return BadRequest(ex.Message);
-            }            
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
+                _optimizer.DeleteOldImage(viewModel.Picture);
             }
-            catch (AlreadyExistsException ex)
+
+            var model = viewModel.MapFrom();
+            model.Picture = imageName;
+            var logbookDTO = await _logbookService.UpdateLogbookAsync(model);
+
+            if (logbookDTO.Name != viewModel.Name)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(string.Format(WebConstants.UnableToUpdateLogbook, viewModel.Name));
             }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
-        }        
+
+            return Ok(string.Format(WebConstants.LogbookUpdated, viewModel.Name));
+
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddManagerToLogbook(LogbookViewModel model)
         {
-            try
-            {
-                var managerId = model.ManagerId;
-                var logbookId = model.Id;
-
-                var logbook = await this.logbookService.GetLogbookById(logbookId);
-
-                var manager = await this.userService.GetUserDtoByIdAsync(managerId);
-
-                await this.logbookService.AddManagerToLogbookAsync(managerId, logbookId);
-
-                return Ok(string.Format(WebConstants.SuccessfullyAddedManagerToLogbook, manager.UserName, logbook.Name));
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
-        }        
+            await _logbookService.AddManagerToLogbookAsync(model.ManagerId, model.Id);
+            return Ok(WebConstants.SuccessfullyAddedManagerToLogbook);
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveManagerFromLogbook(LogbookViewModel model)
         {
-            try
-            {
-                var logbookId = model.Id;
-                var managerId = model.ManagerId;
-                
 
-                var logbook = await this.logbookService.GetLogbookById(logbookId);
+            await _logbookService.RemoveManagerFromLogbookAsync(model.ManagerId, model.Id);
 
-                var manager = await this.userService.GetUserDtoByIdAsync(managerId);
+            return Ok(WebConstants.SuccessfullyRemovedManagerFromLogbook);
 
-                await this.logbookService.RemoveManagerFromLogbookAsync(managerId, logbookId);
-
-                return Ok(string.Format(WebConstants.SuccessfullyRemovedManagerFromLogbook, manager.UserName, logbook.Name));
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
         }
 
         public async Task<IActionResult> GetAllManagersNotPresent(int id)
         {
-            var managers = await this.userService.GetAllManagersNotPresentInLogbookAsync(id);
+            var managers = await _userService.GetAllManagersNotPresentInLogbookAsync(id);
 
             if (managers == null)
             {
@@ -205,7 +126,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> GetAllManagersPresent(int id)
         {
-            var managers = await this.userService.GetAllManagersPresentInLogbookAsync(id);
+            var managers = await _userService.GetAllManagersPresentInLogbookAsync(id);
 
             if (managers == null)
             {

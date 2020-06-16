@@ -38,7 +38,7 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var allLogbooksByUser = await sut.GetAllLogbooksByUserAsync(TestHelpersLogbook.TestUser01().Id);
+                var allLogbooksByUser = await sut.GetLogbooksByUserAsync(TestHelpersLogbook.TestUser01().Id);
                 
                 Assert.AreEqual(allLogbooksByUser.Count,2);
             }
@@ -68,7 +68,7 @@ namespace ManagerLogbook.Tests.Services.LogbookServiceTests
                 var mockedBusinessValidator = new Mock<IBusinessValidator>();
                 var sut = new LogbookService(assertContext, mockedBusinessValidator.Object);
 
-                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.GetAllLogbooksByUserAsync("2"));
+                var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => sut.GetLogbooksByUserAsync("2"));
 
                 Assert.AreEqual(ex.Message, string.Format(ServicesConstants.UserNotFound));
             }

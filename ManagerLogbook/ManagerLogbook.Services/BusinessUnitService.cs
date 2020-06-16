@@ -198,7 +198,7 @@ namespace ManagerLogbook.Services
             return businessUnit.ToDTO();
         }
 
-        private async Task<BusinessUnit> GetBusinessUnitAsync(int businessUnitId)
+        public async Task<BusinessUnit> GetBusinessUnitAsync(int businessUnitId)
         {
             var businessUnit = await this.context.BusinessUnits.SingleOrDefaultAsync(bu => bu.Id == businessUnitId);
 

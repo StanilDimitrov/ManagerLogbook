@@ -58,7 +58,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
                 var userId = this.wrapper.GetLoggedUserId(User);
                 var user = await this.userService.GetUserDtoByIdAsync(userId);
-                var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
+                var logbooks = await this.logbookService.GetLogbooksByUserAsync(userId);
                 var logbookId = user.CurrentLogbookId;
                 
                 if (user.CurrentLogbookId.HasValue)
@@ -577,7 +577,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.wrapper.GetLoggedUserId(User);
-                var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(userId);
+                var logbooks = await this.logbookService.GetLogbooksByUserAsync(userId);
 
                 return Json(logbooks);
             }
@@ -639,7 +639,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
 
         private async Task<UserViewModel> CreateDropdownLogbooks(UserViewModel model)
         {
-            var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(model.Id);
+            var logbooks = await this.logbookService.GetLogbooksByUserAsync(model.Id);
 
             model.Logbooks = logbooks.Select(x => new SelectListItem(x.Name, x.Id.ToString()));
 
@@ -649,7 +649,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private async Task<UserViewModel> EditDropdownLogbooks(UserViewModel model)
         {
 
-            var logbooks = await this.logbookService.GetAllLogbooksByUserAsync(model.Id);
+            var logbooks = await this.logbookService.GetLogbooksByUserAsync(model.Id);
 
             List<SelectListItem> selectLogbooks = new List<SelectListItem>();
 
