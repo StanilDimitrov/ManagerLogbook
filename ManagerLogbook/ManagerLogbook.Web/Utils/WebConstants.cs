@@ -29,8 +29,8 @@ namespace ManagerLogbook.Web.Utils
         public const string ManagerNotExist = "Manager does not exists.";
         public const string SuccessfullyAddedModeratorToBusinessUnit = "Moderator with Id\"{0}\" was successfully added to business unit business unit with Id: \"{1}\".";
         public const string SuccessfullyRemovedModeratorFromBusinessUnit = "Moderator with Id: \"{0}\" was successfully removed from business unit with Id: \"{1}\".";
-        public const string SuccessfullyAddedManagerToLogbook = "Manager was successfully added to logbook.";
-        public const string SuccessfullyRemovedManagerFromLogbook = "Manager was successfully removed from logbook.";
+        public const string SuccessfullyAddedManagerToLogbook = "Manager \"{0}\" was successfully added to logbook.";
+        public const string SuccessfullyRemovedManagerFromLogbook = "Manager \"{0}\" was successfully removed from logbook.";
         public const string ReviewCreated = "Review was successfully created.";
         public const string ReviewNotCreated = "Unable to create review.";
         public const string EnterValidData = "Please enter a valid data.";

@@ -44,14 +44,15 @@ namespace ManagerLogbook.Tests.Services
         [TestMethod]
         public async Task CreateBusinessUnitAsync_Succeed()
         {
+            var businessUnitCategory = _fixture.Build<BusinessUnitCategory>()
+                      .Without(x => x.BusinessUnits)
+                      .Create();
+            var town = _fixture.Build<Town>()
+                .Without(x => x.BusinessUnits)
+                .Create();
+
             using (var arrangeContext = new ManagerLogbookContext(_options))
             {
-                var businessUnitCategory = _fixture.Build<BusinessUnitCategory>()
-                    .Without(x => x.BusinessUnits)
-                    .Create();
-                var town = _fixture.Build<Town>()
-                    .Without(x => x.BusinessUnits)
-                    .Create();
                 arrangeContext.BusinessUnitCategories.Add(businessUnitCategory);
                 arrangeContext.Towns.Add(town);
 
@@ -61,6 +62,7 @@ namespace ManagerLogbook.Tests.Services
             var model = _fixture.Create<BusinessUnitModel>();
             var result = await _businessUnitService.CreateBusinnesUnitAsync(model);
             Assert.IsInstanceOfType(result, typeof(BusinessUnitDTO));
+            Assert.AreEqual(_context.BusinessUnits.Count(), 1);
             Assert.AreEqual(1, result.Id);
             Assert.AreEqual(model.Name, result.Name);
             Assert.AreEqual(model.Information, result.Information);
@@ -72,18 +74,18 @@ namespace ManagerLogbook.Tests.Services
         public async Task CreateBusinessUnitAsync_ThrowsException_WhenNameAlreadyExists()
         {
             var brandName = _fixture.Create<string>();
+            var businessUnit = _fixture.Build<BusinessUnit>()
+                   .With(x => x.Name, brandName)
+                   .Without(x => x.Reviews)
+                   .Without(x => x.Logbooks)
+                   .Without(x => x.Users)
+                   .Without(x => x.CensoredWords)
+                   .Without(x => x.Town)
+                   .Without(x => x.BusinessUnitCategory)
+                   .Create();
+
             using (var arrangeContext = new ManagerLogbookContext(_options))
             {
-                var businessUnit = _fixture.Build<BusinessUnit>()
-                    .With(x => x.Name, brandName)
-                    .Without(x => x.Reviews)
-                    .Without(x => x.Logbooks)
-                    .Without(x => x.Users)
-                    .Without(x => x.CensoredWords)
-                    .Without(x => x.Town)
-                    .Without(x => x.BusinessUnitCategory)
-                    .Create();
-
                 arrangeContext.BusinessUnits.Add(businessUnit);
                 await arrangeContext.SaveChangesAsync();
             }

@@ -31,12 +31,13 @@ namespace ManagerLogbook.Services
         public async Task<LogbookDTO> CreateLogbookAsync(LogbookModel model)
         {
             await CheckIfLogbookExist(model.Name);
+            await _businessUnitService.GetBusinessUnitAsync(model.BusinessUnitId.Value);
 
             var logbook = new Logbook
             {
                 Name = model.Name,
                 Picture = model.Picture,
-                BusinessUnitId = model.BusinessUnitId
+                BusinessUnitId = model.BusinessUnitId.Value
             };
 
             _context.Logbooks.Add(logbook);
@@ -78,23 +79,28 @@ namespace ManagerLogbook.Services
             return logbook.ToDTO();
         }
 
-        public async Task<LogbookDTO> AddManagerToLogbookAsync(string managerId, int logbookId)
+        public async Task<UserDTO> AddManagerToLogbookAsync(string managerId, int logbookId)
         {
             var logbook = await GetLogbookAsync(logbookId);
             var manager = await _userService.GetUserAsync(managerId);
 
-            if (_context.UsersLogbooks.Any(u => u.UserId == managerId && u.LogbookId==logbook.Id))
+            if (_context.UsersLogbooks.Any(u => u.UserId == managerId && u.LogbookId ==logbook.Id))
             {
                 throw new AlreadyExistsException(string.Format(ServicesConstants.ManagerIsAlreadyInLogbook, manager.UserName, logbook.Name));
             }
 
-            _context.UsersLogbooks.Add(new UsersLogbooks() { UserId = manager.Id, LogbookId = logbook.Id });
+            _context.UsersLogbooks.Add(new UsersLogbooks() 
+            {
+                UserId = manager.Id,
+                LogbookId = logbook.Id }
+            );
+
             await _context.SaveChangesAsync();
 
-            return logbook.ToDTO();
+            return manager.ToDTO();
         }
 
-        public async Task<LogbookDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId)
+        public async Task<UserDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId)
         {
             var logbook = await GetLogbookAsync(logbookId);
             var manager = await _userService.GetUserAsync(managerId);
@@ -109,7 +115,7 @@ namespace ManagerLogbook.Services
             _context.UsersLogbooks.Remove(entityToRemove);
             await _context.SaveChangesAsync();
 
-            return logbook.ToDTO();
+            return manager.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<LogbookDTO>> GetLogbooksByUserAsync(string userId)
@@ -164,10 +170,10 @@ namespace ManagerLogbook.Services
                 entity.Picture = model.Picture;
             }
 
-            if (model.BusinessUnitId != 0)
+            if (model.BusinessUnitId != null)
             {
-                await _businessUnitService.GetBusinessUnitAsync(model.BusinessUnitId);
-                entity.BusinessUnitId = model.BusinessUnitId;
+                await _businessUnitService.GetBusinessUnitAsync(model.BusinessUnitId.Value);
+                entity.BusinessUnitId = model.BusinessUnitId.Value;
             }
         }
     }

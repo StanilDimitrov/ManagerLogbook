@@ -6,13 +6,8 @@
 
         public string Name { get; set; }
 
-        public int? CurrentLogbookId { get; set; }
-
         public string Picture { get; set; }
   
-        public int BusinessUnitId { get; set; }
-
-        public string ManagerId { get; set; }
-        
+        public int? BusinessUnitId { get; set; }
     }
 }

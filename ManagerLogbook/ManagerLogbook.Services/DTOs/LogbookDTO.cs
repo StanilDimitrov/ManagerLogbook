@@ -12,6 +12,8 @@ namespace ManagerLogbook.Services.DTOs
 
         public string BusinessUnitName { get; set; }
 
+        public int BusinessUnitId{ get; set; }
+
         public IReadOnlyCollection<NoteDTO> Notes { get; set; }
     }
 }

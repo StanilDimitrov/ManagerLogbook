@@ -18,8 +18,9 @@ namespace ManagerLogbook.Services.Mappers
                 Id = entity.Id,
                 Picture = entity.Picture,
                 BusinessUnitName = entity.BusinessUnit?.Name,
+                BusinessUnitId = entity.BusinessUnitId,
                 Name = entity.Name,
-                Notes = entity.Notes.Select(x => x.ToDTO()).ToList()
+                Notes = entity.Notes?.Select(x => x.ToDTO()).ToList()
             };
         }
     }

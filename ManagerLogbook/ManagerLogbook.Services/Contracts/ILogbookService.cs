@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.DTOs;
+﻿using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,9 +14,9 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model);
 
-        Task<LogbookDTO> AddManagerToLogbookAsync(string managerId, int logbookId);
+        Task<UserDTO> AddManagerToLogbookAsync(string managerId, int logbookId);
 
-        Task<LogbookDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId);
+        Task<UserDTO> RemoveManagerFromLogbookAsync(string managerId, int logbookId);
 
         Task<IReadOnlyCollection<LogbookDTO>> GetLogbooksByUserAsync(string userId);
 

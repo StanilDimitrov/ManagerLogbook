@@ -97,19 +97,17 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddManagerToLogbook(LogbookViewModel model)
         {
-            await _logbookService.AddManagerToLogbookAsync(model.ManagerId, model.Id);
-            return Ok(WebConstants.SuccessfullyAddedManagerToLogbook);
+            var manager = await _logbookService.AddManagerToLogbookAsync(model.ManagerId, model.Id);
+            return Ok(string.Format(WebConstants.SuccessfullyAddedManagerToLogbook, manager.UserName));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveManagerFromLogbook(LogbookViewModel model)
         {
+            var manager = await _logbookService.RemoveManagerFromLogbookAsync(model.ManagerId, model.Id);
 
-            await _logbookService.RemoveManagerFromLogbookAsync(model.ManagerId, model.Id);
-
-            return Ok(WebConstants.SuccessfullyRemovedManagerFromLogbook);
-
+            return Ok(string.Format(WebConstants.SuccessfullyRemovedManagerFromLogbook, manager.UserName));
         }
 
         public async Task<IActionResult> GetAllManagersNotPresent(int id)

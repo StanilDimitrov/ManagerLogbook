@@ -21,7 +21,7 @@ namespace ManagerLogbook.Web.Models
 
         public string BusinessUnitName { get; set; }
         public IEnumerable<SelectListItem> BusinessUnits { get; set; }
-        public int BusinessUnitId { get; set; }
+        public int? BusinessUnitId { get; set; }
 
         public string ManagerId { get; set; }
         public IEnumerable<SelectListItem> Managers { get; set; }
