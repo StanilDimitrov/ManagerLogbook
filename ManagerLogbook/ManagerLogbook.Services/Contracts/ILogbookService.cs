@@ -14,7 +14,7 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<LogbookDTO> GetLogbookDetailsAsync(int logbookId);
 
-        Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model);
+        Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model, Logbook logbook);
 
         Task<UserDTO> AddManagerToLogbookAsync(string managerId, int logbookId);
 
@@ -23,5 +23,7 @@ namespace ManagerLogbook.Services.Contracts
         Task<IReadOnlyCollection<LogbookDTO>> GetLogbooksByUserAsync(string userId);
 
         Task<LogbookDTO> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId);
+
+        Task<bool> CheckIfLogbookNameExist(string logbookName);
     }
 }

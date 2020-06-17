@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ManagerLogbook.Web\ManagerLogbook.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\LogbookController\Admin\" />
+  </ItemGroup>
+
 </Project>

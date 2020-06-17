@@ -54,6 +54,11 @@ namespace ManagerLogbook.Tests.Services
                    .Without(x => x.Town)
                    .Without(x => x.BusinessUnitCategory)
                    .Create();
+
+            var model = _fixture.Build<LogbookModel>()
+               .With(x => x.BusinessUnitId, businessUnit.Id)
+               .Create();
+
             using (var arrangeContext = new ManagerLogbookContext(_options))
             {
 
@@ -61,10 +66,8 @@ namespace ManagerLogbook.Tests.Services
                 await arrangeContext.SaveChangesAsync();
             }
 
-            var model = _fixture.Build<LogbookModel>()
-                .With(x => x.BusinessUnitId, businessUnit.Id)
-                .Create();
             _mockBusinessUnitService.Setup(x => x.GetBusinessUnitAsync(businessUnit.Id)).ReturnsAsync(businessUnit).Verifiable();
+
             var result = await _logbookService.CreateLogbookAsync(model);
             Assert.IsInstanceOfType(result, typeof(LogbookDTO));
             Assert.AreEqual(1, _context.Logbooks.Count());
@@ -74,29 +77,6 @@ namespace ManagerLogbook.Tests.Services
             _mockBusinessUnitService.Verify();
         }
 
-        [TestMethod]
-        public async Task CreateLogbookAsync_ThrowsException_WhenLogbookAlreadyExists()
-        {
-            var logbookName = _fixture.Create<string>();
-            var logbook = _fixture.Build<Logbook>()
-                .With(x => x.Name, logbookName)
-                .Without(x => x.BusinessUnit)
-                .Without(x => x.UsersLogbooks)
-                .Without(x => x.Notes)
-                .Create();
-            using (var arrangeContext = new ManagerLogbookContext(_options))
-            {
-                arrangeContext.Logbooks.Add(logbook);
-                await arrangeContext.SaveChangesAsync();
-            }
-
-            var model = _fixture.Build<LogbookModel>()
-                .With(x => x.Name, logbookName)
-                .Create();
-
-            var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => _logbookService.CreateLogbookAsync(model));
-            Assert.AreEqual(ex.Message, string.Format(ServicesConstants.LogbookAlreadyExists, logbookName));
-        }
         #endregion
 
         #region UpdateLogbookAsync
@@ -127,50 +107,13 @@ namespace ManagerLogbook.Tests.Services
                 .With(x => x.BusinessUnitId, businessUnit.Id)
                 .Create();
             _mockBusinessUnitService.Setup(x => x.GetBusinessUnitAsync(businessUnit.Id)).ReturnsAsync(businessUnit).Verifiable();
-            var result = await _logbookService.UpdateLogbookAsync(model);
+            var result = await _logbookService.UpdateLogbookAsync(model, logbook);
             Assert.IsInstanceOfType(result, typeof(LogbookDTO));
             Assert.AreEqual(model.Id, result.Id);
             Assert.AreEqual(model.Name, result.Name);
             Assert.AreEqual(model.Picture, result.Picture);
 
             _mockBusinessUnitService.Verify();
-        }
-
-        [TestMethod]
-        public async Task UpdateLogbookAsync_ThrowsException_WhenLogbookAlreadyExists()
-        {
-            var logbookName = _fixture.Create<string>();
-            var logbookId = _fixture.Create<int>();
-            var logbooks = new List<Logbook>()
-            {
-                _fixture.Build<Logbook>()
-                .With(x => x.Name, logbookName)
-                .Without(x => x.BusinessUnit)
-                .Without(x => x.UsersLogbooks)
-                .Without(x => x.Notes)
-                .Create(),
-                _fixture.Build<Logbook>()
-                .With(x => x.Id, logbookId)
-                .Without(x => x.BusinessUnit)
-                .Without(x => x.UsersLogbooks)
-                .Without(x => x.Notes)
-                .Create(),
-            };
-
-
-            using (var arrangeContext = new ManagerLogbookContext(_options))
-            {
-                arrangeContext.Logbooks.AddRange(logbooks);
-                await arrangeContext.SaveChangesAsync();
-            }
-
-            var model = _fixture.Build<LogbookModel>()
-                .With(x => x.Name, logbookName)
-                .With(x => x.Id, logbookId)
-                .Create();
-
-            var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => _logbookService.UpdateLogbookAsync(model));
-            Assert.AreEqual(ex.Message, string.Format(ServicesConstants.LogbookAlreadyExists, logbookName));
         }
         #endregion
 
@@ -393,6 +336,43 @@ namespace ManagerLogbook.Tests.Services
             Assert.AreEqual(businessUnit.Id, result.BusinessUnitId);
 
             _mockUserService.Verify();
+        }
+        #endregion
+
+        #region CheckIfLogbookNameExist
+        [TestMethod]
+        public async Task CheckIfLogbookNameExist_Succeed()
+        {
+            var logbookName = _fixture.Create<string>();
+
+            var result = await _logbookService.CheckIfLogbookNameExist(logbookName);
+
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public async Task CheckIfLogbookNameExist_ThrowsException_WhenNameAlreadyExists()
+        {
+            var logbookName = _fixture.Create<string>();
+            var logbook = _fixture.Build<Logbook>()
+                   .With(x => x.Name, logbookName)
+                   .Without(x => x.BusinessUnit)
+                   .Without(x => x.Notes)
+                   .Without(x => x.UsersLogbooks)
+                   .Create();
+
+            using (var arrangeContext = new ManagerLogbookContext(_options))
+            {
+                arrangeContext.Logbooks.Add(logbook);
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            var model = _fixture.Build<LogbookModel>()
+                .With(x => x.Name, logbookName)
+                .Create();
+
+            var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => _logbookService.CheckIfLogbookNameExist(logbookName));
+            Assert.AreEqual(ex.Message, string.Format(ServicesConstants.LogbookAlreadyExists, logbookName));
         }
         #endregion
     }

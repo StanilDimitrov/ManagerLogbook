@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Bll.Contracts;
+using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Services.Contracts;
@@ -16,13 +17,16 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         private readonly ILogbookService _logbookService;
         private readonly IUserService _userService;
         private readonly IImageOptimizer _optimizer;
+        private readonly ILogbookEngine _logbookEngine;
 
         public LogbooksController(ILogbookService logbookService,
                                   IUserService userService,
+                                  ILogbookEngine logbookEngine,
                                   IImageOptimizer optimizer)
         {
             _logbookService = logbookService;
             _userService = userService;
+            _logbookEngine = logbookEngine;
             _optimizer = optimizer;
         }
 
@@ -45,7 +49,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             var model = viewModel.MapFrom();
             model.Picture = imageName;
 
-            var logbookDto = await _logbookService.CreateLogbookAsync(model);
+            var logbookDto = await _logbookEngine.CreateLogbookAsync(model);
 
             if (logbookDto.Name == viewModel.Name)
             {
@@ -78,7 +82,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             var model = viewModel.MapFrom();
             model.Picture = imageName;
-            var logbookDTO = await _logbookService.UpdateLogbookAsync(model);
+            var logbookDTO = await _logbookEngine.UpdateLogbookAsync(model);
 
             if (logbookDTO.Name != viewModel.Name)
             {

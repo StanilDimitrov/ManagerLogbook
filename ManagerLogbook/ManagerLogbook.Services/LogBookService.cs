@@ -30,9 +30,6 @@ namespace ManagerLogbook.Services
 
         public async Task<LogbookDTO> CreateLogbookAsync(LogbookModel model)
         {
-            await CheckIfLogbookExist(model.Name);
-            await _businessUnitService.GetBusinessUnitAsync(model.BusinessUnitId.Value);
-
             var logbook = new Logbook
             {
                 Name = model.Name,
@@ -64,15 +61,8 @@ namespace ManagerLogbook.Services
             return result.ToDTO();
         }
 
-        public async Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model)
+        public async Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model, Logbook logbook)
         {
-            var logbook = await GetLogbookAsync(model.Id);
-
-            if (model.Name != logbook.Name)
-            {
-                await CheckIfLogbookExist(model.Name);
-            }
-
             await SetLogbookProperties(model, logbook);
             await _context.SaveChangesAsync();
 
@@ -152,14 +142,16 @@ namespace ManagerLogbook.Services
             return logbook;
         }
 
-        private async Task CheckIfLogbookExist(string logbookName)
+        public async Task<bool> CheckIfLogbookNameExist(string logbookName)
         {
-            var logbook = await _context.Logbooks.SingleOrDefaultAsync(lb => lb.Name == logbookName);
+            var hasNameExists = await _context.Logbooks.AnyAsync(lb => lb.Name == logbookName);
 
-            if (logbook != null)
+            if (hasNameExists)
             {
                 throw new AlreadyExistsException(string.Format(ServicesConstants.LogbookAlreadyExists, logbookName));
             }
+
+            return hasNameExists;
         }
 
         private async Task SetLogbookProperties(LogbookModel model, Logbook entity)
