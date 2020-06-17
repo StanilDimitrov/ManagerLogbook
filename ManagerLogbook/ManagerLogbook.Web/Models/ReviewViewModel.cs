@@ -20,7 +20,7 @@ namespace ManagerLogbook.Web.Models
 
         public DateTime CreatedOn { get; set; }
 
-        public bool isVisible { get; set; }
+        public bool IsVisible { get; set; }
 
         public int BusinessUnitId { get; set; }
     }

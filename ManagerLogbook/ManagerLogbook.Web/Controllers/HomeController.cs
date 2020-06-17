@@ -1,5 +1,4 @@
-﻿using log4net;
-using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
@@ -16,9 +15,6 @@ namespace ManagerLogbook.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private static readonly ILog log =
-        LogManager.GetLogger(typeof(HomeController));
-
         private readonly IBusinessUnitService businessUnitService;
         private readonly IMemoryCache cache;
 
@@ -33,7 +29,7 @@ namespace ManagerLogbook.Web.Controllers
         {
             var businessUnitsDTO = await this.businessUnitService.GetBusinessUnitsAsync();
             var categoriesDTO = await this.businessUnitService.GetBusinessUnitsCategoriesAsync();
-            var townsDTO = await this.businessUnitService.GetAllTownsAsync();
+            var townsDTO = await this.businessUnitService.GetTownsAsync();
             var businessCategories = await this.businessUnitService.GetBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
 
             var viewModel = new HomeViewModel
@@ -80,7 +76,7 @@ namespace ManagerLogbook.Web.Controllers
                 bindngModel.CategoryId,
                 bindngModel.TownId);
 
-            var townsDTO = await this.businessUnitService.GetAllTownsAsync();
+            var townsDTO = await this.businessUnitService.GetTownsAsync();
             var categoriesDTO = await this.businessUnitService.GetBusinessUnitsCategoriesAsync();
             var businessCategories = await this.businessUnitService.GetBusinessUnitsCategoriesWithCountOfBusinessUnitsAsync();
 
@@ -108,7 +104,7 @@ namespace ManagerLogbook.Web.Controllers
             var cashedTowns = await cache.GetOrCreateAsync<IReadOnlyCollection<TownDTO>>("Towns", async (cacheEntry) =>
             {
                 cacheEntry.SlidingExpiration = TimeSpan.FromDays(1);
-                return await this.businessUnitService.GetAllTownsAsync();
+                return await this.businessUnitService.GetTownsAsync();
             });
 
             return cashedTowns;

@@ -1,5 +1,4 @@
-﻿using log4net;
-using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +11,6 @@ namespace ManagerLogbook.Web.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService userService;
-        private static readonly ILog log =
-        LogManager.GetLogger(typeof(UsersController));
 
         public UsersController(IUserService userService)
         {

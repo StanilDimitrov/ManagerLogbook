@@ -1,4 +1,4 @@
-﻿using log4net;
+﻿using ManagerLogbook.Services.Bll.Contracts;
 using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
@@ -15,15 +15,17 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
     public class BusinessUnitsController : Controller
     {
         private readonly IBusinessUnitService _businessUnitService;
+        private readonly IBusinessUnitEngine _businessUnitEngine;
         private readonly IUserService _userService;
         private readonly IImageOptimizer _optimizer;
-        private static readonly ILog log = LogManager.GetLogger(typeof(BusinessUnitsController));
 
         public BusinessUnitsController(IBusinessUnitService businessUnitService,
+                                       IBusinessUnitEngine businessUnitEngine,
                                       IUserService userService,
                                       IImageOptimizer optimizer)
         {
             _businessUnitService = businessUnitService;
+            _businessUnitEngine = businessUnitEngine;
             _userService = userService;
             _optimizer = optimizer;
         }
@@ -46,9 +48,9 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
 
             var model = viewModel.MapFrom();
             model.Picture = imageName;
-            await _businessUnitService.CreateBusinnesUnitAsync(model);
 
-            return Ok(string.Format(WebConstants.BusinessUnitCreated, viewModel.Name));
+            var businessUnitDto = await _businessUnitEngine.CreateBusinnesUnitAsync(model);
+            return Ok(string.Format(WebConstants.BusinessUnitCreated, businessUnitDto.Name));
         }
 
         [HttpPost]
@@ -75,7 +77,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             var model = viewModel.MapFrom();
             model.Picture = imageName;
 
-            var businessUnitDto = await _businessUnitService.UpdateBusinessUnitAsync(model);
+            var businessUnitDto = await _businessUnitEngine.UpdateBusinessUnitAsync(model);
             return Ok(string.Format(WebConstants.BusinessUnitUpdated, businessUnitDto.Name));
         }
 
@@ -83,7 +85,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddModeratorToBusinessUnit(BusinessUnitViewModel viewModel)
         {
-            var userDto = await _businessUnitService.AddModeratorToBusinessUnitsAsync(viewModel.ModeratorId, viewModel.Id);
+            var userDto = await _businessUnitEngine.AddModeratorToBusinessUnitsAsync(viewModel.ModeratorId, viewModel.Id);
             return Ok(string.Format(WebConstants.SuccessfullyAddedModeratorToBusinessUnit, userDto.UserName));
         }
 
@@ -91,7 +93,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveModerator(BusinessUnitViewModel model)
         {
-            var userDto = await _businessUnitService.RemoveModeratorFromBusinessUnitsAsync(model.ModeratorId, model.Id);
+            var userDto = await _businessUnitEngine.RemoveModeratorFromBusinessUnitsAsync(model.ModeratorId, model.Id);
             return Ok(string.Format(WebConstants.SuccessfullyRemovedModeratorFromBusinessUnit, userDto.UserName));
         }
 
@@ -115,7 +117,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTowns()
         {
-            var towns = await _businessUnitService.GetAllTownsAsync();
+            var towns = await _businessUnitService.GetTownsAsync();
             return Json(towns);
         }
 

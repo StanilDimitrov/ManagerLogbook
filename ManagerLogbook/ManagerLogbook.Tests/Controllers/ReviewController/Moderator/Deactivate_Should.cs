@@ -29,7 +29,7 @@ namespace ManagerLogbook.Tests.Controllers.ReviewController.Moderator
                 OriginalDescription = "This is second review",
                 EditedDescription = "This is EDIT second review",
                 BusinessUnitId = 1,
-                isVisible = true,
+                IsVisible = true,
                 Rating = 2
             };
 

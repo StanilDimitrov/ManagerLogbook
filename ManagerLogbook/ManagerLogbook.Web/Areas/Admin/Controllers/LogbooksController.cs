@@ -1,5 +1,4 @@
-﻿using log4net;
-using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Services.Contracts;
@@ -17,7 +16,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         private readonly ILogbookService _logbookService;
         private readonly IUserService _userService;
         private readonly IImageOptimizer _optimizer;
-        private static readonly ILog log = LogManager.GetLogger(typeof(LogbooksController));
 
         public LogbooksController(ILogbookService logbookService,
                                   IUserService userService,

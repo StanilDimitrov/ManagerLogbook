@@ -1,7 +1,4 @@
-﻿using ManagerLogbook.Data.Models;
-using System.Collections.Generic;
-
-namespace ManagerLogbook.Services.DTOs
+﻿namespace ManagerLogbook.Services.DTOs
 {
     public class BusinessUnitDTO
     {

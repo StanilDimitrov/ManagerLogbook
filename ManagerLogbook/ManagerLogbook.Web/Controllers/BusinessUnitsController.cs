@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Bll.Contracts;
+using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,28 +10,31 @@ namespace ManagerLogbook.Web.Controllers
 {
     public class BusinessUnitsController : Controller
     {
-        private readonly IBusinessUnitService businessUnitService;
-        private readonly IReviewService reviewService;
+        private readonly IBusinessUnitService _businessUnitService;
+        private readonly IBusinessUnitEngine _businessUnitEngine;
+        private readonly IReviewService _reviewService;
 
         public BusinessUnitsController(
             IBusinessUnitService businessUnitService,
+            IBusinessUnitEngine  businessUnitEngine,
             IReviewService reviewService)
         {
-            this.businessUnitService = businessUnitService;
-            this.reviewService = reviewService;
+            _businessUnitService = businessUnitService;
+            _businessUnitEngine = businessUnitEngine;
+            _reviewService = reviewService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var businessUnit = await this.businessUnitService.GetBusinessUnitDtoAsync(id);
-            var reviewDTOs = await this.reviewService.GetReviewsByBusinessUnitAsync(id);
+            var businessUnit = await _businessUnitService.GetBusinessUnitDtoAsync(id);
+            var reviewDTOs = await _reviewService.GetReviewsByBusinessUnitAsync(id);
 
             var viewModel = new IndexBusinessUnitViewModel
             {
                 BusinessUnit = businessUnit.MapFrom(),
                 Reviews = reviewDTOs.Select(x => x.MapFrom()).ToList(),
-                Logbooks = await this.businessUnitService.GetLogbooksForBusinessUnitAsync(businessUnit.Id)
+                Logbooks = await _businessUnitEngine.GetLogbooksForBusinessUnitAsync(businessUnit.Id)
             };
        
             return View(viewModel);
@@ -39,7 +43,7 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetReviewsList(int id)
         {
-            var reviewDTOs = await this.reviewService.GetReviewsByBusinessUnitAsync(id);
+            var reviewDTOs = await _reviewService.GetReviewsByBusinessUnitAsync(id);
 
             var viewModel = new IndexBusinessUnitViewModel
             {
@@ -52,7 +56,7 @@ namespace ManagerLogbook.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GiveLikeToBusinessUnit(int businessUnitId)
         {
-            var businessUnit = await this.businessUnitService.AddLikeToBusinessUnitAsync(businessUnitId);
+            var businessUnit = await _businessUnitService.AddLikeToBusinessUnitAsync(businessUnitId);
             return Json(businessUnit.Likes);
         }
     }

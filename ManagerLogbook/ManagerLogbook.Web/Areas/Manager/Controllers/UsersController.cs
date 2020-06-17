@@ -1,5 +1,4 @@
-﻿using log4net;
-using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Web.Models;
@@ -18,8 +17,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly IUserService userService;
         private readonly ILogbookService logbookService;
         private readonly IUserServiceWrapper wrapper;
-        private static readonly ILog log =
-        LogManager.GetLogger(typeof(UsersController));
 
         public UsersController(IUserService userService,
                                ILogbookService logbookService,
@@ -63,7 +60,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             }
             catch (Exception ex)
             {
-                log.Error("Unexpected exception occured:", ex);
                 return RedirectToAction("Error", "Home");
             }
         }

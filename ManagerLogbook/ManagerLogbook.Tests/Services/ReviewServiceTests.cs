@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace ManagerLogbook.Tests.Services
 {
     [TestClass]
-    public class ReviewServiceTests1
+    public class ReviewServiceTests
     {
         #region Members
         private Mock<IUserService> _mockUserService;

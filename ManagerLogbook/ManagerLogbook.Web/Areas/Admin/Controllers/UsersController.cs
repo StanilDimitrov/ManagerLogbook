@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ManagerLogbook.Data.Models;
+﻿using ManagerLogbook.Data.Models;
 using ManagerLogbook.Web.Controllers;
 using ManagerLogbook.Web.Models.AccountViewModels;
 using ManagerLogbook.Web.Services;
@@ -12,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Areas.Admin.Controllers
 {
@@ -38,7 +35,6 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
             _logger = logger;
             this.optimizer = optimizer;
         }
-
 
         [HttpGet]
         public IActionResult Register(string returnUrl = null)

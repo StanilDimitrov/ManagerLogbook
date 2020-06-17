@@ -1,5 +1,4 @@
-﻿using log4net;
-using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Web.Areas.Moderator.Models;
 using ManagerLogbook.Web.Mappers;
@@ -20,7 +19,6 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
         private readonly IBusinessUnitService _businessUnitService;
         private readonly IUserService _userService;
         private readonly IUserServiceWrapper _wrapper;
-        private static readonly ILog log = LogManager.GetLogger(typeof(ReviewsController));
 
         public ReviewsController(IReviewService reviewService,
                                  IBusinessUnitService businessUnitService,

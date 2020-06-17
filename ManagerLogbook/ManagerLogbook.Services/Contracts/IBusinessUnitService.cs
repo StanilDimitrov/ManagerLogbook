@@ -10,7 +10,7 @@ namespace ManagerLogbook.Services.Contracts
     {
         Task<BusinessUnitDTO> CreateBusinnesUnitAsync(BusinessUnitModel model);
 
-        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(BusinessUnitModel model);
+        Task<BusinessUnitDTO> UpdateBusinessUnitAsync(BusinessUnitModel model, BusinessUnit businessUnit);
 
         Task<BusinessUnitDTO> GetBusinessUnitDtoAsync(int businessUnitId);
 
@@ -20,11 +20,11 @@ namespace ManagerLogbook.Services.Contracts
 
         Task<IReadOnlyCollection<BusinessUnitDTO>> GetBusinessUnitsAsync();
 
-        Task<IReadOnlyCollection<TownDTO>> GetAllTownsAsync();
+        Task<IReadOnlyCollection<TownDTO>> GetTownsAsync();
 
-        Task<UserDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId);
+        Task<UserDTO> AddModeratorToBusinessUnitsAsync(User moderator, int businessUnitId);
 
-        Task<UserDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId);
+        Task<UserDTO> RemoveModeratorFromBusinessUnitsAsync(User moderator, int businessUnitId);
 
         Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId);
 
@@ -35,5 +35,7 @@ namespace ManagerLogbook.Services.Contracts
         Task<BusinessUnitDTO> AddLikeToBusinessUnitAsync(int businessUnitId);
 
         Task<BusinessUnit> GetBusinessUnitAsync(int businessUnitId);
+
+        Task<bool> CheckIfBrandNameExist(string brandName);
     }
 }

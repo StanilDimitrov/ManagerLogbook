@@ -2,7 +2,6 @@
 using ManagerLogbook.Data;
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services;
-using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Models;
@@ -10,7 +9,6 @@ using ManagerLogbook.Services.Utils;
 using ManagerLogbook.Tests.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +19,6 @@ namespace ManagerLogbook.Tests.Services
     public class BusinessUnitServiceTests
     {
         #region Members
-        private Mock<IUserService> _mockUserService;
         private static Fixture _fixture;
         private static DbContextOptions _options;
         private static ManagerLogbookContext _context;
@@ -32,11 +29,10 @@ namespace ManagerLogbook.Tests.Services
         [TestInitialize]
         public void Setup()
         {
-            _mockUserService = new Mock<IUserService>();
             _fixture = new Fixture();
             _options = TestUtils.GetOptions(_fixture.Create<string>());
             _context = new ManagerLogbookContext(_options);
-            _businessUnitService = new BusinessUnitService(_context, _mockUserService.Object);
+            _businessUnitService = new BusinessUnitService(_context);
         }
         #endregion
 
@@ -69,34 +65,6 @@ namespace ManagerLogbook.Tests.Services
             Assert.AreEqual(model.PhoneNumber, result.PhoneNumber);
             Assert.AreEqual(model.Email, result.Email);
         }
-
-        [TestMethod]
-        public async Task CreateBusinessUnitAsync_ThrowsException_WhenNameAlreadyExists()
-        {
-            var brandName = _fixture.Create<string>();
-            var businessUnit = _fixture.Build<BusinessUnit>()
-                   .With(x => x.Name, brandName)
-                   .Without(x => x.Reviews)
-                   .Without(x => x.Logbooks)
-                   .Without(x => x.Users)
-                   .Without(x => x.CensoredWords)
-                   .Without(x => x.Town)
-                   .Without(x => x.BusinessUnitCategory)
-                   .Create();
-
-            using (var arrangeContext = new ManagerLogbookContext(_options))
-            {
-                arrangeContext.BusinessUnits.Add(businessUnit);
-                await arrangeContext.SaveChangesAsync();
-            }
-
-            var model = _fixture.Build<BusinessUnitModel>()
-                .With(x => x.Name, brandName)
-                .Create();
-
-            var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => _businessUnitService.CreateBusinnesUnitAsync(model));
-            Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNameAlreadyExists, brandName));
-        }
         #endregion
 
         #region UpdateBusinessUnitAsync
@@ -123,66 +91,13 @@ namespace ManagerLogbook.Tests.Services
             var model = _fixture.Build<BusinessUnitModel>()
                 .With(x => x.Id, businessUnitId)
                 .Create();
-            var result = await _businessUnitService.UpdateBusinessUnitAsync(model);
+            var result = await _businessUnitService.UpdateBusinessUnitAsync(model, businessUnit);
             Assert.IsInstanceOfType(result, typeof(BusinessUnitDTO));
             Assert.AreEqual(model.Id, result.Id);
             Assert.AreEqual(model.Name, result.Name);
             Assert.AreEqual(model.Information, result.Information);
             Assert.AreEqual(model.PhoneNumber, result.PhoneNumber);
             Assert.AreEqual(model.Email, result.Email);
-        }
-
-        [TestMethod]
-        public async Task UpdateBusinessUnitAsync_ThrowsException_WhenBusinessUnitNotFound()
-        {
-            var model = _fixture.Build<BusinessUnitModel>()
-                .Create();
-
-            var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => _businessUnitService.UpdateBusinessUnitAsync(model));
-            Assert.AreEqual(ex.Message, ServicesConstants.BusinessUnitNotFound);
-        }
-
-        [TestMethod]
-        public async Task UpdateBusinessUnitAsync_ThrowsException_WhenNameExists()
-        {
-            var brandName = _fixture.Create<string>();
-            var businessUnitId = _fixture.Create<int>();
-            var businessUnits = new List<BusinessUnit>
-                {
-                    _fixture.Build<BusinessUnit>()
-                   .With(x => x.Id, businessUnitId)
-                   .Without(x => x.Reviews)
-                   .Without(x => x.Logbooks)
-                   .Without(x => x.Users)
-                   .Without(x => x.CensoredWords)
-                   .Without(x => x.Town)
-                   .Without(x => x.BusinessUnitCategory)
-                   .Create(),
-
-                _fixture.Build<BusinessUnit>()
-                  .With(x => x.Name, brandName)
-                  .Without(x => x.Reviews)
-                  .Without(x => x.Logbooks)
-                  .Without(x => x.Users)
-                  .Without(x => x.CensoredWords)
-                  .Without(x => x.Town)
-                  .Without(x => x.BusinessUnitCategory)
-                  .Create()
-            };
-
-            using (var arrangeContext = new ManagerLogbookContext(_options))
-            {
-                arrangeContext.BusinessUnits.AddRange(businessUnits);
-                await arrangeContext.SaveChangesAsync();
-            }
-
-            var model = _fixture.Build<BusinessUnitModel>()
-                .With(x => x.Name, brandName)
-                .With(x => x.Id, businessUnitId)
-                .Create();
-
-            var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => _businessUnitService.UpdateBusinessUnitAsync(model));
-            Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNameAlreadyExists, brandName));
         }
         #endregion
 
@@ -373,7 +288,7 @@ namespace ManagerLogbook.Tests.Services
                 await arrangeContext.SaveChangesAsync();
             }
 
-            var result = await _businessUnitService.GetAllTownsAsync();
+            var result = await _businessUnitService.GetTownsAsync();
             Assert.IsInstanceOfType(result, typeof(IReadOnlyCollection<TownDTO>));
             Assert.AreEqual(result.Count, towns.Count);
         }
@@ -598,22 +513,12 @@ namespace ManagerLogbook.Tests.Services
                 arrangeContext.BusinessUnits.Add(businessUnit);
                 await arrangeContext.SaveChangesAsync();
             }
-            _mockUserService.Setup(x => x.GetUserAsync(user.Id)).ReturnsAsync(user).Verifiable();
-            var result = await _businessUnitService.AddModeratorToBusinessUnitsAsync(user.Id, businessUnit.Id);
+
+            var result = await _businessUnitService.AddModeratorToBusinessUnitsAsync(user, businessUnit.Id);
+
             Assert.IsInstanceOfType(result, typeof(UserDTO));
             Assert.AreEqual(user.BusinessUnitId, result.BusinessUnitId);
 
-            _mockUserService.Verify();
-        }
-
-        [TestMethod]
-        public async Task AddModeratorToBusinessUnitsAsync_ThrowsException_WhenBusinessUnitNotFound()
-        {
-            var businessUnitId = _fixture.Create<int>();
-            var moderatorId = _fixture.Create<string>();
-
-            var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => _businessUnitService.AddModeratorToBusinessUnitsAsync(moderatorId, businessUnitId));
-            Assert.AreEqual(ex.Message, ServicesConstants.BusinessUnitNotFound);
         }
         #endregion
 
@@ -641,21 +546,87 @@ namespace ManagerLogbook.Tests.Services
                 arrangeContext.BusinessUnits.Add(businessUnit);
                 await arrangeContext.SaveChangesAsync();
             }
-            _mockUserService.Setup(x => x.GetUserAsync(user.Id)).ReturnsAsync(user).Verifiable();
-            var result = await _businessUnitService.RemoveModeratorFromBusinessUnitsAsync(user.Id, businessUnit.Id);
+
+            var result = await _businessUnitService.RemoveModeratorFromBusinessUnitsAsync(user, businessUnit.Id);
+
             Assert.IsInstanceOfType(result, typeof(UserDTO));
             Assert.AreEqual(null, result.BusinessUnitId);
+        }
 
-            _mockUserService.Verify();
+        #endregion
+
+        #region CheckIfBrandNameExist
+        [TestMethod]
+        public async Task CheckIfBrandNameExist_Succeed()
+        {
+            var brandName = _fixture.Create<string>();
+
+            var result = await _businessUnitService.CheckIfBrandNameExist(brandName);
+
+            Assert.IsFalse(result); 
         }
 
         [TestMethod]
-        public async Task RemoveModeratorFromBusinessUnitsAsync_ThrowsException_WhenBusinessUnitNotFound()
+        public async Task CheckIfBrandNameExist_ThrowsException_WhenNameAlreadyExists()
+        {
+            var brandName = _fixture.Create<string>();
+            var businessUnit = _fixture.Build<BusinessUnit>()
+                   .With(x => x.Name, brandName)
+                   .Without(x => x.Reviews)
+                   .Without(x => x.Logbooks)
+                   .Without(x => x.Users)
+                   .Without(x => x.CensoredWords)
+                   .Without(x => x.Town)
+                   .Without(x => x.BusinessUnitCategory)
+                   .Create();
+
+            using (var arrangeContext = new ManagerLogbookContext(_options))
+            {
+                arrangeContext.BusinessUnits.Add(businessUnit);
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            var model = _fixture.Build<BusinessUnitModel>()
+                .With(x => x.Name, brandName)
+                .Create();
+
+            var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => _businessUnitService.CheckIfBrandNameExist(brandName));
+            Assert.AreEqual(ex.Message, string.Format(ServicesConstants.BusinessUnitNameAlreadyExists, brandName));
+        }
+        #endregion
+
+        #region GetBusinessUnitAsync
+        [TestMethod]
+        public async Task GetBusinessUnitAsync_Succeed()
         {
             var businessUnitId = _fixture.Create<int>();
-            var moderatorId = _fixture.Create<string>();
+            var businessUnit = _fixture.Build<BusinessUnit>()
+                  .With(x => x.Id, businessUnitId)
+                  .Without(x => x.Reviews)
+                  .Without(x => x.Logbooks)
+                  .Without(x => x.Users)
+                  .Without(x => x.CensoredWords)
+                  .Without(x => x.Town)
+                  .Without(x => x.BusinessUnitCategory)
+                  .Create();
 
-            var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => _businessUnitService.RemoveModeratorFromBusinessUnitsAsync(moderatorId, businessUnitId));
+            using (var arrangeContext = new ManagerLogbookContext(_options))
+            {
+                arrangeContext.BusinessUnits.Add(businessUnit);
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            var result = await _businessUnitService.GetBusinessUnitAsync(businessUnitId);
+            Assert.IsInstanceOfType(result, typeof(BusinessUnit));
+            Assert.AreEqual(businessUnitId, result.Id);
+        }
+
+        [TestMethod]
+        public async Task GetBusinessUnitAsync_ThrowsException_WhenBusinessUnitNotFound()
+        {
+            var businessUnitId = _fixture.Create<int>();
+
+            var ex = await Assert.ThrowsExceptionAsync<NotFoundException>(() => _businessUnitService.GetBusinessUnitAsync(businessUnitId));
             Assert.AreEqual(ex.Message, ServicesConstants.BusinessUnitNotFound);
         }
         #endregion

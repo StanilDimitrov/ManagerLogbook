@@ -16,18 +16,14 @@ namespace ManagerLogbook.Services
     public class BusinessUnitService : IBusinessUnitService
     {
         private readonly ManagerLogbookContext _context;
-        private readonly IUserService _userService;
 
-        public BusinessUnitService(ManagerLogbookContext context, IUserService userService)
+        public BusinessUnitService(ManagerLogbookContext context)
         {
             _context = context;
-            _userService = userService;
         }
 
         public async Task<BusinessUnitDTO> CreateBusinnesUnitAsync(BusinessUnitModel model)
         {
-            await CheckIfBrandNameExist(model.Name);
-
             var businessUnit = new BusinessUnit
             {
                 Name = model.Name,
@@ -42,16 +38,11 @@ namespace ManagerLogbook.Services
 
             _context.BusinessUnits.Add(businessUnit);
             await _context.SaveChangesAsync();
+
             return businessUnit.ToDTO();
         }
-        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(BusinessUnitModel model)
+        public async Task<BusinessUnitDTO> UpdateBusinessUnitAsync(BusinessUnitModel model, BusinessUnit businessUnit)
         {
-            var businessUnit = await GetBusinessUnitAsync(model.Id);
-            if (businessUnit.Name != model.Name)
-            {
-                await CheckIfBrandNameExist(model.Name);
-            }
-
             SetBusinessUnitProperties(model, businessUnit);
             await _context.SaveChangesAsync();
             return businessUnit.ToDTO();
@@ -65,9 +56,7 @@ namespace ManagerLogbook.Services
 
         public async Task<IReadOnlyCollection<LogbookDTO>> GetLogbooksForBusinessUnitAsync(int businessUnitId)
         {
-            var businessUnit = await GetBusinessUnitAsync(businessUnitId);
-
-            var logbooksDTO = await this._context.Logbooks
+            var result = await _context.Logbooks
                          .Include(n => n.Notes)
                          .ThenInclude(u => u.User)
                          .Include(bu => bu.BusinessUnit)
@@ -76,7 +65,7 @@ namespace ManagerLogbook.Services
                          .Select(x => x.ToDTO())
                          .ToListAsync();
 
-            return logbooksDTO;
+            return result;
         }
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> GetBusinessUnitsByCategoryIdAsync(int businessUnitCategoryId)
@@ -103,33 +92,29 @@ namespace ManagerLogbook.Services
             return businessUnitsDTO;
         }
 
-        public async Task<IReadOnlyCollection<TownDTO>> GetAllTownsAsync()
+        public async Task<IReadOnlyCollection<TownDTO>> GetTownsAsync()
         {
-            var townsDTO = await _context.Towns
-                                          .OrderBy(n => n.Name)
-                                          .Select(x => x.ToDTO())
-                                          .ToListAsync();
+            var townsDTO = await _context
+                                 .Towns
+                                 .OrderBy(n => n.Name)
+                                 .Select(x => x.ToDTO())
+                                 .ToListAsync();
             return townsDTO;
         }
 
-        public async Task<UserDTO> AddModeratorToBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        public async Task<UserDTO> AddModeratorToBusinessUnitsAsync(User moderator, int businessUnitId)
         {
-            await GetBusinessUnitAsync(businessUnitId);
-            var moderatorUser = await _userService.GetUserAsync(moderatorId);
-
-            moderatorUser.BusinessUnitId = businessUnitId;
+            moderator.BusinessUnitId = businessUnitId;
             await _context.SaveChangesAsync();
-            return moderatorUser.ToDTO();
+            return moderator.ToDTO();
         }
 
-        public async Task<UserDTO> RemoveModeratorFromBusinessUnitsAsync(string moderatorId, int businessUnitId)
+        public async Task<UserDTO> RemoveModeratorFromBusinessUnitsAsync(User moderator, int businessUnitId)
         {
-            await GetBusinessUnitAsync(businessUnitId);
-            var moderatorUser = await _userService.GetUserAsync(moderatorId);
+            moderator.BusinessUnitId = null;
 
-            moderatorUser.BusinessUnitId = null;
             await _context.SaveChangesAsync();
-            return moderatorUser.ToDTO();
+            return moderator.ToDTO();
         }
 
         public async Task<IReadOnlyCollection<BusinessUnitDTO>> SearchBusinessUnitsAsync(string searchCriteria, int? businessUnitCategoryId, int? townId)
@@ -194,7 +179,7 @@ namespace ManagerLogbook.Services
             var businessUnit = await GetBusinessUnitAsync(businessUnitId);
 
             businessUnit.Likes++;
-            await this._context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return businessUnit.ToDTO();
         }
 
@@ -210,14 +195,16 @@ namespace ManagerLogbook.Services
             return businessUnit;
         }
 
-        private async Task CheckIfBrandNameExist(string brandName)
+        public async Task<bool> CheckIfBrandNameExist(string brandName)
         {
-            var businessUnit = await _context.BusinessUnits.SingleOrDefaultAsync(bu => bu.Name == brandName);
+            var hasNameExist = await _context.BusinessUnits.AnyAsync(bu => bu.Name == brandName);
 
-            if (businessUnit != null)
+            if (hasNameExist)
             {
                 throw new AlreadyExistsException(string.Format(ServicesConstants.BusinessUnitNameAlreadyExists, brandName));
             }
+
+            return hasNameExist;
         }
 
         private void SetBusinessUnitProperties(BusinessUnitModel model, BusinessUnit entity)

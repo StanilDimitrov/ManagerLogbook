@@ -1,10 +1,8 @@
-﻿using log4net;
-using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Web.Areas.Manager.Models;
-using ManagerLogbook.Web.Extensions;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
 using ManagerLogbook.Web.Services.Contracts;
@@ -30,9 +28,6 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly ILogbookService _logbookService;
         private readonly IMemoryCache _cache;
         private readonly IUserServiceWrapper _wrapper;
-
-        private static readonly ILog log =
-        LogManager.GetLogger(typeof(NotesController));
 
         public NotesController(IImageOptimizer optimizer,
                               IUserService userService,
@@ -127,8 +122,11 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     note.CanUserEdit = note.UserId == userId;
                 }
 
-                var searchModel = new SearchViewModel();
-                searchModel.Notes = notes;
+                var searchModel = new SearchViewModel
+                {
+                    Notes = notes
+                };
+
                 return PartialView("_NoteListPartial", searchModel);
             }
 
@@ -452,39 +450,18 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllNoteCategories()
         {
-            try
-            {
-                var cacheCategories = await CacheNoteCategories();
+            var cacheCategories = await CacheNoteCategories();
 
-                return Json(cacheCategories);
-            }
-
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
+            return Json(cacheCategories);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllLogbooksByUser()
         {
-            try
-            {
-                var userId = this._wrapper.GetLoggedUserId(User);
-                var logbooks = await this._logbookService.GetLogbooksByUserAsync(userId);
+            var userId = this._wrapper.GetLoggedUserId(User);
+            var logbooks = await this._logbookService.GetLogbooksByUserAsync(userId);
 
-                return Json(logbooks);
-            }
-            catch (NotFoundException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                log.Error("Unexpected exception occured:", ex);
-                return RedirectToAction("Error", "Home");
-            }
+            return Json(logbooks);
         }
 
         private async Task<NoteViewModel> CreateDropdownNoteCategories(NoteViewModel model)
