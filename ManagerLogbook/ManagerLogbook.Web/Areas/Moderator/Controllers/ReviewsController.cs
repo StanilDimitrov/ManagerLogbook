@@ -62,7 +62,7 @@ namespace ManagerLogbook.Web.Areas.Moderator.Controllers
             var model = new IndexReviewViewModel();
 
             var userId = _wrapper.GetLoggedUserId(User);
-            var user = await _userService.GetUserDtoByIdAsync(userId);
+            var user = await _userService.GetUserDtoAsync(userId);
 
             if (user.BusinessUnitId.HasValue)
             {

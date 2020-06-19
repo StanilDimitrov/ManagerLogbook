@@ -1,8 +1,6 @@
 ﻿using ManagerLogbook.Web.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ManagerLogbook.Web.Areas.Manager.Models
 {
@@ -26,15 +24,8 @@ namespace ManagerLogbook.Web.Areas.Manager.Models
 
         public string SearchCriteria { get; set; }
 
-        public int ScrollPage { get; set; }
-
         public int? DaysBefore { get; set; }
 
-        public string SkipNotesForScrollResult { get; set; }
-
         public IReadOnlyCollection<NoteViewModel> Notes { get; set; }
-
-        //public int? CategoryId { get; set; }
-        
     }
 }

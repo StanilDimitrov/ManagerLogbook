@@ -16,15 +16,12 @@ namespace ManagerLogbook.Services
     public class LogbookService : ILogbookService
     {
         private readonly ManagerLogbookContext _context;
-        private readonly IBusinessUnitService _businessUnitService;
         private readonly IUserService _userService;
 
         public LogbookService(ManagerLogbookContext context,
-                              IBusinessUnitService businessUnitService,
                               IUserService userService)
         {
             _context = context;
-            _businessUnitService = businessUnitService;
             _userService = userService;
         }
 
@@ -63,27 +60,19 @@ namespace ManagerLogbook.Services
 
         public async Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model, Logbook logbook)
         {
-            await SetLogbookProperties(model, logbook);
+            SetLogbookProperties(model, logbook);
             await _context.SaveChangesAsync();
 
             return logbook.ToDTO();
         }
 
-        public async Task<UserDTO> AddManagerToLogbookAsync(string managerId, int logbookId)
+        public async Task<UserDTO> AddManagerToLogbookAsync(User manager, int logbookId)
         {
-            var logbook = await GetLogbookAsync(logbookId);
-            var manager = await _userService.GetUserAsync(managerId);
-
-            if (_context.UsersLogbooks.Any(u => u.UserId == managerId && u.LogbookId ==logbook.Id))
-            {
-                throw new AlreadyExistsException(string.Format(ServicesConstants.ManagerIsAlreadyInLogbook, manager.UserName, logbook.Name));
-            }
-
             _context.UsersLogbooks.Add(new UsersLogbooks() 
             {
                 UserId = manager.Id,
-                LogbookId = logbook.Id }
-            );
+                LogbookId = logbookId
+            });
 
             await _context.SaveChangesAsync();
 
@@ -119,12 +108,9 @@ namespace ManagerLogbook.Services
             return logbooksDTO;
         }
 
-        public async Task<LogbookDTO> AddLogbookToBusinessUnitAsync(int logbookId, int businessUnitId)
+        public async Task<LogbookDTO> AddLogbookToBusinessUnitAsync(Logbook logbook, int businessUnitId)
         {
-            var logbook = await GetLogbookAsync(logbookId);
-            var businessUnit = await _businessUnitService.GetBusinessUnitAsync(businessUnitId);
-
-            logbook.BusinessUnitId = businessUnit.Id;
+            logbook.BusinessUnitId = businessUnitId;
             await _context.SaveChangesAsync();
 
             return logbook.ToDTO();
@@ -154,7 +140,7 @@ namespace ManagerLogbook.Services
             return hasNameExists;
         }
 
-        private async Task SetLogbookProperties(LogbookModel model, Logbook entity)
+        private void SetLogbookProperties(LogbookModel model, Logbook entity)
         {
             entity.Name = model.Name;
 
@@ -163,9 +149,8 @@ namespace ManagerLogbook.Services
                 entity.Picture = model.Picture;
             }
 
-            if (model.BusinessUnitId != null)
+            if (model.BusinessUnitId.HasValue)
             {
-                await _businessUnitService.GetBusinessUnitAsync(model.BusinessUnitId.Value);
                 entity.BusinessUnitId = model.BusinessUnitId.Value;
             }
         }

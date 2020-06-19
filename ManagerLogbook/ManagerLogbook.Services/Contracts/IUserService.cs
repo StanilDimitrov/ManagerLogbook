@@ -7,11 +7,11 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface IUserService
     {
-        Task<UserDTO> GetUserDtoByIdAsync(string userId);
+        Task<UserDTO> GetUserDtoAsync(string userId);
 
         Task<User> GetUserAsync(string userId);
 
-        Task<UserDTO> SwitchLogbookAsync(string userId, int logbookId);
+        Task<UserDTO> SwitchLogbookAsync(User user, int logbookId);
 
         Task<IReadOnlyCollection<UserDTO>> GetAllModeratorsNotPresentInBusinessUnitAsync(int businessUnitId);
 
@@ -20,5 +20,7 @@ namespace ManagerLogbook.Services.Contracts
         Task<IReadOnlyCollection<UserDTO>> GetAllManagersNotPresentInLogbookAsync(int logbookId);
 
         Task<IReadOnlyCollection<UserDTO>> GetAllManagersPresentInLogbookAsync(int logbookId);
+
+        Task<bool> CheckIfUserIsManagerOfLogbook(string userId, int logbookId);
     }
 }

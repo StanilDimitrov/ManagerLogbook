@@ -2,11 +2,9 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Bll;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Bll
@@ -40,18 +38,17 @@ namespace ManagerLogbook.Tests.Bll
         {
             var model = _fixture.Create<LogbookModel>();
 
-            var result = await _logbookEngine.CreateLogbookAsync(model);
+            await _logbookEngine.CreateLogbookAsync(model);
 
             _mockLogbookService.Verify(x => x.CreateLogbookAsync(model), Times.Once());
             _mockLogbookService.Verify(x => x.CheckIfLogbookNameExist(model.Name), Times.Once());
             _mockBusinessUnitService.Verify(x => x.GetBusinessUnitAsync(model.BusinessUnitId.Value), Times.Once());
-            
         }
         #endregion
 
         #region UpdateLogbookAsync
         [TestMethod]
-        public async Task UpdateLogbookAsync_Succeed_WhenNameIsChanged()
+        public async Task UpdateLogbookAsync_Succeed_WhenNameIsChangedAndBusinessUnitIdIsNotNull()
         {
             var logbook = _fixture.Build<Logbook>()
                 .Without(x => x.BusinessUnit)
@@ -63,14 +60,17 @@ namespace ManagerLogbook.Tests.Bll
 
             _mockLogbookService.Setup(x => x.GetLogbookAsync(model.Id)).ReturnsAsync(logbook).Verifiable();
 
-            var result = await _logbookEngine.UpdateLogbookAsync(model);
+            await _logbookEngine.UpdateLogbookAsync(model);
+
             _mockLogbookService.Verify(x => x.CheckIfLogbookNameExist(model.Name), Times.Once());
+            _mockBusinessUnitService.Verify(x => x.GetBusinessUnitAsync(model.BusinessUnitId.Value), Times.Once());
             _mockLogbookService.Verify(x => x.UpdateLogbookAsync(model, logbook), Times.Once());
+
             _mockLogbookService.Verify();
         }
 
         [TestMethod]
-        public async Task UpdateLogbookAsync_Succeed_WhenNameIsNotChanged()
+        public async Task UpdateLogbookAsync_Succeed_WhenNameIsNotChanged_AndBusinessUnitIdIsNull()
         {
             var logbookName = _fixture.Create<string>();
             var logbook = _fixture.Build<Logbook>()
@@ -82,14 +82,16 @@ namespace ManagerLogbook.Tests.Bll
 
             var model = _fixture.Build<LogbookModel>()
                 .With(x => x.Name, logbookName)
+                .Without(x => x.BusinessUnitId)
                 .Create();
 
             _mockLogbookService.Setup(x => x.GetLogbookAsync(model.Id)).ReturnsAsync(logbook).Verifiable();
 
-            var result = await _logbookEngine.UpdateLogbookAsync(model);
+            await _logbookEngine.UpdateLogbookAsync(model);
 
             _mockLogbookService.Verify(x => x.CheckIfLogbookNameExist(It.IsAny<string>()), Times.Never());
             _mockLogbookService.Verify(x => x.UpdateLogbookAsync(model, logbook), Times.Once());
+            _mockBusinessUnitService.Verify(x => x.GetBusinessUnitAsync(It.IsAny<int>()), Times.Never());
 
             _mockLogbookService.Verify();
         }

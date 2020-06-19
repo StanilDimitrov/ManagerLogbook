@@ -40,30 +40,13 @@ namespace ManagerLogbook.Tests.Services
         [TestMethod]
         public async Task CreateBusinessUnitAsync_Succeed()
         {
-            var businessUnitCategory = _fixture.Build<BusinessUnitCategory>()
-                      .Without(x => x.BusinessUnits)
-                      .Create();
-            var town = _fixture.Build<Town>()
-                .Without(x => x.BusinessUnits)
-                .Create();
-
-            using (var arrangeContext = new ManagerLogbookContext(_options))
-            {
-                arrangeContext.BusinessUnitCategories.Add(businessUnitCategory);
-                arrangeContext.Towns.Add(town);
-
-                await arrangeContext.SaveChangesAsync();
-            }
-
             var model = _fixture.Create<BusinessUnitModel>();
+
             var result = await _businessUnitService.CreateBusinnesUnitAsync(model);
+
             Assert.IsInstanceOfType(result, typeof(BusinessUnitDTO));
             Assert.AreEqual(_context.BusinessUnits.Count(), 1);
             Assert.AreEqual(1, result.Id);
-            Assert.AreEqual(model.Name, result.Name);
-            Assert.AreEqual(model.Information, result.Information);
-            Assert.AreEqual(model.PhoneNumber, result.PhoneNumber);
-            Assert.AreEqual(model.Email, result.Email);
         }
         #endregion
 
@@ -71,9 +54,7 @@ namespace ManagerLogbook.Tests.Services
         [TestMethod]
         public async Task UpdateBusinessUnitAsync_Succeed()
         {
-            var businessUnitId = _fixture.Create<int>();
             var businessUnit = _fixture.Build<BusinessUnit>()
-                   .With(x => x.Id, businessUnitId)
                    .Without(x => x.Reviews)
                    .Without(x => x.Logbooks)
                    .Without(x => x.Users)
@@ -88,12 +69,11 @@ namespace ManagerLogbook.Tests.Services
                 await arrangeContext.SaveChangesAsync();
             }
 
-            var model = _fixture.Build<BusinessUnitModel>()
-                .With(x => x.Id, businessUnitId)
-                .Create();
+            var model = _fixture.Create<BusinessUnitModel>();
+
             var result = await _businessUnitService.UpdateBusinessUnitAsync(model, businessUnit);
+
             Assert.IsInstanceOfType(result, typeof(BusinessUnitDTO));
-            Assert.AreEqual(model.Id, result.Id);
             Assert.AreEqual(model.Name, result.Name);
             Assert.AreEqual(model.Information, result.Information);
             Assert.AreEqual(model.PhoneNumber, result.PhoneNumber);

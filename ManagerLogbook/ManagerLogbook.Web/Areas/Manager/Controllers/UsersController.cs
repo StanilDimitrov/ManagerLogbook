@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Bll.Contracts;
+using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Services.CustomExeptions;
 using ManagerLogbook.Web.Models;
@@ -17,14 +18,17 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
         private readonly IUserService userService;
         private readonly ILogbookService logbookService;
         private readonly IUserServiceWrapper wrapper;
+        private readonly IUserEngine _userEngine;
 
         public UsersController(IUserService userService,
                                ILogbookService logbookService,
-                               IUserServiceWrapper wrapper)
+                               IUserServiceWrapper wrapper,
+                               IUserEngine userEngine)
         {
             this.userService = userService;
             this.logbookService = logbookService;
             this.wrapper = wrapper;
+            _userEngine = userEngine;
         }
 
         [HttpPost]
@@ -34,7 +38,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
             try
             {
                 var userId = this.wrapper.GetLoggedUserId(User);
-                var user = await this.userService.GetUserDtoByIdAsync(userId);
+                var user = await this.userService.GetUserDtoAsync(userId);
                 if (model.CurrentLogbookId.HasValue)
                 {
                     var logbook = await this.logbookService.GetLogbookAsync(model.CurrentLogbookId.Value);
@@ -42,7 +46,7 @@ namespace ManagerLogbook.Web.Areas.Manager.Controllers
                     {
                         return BadRequest((string.Format(WebConstants.AlreadyInLogbook,  user.UserName, logbook.Name)));
                     }
-                    user = await this.userService.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value);
+                    user = await _userEngine.SwitchLogbookAsync(userId, model.CurrentLogbookId.Value);
                     //return Ok(string.Format(WebConstants.SwitchLogbook, logbook.Name));
                     return RedirectToAction("Index", "Notes");
                 }

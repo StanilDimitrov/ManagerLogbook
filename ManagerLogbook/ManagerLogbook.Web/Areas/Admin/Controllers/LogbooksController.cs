@@ -96,7 +96,7 @@ namespace ManagerLogbook.Web.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddManagerToLogbook(LogbookViewModel model)
         {
-            var manager = await _logbookService.AddManagerToLogbookAsync(model.ManagerId, model.Id);
+            var manager = await _logbookEngine.AddManagerToLogbookAsync(model.ManagerId, model.Id);
             return Ok(string.Format(WebConstants.SuccessfullyAddedManagerToLogbook, manager.UserName));
         }
 

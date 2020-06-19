@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\LogbookController\Admin\" />
+    <Folder Include="Controllers\Note\" />
   </ItemGroup>
 
 </Project>

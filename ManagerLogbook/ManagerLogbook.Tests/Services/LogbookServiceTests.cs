@@ -22,7 +22,6 @@ namespace ManagerLogbook.Tests.Services
     {
         #region Members
         private Mock<IUserService> _mockUserService;
-        private Mock<IBusinessUnitService> _mockBusinessUnitService;
         private static Fixture _fixture;
         private static DbContextOptions _options;
         private static ManagerLogbookContext _context;
@@ -34,11 +33,10 @@ namespace ManagerLogbook.Tests.Services
         public void Setup()
         {
             _mockUserService = new Mock<IUserService>();
-            _mockBusinessUnitService = new Mock<IBusinessUnitService>();
             _fixture = new Fixture();
             _options = TestUtils.GetOptions(_fixture.Create<string>());
             _context = new ManagerLogbookContext(_options);
-            _logbookService = new LogbookService(_context, _mockBusinessUnitService.Object, _mockUserService.Object);
+            _logbookService = new LogbookService(_context,  _mockUserService.Object);
         }
         #endregion
 
@@ -46,35 +44,12 @@ namespace ManagerLogbook.Tests.Services
         [TestMethod]
         public async Task CreateLogbookAsync_Succeed()
         {
-            var businessUnit = _fixture.Build<BusinessUnit>()
-                   .Without(x => x.Reviews)
-                   .Without(x => x.Logbooks)
-                   .Without(x => x.Users)
-                   .Without(x => x.CensoredWords)
-                   .Without(x => x.Town)
-                   .Without(x => x.BusinessUnitCategory)
-                   .Create();
-
-            var model = _fixture.Build<LogbookModel>()
-               .With(x => x.BusinessUnitId, businessUnit.Id)
-               .Create();
-
-            using (var arrangeContext = new ManagerLogbookContext(_options))
-            {
-
-                arrangeContext.BusinessUnits.Add(businessUnit);
-                await arrangeContext.SaveChangesAsync();
-            }
-
-            _mockBusinessUnitService.Setup(x => x.GetBusinessUnitAsync(businessUnit.Id)).ReturnsAsync(businessUnit).Verifiable();
+            var model = _fixture.Create<LogbookModel>();
 
             var result = await _logbookService.CreateLogbookAsync(model);
             Assert.IsInstanceOfType(result, typeof(LogbookDTO));
             Assert.AreEqual(1, _context.Logbooks.Count());
             Assert.AreEqual(1, result.Id);
-            Assert.AreEqual(model.Name, result.Name);
-
-            _mockBusinessUnitService.Verify();
         }
 
         #endregion
@@ -88,32 +63,21 @@ namespace ManagerLogbook.Tests.Services
                 .Without(x => x.Notes)
                 .Without(x => x.BusinessUnit)
                 .Create();
-            var businessUnit = _fixture.Build<BusinessUnit>()
-                .Without(x => x.Reviews)
-                .Without(x => x.Logbooks)
-                .Without(x => x.Users)
-                .Without(x => x.CensoredWords)
-                .Without(x => x.Town)
-                .Without(x => x.BusinessUnitCategory)
-                .Create();
+
             using (var arrangeContext = new ManagerLogbookContext(_options))
             {
                 arrangeContext.Logbooks.Add(logbook);
                 await arrangeContext.SaveChangesAsync();
             }
 
-            var model = _fixture.Build<LogbookModel>()
-                .With(x => x.Id, logbook.Id)
-                .With(x => x.BusinessUnitId, businessUnit.Id)
-                .Create();
-            _mockBusinessUnitService.Setup(x => x.GetBusinessUnitAsync(businessUnit.Id)).ReturnsAsync(businessUnit).Verifiable();
+            var model = _fixture.Build<LogbookModel>().Create();
+                
+
             var result = await _logbookService.UpdateLogbookAsync(model, logbook);
+
             Assert.IsInstanceOfType(result, typeof(LogbookDTO));
-            Assert.AreEqual(model.Id, result.Id);
             Assert.AreEqual(model.Name, result.Name);
             Assert.AreEqual(model.Picture, result.Picture);
-
-            _mockBusinessUnitService.Verify();
         }
         #endregion
 
@@ -121,64 +85,16 @@ namespace ManagerLogbook.Tests.Services
         [TestMethod]
         public async Task AddManagerToLogbookAsync_Succeed()
         {
-            var logbook = _fixture.Build<Logbook>()
-                .Without(x => x.UsersLogbooks)
-                .Without(x => x.Notes)
-                .Without(x => x.BusinessUnit)
-                .Create();
+            var logbookId = _fixture.Create<int>();
             var user = _fixture.Build<User>()
                 .Without(x => x.BusinessUnit)
                 .Without(x => x.Notes)
                 .Without(x => x.UsersLogbooks)
                 .Create();
 
-            using (var arrangeContext = new ManagerLogbookContext(_options))
-            {
-                arrangeContext.Logbooks.Add(logbook);
-                await arrangeContext.SaveChangesAsync();
-            }
-
-            _mockUserService.Setup(x => x.GetUserAsync(user.Id)).ReturnsAsync(user).Verifiable();
-            var result = await _logbookService.AddManagerToLogbookAsync(user.Id, logbook.Id);
+            var result = await _logbookService.AddManagerToLogbookAsync(user, logbookId);
             Assert.IsInstanceOfType(result, typeof(UserDTO));
             Assert.AreEqual(1, _context.UsersLogbooks.Count());
-         
-            _mockUserService.Verify();
-        }
-
-        [TestMethod]
-        public async Task AddManagerToLogbookAsync_ThrowsException_ManagerIsAlreadyInLogbook()
-        {
-            var logbook = _fixture.Build<Logbook>()
-               .Without(x => x.UsersLogbooks)
-               .Without(x => x.Notes)
-               .Without(x => x.BusinessUnit)
-               .Create();
-            var user = _fixture.Build<User>()
-                .Without(x => x.BusinessUnit)
-                .Without(x => x.Notes)
-                .Without(x => x.UsersLogbooks)
-                .Create();
-
-            var userLogbook = _fixture.Build<UsersLogbooks>()
-                .With(x => x.UserId, user.Id)
-                .With(x => x.LogbookId, logbook.Id)
-                .Without(x => x.Logbook)
-                .Without(x => x.User)
-                .Create();
-
-            using (var arrangeContext = new ManagerLogbookContext(_options))
-            {
-                arrangeContext.Logbooks.Add(logbook);
-                arrangeContext.UsersLogbooks.Add(userLogbook);
-                await arrangeContext.SaveChangesAsync();
-            }
-
-            _mockUserService.Setup(x => x.GetUserAsync(user.Id)).ReturnsAsync(user).Verifiable();
-            var ex = await Assert.ThrowsExceptionAsync<AlreadyExistsException>(() => _logbookService.AddManagerToLogbookAsync(user.Id, logbook.Id));
-            Assert.AreEqual(ex.Message, string.Format(ServicesConstants.ManagerIsAlreadyInLogbook, user.UserName, logbook.Name));
-
-            _mockUserService.Verify();
         }
         #endregion
 
@@ -252,6 +168,7 @@ namespace ManagerLogbook.Tests.Services
         [TestMethod]
         public async Task GetLogbooksByUserAsync_Succeed()
         {
+            var userId = _fixture.Create<string>();
             var businessUnit = _fixture.Build<BusinessUnit>()
              .Without(x => x.Reviews)
              .Without(x => x.Logbooks)
@@ -273,14 +190,9 @@ namespace ManagerLogbook.Tests.Services
                 .Without(x => x.NoteCategory)
                 .Without(x => x.User)
                 .Create();
-            var user = _fixture.Build<User>()
-                .Without(x => x.BusinessUnit)
-                .Without(x => x.Notes)
-                .Without(x => x.UsersLogbooks)
-                .Create();
           
             var userLogbook = _fixture.Build<UsersLogbooks>()
-                .With(x => x.UserId, user.Id)
+                .With(x => x.UserId, userId)
                 .With(x => x.LogbookId, logbook.Id)
                 .Without(x => x.Logbook)
                 .Without(x => x.User)
@@ -295,11 +207,9 @@ namespace ManagerLogbook.Tests.Services
                 await arrangeContext.SaveChangesAsync();
             }
 
-            var result = await _logbookService.GetLogbooksByUserAsync(user.Id);
+            var result = await _logbookService.GetLogbooksByUserAsync(userId);
             Assert.IsInstanceOfType(result, typeof(IReadOnlyCollection<LogbookDTO>));
             Assert.AreEqual(1, result.Count);
-
-            _mockUserService.Verify();
         }
         #endregion
 
@@ -307,17 +217,9 @@ namespace ManagerLogbook.Tests.Services
         [TestMethod]
         public async Task AddLogbookToBusinessUnitAsync_Succeed()
         {
-            var businessUnit = _fixture.Build<BusinessUnit>()
-             .Without(x => x.Reviews)
-             .Without(x => x.Logbooks)
-             .Without(x => x.Users)
-             .Without(x => x.CensoredWords)
-             .Without(x => x.Town)
-             .Without(x => x.BusinessUnitCategory)
-             .Create();
+            var businessUnitId = _fixture.Create<int>();
 
             var logbook = _fixture.Build<Logbook>()
-                .With(x => x.BusinessUnitId, businessUnit.Id)
                 .Without(x => x.UsersLogbooks)
                 .Without(x => x.Notes)
                 .Without(x => x.BusinessUnit)
@@ -329,13 +231,10 @@ namespace ManagerLogbook.Tests.Services
                 await arrangeContext.SaveChangesAsync();
             }
 
-             _mockBusinessUnitService.Setup(x => x.GetBusinessUnitAsync(businessUnit.Id)).ReturnsAsync(businessUnit).Verifiable();
+            var result = await _logbookService.AddLogbookToBusinessUnitAsync(logbook, businessUnitId);
 
-            var result = await _logbookService.AddLogbookToBusinessUnitAsync(logbook.Id, businessUnit.Id);
             Assert.IsInstanceOfType(result, typeof(LogbookDTO));
-            Assert.AreEqual(businessUnit.Id, result.BusinessUnitId);
-
-            _mockUserService.Verify();
+            Assert.AreEqual(businessUnitId, result.BusinessUnitId);
         }
         #endregion
 

@@ -9,5 +9,7 @@ namespace ManagerLogbook.Services.Bll.Contracts
         Task<LogbookDTO> CreateLogbookAsync(LogbookModel model);
 
         Task<LogbookDTO> UpdateLogbookAsync(LogbookModel model);
+
+        Task<UserDTO> AddManagerToLogbookAsync(string managerId, int logbookId);
     }
 }

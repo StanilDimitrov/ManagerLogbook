@@ -1,4 +1,5 @@
-﻿using ManagerLogbook.Services.Contracts;
+﻿using ManagerLogbook.Services.Bll.Contracts;
+using ManagerLogbook.Services.Contracts;
 using ManagerLogbook.Services.Contracts.Providers;
 using ManagerLogbook.Web.Mappers;
 using ManagerLogbook.Web.Models;
@@ -14,17 +15,17 @@ namespace ManagerLogbook.Web.Controllers
     {
         private readonly ILogbookService logbookService;
         private readonly IUserService userService;
-        private readonly INoteService noteService;
+        private readonly INoteEngine _noteEngine;
         private readonly IUserServiceWrapper wrapper;
 
         public LogbooksController(ILogbookService logbookService,
                                   IUserService userService,
-                                  INoteService noteService,
+                                  INoteEngine noteEngine,
                                   IUserServiceWrapper wrapper)
         {
             this.logbookService = logbookService;
             this.userService = userService;
-            this.noteService = noteService;
+            _noteEngine = noteEngine;
             this.wrapper = wrapper;
         }
 
@@ -43,8 +44,8 @@ namespace ManagerLogbook.Web.Controllers
             var userId = this.wrapper.GetLoggedUserId(User);
             if (User.IsInRole("Manager"))
             {
-                viewModel.ActiveNotes = (await this.noteService.ShowLogbookNotesWithActiveStatusAsync(userId, logbook.Id)).Select(x => x.MapFrom()).ToList();
-                viewModel.TotalNotes = (await this.noteService.ShowLogbookNotesAsync(userId, logbook.Id)).Select(x => x.MapFrom()).ToList();
+                viewModel.ActiveNotes = (await _noteEngine.ShowLogbookNotesWithActiveStatusAsync(userId, logbook.Id)).Select(x => x.MapFrom()).ToList();
+                viewModel.TotalNotes = (await _noteEngine.ShowLogbookNotesAsync(userId, logbook.Id)).Select(x => x.MapFrom()).ToList();
             }
 
             return View(viewModel);

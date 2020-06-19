@@ -1,6 +1,6 @@
-﻿using ManagerLogbook.Services.DTOs;
+﻿using ManagerLogbook.Data.Models;
+using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Models;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,21 +8,19 @@ namespace ManagerLogbook.Services.Contracts
 {
     public interface INoteService
     {
-        Task<NoteDTO> GetNoteDtoAsync(int id);
-            
         Task<NoteDTO> CreateNoteAsync(NoteModel model, int logbookId, string userId);
 
-        Task<NoteDTO> DeactivateNoteActiveStatus(int noteId, string userId);
+        Task<NoteDTO> DeactivateNoteActiveStatus(Note note, bool isActiveStatus);
 
-        Task<NoteDTO> EditNoteAsync(NoteModel model, string userId);
+        Task<NoteDTO> UpdateNoteAsync(NoteModel model, Note note);
 
-        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesWithActiveStatusAsync(string userId, int logbookId);
+        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesWithActiveStatusAsync(int logbookId);
 
-        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(string userId, int logbookId, int days);
+        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesForDaysBeforeAsync(int logbookId, int days);
 
-        Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync(string userId, int logbookId, DateTime startDate,
-                                                                                 DateTime endDate, int? categoryId, string criteria, int? daysBefore, int currPage = 1);
-        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesAsync(string userId, int logbookId);
+        Task<IReadOnlyCollection<NoteDTO>> SearchNotesAsync(string userId, int logbookId, SearchNoteModel model);
+                                                                            
+        Task<IReadOnlyCollection<NoteDTO>> ShowLogbookNotesAsync(int logbookId);
 
         Task<IReadOnlyCollection<NoteGategoryDTO>> GetNoteCategoriesAsync();
 
@@ -31,5 +29,11 @@ namespace ManagerLogbook.Services.Contracts
         Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId);
 
         Task<int> GetPageCountForNotesAsync(int notesPerPage, int logbookId, string searchPhrase);
+
+        Task<bool> CheckIfUserIsAuthorized(string userId, int logbookId);
+
+        Task<NoteCategory> GetNoteCategoryAsync(int id);
+
+        Task<Note> GetNoteAsync(int id);
     }
 }

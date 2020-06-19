@@ -2,11 +2,9 @@
 using ManagerLogbook.Data.Models;
 using ManagerLogbook.Services.Bll;
 using ManagerLogbook.Services.Contracts;
-using ManagerLogbook.Services.DTOs;
 using ManagerLogbook.Services.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ManagerLogbook.Tests.Bll
@@ -40,7 +38,7 @@ namespace ManagerLogbook.Tests.Bll
 
             await _businessUnitEngine.CreateBusinnesUnitAsync(model);
 
-            _mockBusinessUnitService.Verify(x => x.GetBusinessUnitAsync(model.Id), Times.Once());
+            _mockBusinessUnitService.Verify(x => x.CheckIfBrandNameExist(model.Name), Times.Once());
             _mockBusinessUnitService.Verify(x => x.CreateBusinnesUnitAsync(model), Times.Once());
         }
         #endregion
